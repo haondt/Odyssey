@@ -29,3 +29,41 @@
 # The main display
 
 - webapp to display the state of the game
+
+# Ideas
+
+- perhaps devices should be attached to host (or maybe we have a "host session") so they can pull them into whichever session the host goes into
+- when moving device from one session to another, try to make it easy to keep player names and whatnot. Not locking it to the device but maybe give some autocomplete options based on pulling data from most recent session
+- "auto-host" - some games (e.g. pictionary) can be hosted without human interaction, allowing the would-be host to participate as a player
+- "transient" sessions - sessions that are deleted as soon as they become inactive
+- allow multiple display devices to be connected (mirrors, as displays are RO)
+- admin panel
+  - view active sessions - sessions that have at least one client (host, player, display) connected to them
+  - view connected devices
+  - view all devices
+- player view
+  - Odyssey logo - visible when connected to the session, opens up a "meta" menu
+    - leave session
+    - show connection status/errors
+    - enable/show on-screen HWIO
+    - enable/show split-screen display
+  - on screen HWIO (if enabled) - provides HWIO accessible through the browser - buzzer button, plays sounds through device speakers, light strip, etc
+  - split-screen display, if enabled. so with just a single device you could play remotely
+    - imagine playing while on a discord call
+- host view
+  - "overrides" section during session for things like quickly fixing player scores
+    - for deeper fixes host can directly edit game state
+      - for super deep fixes, host can manually edit game state json - maybe we have validation/schemas for this? or just yolo
+- i think it would be funny to occasionally mix in the "fahhhh" sound for the [X] buzzer in family feud
+
+# Games to add
+
+- Family Feud
+- Jeopardy!
+- Deal or no Deal
+- Pictionary
+- Boggle
+- Mad Gab
+- Words on Stream
+- heads up
+- charades

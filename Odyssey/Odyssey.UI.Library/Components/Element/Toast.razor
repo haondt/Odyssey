@@ -1,0 +1,69 @@
+@code {
+
+    [Parameter, EditorRequired]
+    public required string Message { get; set; }
+
+    [Parameter]
+    public ToastSeverity Severity { get; set; } = ToastSeverity.Error;
+    private string SeverityString { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        SeverityString = Severity switch
+        {
+            ToastSeverity.Warning => "warning",
+            ToastSeverity.Error => "danger",
+            ToastSeverity.Success => "success",
+            ToastSeverity.Info => "info",
+            _ => throw new ArgumentException(Severity.ToString())
+        };
+    }
+}
+
+<p>three</p>
+
+<div hx-swap-oob="afterbegin:#toast-container">
+    <div
+        class="toast"
+        _="
+            on load
+                add .created to me
+                then wait 5s
+                then if :me
+                    repeat forever
+                        if :m
+                            wait for mouseleave
+                        end
+                        set :me to false
+                        wait 2s
+                        if not :me
+                            break
+                        end
+                    end
+                end
+                then remove .created from me
+                then wait for transitionend
+                then send deleted to me
+            end
+            on deleted
+                remove me
+            end
+
+            on mouseenter
+                set :me to true
+                set :m to true
+            end
+            on mouseleave
+                set :m to false
+            end
+            ">
+        <div class="toast-header">
+            <p class="has-text-@SeverityString">@Severity</p>
+            <button class="delete" _="on click send deleted to the closest <div.toast />"></button>
+        </div>
+        <div class="toast-body">
+            <p style="white-space:pre-wrap;">@Message</p>
+        </div>
+    </div>
+</div>
+

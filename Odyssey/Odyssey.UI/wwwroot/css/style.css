@@ -1,0 +1,35 @@
+@import 'reset.css';
+
+/* base.css */
+@import 'base/variables.css';
+@import 'base/base.css';
+@import 'base/utils.css';
+
+
+:root {
+    color-scheme: dark;
+
+    --odyssey-content-width: 1300px;
+    --goldrush-font-family: "Inter", sans-serif;
+}
+
+@media(prefers-color-scheme: dark) {
+    html {
+        color-scheme: dark;
+    }
+}
+
+
+/* containers */
+
+.content-container {
+    max-width: var(--odyssey-content-width);
+    margin: auto;
+    width: calc(100% - 40px);
+}
+
+/* big screen mode */
+
+.big-screen {
+    --goldrush-text-font-size: 2rem;
+}

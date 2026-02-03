@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+	<PackageReference Include="Haondt.Web" Version="0.2.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odyssey.UI.Library\Odyssey.UI.Library.csproj" />
+  </ItemGroup>
+
+
+
+	<PropertyGroup>
+  <StaticWebAssetBasePath>shared</StaticWebAssetBasePath>
+</PropertyGroup>
+
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="bun run postcss &quot;$(ProjectDir)/**/*.razor.pcss&quot; -v -d $(ProjectDir) --base $(ProjectDir) --ext &quot;css&quot;" />
+	</Target>
+
+
+
+</Project>

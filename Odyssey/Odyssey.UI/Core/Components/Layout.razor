@@ -1,0 +1,28 @@
+@using Odyssey.UI.Library.Components.Element
+@code {
+    [Parameter, EditorRequired]
+    public required IComponent Content { get; set; }
+
+    [Parameter]
+    public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
+
+    private string _bodyContentClasses = "";
+
+    protected override void OnInitialized()
+    {
+        if (LayoutOptionsAttribute.Map(x => x.FillPage).Or(false))
+            _bodyContentClasses = "fill-page";
+    }
+}
+
+<div id="body-content" class="@_bodyContentClasses">
+    <div id="modal-container" class="modal"></div>
+    <ToastContainer />
+    <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" />
+    <div id="page-container">
+        <ObjectComponent Component="@Content"/>
+    </div>
+    <div id="footer-container">
+        <div style="height:80px;"></div>
+    </div>
+</div> 

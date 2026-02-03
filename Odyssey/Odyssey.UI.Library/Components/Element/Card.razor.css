@@ -1,0 +1,5 @@
+.card {
+    padding: var(--goldrush-card-padding);
+    border-radius: var(--goldrush-card-border-radius);
+    border: 1px solid var(--goldrush-color-border);
+}

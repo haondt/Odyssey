@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.2" />
+          <PackageReference Include="Haondt.Web" Version="0.2.10" />
+
+  </ItemGroup>
+
+  <PropertyGroup>
+	  <StaticWebAssetBasePath>shared</StaticWebAssetBasePath>
+  </PropertyGroup>
+
+
+</Project>

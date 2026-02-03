@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+       <PackageReference Include="Haondt.Web" Version="0.2.10" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odyssey.Domain\Odyssey.Domain.csproj" />
+    <ProjectReference Include="..\Odyssey.UI\Odyssey.UI.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Watch Include="..\**\*.pcss" />
+		<Watch Include="..\*\wwwroot\css\**\*.css" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+.frame-flex { display: flex; }
+.frame-flex-col { flex-direction: column; }
+.frame-flex-row { flex-direction: row; }
+
+.frame-justify-content-flex-start { justify-content: flex-start; }
+.frame-justify-content-flex-end { justify-content: flex-end; }
+.frame-justify-content-center { justify-content: center; }
+.frame-justify-content-space-around { justify-content: space-around; }
+.frame-justify-content-space-between { justify-content: space-between; }
+
+.frame-align-items-flex-start { align-items: flex-start; }
+.frame-align-items-flex-end { align-items: flex-end; }
+.frame-align-items-center { align-items: center; }

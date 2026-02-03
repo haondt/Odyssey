@@ -1,0 +1,11 @@
+@code {
+    [Parameter]
+    public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
+}
+<div id="navigation-container">
+    @if(LayoutOptionsAttribute
+        .Map(q => q.ShowNavigationBar)
+        .Or(true)) {
+        <div>Imagine this is a navigation bar</div>
+    }
+</div>

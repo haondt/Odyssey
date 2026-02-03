@@ -1,0 +1,44 @@
+.italic { font-style: italic !important; }
+
+.monospace { font-family: var(--goldrush-monospace-fonts) !important; }
+.uppercase { text-transform: uppercase !important; }
+
+.font-semibold { font-weight: 500 !important; }
+.font-bold { font-weight: 600 !important; }
+.font-normal { font-weight: 300 !important;}
+
+.font-xs { font-size: 0.75rem !important; }
+.font-s { font-size: 0.875rem !important; }
+.font-m { font-size: 1rem !important; }
+.font-l { font-size: 1.125rem !important; }
+.font-xl { font-size: 1.3125rem !important; }
+.font-2xl { font-size: 1.5rem !important; }
+.font-3xl { font-size: 2.625rem !important;}
+.font-4xl { font-size: 4rem !important; }
+
+/* flexbox */
+.flex { display: flex !important; }
+.flex-col { flex-direction: column !important; }
+.flex-column { flex-direction: column !important; }
+.flex-row { flex-direction: row !important; }
+.flex-grow-1 { flex-grow: 1 !important; }
+
+.justify-content-flex-start { justify-content: flex-start !important; }
+.justify-content-flex-end { justify-content: flex-end !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-space-around { justify-content: space-around !important; }
+.justify-content-space-between { justify-content: space-between !important; }
+
+.align-items-flex-start { align-items: flex-start !important; }
+.align-items-flex-end { align-items: flex-end !important; }
+.align-items-center { align-items: center !important; }
+
+/* colors */
+
+.fg-primary { color: var(--goldrush-color-primary) !important; }
+
+/* spacing */
+
+.gap-m { gap: 16px !important; }
+
+.m-auto { margin: auto !important; }
