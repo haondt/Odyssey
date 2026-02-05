@@ -54,9 +54,4 @@ a {
     }
 }
 
-/* flexbox / grid */
-
-.flex {
-    gap: var(--goldrush-grid-gap);
-}
 

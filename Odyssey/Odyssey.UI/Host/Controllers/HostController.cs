@@ -1,5 +1,4 @@
-﻿using Haondt.Web.Core.Extensions;
-using Haondt.Web.Core.Services;
+﻿using Haondt.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.UI.Core.Controllers;

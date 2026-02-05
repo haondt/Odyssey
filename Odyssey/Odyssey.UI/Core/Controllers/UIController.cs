@@ -1,5 +1,5 @@
 ﻿using Haondt.Web.Core.Extensions;
-using Haondt.Web.Core.Services;
+using Haondt.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.UI.Core.Middlewares;
@@ -8,9 +8,8 @@ using Odyssey.UI.Library.Components.Element;
 namespace Odyssey.UI.Core.Controllers
 {
 
-    [Produces("text/html")]
     [ServiceFilter(typeof(ModelStateValidationFilter))]
-    public class UIController(IComponentFactory componentFactory) : Controller
+    public class UIController(IComponentFactory componentFactory) : Haondt.Web.Core.Controllers.UIController
     {
         protected readonly IComponentFactory _componentFactory = componentFactory;
 

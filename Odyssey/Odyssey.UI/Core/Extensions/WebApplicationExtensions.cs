@@ -6,10 +6,6 @@ namespace Odyssey.UI.Core.Extensions
     {
         public static WebApplication UseOdysseyUI(this WebApplication app)
         {
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                RequestPath = "/static"
-            });
             return app;
         }
     }

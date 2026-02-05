@@ -1,14 +1,45 @@
 @attribute [RenderPage]
 @attribute [LayoutOptions(ShowNavigationBar = false, FillPage = true)]
 
-<Frame AddClasses="@("big-screen m-auto")">
-    <Frame Flex="FrameDirection.Col" >
+@code {
+    private List<(string Title, string Body, string Path)> _roleCards = [
+        (
+            "Host",
+            "Create gameboards, manage sessions and control the show",
+            "host"
+        ),
+        (
+            "Player",
+            "Join a session and participate in the game",
+            "player"
+        ),
+        (
+            "Display",
+            "Main screen for audience and players to follow the game",
+            "host"
+        ),
+        (
+            "Admin",
+            "System diagnostics, monitoring and debugging tools",
+            "admin"
+        ),
+    ];
+}
+<Frame AddClasses="@("big-screen m-auto px-s py-xl max-width-content")">
+    <Frame Flex="FrameDirection.Col" Gap="FrameGap.Medium">
         <h1 id="hero-text" class="fg-primary uppercase font-semibold">Odyssey</h1>
-        <p>Select role to continue</p>
+        <p class="mb-l">Select role to continue</p>
 
-@*         <Frame grid="FrameGrid.">
+        <Frame Grid="FrameGrid.CollapsibleFillTwo" Gap="FrameGap.Medium">
+            @foreach(var (title, body, path) in _roleCards)
+            {
+                <Card Clickable="true">
+                    <Frame Flex="FrameDirection.Col" Gap="FrameGap.ContentSmall" Align="FrameAlignment.Start">
+                        <p class="subtitle">@title</p>
+                        <p class="fg-text-weak-1">@body</p>
+                    </Frame>
+                </Card>
+            }
         </Frame>
- *@
     </Frame>
 </Frame>
-

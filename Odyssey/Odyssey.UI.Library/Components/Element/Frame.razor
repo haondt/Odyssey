@@ -7,10 +7,16 @@
     public Optional<FrameDirection> Flex { get; set; }
 
     [Parameter]
+    public Optional<FrameGrid> Grid { get; set; }
+
+    [Parameter]
     public Optional<FrameJustification> Justify { get; set; }
 
     [Parameter]
     public Optional<FrameAlignment> Align { get; set; }
+
+    [Parameter]
+    public Optional<FrameGap> Gap { get; set; }
 
     [Parameter]
     public Optional<string> AddClasses { get; set; }
@@ -22,31 +28,27 @@
         if(Flex.TryGetValue(out var flex))
         {
             _rootClasses.Add("frame-flex");
-            _rootClasses.Add(flex switch
-            {
-                FrameDirection.Col => "frame-flex-col",
-                FrameDirection.Row => "frame-flex-row",
-                _ => ""
-            });
+            if (flex.CssClass.TryGetValue(out var flexClass))
+                _rootClasses.Add(flexClass);
 
-            if (Justify.TryGetValue(out var justification))
-                _rootClasses.Add(justification switch
-                {
-                    FrameJustification.Start => "frame-justify-content-flex-start",
-                    FrameJustification.End => "frame-justify-content-flex-end",
-                    FrameJustification.Center => "frame-justify-content-center",
-                    FrameJustification.SpaceAround => "frame-justify-content-space-around",
-                    FrameJustification.SpaceBetween => "frame-justify-content-space-between",
-                    _ => ""
-                });
+            if (Justify.Bind(q => q.CssClass).TryGetValue(out var justificationClass))
+                _rootClasses.Add(justificationClass);
 
-            _rootClasses.Add(Align.Or(FrameAlignment.Center) switch
-            {
-                FrameAlignment.Start => "frame-align-items-flex-start",
-                FrameAlignment.End => "frame-align-items-flex-end",
-                FrameAlignment.Center => "frame-align-items-center",
-                _ => ""
-            });
+            if(Align.Or(FrameAlignment.Center).CssClass.TryGetValue(out var alignmentClass))
+                _rootClasses.Add(alignmentClass);
+
+            if (Gap.Bind(q => q.CssClass).TryGetValue(out var gapClass))
+                _rootClasses.Add(gapClass);
+        }
+
+        if (Grid.TryGetValue(out var grid))
+        {
+            _rootClasses.Add("frame-grid");
+            if (grid.CssClass.TryGetValue(out var gridClass))
+                _rootClasses.Add(gridClass);
+
+            if (Gap.Bind(q => q.CssClass).TryGetValue(out var gapClass))
+                _rootClasses.Add(gapClass);
         }
 
         if (AddClasses.TryGetValue(out var addClasses))

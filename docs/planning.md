@@ -55,6 +55,7 @@
     - for deeper fixes host can directly edit game state
       - for super deep fixes, host can manually edit game state json - maybe we have validation/schemas for this? or just yolo
 - i think it would be funny to occasionally mix in the "fahhhh" sound for the [X] buzzer in family feud
+- theme / intro music
 
 # Games to add
 
@@ -67,3 +68,4 @@
 - Words on Stream
 - heads up
 - charades
+- price is right

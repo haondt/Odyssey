@@ -2,4 +2,14 @@
     padding: var(--goldrush-card-padding);
     border-radius: var(--goldrush-card-border-radius);
     border: 1px solid var(--goldrush-color-border);
+    transition: border-color 0.5s ease;
+}
+
+.card-clickable {
+    cursor: pointer;
+    pointer-events: all;
+}
+.card-clickable:hover {
+    border: 1px solid var(--goldrush-color-accent);
+    transition-duration: initial;
 }

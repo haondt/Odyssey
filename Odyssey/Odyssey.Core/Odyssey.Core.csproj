@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
     <ItemGroup>
-    <PackageReference Include="Haondt.Core" Version="0.2.10" />
+    <PackageReference Include="Haondt.Core" Version="0.2.11-alpha-20260204065253" />
   </ItemGroup>
 
 

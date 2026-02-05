@@ -35,6 +35,8 @@ var app = builder.Build();
 app.UseAuthorization();
 app.MapControllers();
 
-app.UseOdysseyUI();
+app
+    .UseHaondtWeb()
+    .UseOdysseyUI();
 
 app.Run();

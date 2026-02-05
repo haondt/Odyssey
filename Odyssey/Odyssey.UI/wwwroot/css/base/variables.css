@@ -43,9 +43,15 @@
     --goldrush-card-border-radius: 10px;
     --goldrush-card-padding: 16px;
 
-    --goldrush-grid-gap: 16px;
+    --goldrush-grid-gap-s: 12px;
+    --goldrush-grid-gap-m: 16px;
+    --goldrush-grid-gap-l: 20px;
 
     --goldrush-border-radius: 6px;
+
+    --goldrush-content-gap-s: 0.25rem;
+    --goldrush-content-gap-m: 0.75rem;
+    --goldrush-content-gap-l: 1rem;
 
     --goldrush-text-font-size: 1rem;
     --goldrush-text-font-weight: 300;
@@ -63,6 +69,17 @@
     --goldrush-font-family: sans-serif;
 
     --goldrush-min-width: 360px;
+
+    --goldrush-spacing-base: 1rem;
+    --goldrush-spacing-multiplier-2xs: 0.25;
+    --goldrush-spacing-multiplier-xs: 0.5;
+    --goldrush-spacing-multiplier-s: 0.75;
+    --goldrush-spacing-multiplier-m: 1;
+    --goldrush-spacing-multiplier-l: 1.25;
+    --goldrush-spacing-multiplier-xl: 1.5;
+    --goldrush-spacing-multiplier-2xl: 3;
 }
 
-@custom-media --media-query-width-small screen and (max-width: 768px);
+@custom-media --media-query-width-m screen and (max-width: 768px);
+@custom-media --media-query-width-l screen and (max-width: 1024px);
+@custom-media --media-query-width-xl screen and (max-width: 1200px);

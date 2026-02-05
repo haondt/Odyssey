@@ -1,0 +1,52 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".css" #>
+<#
+	var spacingMultipliers = new List<string>
+	{
+		"2xs", "xs", "s", "m", "l", "xl", "2xl"
+	}
+	.Select(q => (q, $"calc(var(--goldrush-spacing-multiplier-{q}) * var(--goldrush-spacing-base))"))
+	.Append(("0", "0"))
+	.ToList();
+
+	foreach(var (paddingType, prefix) in new List<(string, string)> { ("margin", "m"), ("padding", "p") })
+	{
+		var localSpacingMultipliers = spacingMultipliers.ToList();
+		if (paddingType == "margin") 
+		{
+			localSpacingMultipliers.Add(("auto", "auto"));
+		}
+		foreach(var (paddingSubtypes, suffix) in new List<(List<string>, string)>
+		{
+			([""], ""),
+			(["-left"], "l"),
+			(["-right"], "r"),
+			(["-top"], "t"),
+			(["-bottom"], "b"),
+			(["-left", "-right"], "x"),
+			(["-top", "-bottom"], "y"),
+		})
+		{
+#>
+<#
+			foreach(var (name, spacingMultiplier) in localSpacingMultipliers)
+			{
+#>
+.<#Write(prefix);Write(suffix);#>-<#Write(name);#> {
+<#				foreach(var paddingSubtype in paddingSubtypes)
+				{
+#>
+	<#Write(paddingType);Write(paddingSubtype);#>: <#Write(spacingMultiplier);#> !important;
+<#
+				}
+#>
+}
+<#
+			}
+		}
+	}
+#>

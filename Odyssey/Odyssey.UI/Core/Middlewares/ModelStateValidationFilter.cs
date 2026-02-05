@@ -1,5 +1,5 @@
 ﻿using Haondt.Web.Core.Extensions;
-using Haondt.Web.Core.Services;
+using Haondt.Web.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Odyssey.UI.Library.Components.Element;
 

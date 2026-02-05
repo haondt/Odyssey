@@ -36,9 +36,11 @@
 /* colors */
 
 .fg-primary { color: var(--goldrush-color-primary) !important; }
+.fg-text-weak-1 { color: var(--goldrush-color-text-weak-1) !important; }
 
 /* spacing */
 
-.gap-m { gap: 16px !important; }
+.gap-m { gap: 1rem !important; }
 
-.m-auto { margin: auto !important; }
+.pos-relative { position: relative !important; }
+.pos-absolute { position: absolute !important; }

@@ -1,10 +1,8 @@
-﻿using Haondt.Web.Core.Services;
-using Haondt.Web.Services;
+﻿using Haondt.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.UI.Core.Middlewares;
-using Odyssey.UI.Core.Services;
-using ComponentFactory = Odyssey.UI.Core.Services.ComponentFactory;
+using LayoutComponentFactory = Odyssey.UI.Core.Services.LayoutComponentFactory;
 
 namespace Odyssey.UI.Core.Extensions
 {
@@ -14,7 +12,6 @@ namespace Odyssey.UI.Core.Extensions
         {
             services.AddSingleton<ILayoutComponentFactory, LayoutComponentFactory>();
             services.AddOdysseyHeadEntries();
-            services.AddSingleton<IComponentFactory, ComponentFactory>();
 
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();
             services.AddScoped<ModelStateValidationFilter>();

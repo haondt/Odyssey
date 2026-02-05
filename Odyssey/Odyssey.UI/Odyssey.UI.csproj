@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
-	<PackageReference Include="Haondt.Web" Version="0.2.10" />
+	<PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260204065253" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +19,22 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Odyssey.UI.Library\Odyssey.UI.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\base\utils-generated.css">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>utils-generated.tt</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\css\base\utils-generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>utils-generated.css</LastGenOutput>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 

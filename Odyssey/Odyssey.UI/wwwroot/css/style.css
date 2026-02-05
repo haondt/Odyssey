@@ -4,6 +4,7 @@
 @import 'base/variables.css';
 @import 'base/base.css';
 @import 'base/utils.css';
+@import 'base/utils-generated.css';
 
 
 :root {
@@ -28,8 +29,26 @@
     width: calc(100% - 40px);
 }
 
+.max-width-content {
+    max-width: var(--odyssey-content-width) !important;
+}
+
 /* big screen mode */
 
 .big-screen {
     --goldrush-text-font-size: 2rem;
+    --goldrush-subtitle-font-size: 2rem;
+
+    --goldrush-grid-gap-s: 24px;
+    --goldrush-grid-gap-m: 32px;
+    --goldrush-grid-gap-l: 40px;
+
+    --goldrush-content-gap-s: 0.5rem;
+    --goldrush-content-gap-m: 1.5rem;
+    --goldrush-content-gap-l: 2rem;
+
+    --goldrush-card-padding: 32px;
+    --goldrush-card-border-radius: 20px;
+
+    --goldrush-spacing-base: 2rem;
 }
