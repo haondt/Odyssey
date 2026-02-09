@@ -26,6 +26,7 @@
 	<ItemGroup>
 		<Watch Include="..\**\*.pcss" />
 		<Watch Include="..\*\wwwroot\css\**\*.css" />
+		<Watch Include="..\*\wwwroot\css\**\*.pcss" />
 	</ItemGroup>
 
 </Project>

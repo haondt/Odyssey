@@ -45,7 +45,7 @@
 
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="bun run postcss &quot;$(ProjectDir)/**/*.razor.pcss&quot; -v -d $(ProjectDir) --base $(ProjectDir) --ext &quot;css&quot;" />
+	  <Exec Command="bun run postcss &quot;$(ProjectDir)/**/*.pcss&quot; -v -d $(ProjectDir) --base $(ProjectDir) --ext &quot;css&quot;" />
 	</Target>
 
 

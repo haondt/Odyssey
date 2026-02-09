@@ -39,6 +39,7 @@
 - allow multiple display devices to be connected (mirrors, as displays are RO)
 - admin panel
   - view active sessions - sessions that have at least one client (host, player, display) connected to them
+    - view network activity / event stream for a given session
   - view connected devices
   - view all devices
 - player view
@@ -53,9 +54,20 @@
 - host view
   - "overrides" section during session for things like quickly fixing player scores
     - for deeper fixes host can directly edit game state
-      - for super deep fixes, host can manually edit game state json - maybe we have validation/schemas for this? or just yolo
-- i think it would be funny to occasionally mix in the "fahhhh" sound for the [X] buzzer in family feud
-- theme / intro music
+      - for super deep fixes, host can manually edit game state json - maybe we have validation/schemas for this? c# serialization will catch it i suppose
+- i think it would be funny to occasionally mix in the "fahhhh" sound for the [X] buzzer in family feud. vine boom sound is also funny
+- theme / intro music - able to select different versions (remix, different years, etc), either in game board or application/game settings 
+  - user uploaded, along with gameboards to avoid uploading copyrighted stuff to GL
+- sound board for host to control - themed to the game or generic. not for the game itself (those can be automatic) but just for arbitrarily playing them
+- sound board can include videos or sounds, which will be shown on display
+- button to view the rules of the game (players or host) or display the rules on the display (triggered by host).\
+- option to add additional "custom" rules section in game board.
+- import / export game boards - should probably include a version field, json
+- allow renaming of games -> e.g. Domestic Dispute -> Family Feud
+- light & dark themes for system
+- odyssey, "hybrid" (gameshow colors but muted, odyssey-style), "native" (full on gameshow colors) colorscheme options (in application settings, per game)
+- game changer / make some noise / trivia / generic points game (put this text on board, give me the option to have people buzz in for things, let me arbitrarily assign a cuztomizable quanity of points to a given player at any time
+- Debug Game for verifying the system before we move to family feud and whatnot
 
 # Games to add
 

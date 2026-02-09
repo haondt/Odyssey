@@ -80,6 +80,8 @@
     --goldrush-spacing-multiplier-2xl: 3;
 }
 
-@custom-media --media-query-width-m screen and (max-width: 768px);
-@custom-media --media-query-width-l screen and (max-width: 1024px);
-@custom-media --media-query-width-xl screen and (max-width: 1200px);
+@custom-media --media-query-max-width-m screen and (max-width: 768px);
+@custom-media --media-query-max-width-l screen and (max-width: 1024px);
+@custom-media --media-query-max-width-xl screen and (max-width: 1200px);
+
+@custom-media --media-query-min-width-m screen and (min-width: 768px);
