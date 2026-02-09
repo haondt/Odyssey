@@ -1,4 +1,5 @@
 using Haondt.Web.Extensions;
+using Haondt.Web.UI.Extensions;
 using Odyssey.Domain.Extensions;
 using Odyssey.UI.Core.Extensions;
 
@@ -23,6 +24,7 @@ builder.Services
         options.HyperscriptScriptUri = "/static/shared/vendored/hyperscript.org/dist/_hyperscript.min.js";
     })
     .AddOdysseyDomainServices(builder.Configuration)
+    .AddHaondtUI(builder.Configuration)
     .AddOdysseyUI(builder.Configuration);
 
 builder.Services.AddMvc();

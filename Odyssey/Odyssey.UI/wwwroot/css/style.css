@@ -1,25 +1,8 @@
-@import 'reset.css';
-
-/* base.css */
-@import 'base/variables.css';
-@import 'base/base.css';
-@import 'base/utils.css';
-@import 'base/utils-generated.css';
-
 
 :root {
-    color-scheme: dark;
-
     --odyssey-content-width: 1300px;
-    --goldrush-font-family: "Inter", sans-serif;
+    --haondt-ui-font-family: "Inter", sans-serif;
 }
-
-@media(prefers-color-scheme: dark) {
-    html {
-        color-scheme: dark;
-    }
-}
-
 
 /* containers */
 
@@ -37,21 +20,21 @@
 
 @media screen and (min-width: 768px) {
     .big-screen {
-        --goldrush-text-font-size: 2rem;
-        --goldrush-subtitle-font-size: 2rem;
+        --haondt-ui-text-font-size: 2rem;
+        --haondt-ui-subtitle-font-size: 2rem;
 
-        --goldrush-grid-gap-s: 24px;
-        --goldrush-grid-gap-m: 32px;
-        --goldrush-grid-gap-l: 40px;
+        --haondt-ui-grid-gap-s: 24px;
+        --haondt-ui-grid-gap-m: 32px;
+        --haondt-ui-grid-gap-l: 40px;
 
-        --goldrush-content-gap-s: 0.5rem;
-        --goldrush-content-gap-m: 1.5rem;
-        --goldrush-content-gap-l: 2rem;
+        --haondt-ui-content-gap-s: 0.5rem;
+        --haondt-ui-content-gap-m: 1.5rem;
+        --haondt-ui-content-gap-l: 2rem;
 
-        --goldrush-card-padding: 32px;
-        --goldrush-card-border-radius: 20px;
+        --haondt-ui-card-padding: 32px;
+        --haondt-ui-card-border-radius: 20px;
 
-        --goldrush-spacing-base: 2rem;
+        --haondt-ui-spacing-base: 2rem;
     }
 }
 

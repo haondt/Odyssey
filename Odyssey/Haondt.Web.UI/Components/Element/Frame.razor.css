@@ -26,10 +26,10 @@
     .frame-grid-collapsible-fill-2 { grid-template-columns: repeat(1, 1fr); }
 }
 
-.frame-gap-s { gap: var(--goldrush-grid-gap-s); }
-.frame-gap-m { gap: var(--goldrush-grid-gap-m); }
-.frame-gap-l { gap: var(--goldrush-grid-gap-l); }
+.frame-gap-s { gap: var(--haondt-ui-grid-gap-s); }
+.frame-gap-m { gap: var(--haondt-ui-grid-gap-m); }
+.frame-gap-l { gap: var(--haondt-ui-grid-gap-l); }
 
-.frame-gap-content-s { gap: var(--goldrush-content-gap-s); }
-.frame-gap-content-m { gap: var(--goldrush-content-gap-m); }
-.frame-gap-content-l { gap: var(--goldrush-content-gap-l); }
+.frame-gap-content-s { gap: var(--haondt-ui-content-gap-s); }
+.frame-gap-content-m { gap: var(--haondt-ui-content-gap-m); }
+.frame-gap-content-l { gap: var(--haondt-ui-content-gap-l); }

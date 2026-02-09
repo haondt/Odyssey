@@ -21,7 +21,7 @@
     [Parameter]
     public Optional<string> AddClasses { get; set; }
 
-    private HashSet<string> _rootClasses = ["frame"];
+    protected HashSet<string> _rootClasses = ["frame"];
 
     protected override void OnInitialized()
     {

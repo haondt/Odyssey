@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Persistence", "Odys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.UI", "Odyssey.UI\Odyssey.UI.csproj", "{17C8B02B-9A81-4FB9-B239-E9E0BA3C251B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.UI.Library", "Odyssey.UI.Library\Odyssey.UI.Library.csproj", "{274109E8-43B5-4C5D-9000-6AEBB456F69F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haondt.Web.UI", "Haondt.Web.UI\Haondt.Web.UI.csproj", "{274109E8-43B5-4C5D-9000-6AEBB456F69F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Domain", "Odyssey.Domain\Odyssey.Domain.csproj", "{65638684-822F-4B9D-9F3F-70F4ADA289C2}"
 EndProject

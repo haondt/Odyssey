@@ -1,7 +1,7 @@
 ﻿using Haondt.Web.Core.Extensions;
 using Haondt.Web.Services;
+using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Odyssey.UI.Library.Components.Element;
 
 namespace Odyssey.UI.Core.Middlewares
 {

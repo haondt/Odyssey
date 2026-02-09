@@ -1,6 +1,6 @@
 .italic { font-style: italic !important; }
 
-.monospace { font-family: var(--goldrush-monospace-fonts) !important; }
+.monospace { font-family: var(--haondt-ui-monospace-fonts) !important; }
 .uppercase { text-transform: uppercase !important; }
 
 .font-semibold { font-weight: 500 !important; }
@@ -35,8 +35,8 @@
 
 /* colors */
 
-.fg-primary { color: var(--goldrush-color-primary) !important; }
-.fg-text-weak-1 { color: var(--goldrush-color-text-weak-1) !important; }
+.fg-primary { color: var(--haondt-ui-color-primary) !important; }
+.fg-text-weak-1 { color: var(--haondt-ui-color-text-weak-1) !important; }
 
 /* spacing */
 

@@ -1,9 +1,9 @@
 ﻿using Haondt.Web.Core.Extensions;
 using Haondt.Web.Services;
+using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.UI.Core.Middlewares;
-using Odyssey.UI.Library.Components.Element;
 
 namespace Odyssey.UI.Core.Controllers
 {

@@ -4,38 +4,41 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
-	<PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260204065253" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.2" />
+          <PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260204065253" />
+
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Haondt.Web.UI\Haondt.Web.UI.csproj" />
+    <Content Update="wwwroot\css\utils-generated.css">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>utils-generated.tt</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\css\utils-generated.tt">
+      <LastGenOutput>utils-generated.css</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
-
-
-	<PropertyGroup>
-  <StaticWebAssetBasePath>shared</StaticWebAssetBasePath>
-</PropertyGroup>
-
+  <PropertyGroup>
+	  <StaticWebAssetBasePath>haondt/Haondt.Web.UI</StaticWebAssetBasePath>
+  </PropertyGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 	  <Exec Command="bun run postcss &quot;$(ProjectDir)/**/*.pcss&quot; -v -d $(ProjectDir) --base $(ProjectDir) --ext &quot;css&quot;" />
 	</Target>
-
-
 
 </Project>

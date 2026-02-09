@@ -4,7 +4,7 @@ import postcssCustomMedia from "postcss-custom-media";
 export default {
   plugins: [
     postcssGlobalData({
-      files: ["../Odyssey.UI/wwwroot/css/base/variables.css"],
+      files: ["../Haondt.Web.UI/wwwroot/css/variables.css"],
     }),
     postcssCustomMedia(),
   ],

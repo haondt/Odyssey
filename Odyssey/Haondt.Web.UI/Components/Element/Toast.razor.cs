@@ -1,4 +1,4 @@
-﻿namespace Odyssey.UI.Library.Components.Element
+﻿namespace Haondt.Web.UI.Components.Element
 {
     public enum ToastSeverity
     {

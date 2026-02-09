@@ -11,21 +11,21 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video, button {
-    font-size: var(--goldrush-text-font-size);
-    font-weight: var(--goldrush-text-font-weight);
-    font-family: var(--goldrush-font-family);
+    font-size: var(--haondt-ui-text-font-size);
+    font-weight: var(--haondt-ui-text-font-weight);
+    font-family: var(--haondt-ui-font-family);
     font-style: normal;
     font-optical-sizing: auto;
 }
 
 p, h1, h2, h3, h4, h5 {
-    color: var(--goldrush-color-text);
+    color: var(--haondt-ui-color-text);
 }
 
 
 
 a {
-    color: var(--goldrush-color-accent);
+    color: var(--haondt-ui-color-accent);
 }
 
 .brand {
@@ -33,24 +33,24 @@ a {
 }
 
 .title {
-    font-size: var(--goldrush-title-font-size);
-    font-weight: var(--goldrush-title-font-weight);
+    font-size: var(--haondt-ui-title-font-size);
+    font-weight: var(--haondt-ui-title-font-weight);
 }
 
 .subtitle {
-    font-size: var(--goldrush-subtitle-font-size);
-    font-weight: var(--goldrush-subtitle-font-weight);
+    font-size: var(--haondt-ui-subtitle-font-size);
+    font-weight: var(--haondt-ui-subtitle-font-weight);
 }
 
 .text {
-    font-size: var(--goldrush-text-font-size);
-    font-weight: var(--goldrush-text-font-weight);
+    font-size: var(--haondt-ui-text-font-size);
+    font-weight: var(--haondt-ui-text-font-weight);
 }
 
 .chip {
     .chip-text {
-        font-size: var(--goldrush-chip-font-size);
-        font-weight: var(--goldrush-chip-font-weight);
+        font-size: var(--haondt-ui-chip-font-size);
+        font-weight: var(--haondt-ui-chip-font-weight);
     }
 }
 

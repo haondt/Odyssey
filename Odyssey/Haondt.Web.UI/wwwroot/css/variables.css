@@ -1,0 +1,87 @@
+:root {
+    /* based on 16px root */
+    --p2r-5: 0.3125rem;
+    --p2r-6: 0.375rem;
+    --p2r-7: 0.4375rem;
+    --p2r-8: 0.5rem;
+    --p2r-9: 0.5625rem;
+    --p2r-10: 0.625rem;
+    --p2r-11: 0.6875rem;
+    --p2r-12: 0.75rem;
+    --p2r-13: 0.8125rem;
+    --p2r-14: 0.875rem;
+    --p2r-15: 0.9375rem;
+    --p2r-16: 1rem;
+    --p2r-17: 1.0625rem;
+    --p2r-18: 1.125rem;
+    --p2r-19: 1.1875rem;
+    --p2r-20: 1.25rem;
+    --p2r-22: 1.375rem;
+    --p2r-24: 1.5rem;
+    --p2r-26: 1.625rem;
+    --p2r-28: 1.75rem;
+    --p2r-30: 1.875rem;
+    --p2r-32: 2rem;
+
+    --haondt-ui-color-primary: #a48836;
+    --haondt-ui-color-accent: #c7ad5f;
+
+    --haondt-ui-color-background-strong-1: #433f3e;
+    --haondt-ui-color-background: #161418;
+
+    --haondt-ui-color-text: #F9F5FF;
+    --haondt-ui-color-text-weak-1: #BFBBC4;
+    --haondt-ui-color-text-weak-2: #7E788E;
+
+    --haondt-ui-color-border-strong-1: #55525B;
+    --haondt-ui-color-border: #3C3A40;
+
+    --haondt-ui-color-danger: #d04343;
+    --haondt-ui-color-success: #48c78d;
+    --haondt-ui-color-warning: #C7BC48;
+
+    --haondt-ui-card-border-radius: 10px;
+    --haondt-ui-card-padding: 16px;
+
+    --haondt-ui-grid-gap-s: 12px;
+    --haondt-ui-grid-gap-m: 16px;
+    --haondt-ui-grid-gap-l: 20px;
+
+    --haondt-ui-border-radius: 6px;
+
+    --haondt-ui-content-gap-s: 0.25rem;
+    --haondt-ui-content-gap-m: 0.75rem;
+    --haondt-ui-content-gap-l: 1rem;
+
+    --haondt-ui-text-font-size: 1rem;
+    --haondt-ui-text-font-weight: 300;
+
+    --haondt-ui-title-font-size: 3rem;
+    --haondt-ui-title-font-weight: 300;
+
+    --haondt-ui-subtitle-font-size: var(--haondt-ui-text-font-size);
+    --haondt-ui-subtitle-font-weight: 500;
+
+    --haondt-ui-chip-font-size: 0.75rem;
+    --haondt-ui-chip-font-weight: var(--haondt-ui-text-font-weight);
+
+    --haondt-ui-monospace-fonts: Inter, Roboto Mono, Inconsolata, Hack, SF Mono, Source Code Pro, Ubuntu Mono, monospace;
+    --haondt-ui-font-family: sans-serif;
+
+    --haondt-ui-min-width: 360px;
+
+    --haondt-ui-spacing-base: 1rem;
+    --haondt-ui-spacing-multiplier-2xs: 0.25;
+    --haondt-ui-spacing-multiplier-xs: 0.5;
+    --haondt-ui-spacing-multiplier-s: 0.75;
+    --haondt-ui-spacing-multiplier-m: 1;
+    --haondt-ui-spacing-multiplier-l: 1.25;
+    --haondt-ui-spacing-multiplier-xl: 1.5;
+    --haondt-ui-spacing-multiplier-2xl: 3;
+}
+
+@custom-media --haondt-ui-media-query-max-width-m screen and (max-width: 768px);
+@custom-media --haondt-ui-media-query-max-width-l screen and (max-width: 1024px);
+@custom-media --haondt-ui-media-query-max-width-xl screen and (max-width: 1200px);
+
+@custom-media --haondt-ui-media-query-min-width-m screen and (min-width: 768px);

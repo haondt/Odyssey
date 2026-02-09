@@ -9,7 +9,7 @@
 	{
 		"2xs", "xs", "s", "m", "l", "xl", "2xl"
 	}
-	.Select(q => (q, $"calc(var(--goldrush-spacing-multiplier-{q}) * var(--goldrush-spacing-base))"))
+	.Select(q => (q, $"calc(var(--haondt-ui-spacing-multiplier-{q}) * var(--haondt-ui-spacing-base))"))
 	.Append(("0", "0"))
 	.ToList();
 
