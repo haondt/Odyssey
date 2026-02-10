@@ -40,8 +40,15 @@
     --haondt-ui-color-success: #48c78d;
     --haondt-ui-color-warning: #C7BC48;
 
-    --haondt-ui-card-border-radius: 10px;
-    --haondt-ui-card-padding: 16px;
+    --haondt-ui-card-border-radius-base: 10px;
+    --haondt-ui-card-border-radius: var(--haondt-ui-card-border-radius-base);
+    --haondt-ui-card-spacing-base: 16px;
+    --haondt-ui-card-spacing: var(--haondt-ui-card-spacing-base);
+
+    --haondt-ui-panel-border-radius-base: 10px;
+    --haondt-ui-panel-border-radius: var(--haondt-ui-panel-border-radius-base);
+    --haondt-ui-panel-spacing-base: 32px;
+    --haondt-ui-panel-spacing: var(--haondt-ui-panel-spacing-base);
 
     --haondt-ui-grid-gap-s: 12px;
     --haondt-ui-grid-gap-m: 16px;
@@ -52,6 +59,9 @@
     --haondt-ui-content-gap-s: 0.25rem;
     --haondt-ui-content-gap-m: 0.75rem;
     --haondt-ui-content-gap-l: 1rem;
+
+    --haondt-ui-content-width-s: 400px;
+    --haondt-ui-content-width: 1300px;
 
     --haondt-ui-text-font-size: 1rem;
     --haondt-ui-text-font-weight: 300;

@@ -1,4 +1,5 @@
 ﻿using Haondt.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.UI.Core.Controllers;
@@ -9,6 +10,7 @@ namespace Odyssey.UI.Index.Controllers
     public class IndexController(IComponentFactory componentFactory) : UIController(componentFactory)
     {
         [HttpGet]
+        [AllowAnonymous]
         public IResult Get() => TypedResults.Redirect("/roles");
     }
 }

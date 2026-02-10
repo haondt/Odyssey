@@ -1,15 +1,15 @@
-.card {
-    padding: var(--haondt-ui-card-spacing);
-    border-radius: var(--haondt-ui-card-border-radius);
+.panel {
+    padding: var(--haondt-ui-panel-spacing);
+    border-radius: var(--haondt-ui-panel-border-radius);
     border: 1px solid var(--haondt-ui-color-border);
 }
 
-.card-clickable {
+.panel-clickable {
     cursor: pointer;
     pointer-events: all;
     transition: border-color 0.5s ease;
 }
-.card-clickable:hover {
+.panel-clickable:hover {
     border: 1px solid var(--haondt-ui-color-accent);
     transition-duration: initial;
 }

@@ -1,20 +1,8 @@
 
 :root {
-    --odyssey-content-width: 1300px;
     --haondt-ui-font-family: "Inter", sans-serif;
 }
 
-/* containers */
-
-.content-container {
-    max-width: var(--odyssey-content-width);
-    margin: auto;
-    width: calc(100% - 40px);
-}
-
-.max-width-content {
-    max-width: var(--odyssey-content-width) !important;
-}
 
 /* big screen mode */
 
@@ -31,8 +19,11 @@
         --haondt-ui-content-gap-m: 1.5rem;
         --haondt-ui-content-gap-l: 2rem;
 
-        --haondt-ui-card-padding: 32px;
-        --haondt-ui-card-border-radius: 20px;
+        --haondt-ui-card-spacing: calc(2 * var(--haondt-ui-card-spacing-base));
+        --haondt-ui-card-border-radius: calc(2 * var(--haondt-ui-card-border-radius-base));
+
+        --haondt-ui-panel-spacing: calc(2 * var(--haondt-ui-panel-spacing-base));
+        --haondt-ui-panel-border-radius: calc(2 * var(--haondt-ui-panel-border-radius-base));
 
         --haondt-ui-spacing-base: 2rem;
     }

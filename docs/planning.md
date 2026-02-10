@@ -69,6 +69,12 @@
 - game changer / make some noise / trivia / generic points game (put this text on board, give me the option to have people buzz in for things, let me arbitrarily assign a cuztomizable quanity of points to a given player at any time
 - Debug Game for verifying the system before we move to family feud and whatnot
 
+# tech details
+
+- store device id in cookie
+- store display id in seperate cookie
+- use appropriate cookie as reference depending on which role the machine has selected
+
 # Games to add
 
 - Family Feud

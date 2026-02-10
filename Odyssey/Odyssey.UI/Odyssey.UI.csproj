@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Authentication\Components\" />
     <Folder Include="Core\Models\" />
   </ItemGroup>
 
