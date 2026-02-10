@@ -1,28 +1,31 @@
 @using Haondt.Web.UI.Components.Element
+@using System.Text.Json
 @attribute [RenderPage]
 @attribute [LayoutOptions(ShowNavigationBar = false, FillPage = true)]
+
+@inject NavigationManager Nav
 
 @code {
     private List<(string Title, string Body, string Path)> _roleCards = [
         (
             "Host",
             "Create gameboards, manage sessions and control the show",
-            "host"
+            "roles/host"
         ),
         (
             "Device",
             "Set up a physical device for players to interact with the game",
-            "device"
+            "roles/device"
         ),
         (
             "Display",
             "Main screen for audience and players to follow the game",
-            "display"
+            "roles/display"
         ),
         (
             "Admin",
             "System diagnostics, monitoring and debugging tools",
-            "admin"
+            "roles/admin"
         ),
     ];
 }
@@ -34,12 +37,18 @@
         <Frame Grid="FrameGrid.CollapsibleFillTwo" Gap="FrameGap.Medium">
             @foreach(var (title, body, path) in _roleCards)
             {
-                <Card Clickable="true">
-                    <Frame Flex="FrameDirection.Col" Gap="FrameGap.ContentSmall" Align="FrameAlignment.Start">
-                        <p class="subtitle">@title</p>
-                        <p class="fg-text-weak-1">@body</p>
-                    </Frame>
-                </Card>
+                <a
+                    href="@Nav.ToAbsoluteUri(path)" 
+                    hx-boost="true" 
+                    hx-target="#layout-content-container"
+                >
+                    <Card Clickable="true">
+                        <Frame Flex="FrameDirection.Col" Gap="FrameGap.ContentSmall" Align="FrameAlignment.Start">
+                            <p class="subtitle">@title</p>
+                            <p class="fg-text-weak-1">@body</p>
+                        </Frame>
+                    </Card>
+                </a>
             }
         </Frame>
     </Frame>

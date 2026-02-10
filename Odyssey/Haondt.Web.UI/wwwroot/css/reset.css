@@ -19,6 +19,7 @@ time, mark, audio, video, button {
     font: inherit;
     padding: 0;
     vertical-align: baseline;
+    text-decoration: none;
 }
 
 body {line-height: 1;}
@@ -37,10 +38,6 @@ q:before, q:after {
 :focus {
     outline: 0;
 }
-
-/* remember to highlight inserts somehow! */
-ins {text-decoration: none;}
-del {text-decoration: line-through;}
 
 /* tables still need 'cellspacing="0"' in the markup */
 table {

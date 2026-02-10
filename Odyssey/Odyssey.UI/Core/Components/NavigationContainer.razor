@@ -1,11 +1,27 @@
 @code {
     [Parameter]
     public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
+
+    [Parameter]
+    public Optional<string> HxSwapOob { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private Dictionary<string, object> _containerAttributes = [];
+
+
+    protected override void OnInitialized()
+    {
+        if (HxSwapOob.HasValue)
+            _containerAttributes["hx-swap-oob"] = HxSwapOob.Value;
+    }
 }
-<div id="navigation-container">
+
+<div id="navigation-container" @attributes="_containerAttributes" >
     @if(LayoutOptionsAttribute
         .Map(q => q.ShowNavigationBar)
         .Or(true)) {
-        <div>Imagine this is a navigation bar</div>
+        @ChildContent
     }
 </div>

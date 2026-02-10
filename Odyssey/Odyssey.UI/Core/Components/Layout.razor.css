@@ -1,4 +1,4 @@
-#body-content {
+#layout-container {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -8,7 +8,7 @@
     }
 }
 
-#body-content.fill-page {
+#layout-container.fill-page {
     flex-grow: 1;
 
     > #page-container {

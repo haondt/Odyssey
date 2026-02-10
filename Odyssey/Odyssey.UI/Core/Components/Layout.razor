@@ -1,3 +1,4 @@
+@using Haondt.Web.Core.Http
 @using Haondt.Web.UI.Components.Element
 @code {
     [Parameter, EditorRequired]
@@ -15,12 +16,14 @@
     }
 }
 
-<div id="body-content" class="@_bodyContentClasses">
+<div id="layout-container" class="@_bodyContentClasses">
     <div id="modal-container" class="modal"></div>
     <ToastContainer />
-    <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" />
     <div id="page-container">
-        <ObjectComponent Component="@Content"/>
+        <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" />
+        <div id="layout-content-container">
+            <ObjectComponent Component="@Content"/>
+        </div>
     </div>
     <div id="footer-container">
         <div style="height:80px;"></div>

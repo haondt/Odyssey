@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Domain", "Odyssey.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Core", "Odyssey.Core\Odyssey.Core.csproj", "{B8C801E8-0507-46AC-BE77-1E062F344037}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.UI.Library", "Odyssey.UI.Library\Odyssey.UI.Library.csproj", "{5990B3EB-B0CF-46C0-9FE7-5FCC4ED8F2C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B8C801E8-0507-46AC-BE77-1E062F344037}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8C801E8-0507-46AC-BE77-1E062F344037}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8C801E8-0507-46AC-BE77-1E062F344037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5990B3EB-B0CF-46C0-9FE7-5FCC4ED8F2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5990B3EB-B0CF-46C0-9FE7-5FCC4ED8F2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5990B3EB-B0CF-46C0-9FE7-5FCC4ED8F2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5990B3EB-B0CF-46C0-9FE7-5FCC4ED8F2C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

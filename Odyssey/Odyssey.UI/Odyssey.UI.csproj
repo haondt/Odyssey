@@ -19,10 +19,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Haondt.Web.UI\Haondt.Web.UI.csproj" />
+    <ProjectReference Include="..\Odyssey.UI.Library\Odyssey.UI.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\Models\" />
   </ItemGroup>
 
 
