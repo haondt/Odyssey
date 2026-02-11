@@ -10,6 +10,7 @@ namespace Haondt.Web.UI.Components.Element
 
     public enum FrameJustification
     {
+        None,
         Start,
         End,
         Center,
@@ -19,6 +20,7 @@ namespace Haondt.Web.UI.Components.Element
 
     public enum FrameAlignment
     {
+        None,
         Start,
         End,
         Center,
@@ -36,6 +38,7 @@ namespace Haondt.Web.UI.Components.Element
 
     public enum FrameSpacing
     {
+        None,
         Panel,
         Card,
         Line,
@@ -46,7 +49,15 @@ namespace Haondt.Web.UI.Components.Element
 
     public enum FrameTemplate
     {
-        ButtonContainer
+        ButtonContainer,
+        Panel,
+        Card
+    }
+    public enum FrameBorder
+    {
+        None,
+        Panel,
+        Card
     }
 
     public static class FrameExtensions
@@ -82,6 +93,16 @@ namespace Haondt.Web.UI.Components.Element
             {
                 FrameDirection.Col => "frame-flex-col",
                 FrameDirection.Row => "frame-flex-row",
+                _ => new Optional<string>()
+            };
+        }
+
+        extension(FrameBorder border)
+        {
+            public Optional<string> CssClass => border switch
+            {
+                FrameBorder.Panel => "frame-border-panel",
+                FrameBorder.Card => "frame-border-card",
                 _ => new Optional<string>()
             };
         }

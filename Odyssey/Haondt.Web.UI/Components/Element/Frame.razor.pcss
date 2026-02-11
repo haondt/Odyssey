@@ -40,3 +40,33 @@
 .frame-padding-panel { padding: var(--haondt-ui-panel-spacing); }
 .frame-padding-card { padding: var(--haondt-ui-card-spacing); }
 .frame-padding-line { padding: var(--haondt-ui-line-spacing); }
+
+
+.frame-border {
+    border-radius: var(--frame-border-radius);
+    border: var(--frame-border);
+}
+
+.frame-clickable {
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.frame-border.frame-clickable {
+    transition: border-color 0.5s ease;
+}
+
+.frame-border.frame-clickable:hover {
+    --frame-border: 1px solid var(--haondt-ui-color-accent);
+    transition-duration: initial;
+}
+
+.frame-border-card {
+    --frame-border-radius: var(--haondt-ui-card-border-radius);
+    --frame-border: 1px solid var(--haondt-ui-color-border);
+}
+
+.frame-border-panel {
+    --frame-border-radius: var(--haondt-ui-panel-border-radius);
+    --frame-border: 1px solid var(--haondt-ui-color-border);
+}

@@ -17,7 +17,18 @@
     [Parameter]
     public Optional<string> Autocomplete { get; set; }
 
+    /// <summary>
+    /// Uses <a href="https://htmx.org/attributes/hx-preserve/">hx-preserve</a> to keep the input element unchanged during swaps.
+    /// Requires a unique, unchanging <see cref="Id" /> to work correctly.
+    /// </summary>
+    [Parameter]
+    public bool HxPreserve { get; set; } = false;
+
+    [Parameter]
+    public Optional<string> Id { get; set; }
+
     protected Dictionary<string, object> _inputAttributes  = [];
+    protected Dictionary<string, object> _labelAttributes  = [];
 
     protected HashSet<string> _inputClasses = ["input"];
 
@@ -55,6 +66,15 @@
                 break;
         }
 
+        if (HxPreserve)
+            _inputAttributes["hx-preserve"] = "";
+
+        if (Id.TryGetValue(out var id))
+        {
+            _inputAttributes["id"] = id;
+            _labelAttributes["for"] = id;
+        }
+
         _inputAttributes["type"] = Type switch
         {
             FieldType.Text => "text",
@@ -79,7 +99,7 @@
         }
         @if(Title.TryGetValue(out var title))
         {
-            <label class="field-title">@title</label>
+            <label @attributes="_labelAttributes" class="field-title">@title</label>
         }
         @if(Type is FieldType.Text or FieldType.Password)
         {

@@ -46,12 +46,12 @@
                     hx-target="#layout-content-container"
                     class="flex"
                 >
-                    <Card Clickable="true">
-                        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line" Align="FrameAlignment.Start">
-                            <p class="subtitle">@title</p>
-                            <p class="text">@body</p>
-                        </Frame>
-                    </Card>
+                    <Frame 
+                        Clickable="true"
+                        Template="FrameTemplate.Card" Flex="FrameDirection.Col" Gap="FrameSpacing.Line" Align="FrameAlignment.Start">
+                        <p class="subtitle">@title</p>
+                        <p class="text">@body</p>
+                    </Frame>
                 </a>
             }
         </Frame>

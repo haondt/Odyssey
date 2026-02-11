@@ -31,6 +31,12 @@
     public Optional<FrameSpacing> Spacing { get; set; }
 
     [Parameter]
+    public Optional<FrameBorder> Border { get; set; }
+
+    [Parameter]
+    public bool Clickable { get; set; } = false;
+
+    [Parameter]
     public Optional<string> AddClasses { get; set; }
 
     protected HashSet<string> _rootClasses = ["frame"];
@@ -45,8 +51,30 @@
                     Justify = Justify.Or(FrameJustification.End);
                     Gap = Gap.Or(FrameSpacing.Line);
                     break;
+                case FrameTemplate.Panel:
+                    Gap = Gap.Or(FrameSpacing.Panel);
+                    Padding = Padding.Or(FrameSpacing.Panel);
+                    Border = Border.Or(FrameBorder.Panel);
+                    break;
+                case FrameTemplate.Card:
+                    Gap = Gap.Or(FrameSpacing.Card);
+                    Padding = Padding.Or(FrameSpacing.Card);
+                    Border = Border.Or(FrameBorder.Card);
+                    break;
 
             }
+
+        if (Clickable)
+        {
+            _rootClasses.Add("frame-clickable");
+        }
+
+        if (Border.TryGetValue(out var border))
+        {
+            _rootClasses.Add("frame-border");
+            if (border.CssClass.TryGetValue(out var borderClass))
+                _rootClasses.Add(borderClass);
+        }
 
         if(Flex.TryGetValue(out var flex))
         {
