@@ -27,3 +27,9 @@
 .button-type-ghost {
     color: var(--button-color);
 }
+
+.button-type-skeleton {
+    color: var(--button-color);
+    --haondt-ui-control-padding-x: 0;
+    --haondt-ui-control-height: initial;
+}

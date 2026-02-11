@@ -82,6 +82,9 @@
     --haondt-ui-chip-font-size: var(--haondt-ui-chip-font-size-base);
     --haondt-ui-chip-font-weight: var(--haondt-ui-text-font-weight);
 
+    --haondt-ui-hint-font-size-base: 0.875rem;
+    --haondt-ui-hint-font-size: var(--haondt-ui-hint-font-size-base);
+
     --haondt-ui-monospace-fonts: Inter, Roboto Mono, Inconsolata, Hack, SF Mono, Source Code Pro, Ubuntu Mono, monospace;
     --haondt-ui-font-family: sans-serif;
 

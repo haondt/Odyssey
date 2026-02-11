@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Odyssey.Core.Constants;
+using Odyssey.Domain.Authentication.Services;
 using Odyssey.Domain.Core.Models;
 using Odyssey.Persistence;
 using Odyssey.Persistence.Models;

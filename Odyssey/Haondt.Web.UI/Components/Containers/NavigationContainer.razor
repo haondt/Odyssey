@@ -1,0 +1,21 @@
+@using Haondt.Web.UI.Attributes
+@code {
+    [Parameter]
+    public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
+
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private Dictionary<string, object> _containerAttributes = [];
+
+    public const string Id = "navigation-container";
+
+    protected override void OnInitialized()
+    {
+    }
+}
+
+<div id="@Id" @attributes="_containerAttributes" class="flex flex-col">
+    @ChildContent
+</div>

@@ -1,5 +1,4 @@
-﻿using Haondt.Web.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.UI.Core.Controllers;
@@ -7,10 +6,10 @@ using Odyssey.UI.Core.Controllers;
 namespace Odyssey.UI.Roles.Controllers
 {
     [Route("/roles")]
-    public class RolesController(IComponentFactory componentFactory) : UIController(componentFactory)
+    public class RolesController : UIController
     {
         [HttpGet]
         [AllowAnonymous]
-        public Task<IResult> Get() => _componentFactory.RenderComponentAsync<Components.Roles>();
+        public Task<IResult> Get() => ComponentFactory.RenderComponentAsync<Components.Roles>();
     }
 }

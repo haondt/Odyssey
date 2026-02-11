@@ -1,25 +1,16 @@
+@using Haondt.Web.UI.Services
 @using Odyssey.Domain.Authentication.Models
+@using Odyssey.UI.Core.Services
 @attribute [RenderPage]
 @attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+@code {
 
-<NavigationContainer HxSwapOob='"true"'/>  
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarEmpty()
+    };
 
-<Frame
-    Gap="FrameSpacing.Card"
-    Flex="FrameDirection.Col"
-    Align="FrameAlignment.Stretch"
-    AddClasses='"content-container-s"'>
-    <p class="title text-align-center">Sign in</p>
-    <form>
-        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
-            <Field Title='"Username"' Name="@nameof(SignInModel.Username)" Autocomplete='"username"' HxPreserve="true" />
-            <Field
-                Type="FieldType.Password"
-                Title='"Password"' Name="@nameof(SignInModel.Password)" Autocomplete='"current-password"' />
-            <Frame Template="FrameTemplate.ButtonContainer">
-                <Button Type="ButtonType.Ghost" Color="ButtonColor.Text">Register</Button>
-                <Button Color="ButtonColor.Primary">Continue</Button>
-            </Frame>
-        </Frame>
-    </form>
-</Frame>
+}
+
+<SignInPanel />

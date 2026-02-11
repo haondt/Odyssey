@@ -1,7 +1,7 @@
 ﻿using Haondt.Core.Extensions;
 using Haondt.Web.Services;
+using Haondt.Web.UI.Attributes;
 using Microsoft.AspNetCore.Components;
-using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Components;
 
 namespace Odyssey.UI.Core.Services

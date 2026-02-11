@@ -3,6 +3,9 @@
     public Optional<string> Text { get; set; } 
 
     [Parameter]
+    public Optional<string> HxPost { get; set; } 
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
@@ -12,16 +15,19 @@
     public ButtonColor Color { get; set; } = ButtonColor.Text;
 
     protected HashSet<string> _rootClasses = ["button"];
-    
+    protected Dictionary<string, object> _rootAttributes = [];
+
     protected override void OnInitialized()
     {
         if(Type.CssClass.TryGetValue(out var type))
             _rootClasses.Add(type);
         if(Color.CssClass.TryGetValue(out var color))
             _rootClasses.Add(color);
+        if (HxPost.TryGetValue(out var hxPost))
+            _rootAttributes["hx-post"] = hxPost;
     }
 }
-<button class="@string.Join(' ', _rootClasses)">
+<button @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">
     @Text.Or("")
     @ChildContent
 </button>

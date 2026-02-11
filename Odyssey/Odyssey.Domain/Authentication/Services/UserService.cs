@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Odyssey.Core.Constants;
 using Odyssey.Persistence;
 using Odyssey.Persistence.Models;
+using System.Security.Claims;
 
-namespace Odyssey.Domain.Core.Services
+namespace Odyssey.Domain.Authentication.Services
 {
     public class UserService(
         ApplicationDbContext dbContext,
+        SignInManager<UserDataSurrogate> signInManager,
     UserManager<UserDataSurrogate> userManager) : IUserService
     {
         public Task<DetailedResult<UserDataSurrogate, List<IdentityError>>> RegisterAdministratorAsync(string username, string password) =>
@@ -36,6 +38,27 @@ namespace Odyssey.Domain.Core.Services
             await tx.CommitAsync();
 
             return new(user);
+        }
+
+        public Task SignOutAsync()
+        {
+            return signInManager.SignOutAsync();
+        }
+
+        public async Task<DetailedResult<string>> TrySignInAsync(string username, string password)
+        {
+            var result = await signInManager.PasswordSignInAsync(username, password, true, false);
+            if (!result.Succeeded)
+                return new("Incorrect username or password");
+            return new();
+        }
+
+        public async Task<Result<UserDataSurrogate>> GetUserAsync(ClaimsPrincipal claims)
+        {
+            var surrogate = await userManager.GetUserAsync(claims);
+            if (surrogate == null)
+                return new();
+            return surrogate;
         }
     }
 }

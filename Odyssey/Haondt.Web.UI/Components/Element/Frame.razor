@@ -4,6 +4,9 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
+    public Optional<string> Id { get; set; }
+
+    [Parameter]
     public Optional<FrameDirection> Flex { get; set; }
 
     [Parameter]
@@ -40,6 +43,7 @@
     public Optional<string> AddClasses { get; set; }
 
     protected HashSet<string> _rootClasses = ["frame"];
+    protected Dictionary<string, object> _rootAttributes  = [];
 
     protected override void OnInitialized()
     {
@@ -63,6 +67,9 @@
                     break;
 
             }
+
+        if (Id.TryGetValue(out var id))
+            _rootAttributes["id"] = id;
 
         if (Clickable)
         {
@@ -130,6 +137,6 @@
     }
 }
 
-<div class="@string.Join(' ', _rootClasses)">
+<div @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">
     @ChildContent
 </div>

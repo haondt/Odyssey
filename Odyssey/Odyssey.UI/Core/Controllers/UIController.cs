@@ -1,35 +1,41 @@
 ﻿using Haondt.Web.Core.Extensions;
-using Haondt.Web.Services;
-using Haondt.Web.UI.Components.Element;
+using Haondt.Web.Core.Http;
+using Haondt.Web.UI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Odyssey.UI.Core.Middlewares;
 
 namespace Odyssey.UI.Core.Controllers
 {
 
     [ServiceFilter(typeof(ModelStateValidationFilter))]
     [Authorize]
-    public class UIController(IComponentFactory componentFactory) : Haondt.Web.Core.Controllers.UIController
+    public class UIController : Haondt.Web.Core.Controllers.UIController
     {
-        protected readonly IComponentFactory _componentFactory = componentFactory;
+        [FromServices]
+        public ModelStateValidationFilter ModelStateValidationFilter { get; set; } = default!;
 
-        public Task<IResult> ToastResponse(
-            string message,
-            ToastSeverity severity = ToastSeverity.Error,
-            int statusCode = 500)
+        protected IResponseData ResponseData
         {
-            var toast = new Toast
-            {
-                Message = message,
-                Severity = severity
-            };
+            get => field ??= HttpContext.Response.AsResponseData();
+        }
 
-            Response.AsResponseData()
-                .Status(statusCode)
-                .HxReswap("none");
-            return _componentFactory.RenderComponentAsync(toast);
+
+        protected async Task<IResult> RenderValidationComponent(Dictionary<string, string> errors)
+        {
+            var result = await ModelStateValidationFilter.ApplyValidationErrorAsync(errors, HttpContext);
+            if (result.IsSuccessful)
+                return result.Value;
+
+            throw new InvalidOperationException("Method does not have validation component attribute.");
+        }
+
+        protected Task<IResult> RenderValidationSummaryComponent(string summary)
+        {
+            return RenderValidationComponent(new()
+            {
+                ["summary"] = summary
+            });
         }
     }
 }

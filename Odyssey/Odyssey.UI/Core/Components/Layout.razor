@@ -1,11 +1,21 @@
+@using Haondt.Web.Core.Extensions
 @using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Attributes
+@using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Htmx
+@using Odyssey.UI.Core.Services
 @code {
     [Parameter, EditorRequired]
     public required IComponent Content { get; set; }
 
     [Parameter]
     public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
+
+    [CascadingParameter]
+    public IRequestData RequestData { get; set; } = default!;
+
+    public const string Id = "layout-container";
 
     private string _bodyContentClasses = "";
 
@@ -16,11 +26,16 @@
     }
 }
 
-<div id="layout-container" class="@_bodyContentClasses">
+<div id="@Id" class="@_bodyContentClasses">
     <div id="modal-container" class="modal"></div>
     <ToastContainer />
     <div id="page-container">
-        <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" />
+        <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
+            @if(Content is IHasNavigationBarComponent hasNav)
+            {
+                <ObjectComponent Component="hasNav.CreateNavigationBar()"/>
+            }
+        </NavigationContainer>
         <div id="layout-content-container">
             <ObjectComponent Component="@Content"/>
         </div>

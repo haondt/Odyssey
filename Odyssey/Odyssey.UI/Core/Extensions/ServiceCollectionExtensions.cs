@@ -1,7 +1,7 @@
 ﻿using Haondt.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Odyssey.UI.Core.Middlewares;
+using Odyssey.UI.Core.Services;
 using LayoutComponentFactory = Odyssey.UI.Core.Services.LayoutComponentFactory;
 
 namespace Odyssey.UI.Core.Extensions
@@ -11,10 +11,10 @@ namespace Odyssey.UI.Core.Extensions
         public static IServiceCollection AddOdysseyUI(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<ILayoutComponentFactory, LayoutComponentFactory>();
+            services.AddSingleton<IComponentFactory, OdysseyComponentFactory>();
             services.AddOdysseyHeadEntries();
 
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();
-            services.AddScoped<ModelStateValidationFilter>();
             //services.AddSingleton<ILucideIconService, LucideIconService>();
 
             return services;
@@ -55,7 +55,9 @@ namespace Odyssey.UI.Core.Extensions
                         { ""code"": ""204"", ""swap"": false },
                         { ""code"": "".*"", ""swap"": true }
                     ],
-                    ""scrollIntoViewOnBoost"": false
+                    ""scrollIntoViewOnBoost"": false,
+                    ""historyCacheSize"": 0,
+                    ""historyRestoreAsHxRequest"": false
                 }",
             });
 

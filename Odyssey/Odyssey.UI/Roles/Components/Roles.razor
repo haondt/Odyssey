@@ -1,18 +1,22 @@
 @using Haondt.Web.UI.Components.Element
 @using System.Text.Json
+@using Odyssey.Domain.Authentication.Services
+@using Odyssey.UI.Core.Services
 @attribute [RenderPage]
 @attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
 
 @inject NavigationManager Nav
+@inject ISessionService SessionService
 
 
 @code {
     private List<(string Title, string Body, string Path)> _roleCards = [
         (
-            "Host",
-            "Create gameboards, manage sessions and control the show",
-            "roles/host"
-        ),
+    "Host",
+    "Create gameboards, manage sessions and control the show",
+    "roles/host"
+    ),
         (
             "Device",
             "Set up a physical device for players to interact with the game",
@@ -29,8 +33,19 @@
             "roles/admin"
         ),
     ];
+
+    private Result<string> _username;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _username = (await SessionService.GetUsernameAsync());
+    }
+
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarRoles()
+    };
 }
-<NavigationContainer HxSwapOob='"true"'/>  
 
 <Frame AddClasses="@("big-screen m-auto px-s py-xl max-width-content")">
     <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card">
@@ -43,7 +58,6 @@
                 <a
                     href="@Nav.ToAbsoluteUri(path)" 
                     hx-boost="true" 
-                    hx-target="#layout-content-container"
                     class="flex"
                 >
                     <Frame 

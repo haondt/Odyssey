@@ -1,14 +1,13 @@
-﻿using Haondt.Web.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.UI.Core.Controllers;
 
 namespace Odyssey.UI.Host.Controllers
 {
     [Route("/roles/host")]
-    public class HostController(IComponentFactory componentFactory) : UIController(componentFactory)
+    public class HostController : UIController
     {
         [HttpGet]
-        public Task<IResult> Get() => _componentFactory.RenderComponentAsync<Components.Host>();
+        public Task<IResult> Get() => ComponentFactory.RenderComponentAsync<Components.Host>();
     }
 }

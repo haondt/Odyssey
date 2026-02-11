@@ -1,7 +1,7 @@
-﻿using Haondt.Core.Extensions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Domain.Authentication.Models;
+using Odyssey.Domain.Authentication.Services;
 using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 
@@ -17,6 +17,8 @@ namespace Odyssey.Domain.Core.Extensions
             services.Configure<AdminSettings>(configuration.GetSection(nameof(AdminSettings)));
             AdminSettings.Validate(services.AddOptions<AdminSettings>()).ValidateOnStart();
             services.AddScoped<IDbSeeder, DbSeeder>();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
 

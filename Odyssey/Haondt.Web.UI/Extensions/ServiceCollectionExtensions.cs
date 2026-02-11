@@ -1,4 +1,5 @@
 ﻿using Haondt.Web.Services;
+using Haondt.Web.UI.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,7 @@ namespace Haondt.Web.UI.Extensions
         public static IServiceCollection AddHaondtUI(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHaondtUIHeadEntries();
+            services.AddScoped<ModelStateValidationFilter>();
             return services;
         }
 

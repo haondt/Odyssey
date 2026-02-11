@@ -1,0 +1,40 @@
+@using Haondt.Web.UI.Services
+@using Odyssey.Domain.Authentication.Models
+@using Odyssey.UI.Core.Services
+@implements IValidationSummaryComponent
+@code {
+    [Parameter]
+    public Optional<string> ValidationSummary { get; set; }
+
+    [Parameter]
+    public bool IsValidation { get; set; }
+
+    public const string Id = "sign-in-card";
+
+
+}
+
+<Frame
+    Id="@Id"
+    Gap="FrameSpacing.Card"
+    Flex="FrameDirection.Col"
+    Align="FrameAlignment.Stretch"
+    AddClasses='"content-container-s"'>
+    <p class="title text-align-center">Sign in</p>
+    <form hx-post>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
+            <Field Id='"username"' Title='"Username"' Name="@nameof(SignInModel.Username)" Autocomplete='"username"' HxPreserve="true" />
+            <Field
+                Type="FieldType.Password"
+                Title='"Password"' Name="@nameof(SignInModel.Password)" Autocomplete='"current-password"' />
+            @if(ValidationSummary.TryGetValue(out var formError))
+            {
+                <p class="validation-error">@formError</p>
+            }
+            <Frame Template="FrameTemplate.ButtonContainer">
+                <Button Type="ButtonType.Ghost" Color="ButtonColor.Text">Register</Button>
+                <Button Color="ButtonColor.Primary">Continue</Button>
+            </Frame>
+        </Frame>
+    </form>
+</Frame>

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
-	<PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260204065253" />
+	<PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260211070327" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +30,7 @@
   <ItemGroup>
     <Folder Include="Admin\Components\" />
     <Folder Include="Authentication\Components\" />
+    <Folder Include="Core\Attributes\" />
     <Folder Include="Core\Models\" />
   </ItemGroup>
 

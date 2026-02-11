@@ -63,6 +63,12 @@ html {
     background-color: var(--haondt-ui-color-chip-background);
 }
 
+.hint {
+    font-size: var(--haondt-ui-hint-font-size);
+    font-weight: var(--haondt-ui-text-font-weight);
+    color: var(--haondt-ui-color-text);
+}
+
 .input, .button {
     height: var(--haondt-ui-control-height);
     padding-left: var(--haondt-ui-control-padding-x);

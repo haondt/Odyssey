@@ -5,7 +5,14 @@ namespace Haondt.Web.UI.Components.Element
     public enum ButtonType
     {
         Fill,
-        Ghost
+        /// <summary>
+        /// No fill
+        /// </summary>
+        Ghost,
+        /// <summary>
+        /// No fill, no padding
+        /// </summary>
+        Skeleton
     }
     public enum ButtonColor
     {
@@ -21,6 +28,7 @@ namespace Haondt.Web.UI.Components.Element
             {
                 ButtonType.Fill => "button-type-fill",
                 ButtonType.Ghost => "button-type-ghost",
+                ButtonType.Skeleton => "button-type-skeleton",
                 _ => new Optional<string>()
             };
         }
