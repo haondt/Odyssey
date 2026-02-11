@@ -1,10 +1,11 @@
 ﻿using Haondt.Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Odyssey.Domain.Models;
-using Odyssey.Domain.Services;
+using Odyssey.Domain.Authentication.Models;
+using Odyssey.Domain.Core.Models;
+using Odyssey.Domain.Core.Services;
 
-namespace Odyssey.Domain.Extensions
+namespace Odyssey.Domain.Core.Extensions
 {
     public static class ServiceCollectionExtensions
     {

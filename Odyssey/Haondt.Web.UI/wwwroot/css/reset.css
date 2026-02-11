@@ -20,6 +20,7 @@ time, mark, audio, video, button {
     padding: 0;
     vertical-align: baseline;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
 body {line-height: 1;}
@@ -43,4 +44,11 @@ q:before, q:after {
 table {
     border-collapse: collapse;
     border-spacing: 0;
+}
+
+input {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }

@@ -1,4 +1,4 @@
-﻿namespace Odyssey.Domain.Services
+﻿namespace Odyssey.Domain.Core.Services
 {
     public interface IDbSeeder
     {

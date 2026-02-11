@@ -11,6 +11,9 @@
 	}
 	.Select(q => (q, $"calc(var(--haondt-ui-spacing-multiplier-{q}) * var(--haondt-ui-spacing-base))"))
 	.Append(("0", "0"))
+	.Append(("panel", "var(--haondt-ui-panel-spacing)"))
+	.Append(("card", "var(--haondt-ui-card-spacing)"))
+	.Append(("line", "var(--haondt-ui-line-spacing)"))
 	.ToList();
 
 	foreach(var (paddingType, prefix) in new List<(string, string)> { ("margin", "m"), ("padding", "p") })

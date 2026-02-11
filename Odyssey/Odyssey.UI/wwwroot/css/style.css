@@ -8,8 +8,8 @@
 
 @media screen and (min-width: 768px) {
     .big-screen {
-        --haondt-ui-text-font-size: 2rem;
-        --haondt-ui-subtitle-font-size: 2rem;
+        --haondt-ui-text-font-size: calc(2 * var(--haondt-ui-text-font-size-base));
+        --haondt-ui-subtitle-font-size: calc(2 * var(--haondt-ui-subtitle-font-size-base));
 
         --haondt-ui-grid-gap-s: 24px;
         --haondt-ui-grid-gap-m: 32px;

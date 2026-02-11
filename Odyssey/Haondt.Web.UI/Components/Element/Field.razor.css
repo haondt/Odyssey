@@ -1,0 +1,9 @@
+.field-title {
+    font-size: var(--haondt-ui-subtitle-font-size);
+    font-weight: var(--haondt-ui-subtitle-font-weight);
+    color: var(--haondt-ui-color-subtitle);
+}
+
+.field-size-fill {
+    width: 100%;
+}

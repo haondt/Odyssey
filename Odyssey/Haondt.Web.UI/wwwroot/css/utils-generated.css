@@ -22,6 +22,15 @@
 .m-0 {
 	margin: 0 !important;
 }
+.m-panel {
+	margin: var(--haondt-ui-panel-spacing) !important;
+}
+.m-card {
+	margin: var(--haondt-ui-card-spacing) !important;
+}
+.m-line {
+	margin: var(--haondt-ui-line-spacing) !important;
+}
 .m-auto {
 	margin: auto !important;
 }
@@ -48,6 +57,15 @@
 }
 .ml-0 {
 	margin-left: 0 !important;
+}
+.ml-panel {
+	margin-left: var(--haondt-ui-panel-spacing) !important;
+}
+.ml-card {
+	margin-left: var(--haondt-ui-card-spacing) !important;
+}
+.ml-line {
+	margin-left: var(--haondt-ui-line-spacing) !important;
 }
 .ml-auto {
 	margin-left: auto !important;
@@ -76,6 +94,15 @@
 .mr-0 {
 	margin-right: 0 !important;
 }
+.mr-panel {
+	margin-right: var(--haondt-ui-panel-spacing) !important;
+}
+.mr-card {
+	margin-right: var(--haondt-ui-card-spacing) !important;
+}
+.mr-line {
+	margin-right: var(--haondt-ui-line-spacing) !important;
+}
 .mr-auto {
 	margin-right: auto !important;
 }
@@ -103,6 +130,15 @@
 .mt-0 {
 	margin-top: 0 !important;
 }
+.mt-panel {
+	margin-top: var(--haondt-ui-panel-spacing) !important;
+}
+.mt-card {
+	margin-top: var(--haondt-ui-card-spacing) !important;
+}
+.mt-line {
+	margin-top: var(--haondt-ui-line-spacing) !important;
+}
 .mt-auto {
 	margin-top: auto !important;
 }
@@ -129,6 +165,15 @@
 }
 .mb-0 {
 	margin-bottom: 0 !important;
+}
+.mb-panel {
+	margin-bottom: var(--haondt-ui-panel-spacing) !important;
+}
+.mb-card {
+	margin-bottom: var(--haondt-ui-card-spacing) !important;
+}
+.mb-line {
+	margin-bottom: var(--haondt-ui-line-spacing) !important;
 }
 .mb-auto {
 	margin-bottom: auto !important;
@@ -164,6 +209,18 @@
 .mx-0 {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
+}
+.mx-panel {
+	margin-left: var(--haondt-ui-panel-spacing) !important;
+	margin-right: var(--haondt-ui-panel-spacing) !important;
+}
+.mx-card {
+	margin-left: var(--haondt-ui-card-spacing) !important;
+	margin-right: var(--haondt-ui-card-spacing) !important;
+}
+.mx-line {
+	margin-left: var(--haondt-ui-line-spacing) !important;
+	margin-right: var(--haondt-ui-line-spacing) !important;
 }
 .mx-auto {
 	margin-left: auto !important;
@@ -201,6 +258,18 @@
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
 }
+.my-panel {
+	margin-top: var(--haondt-ui-panel-spacing) !important;
+	margin-bottom: var(--haondt-ui-panel-spacing) !important;
+}
+.my-card {
+	margin-top: var(--haondt-ui-card-spacing) !important;
+	margin-bottom: var(--haondt-ui-card-spacing) !important;
+}
+.my-line {
+	margin-top: var(--haondt-ui-line-spacing) !important;
+	margin-bottom: var(--haondt-ui-line-spacing) !important;
+}
 .my-auto {
 	margin-top: auto !important;
 	margin-bottom: auto !important;
@@ -229,6 +298,15 @@
 .p-0 {
 	padding: 0 !important;
 }
+.p-panel {
+	padding: var(--haondt-ui-panel-spacing) !important;
+}
+.p-card {
+	padding: var(--haondt-ui-card-spacing) !important;
+}
+.p-line {
+	padding: var(--haondt-ui-line-spacing) !important;
+}
 .pl-2xs {
 	padding-left: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
 }
@@ -252,6 +330,15 @@
 }
 .pl-0 {
 	padding-left: 0 !important;
+}
+.pl-panel {
+	padding-left: var(--haondt-ui-panel-spacing) !important;
+}
+.pl-card {
+	padding-left: var(--haondt-ui-card-spacing) !important;
+}
+.pl-line {
+	padding-left: var(--haondt-ui-line-spacing) !important;
 }
 .pr-2xs {
 	padding-right: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
@@ -277,6 +364,15 @@
 .pr-0 {
 	padding-right: 0 !important;
 }
+.pr-panel {
+	padding-right: var(--haondt-ui-panel-spacing) !important;
+}
+.pr-card {
+	padding-right: var(--haondt-ui-card-spacing) !important;
+}
+.pr-line {
+	padding-right: var(--haondt-ui-line-spacing) !important;
+}
 .pt-2xs {
 	padding-top: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
 }
@@ -301,6 +397,15 @@
 .pt-0 {
 	padding-top: 0 !important;
 }
+.pt-panel {
+	padding-top: var(--haondt-ui-panel-spacing) !important;
+}
+.pt-card {
+	padding-top: var(--haondt-ui-card-spacing) !important;
+}
+.pt-line {
+	padding-top: var(--haondt-ui-line-spacing) !important;
+}
 .pb-2xs {
 	padding-bottom: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
 }
@@ -324,6 +429,15 @@
 }
 .pb-0 {
 	padding-bottom: 0 !important;
+}
+.pb-panel {
+	padding-bottom: var(--haondt-ui-panel-spacing) !important;
+}
+.pb-card {
+	padding-bottom: var(--haondt-ui-card-spacing) !important;
+}
+.pb-line {
+	padding-bottom: var(--haondt-ui-line-spacing) !important;
 }
 .px-2xs {
 	padding-left: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
@@ -357,6 +471,18 @@
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
+.px-panel {
+	padding-left: var(--haondt-ui-panel-spacing) !important;
+	padding-right: var(--haondt-ui-panel-spacing) !important;
+}
+.px-card {
+	padding-left: var(--haondt-ui-card-spacing) !important;
+	padding-right: var(--haondt-ui-card-spacing) !important;
+}
+.px-line {
+	padding-left: var(--haondt-ui-line-spacing) !important;
+	padding-right: var(--haondt-ui-line-spacing) !important;
+}
 .py-2xs {
 	padding-top: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
 	padding-bottom: calc(var(--haondt-ui-spacing-multiplier-2xs) * var(--haondt-ui-spacing-base)) !important;
@@ -388,4 +514,16 @@
 .py-0 {
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
+}
+.py-panel {
+	padding-top: var(--haondt-ui-panel-spacing) !important;
+	padding-bottom: var(--haondt-ui-panel-spacing) !important;
+}
+.py-card {
+	padding-top: var(--haondt-ui-card-spacing) !important;
+	padding-bottom: var(--haondt-ui-card-spacing) !important;
+}
+.py-line {
+	padding-top: var(--haondt-ui-line-spacing) !important;
+	padding-bottom: var(--haondt-ui-line-spacing) !important;
 }

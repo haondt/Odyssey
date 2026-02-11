@@ -1,9 +1,10 @@
 @using Haondt.Web.UI.Components.Element
 @using System.Text.Json
 @attribute [RenderPage]
-@attribute [LayoutOptions(ShowNavigationBar = false, FillPage = true)]
+@attribute [LayoutOptions(FillPage = true)]
 
 @inject NavigationManager Nav
+
 
 @code {
     private List<(string Title, string Body, string Path)> _roleCards = [
@@ -29,23 +30,26 @@
         ),
     ];
 }
-<Frame AddClasses="@("big-screen m-auto px-s py-xl max-width-content")">
-    <Frame Flex="FrameDirection.Col" Gap="FrameGap.Medium">
-        <h1 id="hero-text" class="fg-primary uppercase font-semibold">Odyssey</h1>
-        <p class="mb-l">Select role to continue</p>
+<NavigationContainer HxSwapOob='"true"'/>  
 
-        <Frame Grid="FrameGrid.CollapsibleFillTwo" Gap="FrameGap.Medium">
+<Frame AddClasses="@("big-screen m-auto px-s py-xl max-width-content")">
+    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card">
+        <h1 id="hero-text" class="fg-primary uppercase font-semibold">Odyssey</h1>
+        <p class="text">Select role to continue</p>
+
+        <Frame Grid="FrameGrid.CollapsibleFillTwo" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
             @foreach(var (title, body, path) in _roleCards)
             {
                 <a
                     href="@Nav.ToAbsoluteUri(path)" 
                     hx-boost="true" 
                     hx-target="#layout-content-container"
+                    class="flex"
                 >
                     <Card Clickable="true">
-                        <Frame Flex="FrameDirection.Col" Gap="FrameGap.ContentSmall" Align="FrameAlignment.Start">
+                        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line" Align="FrameAlignment.Start">
                             <p class="subtitle">@title</p>
-                            <p class="fg-text-weak-1">@body</p>
+                            <p class="text">@body</p>
                         </Frame>
                     </Card>
                 </a>

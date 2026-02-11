@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Odyssey.Core.Constants;
-using Odyssey.Domain.Models;
+using Odyssey.Domain.Core.Models;
 using Odyssey.Persistence;
 using Odyssey.Persistence.Models;
 
-namespace Odyssey.Domain.Services;
+namespace Odyssey.Domain.Core.Services;
 
 public class DbSeeder(
     UserManager<UserDataSurrogate> userManager,

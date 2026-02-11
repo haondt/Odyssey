@@ -1,0 +1,29 @@
+.button {
+    --button-hover-delta: 5;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.button-color-primary {
+    --button-color: var(--haondt-ui-color-primary);
+}
+
+.button-color-text {
+    --button-color: var(--haondt-ui-color-subtitle);
+}
+
+.button-type-fill {
+    color: var(--haondt-ui-color-background);
+    background-color: var(--button-color);
+    font-weight: 400;
+}
+
+.button-type-fill:hover {
+    background-color: hsl(from var(--button-color) h s calc(l + var(--button-hover-delta)));
+}
+
+.button-type-ghost {
+    color: var(--button-color);
+}

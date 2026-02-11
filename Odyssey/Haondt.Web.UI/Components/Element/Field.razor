@@ -1,0 +1,89 @@
+@code {
+    [Parameter]
+    public Optional<string> Title { get; set; }
+
+    [Parameter]
+    public FieldType Type { get; set; } = FieldType.Text;
+
+    [Parameter]
+    public FieldSize Size { get; set; } = FieldSize.Fill;
+
+    [Parameter]
+    public Optional<string> Name { get; set; }
+
+    [Parameter]
+    public Optional<string> Placeholder { get; set; }
+
+    [Parameter]
+    public Optional<string> Autocomplete { get; set; }
+
+    protected Dictionary<string, object> _inputAttributes  = [];
+
+    protected HashSet<string> _inputClasses = ["input"];
+
+    [Parameter]
+    public Optional<string> InputClasses { get; set; }
+
+    protected override void OnInitialized() 
+    {
+        switch (Type)
+        {
+            case FieldType.Checkbox:
+                {
+
+                    if (Name.TryGetValue(out var name))
+                        _inputAttributes["name"] = name;
+                }
+                break;
+
+            case FieldType.Text:
+            case FieldType.Password:
+                {
+
+                    if (Placeholder.TryGetValue(out var placeholder))
+                        _inputAttributes["placeholder"] = placeholder;
+
+                    if (Size.CssClass.TryGetValue(out var size))
+                        _inputClasses.Add(size);
+
+                    if (Name.TryGetValue(out var name))
+                        _inputAttributes["name"] = name;
+
+                    if (Autocomplete.TryGetValue(out var autocomplete))
+                        _inputAttributes["autocomplete"] = autocomplete;
+                }
+                break;
+        }
+
+        _inputAttributes["type"] = Type switch
+        {
+            FieldType.Text => "text",
+            FieldType.Checkbox => "checkbox",
+            FieldType.Password => "password",
+            _ => "text"
+        };
+        if (InputClasses.TryGetValue(out var inputClasses))
+            _inputClasses.Add(inputClasses);
+
+    }
+}
+
+<div class="field">
+    <Frame 
+        Gap="FrameSpacing.Line"
+        Flex="FrameDirection.Col"
+        Align="FrameAlignment.Start">
+        @if(Type == FieldType.Checkbox)
+        {
+            <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+        }
+        @if(Title.TryGetValue(out var title))
+        {
+            <label class="field-title">@title</label>
+        }
+        @if(Type is FieldType.Text or FieldType.Password)
+        {
+            <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+        } 
+    </Frame>
+</div>

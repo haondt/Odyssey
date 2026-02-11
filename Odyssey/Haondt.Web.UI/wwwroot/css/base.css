@@ -28,6 +28,10 @@ a {
     color: var(--haondt-ui-color-accent);
 }
 
+html {
+    background-color: var(--haondt-ui-color-background);
+}
+
 .brand {
     font-size: 32px;
 }
@@ -35,23 +39,46 @@ a {
 .title {
     font-size: var(--haondt-ui-title-font-size);
     font-weight: var(--haondt-ui-title-font-weight);
+    color: var(--haondt-ui-color-title);
 }
 
 .subtitle {
     font-size: var(--haondt-ui-subtitle-font-size);
     font-weight: var(--haondt-ui-subtitle-font-weight);
+    color: var(--haondt-ui-color-subtitle);
 }
 
 .text {
     font-size: var(--haondt-ui-text-font-size);
     font-weight: var(--haondt-ui-text-font-weight);
+    color: var(--haondt-ui-color-text);
 }
 
 .chip {
     .chip-text {
         font-size: var(--haondt-ui-chip-font-size);
         font-weight: var(--haondt-ui-chip-font-weight);
+        color: var(--haondt-ui-color-text);
     }
+    background-color: var(--haondt-ui-color-chip-background);
 }
 
+.input, .button {
+    height: var(--haondt-ui-control-height);
+    padding-left: var(--haondt-ui-control-padding-x);
+    padding-right: var(--haondt-ui-control-padding-x);
+    border-radius: var(--haondt-ui-border-radius);
+    font-size: var(--haondt-ui-text-font-size);
+    font-weight: var(--haondt-ui-text-font-weight);
+}
 
+.input {
+    background-color: var(--haondt-ui-color-background);
+    border-style: solid;
+    border-width: var(--haondt-ui-border-width);
+    border-color: var(--haondt-ui-color-border);
+}
+
+.input::placeholder {
+    color: var(--haondt-ui-color-border);
+}

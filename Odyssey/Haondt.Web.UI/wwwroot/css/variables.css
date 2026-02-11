@@ -24,21 +24,26 @@
     --p2r-32: 2rem;
 
     --haondt-ui-color-primary: #a48836;
-    --haondt-ui-color-accent: #c7ad5f;
+    --haondt-ui-color-accent: #CEBA7D;
 
-    --haondt-ui-color-background-strong-1: #433f3e;
+    --haondt-ui-color-background-strong: #1C1B1D;
     --haondt-ui-color-background: #161418;
 
-    --haondt-ui-color-text: #F9F5FF;
-    --haondt-ui-color-text-weak-1: #BFBBC4;
-    --haondt-ui-color-text-weak-2: #7E788E;
+    --haondt-ui-color-text: #BFBCC3;
+    --haondt-ui-color-text-weak: #7E788E;
 
-    --haondt-ui-color-border-strong-1: #55525B;
-    --haondt-ui-color-border: #3C3A40;
+    --haondt-ui-color-title: #F9F5FF;
+
+    --haondt-ui-color-subtitle: #F9F5FF;
+
+    --haondt-ui-color-border-strong: #837E8B;
+    --haondt-ui-color-border: #434149;
 
     --haondt-ui-color-danger: #d04343;
     --haondt-ui-color-success: #48c78d;
     --haondt-ui-color-warning: #C7BC48;
+
+    --haondt-ui-color-chip-background: #302E33;
 
     --haondt-ui-card-border-radius-base: 10px;
     --haondt-ui-card-border-radius: var(--haondt-ui-card-border-radius-base);
@@ -50,35 +55,35 @@
     --haondt-ui-panel-spacing-base: 32px;
     --haondt-ui-panel-spacing: var(--haondt-ui-panel-spacing-base);
 
-    --haondt-ui-grid-gap-s: 12px;
-    --haondt-ui-grid-gap-m: 16px;
-    --haondt-ui-grid-gap-l: 20px;
+    --haondt-ui-border-radius-base: 6px;
+    --haondt-ui-border-radius: var(--haondt-ui-border-radius-base);
+    --haondt-ui-border-width-base: 1px;
+    --haondt-ui-border-width: var(--haondt-ui-border-width-base);
 
-    --haondt-ui-border-radius: 6px;
+    --haondt-ui-line-spacing-base: 0.5rem;
+    --haondt-ui-line-spacing: var(--haondt-ui-line-spacing-base);
 
-    --haondt-ui-content-gap-s: 0.25rem;
-    --haondt-ui-content-gap-m: 0.75rem;
-    --haondt-ui-content-gap-l: 1rem;
+    --haondt-ui-content-width-base: 1300px;
+    --haondt-ui-content-width-s: calc(0.3 * var(--haondt-ui-content-width-base));
+    --haondt-ui-content-width: var(--haondt-ui-content-width-base);
 
-    --haondt-ui-content-width-s: 400px;
-    --haondt-ui-content-width: 1300px;
-
-    --haondt-ui-text-font-size: 1rem;
+    --haondt-ui-text-font-size-base: 1rem;
+    --haondt-ui-text-font-size: var(--haondt-ui-text-font-size-base);
     --haondt-ui-text-font-weight: 300;
 
-    --haondt-ui-title-font-size: 3rem;
+    --haondt-ui-title-font-size-base: 2.25rem;
+    --haondt-ui-title-font-size: var(--haondt-ui-title-font-size-base);
     --haondt-ui-title-font-weight: 300;
 
     --haondt-ui-subtitle-font-size: var(--haondt-ui-text-font-size);
     --haondt-ui-subtitle-font-weight: 500;
 
-    --haondt-ui-chip-font-size: 0.75rem;
+    --haondt-ui-chip-font-size-base: 0.75rem;
+    --haondt-ui-chip-font-size: var(--haondt-ui-chip-font-size-base);
     --haondt-ui-chip-font-weight: var(--haondt-ui-text-font-weight);
 
     --haondt-ui-monospace-fonts: Inter, Roboto Mono, Inconsolata, Hack, SF Mono, Source Code Pro, Ubuntu Mono, monospace;
     --haondt-ui-font-family: sans-serif;
-
-    --haondt-ui-min-width: 360px;
 
     --haondt-ui-spacing-base: 1rem;
     --haondt-ui-spacing-multiplier-2xs: 0.25;
@@ -88,6 +93,11 @@
     --haondt-ui-spacing-multiplier-l: 1.25;
     --haondt-ui-spacing-multiplier-xl: 1.5;
     --haondt-ui-spacing-multiplier-2xl: 3;
+
+    --haondt-ui-control-height-base: 2.5rem;
+    --haondt-ui-control-height: var(--haondt-ui-control-height-base);
+    --haondt-ui-control-padding-base: 1rem;
+    --haondt-ui-control-padding-x: calc(0.625 * var(--haondt-ui-control-padding-base));
 }
 
 @custom-media --haondt-ui-media-query-max-width-m screen and (max-width: 768px);

@@ -7,6 +7,9 @@
     public Optional<FrameDirection> Flex { get; set; }
 
     [Parameter]
+    public Optional<FrameTemplate> Template { get; set; }
+
+    [Parameter]
     public Optional<FrameGrid> Grid { get; set; }
 
     [Parameter]
@@ -16,7 +19,16 @@
     public Optional<FrameAlignment> Align { get; set; }
 
     [Parameter]
-    public Optional<FrameGap> Gap { get; set; }
+    public Optional<FrameSpacing> Gap { get; set; }
+
+    [Parameter]
+    public Optional<FrameSpacing> Padding { get; set; }
+
+    /// <summary>
+    /// Supply values for both gap and padding
+    /// </summary>
+    [Parameter]
+    public Optional<FrameSpacing> Spacing { get; set; }
 
     [Parameter]
     public Optional<string> AddClasses { get; set; }
@@ -25,6 +37,17 @@
 
     protected override void OnInitialized()
     {
+        if (Template.TryGetValue(out var template))
+            switch(template) 
+            {
+                case FrameTemplate.ButtonContainer:
+                    Flex = Flex.Or(FrameDirection.Row);
+                    Justify = Justify.Or(FrameJustification.End);
+                    Gap = Gap.Or(FrameSpacing.Line);
+                    break;
+
+            }
+
         if(Flex.TryGetValue(out var flex))
         {
             _rootClasses.Add("frame-flex");
@@ -37,8 +60,17 @@
             if(Align.Or(FrameAlignment.Center).CssClass.TryGetValue(out var alignmentClass))
                 _rootClasses.Add(alignmentClass);
 
-            if (Gap.Bind(q => q.CssClass).TryGetValue(out var gapClass))
+            if (Spacing.TryGetValue(out var spacingClass))
+            {
+                Gap = Gap.Or(spacingClass);
+                Padding = Padding.Or(spacingClass);
+            }
+            if (Gap.Bind(q => q.GapCssClass).TryGetValue(out var gapClass))
                 _rootClasses.Add(gapClass);
+
+            if (Padding.Bind(q => q.PaddingCssClass).TryGetValue(out var paddingClass))
+                _rootClasses.Add(paddingClass);
+
         }
 
         if (Grid.TryGetValue(out var grid))
@@ -47,8 +79,22 @@
             if (grid.CssClass.TryGetValue(out var gridClass))
                 _rootClasses.Add(gridClass);
 
-            if (Gap.Bind(q => q.CssClass).TryGetValue(out var gapClass))
+            if (Justify.Bind(q => q.CssClass).TryGetValue(out var justificationClass))
+                _rootClasses.Add(justificationClass);
+
+            if(Align.Or(FrameAlignment.Center).CssClass.TryGetValue(out var alignmentClass))
+                _rootClasses.Add(alignmentClass);
+
+            if (Spacing.TryGetValue(out var spacingClass))
+            {
+                Gap = Gap.Or(spacingClass);
+                Padding = Padding.Or(spacingClass);
+            }
+            if (Gap.Bind(q => q.GapCssClass).TryGetValue(out var gapClass))
                 _rootClasses.Add(gapClass);
+
+            if (Padding.Bind(q => q.PaddingCssClass).TryGetValue(out var paddingClass))
+                _rootClasses.Add(paddingClass);
         }
 
         if (AddClasses.TryGetValue(out var addClasses))

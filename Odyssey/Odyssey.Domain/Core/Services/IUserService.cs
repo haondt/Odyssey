@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Odyssey.Persistence.Models;
 
-namespace Odyssey.Domain.Services
+namespace Odyssey.Domain.Core.Services
 {
     public interface IUserService
     {

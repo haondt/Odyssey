@@ -11,6 +11,7 @@
 .frame-align-items-flex-start { align-items: flex-start; }
 .frame-align-items-flex-end { align-items: flex-end; }
 .frame-align-items-center { align-items: center; }
+.frame-align-items-stretch { align-items: stretch; }
 
 .frame-grid { display: grid; }
 
@@ -26,10 +27,16 @@
     .frame-grid-collapsible-fill-2 { grid-template-columns: repeat(1, 1fr); }
 }
 
-.frame-gap-s { gap: var(--haondt-ui-grid-gap-s); }
-.frame-gap-m { gap: var(--haondt-ui-grid-gap-m); }
-.frame-gap-l { gap: var(--haondt-ui-grid-gap-l); }
+.frame-gap-s { gap: calc(var(--haondt-ui-spacing-multiplier-s) * var(--haondt-ui-spacing-base)); }
+.frame-gap-m { gap: calc(var(--haondt-ui-spacing-multiplier-m) * var(--haondt-ui-spacing-base)); }
+.frame-gap-l { gap: calc(var(--haondt-ui-spacing-multiplier-l) * var(--haondt-ui-spacing-base)); }
+.frame-gap-panel { gap: var(--haondt-ui-panel-spacing); }
+.frame-gap-card { gap: var(--haondt-ui-card-spacing); }
+.frame-gap-line { gap: var(--haondt-ui-line-spacing); }
 
-.frame-gap-content-s { gap: var(--haondt-ui-content-gap-s); }
-.frame-gap-content-m { gap: var(--haondt-ui-content-gap-m); }
-.frame-gap-content-l { gap: var(--haondt-ui-content-gap-l); }
+.frame-padding-s { padding: calc(var(--haondt-ui-spacing-multiplier-s) * var(--haondt-ui-spacing-base)); }
+.frame-padding-m { padding: calc(var(--haondt-ui-spacing-multiplier-m) * var(--haondt-ui-spacing-base)); }
+.frame-padding-l { padding: calc(var(--haondt-ui-spacing-multiplier-l) * var(--haondt-ui-spacing-base)); }
+.frame-padding-panel { padding: var(--haondt-ui-panel-spacing); }
+.frame-padding-card { padding: var(--haondt-ui-card-spacing); }
+.frame-padding-line { padding: var(--haondt-ui-line-spacing); }

@@ -1,11 +1,27 @@
+@using Odyssey.Domain.Authentication.Models
 @attribute [RenderPage]
+@attribute [LayoutOptions(FillPage = true)]
 
-<Odyssey.UI.Core.Components.NavigationContainer HxSwapOob='"true"'/>  
+<NavigationContainer HxSwapOob='"true"'/>  
 
-<Frame AddClasses='"content-container-s"'>
-    <p>Sign in</p>
-    <Panel>
-        <p>TODO!</p>
-
-    </Panel>
+<Frame
+    Gap="FrameSpacing.Card"
+    Flex="FrameDirection.Col"
+    Align="FrameAlignment.Stretch"
+    AddClasses='"content-container-s"'>
+    <p class="title text-align-center">Sign in</p>
+    <Card>
+        <form>
+            <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card">
+                <Field Title='"Username"' Name="@nameof(SignInModel.Username)" Autocomplete='"username"' />
+                <Field
+                    Type="FieldType.Password"
+                    Title='"Password"' Name="@nameof(SignInModel.Password)" Autocomplete='"current-password"' />
+                <Frame Template="FrameTemplate.ButtonContainer">
+                    <Button Type="ButtonType.Ghost" Color="ButtonColor.Text">Register</Button>
+                    <Button Color="ButtonColor.Primary">Continue</Button>
+                </Frame>
+            </Frame>
+        </form>
+    </Card>
 </Frame>

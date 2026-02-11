@@ -4,7 +4,7 @@ using Odyssey.Core.Constants;
 using Odyssey.Persistence;
 using Odyssey.Persistence.Models;
 
-namespace Odyssey.Domain.Services
+namespace Odyssey.Domain.Core.Services
 {
     public class UserService(
         ApplicationDbContext dbContext,

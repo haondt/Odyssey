@@ -1,0 +1,27 @@
+@code {
+    [Parameter]
+    public Optional<string> Text { get; set; } 
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public ButtonType Type { get; set; }  = ButtonType.Fill;
+
+    [Parameter]
+    public ButtonColor Color { get; set; } = ButtonColor.Text;
+
+    protected HashSet<string> _rootClasses = ["button"];
+    
+    protected override void OnInitialized()
+    {
+        if(Type.CssClass.TryGetValue(out var type))
+            _rootClasses.Add(type);
+        if(Color.CssClass.TryGetValue(out var color))
+            _rootClasses.Add(color);
+    }
+}
+<button class="@string.Join(' ', _rootClasses)">
+    @Text.Or("")
+    @ChildContent
+</button>

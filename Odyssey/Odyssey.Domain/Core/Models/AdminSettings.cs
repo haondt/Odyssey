@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace Odyssey.Domain.Models
+namespace Odyssey.Domain.Core.Models
 {
     public class AdminSettings
     {

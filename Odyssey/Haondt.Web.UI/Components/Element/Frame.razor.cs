@@ -21,7 +21,8 @@ namespace Haondt.Web.UI.Components.Element
     {
         Start,
         End,
-        Center
+        Center,
+        Stretch
     }
 
     public enum FrameGrid
@@ -33,28 +34,44 @@ namespace Haondt.Web.UI.Components.Element
         CollapsibleFillTwo
     }
 
-    public enum FrameGap
+    public enum FrameSpacing
     {
+        Panel,
+        Card,
+        Line,
         Small,
         Medium,
-        Large,
-        ContentSmall,
-        ContentMedium,
-        ContentLarge
+        Large
+    }
+
+    public enum FrameTemplate
+    {
+        ButtonContainer
     }
 
     public static class FrameExtensions
     {
-        extension(FrameGap gap)
+        extension(FrameSpacing spacing)
         {
-            public Optional<string> CssClass => gap switch
+            public Optional<string> GapCssClass => spacing switch
             {
-                FrameGap.Small => "frame-gap-s",
-                FrameGap.Medium => "frame-gap-m",
-                FrameGap.Large => "frame-gap-l",
-                FrameGap.ContentSmall => "frame-gap-content-s",
-                FrameGap.ContentMedium => "frame-gap-content-m",
-                FrameGap.ContentLarge => "frame-gap-content-l",
+                FrameSpacing.Panel => "frame-gap-panel",
+                FrameSpacing.Card => "frame-gap-card",
+                FrameSpacing.Line => "frame-gap-line",
+                FrameSpacing.Small => "frame-gap-small",
+                FrameSpacing.Medium => "frame-gap-medium",
+                FrameSpacing.Large => "frame-gap-large",
+                _ => new Optional<string>()
+            };
+
+            public Optional<string> PaddingCssClass => spacing switch
+            {
+                FrameSpacing.Panel => "frame-padding-panel",
+                FrameSpacing.Card => "frame-padding-card",
+                FrameSpacing.Line => "frame-padding-line",
+                FrameSpacing.Small => "frame-padding-small",
+                FrameSpacing.Medium => "frame-padding-medium",
+                FrameSpacing.Large => "frame-padding-large",
                 _ => new Optional<string>()
             };
         }
@@ -89,6 +106,7 @@ namespace Haondt.Web.UI.Components.Element
                 FrameAlignment.Start => "frame-align-items-flex-start",
                 FrameAlignment.End => "frame-align-items-flex-end",
                 FrameAlignment.Center => "frame-align-items-center",
+                FrameAlignment.Stretch => "frame-align-items-stretch",
                 _ => new Optional<string>()
             };
         }

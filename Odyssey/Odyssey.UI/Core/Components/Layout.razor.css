@@ -5,6 +5,10 @@
     > #page-container {
         display: flex;
         flex-direction: column;
+        > #layout-content-container {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
 
@@ -13,6 +17,9 @@
 
     > #page-container {
         flex-grow: 1;
+        > #layout-content-container {
+            flex-grow: 1;
+        }
     }
 
     > #footer-container {

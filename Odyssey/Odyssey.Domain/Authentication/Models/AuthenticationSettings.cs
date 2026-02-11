@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Odyssey.Domain.Models
+namespace Odyssey.Domain.Authentication.Models
 {
     public class AuthenticationSettings
     {
