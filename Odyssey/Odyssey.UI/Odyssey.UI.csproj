@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Haondt.Web.UI\Haondt.Web.UI.csproj" />
+    <ProjectReference Include="..\Odyssey.Domain\Odyssey.Domain.csproj" />
     <ProjectReference Include="..\Odyssey.UI.Library\Odyssey.UI.Library.csproj" />
   </ItemGroup>
 
@@ -27,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Admin\Components\" />
     <Folder Include="Authentication\Components\" />
     <Folder Include="Core\Models\" />
   </ItemGroup>

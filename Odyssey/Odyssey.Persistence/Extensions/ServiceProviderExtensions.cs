@@ -13,13 +13,13 @@ namespace Odyssey.Persistence.Extensions
             var persistenceSettings = scope.ServiceProvider.GetRequiredService<IOptions<PersistenceSettings>>();
 
             var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            if (persistenceSettings.Value.DropDatabaseOnStartup)
+            if (persistenceSettings.Value.DatabaseSettings.DropDatabaseOnStartup)
                 db.Database.EnsureDeleted();
 
-            switch (persistenceSettings.Value.Driver)
+            switch (persistenceSettings.Value.DatabaseSettings.Driver)
             {
-                case StorageDrivers.Sqlite:
-                case StorageDrivers.Postgres:
+                case DatabaseDriver.Sqlite:
+                case DatabaseDriver.Postgres:
                     db.Database.Migrate();
                     break;
                 default:

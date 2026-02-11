@@ -1,8 +1,7 @@
 ﻿namespace Odyssey.Persistence.Models
 {
-    public enum StorageDrivers
+    public enum DatabaseDriver
     {
-        Memory,
         Sqlite,
         Postgres
     }

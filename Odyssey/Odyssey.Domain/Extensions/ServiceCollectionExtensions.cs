@@ -12,6 +12,9 @@ namespace Odyssey.Domain.Extensions
         {
             services.Configure<RouteSettings>(configuration.GetSection(nameof(RouteSettings)));
             services.Configure<AuthenticationSettings>(configuration.GetSection(nameof(AuthenticationSettings)));
+            services.AddScoped<IUserService, UserService>();
+            services.Configure<AdminSettings>(configuration.GetSection(nameof(AdminSettings)));
+            AdminSettings.Validate(services.AddOptions<AdminSettings>()).ValidateOnStart();
             services.AddScoped<IDbSeeder, DbSeeder>();
 
             return services;

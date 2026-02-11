@@ -16,17 +16,13 @@ namespace Odyssey.Persistence.Extensions
             services.Configure<PersistenceSettings>(configuration.GetSection(nameof(PersistenceSettings)));
             var persistenceSettings = configuration.GetSection<PersistenceSettings>();
 
-            switch (persistenceSettings.Driver)
+            switch (persistenceSettings.DatabaseSettings.Driver)
             {
-                case StorageDrivers.Memory:
-                    services.AddDbContext<ApplicationDbContext>(o =>
-                        o.UseInMemoryDatabase("Odyssey"));
-                    break;
 
-                case StorageDrivers.Sqlite:
+                case DatabaseDriver.Sqlite:
                     var sqliteConnection = new SqliteConnectionStringBuilder
                     {
-                        DataSource = Path.Join(persistenceSettings.FileDataPath, persistenceSettings.Sqlite!.FilePath)
+                        DataSource = persistenceSettings.DatabaseSettings.Sqlite!.FilePath
                     }.ToString();
 
                     services.AddDbContext<SqliteApplicationDbContext>(o =>
@@ -35,14 +31,14 @@ namespace Odyssey.Persistence.Extensions
                         sp.GetRequiredService<SqliteApplicationDbContext>());
                     break;
 
-                case StorageDrivers.Postgres:
+                case DatabaseDriver.Postgres:
                     var pgConnection = new NpgsqlConnectionStringBuilder
                     {
-                        Port = persistenceSettings.Postgres!.Port,
-                        Host = persistenceSettings.Postgres!.Host,
-                        Username = persistenceSettings.Postgres!.Username,
-                        Password = persistenceSettings.Postgres!.Password,
-                        Database = persistenceSettings.Postgres!.Database,
+                        Port = persistenceSettings.DatabaseSettings.Postgres!.Port,
+                        Host = persistenceSettings.DatabaseSettings.Postgres!.Host,
+                        Username = persistenceSettings.DatabaseSettings.Postgres!.Username,
+                        Password = persistenceSettings.DatabaseSettings.Postgres!.Password,
+                        Database = persistenceSettings.DatabaseSettings.Postgres!.Database,
                     }.ToString();
 
                     services.AddDbContext<PostgresApplicationDbContext>(o =>
@@ -50,7 +46,6 @@ namespace Odyssey.Persistence.Extensions
                     services.AddScoped<ApplicationDbContext>(sp =>
                         sp.GetRequiredService<PostgresApplicationDbContext>());
                     break;
-
             }
 
             return services;

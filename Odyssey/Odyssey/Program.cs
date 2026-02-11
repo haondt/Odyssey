@@ -68,9 +68,14 @@ builder.Services
     })
     .AddSignInManager()
     .AddDefaultTokenProviders()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.TryAddTransient<IEmailSender, NoOpEmailSender>();
 builder.Services.TryAddTransient(typeof(IEmailSender<>), typeof(DefaultMessageEmailSender<>));
+builder.Services.Configure<IdentityOptions>(o =>
+{
+    o.User.AllowedUserNameCharacters = AuthConstants.AllowedUsernameCharacters;
+});
 
 
 // add other web services
