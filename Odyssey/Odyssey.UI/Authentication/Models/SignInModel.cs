@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Odyssey.Client.Authentication.Models
+namespace Odyssey.UI.Authentication.Models
 {
     public class SignInModel
     {

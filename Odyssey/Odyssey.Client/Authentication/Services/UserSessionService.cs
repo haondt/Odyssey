@@ -10,7 +10,7 @@ namespace Odyssey.Client.Authentication.Services
     public class UserSessionService(
         ApplicationDbContext dbContext,
         SignInManager<UserDataSurrogate> signInManager,
-    UserManager<UserDataSurrogate> userManager) : IUserSessionService
+        UserManager<UserDataSurrogate> userManager) : IUserSessionService
     {
         public Task<DetailedResult<UserDataSurrogate, List<IdentityError>>> RegisterAdministratorAsync(string username, string password) =>
             RegisterUserAsync(username, password, [AuthConstants.AdminRole]);
@@ -60,5 +60,6 @@ namespace Odyssey.Client.Authentication.Services
                 return new();
             return surrogate;
         }
+
     }
 }

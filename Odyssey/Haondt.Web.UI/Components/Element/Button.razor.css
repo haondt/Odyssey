@@ -14,21 +14,21 @@
     --button-color: var(--haondt-ui-color-subtitle);
 }
 
-.button-type-fill {
+.button-style-fill {
     color: var(--haondt-ui-color-background);
     background-color: var(--button-color);
     font-weight: 400;
 }
 
-.button-type-fill:hover {
+.button-style-fill:hover {
     background-color: hsl(from var(--button-color) h s calc(l + var(--button-hover-delta)));
 }
 
-.button-type-ghost {
+.button-style-ghost {
     color: var(--button-color);
 }
 
-.button-type-skeleton {
+.button-style-skeleton {
     color: var(--button-color);
     --haondt-ui-control-padding-x: 0;
     --haondt-ui-control-height: initial;

@@ -6,10 +6,22 @@
     public Optional<string> HxPost { get; set; } 
 
     [Parameter]
+    public Optional<string> HxGet { get; set; } 
+
+    [Parameter]
+    public Optional<string> HxPushUrl { get; set; } 
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public ButtonType Type { get; set; }  = ButtonType.Fill;
+    public ButtonStyle Style { get; set; }  = ButtonStyle.Fill;
+
+    /// <summary>
+    /// Should probably be one of submit, button or reset
+    /// </summary>
+    [Parameter]
+    public Optional<string> Type { get; set; }
 
     [Parameter]
     public ButtonColor Color { get; set; } = ButtonColor.Text;
@@ -19,12 +31,18 @@
 
     protected override void OnInitialized()
     {
-        if(Type.CssClass.TryGetValue(out var type))
-            _rootClasses.Add(type);
+        if(Style.CssClass.TryGetValue(out var style))
+            _rootClasses.Add(style);
         if(Color.CssClass.TryGetValue(out var color))
             _rootClasses.Add(color);
         if (HxPost.TryGetValue(out var hxPost))
             _rootAttributes["hx-post"] = hxPost;
+        if (HxGet.TryGetValue(out var hxGet))
+            _rootAttributes["hx-get"] = hxGet;
+        if (HxPushUrl.TryGetValue(out var hxPushUrl))
+            _rootAttributes["hx-push-url"] = hxPushUrl;
+        if (Type.TryGetValue(out var type))
+            _rootAttributes["type"] = type;
     }
 }
 <button @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">

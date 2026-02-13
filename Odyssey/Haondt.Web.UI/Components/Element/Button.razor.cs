@@ -2,7 +2,7 @@
 
 namespace Haondt.Web.UI.Components.Element
 {
-    public enum ButtonType
+    public enum ButtonStyle
     {
         Fill,
         /// <summary>
@@ -22,13 +22,13 @@ namespace Haondt.Web.UI.Components.Element
 
     public static class ButtonExtensions
     {
-        extension(ButtonType type)
+        extension(ButtonStyle type)
         {
             public Optional<string> CssClass => type switch
             {
-                ButtonType.Fill => "button-type-fill",
-                ButtonType.Ghost => "button-type-ghost",
-                ButtonType.Skeleton => "button-type-skeleton",
+                ButtonStyle.Fill => "button-style-fill",
+                ButtonStyle.Ghost => "button-style-ghost",
+                ButtonStyle.Skeleton => "button-style-skeleton",
                 _ => new Optional<string>()
             };
         }

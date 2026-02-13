@@ -30,7 +30,6 @@
     <Folder Include="Admin\Components\" />
     <Folder Include="Authentication\Components\" />
     <Folder Include="Core\Attributes\" />
-    <Folder Include="Core\Models\" />
   </ItemGroup>
 
 

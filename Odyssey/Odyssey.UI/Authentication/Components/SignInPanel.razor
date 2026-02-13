@@ -1,7 +1,12 @@
 @using Haondt.Web.UI.Services
 @using Odyssey.Client.Authentication.Models
+@using Odyssey.Domain.Core.Services
+@using Odyssey.UI.Authentication.Models
 @using Odyssey.UI.Core.Services
+@using Odyssey.Client.Authentication.Services
 @implements IValidationSummaryComponent
+@inject NavigationManager Nav
+@inject IServerSettingsService ServerSettings
 @code {
     [Parameter]
     public Optional<string> ValidationSummary { get; set; }
@@ -9,8 +14,16 @@
     [Parameter]
     public bool IsValidation { get; set; }
 
-    public const string Id = "sign-in-card";
+    public const string Id = "sign-in-panel";
 
+    private bool _showRegister = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var serverSettings = await ServerSettings.GetServerSettingsAsync();
+        _showRegister = serverSettings.Settings.OpenRegistration.Or(false);
+    }
 
 }
 
@@ -32,7 +45,13 @@
                 <p class="validation-error">@formError</p>
             }
             <Frame Template="FrameTemplate.ButtonContainer">
-                <Button Type="ButtonType.Ghost" Color="ButtonColor.Text">Register</Button>
+                @if (_showRegister)
+                {
+                    <Button
+                        HxPushUrl='"true"'
+                        HxGet="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.Register).ToString()"
+                        Type='"button"' Style="ButtonStyle.Ghost" Color="ButtonColor.Text">Register</Button>
+                }
                 <Button Color="ButtonColor.Primary">Continue</Button>
             </Frame>
         </Frame>

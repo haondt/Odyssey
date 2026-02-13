@@ -1,0 +1,15 @@
+@using Haondt.Web.UI.Services
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage]
+@attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+@code {
+
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarEmpty()
+    };
+
+}
+
+<RegisterPanel />

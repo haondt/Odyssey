@@ -8,8 +8,8 @@ using Odyssey.Persistence.Extensions;
 using Odyssey.Silo.Core.Extensions;
 using Odyssey.Silo.Core.Services;
 
-var builder = Host.CreateDefaultBuilder(args);
-
+var builder = Host.CreateDefaultBuilder(args)
+    .UseContentRoot(AppContext.BaseDirectory); // lets dotnet watch work correctly
 
 builder.UseOrleans((context, silo) =>
 {

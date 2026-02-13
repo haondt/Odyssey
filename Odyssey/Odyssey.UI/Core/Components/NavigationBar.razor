@@ -1,4 +1,5 @@
 @using Odyssey.Client.Authentication.Services
+@using Odyssey.UI.Core.Models
 @inject NavigationManager Nav
 @inject ISessionService SessionService
 @code {
@@ -10,10 +11,6 @@
     protected override async Task OnInitializedAsync()
     {
         _username = (await SessionService.GetUsernameAsync());
-    }
-    protected override async Task OnParametersSetAsync()
-    {
-        // _username = (await SessionService.GetUsernameAsync());
     }
 }
 
@@ -34,9 +31,9 @@
                     Template="FrameTemplate.Card">
                     <p class="text">@username</p>
                     <Button 
-                        Type="ButtonType.Skeleton" 
+                        Style="ButtonStyle.Skeleton" 
                         Color="ButtonColor.Primary" 
-                        HxPost="@Nav.ToAbsoluteUri("auth/sign-out").ToString()">Sign out</Button>
+                        HxPost="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.SignOut).ToString()">Sign out</Button>
                 </Frame>
             </Frame>
         }
