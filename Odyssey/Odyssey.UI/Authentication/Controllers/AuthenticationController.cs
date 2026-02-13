@@ -3,8 +3,8 @@ using Haondt.Web.UI.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Odyssey.Domain.Authentication.Models;
-using Odyssey.Domain.Authentication.Services;
+using Odyssey.Client.Authentication.Models;
+using Odyssey.Client.Authentication.Services;
 using Odyssey.UI.Authentication.Components;
 using Odyssey.UI.Core.Controllers;
 
@@ -13,7 +13,7 @@ namespace Odyssey.UI.Authentication.Controllers
     [Route("/auth")]
     public class AuthenticationController(
         ISessionService sessionService,
-        IUserService userService) : UIController
+        IUserSessionService userService) : UIController
     {
         [HttpGet("sign-in")]
         [AllowAnonymous]
@@ -33,6 +33,7 @@ namespace Odyssey.UI.Authentication.Controllers
             var result = await userService.TrySignInAsync(signIn.Username, signIn.Password);
             if (!result.IsSuccessful)
                 return await RenderValidationSummaryComponent(result.Reason);
+
 
             if (returnUrl != null)
                 ResponseData.HxRedirect(returnUrl);

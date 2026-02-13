@@ -7,23 +7,23 @@ namespace Odyssey.Persistence.Extensions
 {
     public static class ServiceProviderExtensions
     {
-        public static void PerformDatabaseMigrations(this IServiceProvider serviceProvider)
+        public static async Task PerformDatabaseMigrationsAsync(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
         {
             using var scope = serviceProvider.CreateScope();
             var persistenceSettings = scope.ServiceProvider.GetRequiredService<IOptions<PersistenceSettings>>();
 
             var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             if (persistenceSettings.Value.DatabaseSettings.DropDatabaseOnStartup)
-                db.Database.EnsureDeleted();
+                await db.Database.EnsureDeletedAsync(cancellationToken);
 
             switch (persistenceSettings.Value.DatabaseSettings.Driver)
             {
-                case DatabaseDriver.Sqlite:
                 case DatabaseDriver.Postgres:
-                    db.Database.Migrate();
+                    await db.Database.MigrateAsync(cancellationToken);
                     break;
+                case DatabaseDriver.Memory:
                 default:
-                    db.Database.EnsureCreated();
+                    await db.Database.EnsureCreatedAsync(cancellationToken);
                     break;
             }
         }

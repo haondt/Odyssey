@@ -1,6 +1,6 @@
 @using Haondt.Web.UI.Components.Element
 @using System.Text.Json
-@using Odyssey.Domain.Authentication.Services
+@using Odyssey.Client.Authentication.Services
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage]
 @attribute [LayoutOptions(FillPage = true)]
@@ -33,13 +33,6 @@
             "roles/admin"
         ),
     ];
-
-    private Result<string> _username;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _username = (await SessionService.GetUsernameAsync());
-    }
 
     public NavigationBar CreateNavigationBar() => new()
     {

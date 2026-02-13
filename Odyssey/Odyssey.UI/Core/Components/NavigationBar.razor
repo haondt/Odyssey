@@ -1,4 +1,4 @@
-@using Odyssey.Domain.Authentication.Services
+@using Odyssey.Client.Authentication.Services
 @inject NavigationManager Nav
 @inject ISessionService SessionService
 @code {
@@ -11,6 +11,10 @@
     {
         _username = (await SessionService.GetUsernameAsync());
     }
+    protected override async Task OnParametersSetAsync()
+    {
+        // _username = (await SessionService.GetUsernameAsync());
+    }
 }
 
 @switch(Template.Unwrap())
@@ -19,7 +23,7 @@
         <text></text>
         break;
     case NavigationBarRoles rolesBar:
-        @if(SessionService.IsAuthenticated)
+        @if(SessionService.IsAuthenticated && _username.TryGetValue(out var username))
         {
             <Frame AddClasses='"big-screen"'
                 Padding="FrameSpacing.Card"
@@ -28,7 +32,7 @@
                     Border="FrameBorder.Card"
                     Flex="FrameDirection.Row"
                     Template="FrameTemplate.Card">
-                    <p class="text">@_username.Expect()</p>
+                    <p class="text">@username</p>
                     <Button 
                         Type="ButtonType.Skeleton" 
                         Color="ButtonColor.Primary" 
@@ -38,6 +42,13 @@
         }
         break;
     case NavigationBarDefault defaultBar:
-        <p>Odyssey | @_username.Expect()</p>
+        @if(_username.TryGetValue(out username)) 
+        {
+            <p>Odyssey | @username</p>
+        }
+        else
+        {
+            <p>Odyssey</p>
+        }
         break;
 }

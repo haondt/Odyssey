@@ -19,8 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Haondt.Web.UI\Haondt.Web.UI.csproj" />
-    <ProjectReference Include="..\Odyssey.Domain\Odyssey.Domain.csproj" />
-    <ProjectReference Include="..\Odyssey.UI.Library\Odyssey.UI.Library.csproj" />
+    <ProjectReference Include="..\Odyssey.Client\Odyssey.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

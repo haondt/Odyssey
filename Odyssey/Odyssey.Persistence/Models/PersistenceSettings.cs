@@ -19,7 +19,7 @@
 
     public class DatabaseSettings
     {
-        public DatabaseDriver Driver { get; set; } = DatabaseDriver.Sqlite;
+        public DatabaseDriver Driver { get; set; } = DatabaseDriver.Memory;
         public bool DropDatabaseOnStartup { get; set; } = false;
         public SqliteSettings? Sqlite { get; set; }
         public PostgresSettings? Postgres { get; set; }

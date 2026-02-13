@@ -2,7 +2,7 @@
 {
     public enum DatabaseDriver
     {
-        Sqlite,
-        Postgres
+        Postgres,
+        Memory
     }
 }

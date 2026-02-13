@@ -1,5 +1,4 @@
 ﻿using Haondt.Core.Extensions;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,16 +18,11 @@ namespace Odyssey.Persistence.Extensions
             switch (persistenceSettings.DatabaseSettings.Driver)
             {
 
-                case DatabaseDriver.Sqlite:
-                    var sqliteConnection = new SqliteConnectionStringBuilder
-                    {
-                        DataSource = persistenceSettings.DatabaseSettings.Sqlite!.FilePath
-                    }.ToString();
-
-                    services.AddDbContext<SqliteApplicationDbContext>(o =>
-                        o.UseSqlite(sqliteConnection));
+                case DatabaseDriver.Memory:
+                    services.AddDbContext<MemoryApplicationDbContext>(o =>
+                        o.UseInMemoryDatabase("default"));
                     services.AddScoped<ApplicationDbContext>(sp =>
-                        sp.GetRequiredService<SqliteApplicationDbContext>());
+                        sp.GetRequiredService<MemoryApplicationDbContext>());
                     break;
 
                 case DatabaseDriver.Postgres:

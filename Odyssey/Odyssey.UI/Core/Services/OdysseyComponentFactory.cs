@@ -28,7 +28,7 @@ namespace Odyssey.UI.Core.Services
                     componentType = component.GetType();
                     response
                         .HxRetarget($"#{Odyssey.UI.Core.Components.Layout.Id}")
-                        .HxRetarget("unset")
+                        .HxReselect("unset")
                         .HxReswap("outerHTML");
                 }
                 else

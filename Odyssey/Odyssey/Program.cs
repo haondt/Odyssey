@@ -4,10 +4,12 @@ using Haondt.Web.UI.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Odyssey.Client.Authentication.Models;
+using Odyssey.Client.Core.Extensions;
+using Odyssey.Client.Core.Models;
 using Odyssey.Core.Constants;
-using Odyssey.Domain.Authentication.Models;
 using Odyssey.Domain.Core.Extensions;
-using Odyssey.Domain.Core.Models;
+using Odyssey.GrainInterfaces.Core.Extensions;
 using Odyssey.Persistence;
 using Odyssey.Persistence.Extensions;
 using Odyssey.Persistence.Models;
@@ -25,14 +27,19 @@ if (builder.Environment.IsDevelopment())
 
 builder.Configuration.AddEnvironmentVariables();
 
+
+
 builder.Services
     .AddHaondtWebServices(builder.Configuration, options =>
     {
         options.HtmxScriptUri = "/static/shared/vendored/htmx.org/dist/htmx.min.js";
         options.HyperscriptScriptUri = "/static/shared/vendored/hyperscript.org/dist/_hyperscript.min.js";
     })
+    .AddOdysseyGrainInterfacesServices(builder.Configuration)
+    .AddOdysseyPersistenceServices(builder.Configuration)
     .AddOdysseyDomainServices(builder.Configuration)
-    .AddOdysseyPersistenceServices(builder.Configuration);
+    .AddOdysseyClientServices(builder.Configuration);
+
 
 // Add services to the container.
 
@@ -78,6 +85,13 @@ builder.Services.Configure<IdentityOptions>(o =>
     o.User.AllowedUserNameCharacters = AuthConstants.AllowedUsernameCharacters;
 });
 
+// orleans
+
+builder.Services.AddOrleansClient(client =>
+{
+    client.ConfigureCluster(builder.Configuration);
+});
+
 
 // add other web services
 
@@ -119,13 +133,5 @@ app.MapControllers();
 app.MapHealthChecks("hc");
 
 
-app.Services.PerformDatabaseMigrations();
-await app.Services.SeedDbAsync();
-//await app.Services.DevSeedDbAsync(o =>
-//{
-//    o.AddIngredients(100);
-//    o.AddRecipes(200);
-//});
 
-
-app.Run();
+await app.RunAsync();
