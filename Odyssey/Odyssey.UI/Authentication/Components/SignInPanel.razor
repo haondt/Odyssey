@@ -1,3 +1,4 @@
+@using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Services
 @using Odyssey.Client.Authentication.Models
 @using Odyssey.Domain.Core.Services
@@ -27,33 +28,34 @@
 
 }
 
-<Frame
-    Id="@Id"
-    Gap="FrameSpacing.Card"
-    Flex="FrameDirection.Col"
-    Align="FrameAlignment.Stretch"
-    AddClasses='"content-container-s"'>
-    <p class="title text-align-center">Sign in</p>
-    <form hx-post>
-        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
-            <Field Id='"username"' Title='"Username"' Name="@nameof(SignInModel.Username)" Autocomplete='"username"' HxPreserve="true" />
-            <Field
-                Type="FieldType.Password"
-                Title='"Password"' Name="@nameof(SignInModel.Password)" Autocomplete='"current-password"' />
-            @if(ValidationSummary.TryGetValue(out var formError))
-            {
-                <p class="validation-error">@formError</p>
-            }
-            <Frame Template="FrameTemplate.ButtonContainer">
-                @if (_showRegister)
+
+<ContentContainer Layout="ContentContainerLayout.Hero" Width="ContentContainerWidth.Small" Id="@Id">
+    <Frame
+        Gap="FrameSpacing.Card"
+        Flex="FrameDirection.Col"
+        Align="FrameAlignment.Stretch">
+        <p class="title text-align-center">Sign in</p>
+        <form hx-post>
+            <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
+                <Field Id='"username"' Title='"Username"' Name="@nameof(SignInModel.Username)" Autocomplete='"username"' HxPreserve="true" />
+                <Field
+                    Type="FieldType.Password"
+                    Title='"Password"' Name="@nameof(SignInModel.Password)" Autocomplete='"current-password"' />
+                @if(ValidationSummary.TryGetValue(out var formError))
                 {
-                    <Button
-                        HxPushUrl='"true"'
-                        HxGet="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.Register).ToString()"
-                        Type='"button"' Style="ButtonStyle.Ghost" Color="ButtonColor.Text">Register</Button>
+                    <p class="validation-error">@formError</p>
                 }
-                <Button Color="ButtonColor.Primary">Continue</Button>
+                <Frame Template="FrameTemplate.ButtonContainer">
+                    @if (_showRegister)
+                    {
+                        <Button
+                            HxPushUrl='"true"'
+                            HxGet="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.Register).ToString()"
+                            Type='"button"' Style="ButtonStyle.Ghost" Color="ButtonColor.Text">Register</Button>
+                    }
+                    <Button Color="ButtonColor.Primary">Continue</Button>
+                </Frame>
             </Frame>
-        </Frame>
-    </form>
-</Frame>
+        </form>
+    </Frame>
+</ContentContainer>

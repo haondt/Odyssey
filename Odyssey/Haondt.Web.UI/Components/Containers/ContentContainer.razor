@@ -1,0 +1,49 @@
+@using Haondt.Web.UI.Components.Element
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public Optional<ContentContainerLayout> Layout { get; set; }
+
+    [Parameter]
+    public Optional<ContentContainerWidth> Width { get; set; }
+
+    [Parameter]
+    public Optional<string> Id { get; set; }
+
+    [Parameter]
+    public Optional<string> ShellId { get; set; }
+
+    [Parameter]
+    public Optional<string> BodyId { get; set; }
+
+    protected HashSet<string> _shellClasses = ["content-container-shell"];
+    protected Dictionary<string, object> _shellAttributes  = [];
+
+    protected HashSet<string> _bodyClasses = ["content-container-body"];
+    protected Dictionary<string, object> _bodyAttributes  = [];
+
+    protected override void OnInitialized()
+    {
+        if (Layout.Bind(q => q.CssClass).TryGetValue(out var layout))
+        {
+            _shellClasses.Add(layout);
+            _bodyClasses.Add(layout);
+        }
+        if (Width.Bind(q => q.CssClass).TryGetValue(out var width))
+            _bodyClasses.Add(width);
+
+        if (Id.TryGetValue(out var id))
+            _shellAttributes["id"] = id;
+        if (ShellId.TryGetValue(out var shellId))
+            _shellAttributes["id"] = shellId;
+        if (BodyId.TryGetValue(out var bodyId))
+            _bodyAttributes["id"] = bodyId;
+    }
+}
+<div class="@string.Join(' ', _shellClasses)" @attributes="_shellAttributes">
+    <div class="@string.Join(' ', _bodyClasses)" @attributes="_bodyAttributes">
+        @ChildContent
+    </div>
+</div>

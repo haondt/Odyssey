@@ -52,18 +52,6 @@
 
 /* containers */
 
-.content-container {
-    max-width: var(--haondt-ui-content-width);
-    margin: auto;
-    width: calc(100% - 40px);
-}
-
-.content-container-s {
-    max-width: var(--haondt-ui-content-width-s);
-    margin: auto;
-    width: calc(100% - 20px);
-}
-
 .max-width-content {
     max-width: var(--haondt-ui-content-width) !important;
 }

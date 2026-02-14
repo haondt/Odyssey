@@ -41,4 +41,8 @@
 	  <Exec Command="bun run postcss &quot;$(ProjectDir)/**/*.pcss&quot; -v -d $(ProjectDir) --base $(ProjectDir) --ext &quot;css&quot;" />
 	</Target>
 
+	<ItemGroup>
+		<Watch Include="..\**\*.pcss" />
+	</ItemGroup>
+
 </Project>
