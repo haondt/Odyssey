@@ -1,0 +1,74 @@
+@using Haondt.Web.UI.Components.Element
+@using Microsoft.AspNetCore.Components.Forms
+@code {
+    [Parameter]
+    public List<SecondaryNavigationBarItem> LeftItems { get; set; } = [];
+    [Parameter]
+    public List<SecondaryNavigationBarItem> RightItems { get; set; } = [];
+    [Parameter]
+    public SecondaryNavigationBarSpacing Spacing { get; set; } = SecondaryNavigationBarSpacing.SpaceApart;
+
+    private HashSet<string> _rootClasses = ["sec-nav-bar"];
+    
+    protected override void OnInitialized()
+    {
+        _rootClasses.Add(Spacing switch
+        {
+            SecondaryNavigationBarSpacing.SpaceApart => "sec-nav-bar-space-apart",
+            SecondaryNavigationBarSpacing.Stretch => "sec-nav-bar-space-stretch",
+            _ => ""
+        });
+    }
+}
+
+@code{
+    private static RenderFragment RenderItem(SecondaryNavigationBarItem item)  =>
+        @<li>
+            @if (item.Href.TryGetValue(out var href)) 
+            {
+                @if (item.Active)
+                {
+                    <a class="active" href="@href">@item.Text</a>
+                }
+                else
+                {
+                    <a hx-boost="true" href="@href">@item.Text</a>
+                }
+            }
+            else
+            {
+                @if (item.Active)
+                {
+                    <p class="active">@item.Text</p>
+                }
+                else
+                {
+                    <p>@item.Text</p>
+                }
+            }
+        </li>;
+}
+
+<div class="@string.Join(' ', _rootClasses)" hx-preserve>
+    @if (Spacing == SecondaryNavigationBarSpacing.SpaceApart) 
+    {
+        <ul>
+            @foreach(var item in LeftItems) 
+                @RenderItem(item)
+        </ul>
+        <HorizontalSpacer />
+        <ul>
+            @foreach(var item in RightItems)
+                @RenderItem(item)
+        </ul>
+    }
+    else if (Spacing == SecondaryNavigationBarSpacing.Stretch) 
+    {
+        <ul>
+            @foreach(var item in LeftItems)
+                @RenderItem(item)
+            @foreach(var item in RightItems)
+                @RenderItem(item)
+        </ul>
+    }
+</div>

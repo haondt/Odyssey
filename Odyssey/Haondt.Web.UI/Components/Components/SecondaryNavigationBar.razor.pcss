@@ -1,0 +1,72 @@
+.sec-nav-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-shadow: inset 0 calc(var(--haondt-ui-border-width) * -1) 0 0 var(--haondt-ui-color-border);
+    width: 100%;
+
+    > ul {
+        display: flex;
+        flex-direction: row;
+
+        > li {
+            height: var(--haondt-ui-control-height);
+            display: flex;
+            align-items: center;
+            border-bottom: var(--haondt-ui-border-width) solid transparent;
+
+            > a, > p {
+                padding-left: var(--haondt-ui-control-padding-x);
+                padding-right: var(--haondt-ui-control-padding-x);
+                font-size: var(--haondt-ui-text-font-size);
+                font-weight: var(--haondt-ui-text-font-weight);
+                color: var(--haondt-ui-color-text);
+                white-space: nowrap;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            > a.active, > p.active {
+                color: var(--haondt-ui-color-accent);
+            }
+
+            > a:not(.active), > p:not(.active) {
+            }
+
+            > a:hover:not(.active), > p:hover:not(.active) {
+            }
+        }
+
+        > li:has(> .active) {
+            border-bottom: var(--haondt-ui-border-width) solid var(--haondt-ui-color-accent);
+        }
+
+        > li:not(:has(> .active)) {
+            transition: border-bottom var(--haondt-ui-hover-transition-duration-leave) var(--haondt-ui-hover-transition-timing);
+        }
+
+        > li:not(:has(> .active)):has(> a):hover {
+            border-bottom: var(--haondt-ui-border-width) solid var(--haondt-ui-color-text);
+            transition-duration: var(--haondt-ui-hover-transition-duration-enter);
+        }
+    }
+}
+
+@media (--haondt-ui-media-query-gte-m) {
+    .sec-nav-bar {
+        flex-wrap: wrap;
+        > ul {
+            flex-wrap: wrap;
+        }
+    }
+}
+
+@media (pointer: coarse) {
+    .sec-nav-bar {
+        scrollbar-width: none;
+    }
+}
+

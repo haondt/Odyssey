@@ -1,0 +1,19 @@
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@implements IHasNavigationBarComponent
+
+@code {
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarDefault(OdysseyRoles.Host)
+    };
+
+}
+
+<ContentContainer>
+    <Frame Gap="FrameSpacing.Panel" Flex="FrameDirection.Col">
+        <HostSecondaryNavigationBar ActiveTab="HostSecondaryNavigationBarTab.Party" />
+        <p>Host party tab</p>
+    </Frame>
+</ContentContainer>

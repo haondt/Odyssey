@@ -18,6 +18,7 @@ namespace Odyssey.UI.Core.Services
                 .AsOptional()
                 .Map(q => (LayoutOptionsAttribute)q);
 
+
             return Task.FromResult<IComponent>(new Layout
             {
                 Content = content,

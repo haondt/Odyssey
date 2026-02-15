@@ -5,6 +5,7 @@
       "dependencies": {
         "htmx.org": "2.0.8",
         "hyperscript.org": "0.9.14",
+        "idiomorph": "0.7.4",
       },
       "devDependencies": {
         "@csstools/postcss-global-data": "^4.0.0",
@@ -89,6 +90,8 @@
     "htmx.org": ["htmx.org@2.0.8", "", {}, "sha512-fm297iru0iWsNJlBrjvtN7V9zjaxd+69Oqjh4F/Vq9Wwi2kFisLcrLCiv5oBX0KLfOX/zG8AUo9ROMU5XUB44Q=="],
 
     "hyperscript.org": ["hyperscript.org@0.9.14", "", { "dependencies": { "markdown-it-deflist": "^2.1.0", "terser": "^5.14.1" }, "bin": { "_hyperscript": "src/node-hyperscript.js" } }, "sha512-ugmojsQQUMmXcnwaXYiYf8L3GbeANy/m59EmE/0Z6C5eQ52fOuSrvFkuEIejG9BdpbYB4iTtoYGqV99eYqDVMA=="],
+
+    "idiomorph": ["idiomorph@0.7.4", "", {}, "sha512-uCdSpLo3uMfqOmrwXTpR1k/sq4sSmKC7l4o/LdJOEU+MMMq+wkevRqOQYn3lP7vfz9Mv+USBEqPvi0XhdL9ENw=="],
 
     "is-binary-path": ["is-binary-path@2.1.0", "", { "dependencies": { "binary-extensions": "^2.0.0" } }, "sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw=="],
 

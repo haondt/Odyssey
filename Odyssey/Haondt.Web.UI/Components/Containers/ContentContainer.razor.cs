@@ -7,10 +7,15 @@ namespace Haondt.Web.UI.Components.Containers
         Default,
         Small
     }
+
+    /// <summary>
+    /// Center and hero require the parent to be full height
+    /// </summary>
     public enum ContentContainerLayout
     {
         Center,
         Hero,
+        Top,
     }
     public static class ContentContainerExtensions
     {
@@ -20,6 +25,7 @@ namespace Haondt.Web.UI.Components.Containers
             {
                 ContentContainerLayout.Center => "content-container-layout-center",
                 ContentContainerLayout.Hero => "content-container-layout-hero",
+                ContentContainerLayout.Top => "content-container-layout-top",
                 _ => new Optional<string>()
             };
         }

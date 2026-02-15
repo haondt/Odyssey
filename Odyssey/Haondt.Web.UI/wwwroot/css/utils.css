@@ -50,6 +50,14 @@
 .pos-relative { position: relative !important; }
 .pos-absolute { position: absolute !important; }
 
+.overflow-x-auto { overflow-x: auto !important; }
+.overflow-x-hidden { overflow-x: hidden !important; }
+
+.overflow-y-auto { overflow-y: auto !important; }
+.overflow-y-hidden { overflow-y: hidden !important; }
+
+.width-full { width: 100% !important; }
+
 /* containers */
 
 .max-width-content {

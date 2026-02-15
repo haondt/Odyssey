@@ -4,6 +4,7 @@
 @using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Components.Element
 @using Haondt.Web.UI.Components.Htmx
+@using Odyssey.UI.Core.Extensions
 @using Odyssey.UI.Core.Services
 @code {
     [Parameter, EditorRequired]
@@ -11,6 +12,9 @@
 
     [Parameter]
     public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
+
+    private bool _swapWebSocket = false;
+    private string _targetRole = OdysseyRoles.None;
 
     [CascadingParameter]
     public IRequestData RequestData { get; set; } = default!;
@@ -23,12 +27,54 @@
     {
         if (LayoutOptionsAttribute.Map(x => x.FillPage).Or(false))
             _bodyContentClasses = "fill-page";
+
+        var renderPageAttribute = Content.GetType().GetCustomAttributes(typeof(OdysseyRenderPageAttribute), inherit: false).FirstOrDefault().AsOptional().Map(q => (OdysseyRenderPageAttribute)q);
+
+        _targetRole = renderPageAttribute.Map(q => q.Role).Or(OdysseyRoles.None);
+        var currentRole = RequestData.HxCurrentPath().Map(q =>
+        {
+            var segments = q.Split("/").Skip(1).Take(2).ToList();
+            if (segments.Count != 2)
+                return OdysseyRoles.None;
+            if (segments[0] != "roles")
+                return OdysseyRoles.None;
+            return segments[1] switch
+            {
+                OdysseyRoles.Host => OdysseyRoles.Host,
+                OdysseyRoles.Admin => OdysseyRoles.Admin,
+                OdysseyRoles.Device => OdysseyRoles.Device,
+                OdysseyRoles.Display => OdysseyRoles.Display,
+                _ => OdysseyRoles.None
+            };
+        }).Or(OdysseyRoles.None);
+
+        _swapWebSocket = !RequestData.IsHxRequest() ||  currentRole != _targetRole;
     }
 }
 
 <div id="@Id" class="@_bodyContentClasses">
-    <div id="modal-container" class="modal" hx-preserve></div>
-    <ToastContainer />
+    @if(_swapWebSocket) 
+    {
+        @if(_targetRole == OdysseyRoles.None)
+        {
+            <div id="websocket-container"></div>
+        }
+        else
+        {
+            <div id="websocket-container" hx-ext="ws" ws-connect="/ws/@_targetRole"
+                _="
+                    on load
+                        log localStorage.clientId
+                        set localStorage.clientId to '@Guid.NewGuid()'
+                        log localStorage.clientId
+                    end
+                ">ws: @_targetRole/@Guid.NewGuid()</div>
+        }
+    }
+    else
+    {
+        <div id="websocket-container" hx-preserve></div>
+    }
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
             @if(Content is IHasNavigationBarComponent hasNav)
@@ -39,8 +85,5 @@
         <div id="layout-content-container">
             <ObjectComponent Component="@Content"/>
         </div>
-    </div>
-    <div id="footer-container">
-        <div style="height:80px;"></div>
     </div>
 </div>

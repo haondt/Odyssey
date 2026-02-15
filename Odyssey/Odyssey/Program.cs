@@ -15,6 +15,7 @@ using Odyssey.Persistence.Extensions;
 using Odyssey.Persistence.Models;
 using Odyssey.Services;
 using Odyssey.UI.Core.Extensions;
+using Odyssey.UI.Core.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -130,6 +131,7 @@ app.UseCors(OdysseyConstants.CorsPolicyName);
 app.UseAntiforgery();
 
 app.MapControllers();
+app.UseMiddleware<UnmappedRouteHandlerMiddleware>();
 app.MapHealthChecks("hc");
 
 

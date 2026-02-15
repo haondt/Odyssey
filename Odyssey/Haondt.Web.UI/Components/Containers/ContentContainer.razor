@@ -4,10 +4,10 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public Optional<ContentContainerLayout> Layout { get; set; }
+    public ContentContainerLayout Layout { get; set; } = ContentContainerLayout.Top;
 
     [Parameter]
-    public Optional<ContentContainerWidth> Width { get; set; }
+    public ContentContainerWidth Width { get; set; } = ContentContainerWidth.Default;
 
     [Parameter]
     public Optional<string> Id { get; set; }
@@ -26,12 +26,12 @@
 
     protected override void OnInitialized()
     {
-        if (Layout.Bind(q => q.CssClass).TryGetValue(out var layout))
+        if (Layout.CssClass.TryGetValue(out var layout))
         {
             _shellClasses.Add(layout);
             _bodyClasses.Add(layout);
         }
-        if (Width.Bind(q => q.CssClass).TryGetValue(out var width))
+        if (Width.CssClass.TryGetValue(out var width))
             _bodyClasses.Add(width);
 
         if (Id.TryGetValue(out var id))

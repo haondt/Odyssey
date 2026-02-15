@@ -39,6 +39,10 @@ namespace Odyssey.UI.Core.Extensions
             //{
             //    Uri = "/static/shared/vendored/htmx-ext-loading-states/loading-states.js"
             //});
+            services.AddScoped<IHeadEntryDescriptor>(sp => new ScriptDescriptor
+            {
+                Uri = "/static/shared/vendored/idiomorph/dist/idiomorph-ext.min.js"
+            });
             services.AddScoped<IHeadEntryDescriptor>(_ => new StyleSheetDescriptor
             {
                 Uri = "/static/Odyssey.styles.css",

@@ -1,9 +1,9 @@
 #hero-text {
     font-size:170px;
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1024px) {
     #hero-text {
-        font-size: 140px;
+        font-size: 120px;
     }
 }
 @media screen and (max-width: 768px) {
@@ -11,4 +11,3 @@
         font-size: 64px;
     }
 }
-

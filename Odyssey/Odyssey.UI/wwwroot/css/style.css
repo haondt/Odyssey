@@ -6,7 +6,7 @@
 
 /* big screen mode */
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1025px) {
     .big-screen {
         --haondt-ui-text-font-size: calc(2 * var(--haondt-ui-text-font-size-base));
         --haondt-ui-subtitle-font-size: calc(2 * var(--haondt-ui-subtitle-font-size-base));

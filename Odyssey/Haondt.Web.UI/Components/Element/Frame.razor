@@ -103,9 +103,6 @@
             if (Gap.Bind(q => q.GapCssClass).TryGetValue(out var gapClass))
                 _rootClasses.Add(gapClass);
 
-            if (Padding.Bind(q => q.PaddingCssClass).TryGetValue(out var paddingClass))
-                _rootClasses.Add(paddingClass);
-
         }
 
         if (Grid.TryGetValue(out var grid))
@@ -128,9 +125,10 @@
             if (Gap.Bind(q => q.GapCssClass).TryGetValue(out var gapClass))
                 _rootClasses.Add(gapClass);
 
-            if (Padding.Bind(q => q.PaddingCssClass).TryGetValue(out var paddingClass))
-                _rootClasses.Add(paddingClass);
         }
+
+        if (Padding.Bind(q => q.PaddingCssClass).TryGetValue(out var paddingClass))
+            _rootClasses.Add(paddingClass);
 
         if (AddClasses.TryGetValue(out var addClasses))
             _rootClasses.Add(addClasses);

@@ -67,6 +67,7 @@
 - light & dark themes for system
 - odyssey, "hybrid" (gameshow colors but muted, odyssey-style), "native" (full on gameshow colors) colorscheme options (in application settings, per game)
 - game changer / make some noise / trivia / generic points game (put this text on board, give me the option to have people buzz in for things, let me arbitrarily assign a cuztomizable quanity of points to a given player at any time
+  - questions can be text, video or audio
 - Debug Game for verifying the system before we move to family feud and whatnot
 
 # tech details

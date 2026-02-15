@@ -85,7 +85,7 @@
     --haondt-ui-hint-font-size-base: 0.875rem;
     --haondt-ui-hint-font-size: var(--haondt-ui-hint-font-size-base);
 
-    --haondt-ui-monospace-fonts: Inter, Roboto Mono, Inconsolata, Hack, SF Mono, Source Code Pro, Ubuntu Mono, monospace;
+    --haondt-ui-monospace-fonts: Roboto Mono, Inconsolata, Hack, SF Mono, Source Code Pro, Ubuntu Mono, monospace;
     --haondt-ui-font-family: sans-serif;
 
     --haondt-ui-spacing-base: 1rem;
@@ -101,10 +101,18 @@
     --haondt-ui-control-height: var(--haondt-ui-control-height-base);
     --haondt-ui-control-padding-base: 1rem;
     --haondt-ui-control-padding-x: calc(0.625 * var(--haondt-ui-control-padding-base));
+
+    --haondt-ui-hover-transition-duration-enter: 0.1s;
+    --haondt-ui-hover-transition-duration-leave: 0.3s;
+    --haondt-ui-hover-transition-timing: ease;
 }
 
-@custom-media --haondt-ui-media-query-max-width-m screen and (max-width: 768px);
-@custom-media --haondt-ui-media-query-max-width-l screen and (max-width: 1024px);
-@custom-media --haondt-ui-media-query-max-width-xl screen and (max-width: 1200px);
+/* display is smaller or equal to device of size x */
+@custom-media --haondt-ui-media-query-lte-s screen and (max-width: 768px);
+@custom-media --haondt-ui-media-query-lte-m screen and (max-width: 1024px);
+@custom-media --haondt-ui-media-query-lte-l screen and (max-width: 1200px);
 
-@custom-media --haondt-ui-media-query-min-width-m screen and (min-width: 768px);
+/* display is larger or equal to device of size x */
+@custom-media --haondt-ui-media-query-gte-m screen and (min-width: 769px);
+@custom-media --haondt-ui-media-query-gte-l screen and (min-width: 1025px);
+@custom-media --haondt-ui-media-query-gte-xl screen and (min-width: 1201px);

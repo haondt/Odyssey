@@ -1,0 +1,50 @@
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.UI.Core.Services
+@using Odyssey.UI.Core.Components
+@attribute [RenderPage]
+@attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+
+@code {
+    [Parameter, EditorRequired]
+    public required int StatusCode { get; set; }
+    [Parameter]
+    public Optional<string> Message { get; set; }
+    [Parameter]
+    public Optional<string> Details { get; set; }
+
+    [CascadingParameter]
+    public IResponseData Response { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        Response.Status(StatusCode);
+    }
+
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarMinimal()
+    };
+}
+
+<ContentContainer Layout="ContentContainerLayout.Hero">
+    <Frame
+        Align="FrameAlignment.Start"
+        Gap="FrameSpacing.Line"
+        Flex="FrameDirection.Col">
+        <p class="title">@StatusCode.ToString()</p>
+        @if(Message.TryGetValue(out var message)) 
+        {
+            <p class="subtitle">@message</p>
+        }
+        @if(Details.TryGetValue(out var details)) 
+        {
+            <Frame Template="FrameTemplate.Card" AddClasses='"width-full"'>
+                <div class="overflow-x-auto overflow-y-hidden">
+                    <div class="text monospace" style="white-space:pre;">@details</div>
+                </div>
+            </Frame>
+        }
+    </Frame>
+</ContentContainer>

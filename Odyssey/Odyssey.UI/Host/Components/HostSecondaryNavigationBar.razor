@@ -1,0 +1,24 @@
+@using Haondt.Web.UI.Components.Components
+@code {
+    [Parameter, EditorRequired]
+    public required HostSecondaryNavigationBarTab ActiveTab {get; set;}
+
+    private List<SecondaryNavigationBarItem> LeftItems = [];
+    private List<SecondaryNavigationBarItem> RightItems = [];
+
+    protected override void OnInitialized()
+    {
+        LeftItems = [
+            new("Party", OdysseyRoutes.Roles.Host.Party.Index, ActiveTab == HostSecondaryNavigationBarTab.Party),
+            new("Sessions", OdysseyRoutes.Roles.Host.Sessions.Index, ActiveTab == HostSecondaryNavigationBarTab.Sessions),
+            new("Boards", OdysseyRoutes.Roles.Host.Boards.Index, ActiveTab == HostSecondaryNavigationBarTab.Boards),
+            new("Soundboard", OdysseyRoutes.Roles.Host.Soundboard.Index, ActiveTab == HostSecondaryNavigationBarTab.Soundboard),
+        ];
+        RightItems = [
+            new("Settings", OdysseyRoutes.Roles.Host.Settings.Index, ActiveTab == HostSecondaryNavigationBarTab.Settings),
+        ];
+    }
+
+}
+
+<SecondaryNavigationBar LeftItems="@LeftItems" RightItems="@RightItems" Spacing="SecondaryNavigationBarSpacing.SpaceApart" />

@@ -6,6 +6,9 @@
     ],
     "hyperscript.org": [
       "dist/_hyperscript.min.js"
+    ],
+    "idiomorph": [
+      "dist/idiomorph-ext.min.js"
     ]
   }
 }

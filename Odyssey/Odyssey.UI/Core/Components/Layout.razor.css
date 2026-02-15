@@ -1,7 +1,6 @@
 #layout-container {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     > #page-container {
         display: flex;
         flex-direction: column;
@@ -10,10 +9,12 @@
             flex-direction: column;
         }
     }
+    margin-bottom: 80px;
 }
 
 #layout-container.fill-page {
     flex-grow: 1;
+    overflow-y: auto;
 
     > #page-container {
         flex-grow: 1;
@@ -21,8 +22,5 @@
             flex-grow: 1;
         }
     }
-
-    > #footer-container {
-        display: none;
-    }
+    margin-bottom: 0;
 }

@@ -4,7 +4,7 @@
 @inject ISessionService SessionService
 @code {
     [Parameter, EditorRequired]
-    public required Union<NavigationBarEmpty, NavigationBarDefault, NavigationBarRoles> Template { get; set; }
+    public required Union<NavigationBarEmpty, NavigationBarDefault, NavigationBarRoles, NavigationBarMinimal> Template { get; set; }
 
     private Result<string> _username;
 
@@ -47,5 +47,8 @@
         {
             <p>Odyssey</p>
         }
+        break;
+    case NavigationBarMinimal:
+        <p>Odyssey</p>
         break;
 }
