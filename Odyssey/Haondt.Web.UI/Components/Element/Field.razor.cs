@@ -6,7 +6,8 @@ namespace Haondt.Web.UI.Components.Element
     {
         Text,
         Checkbox,
-        Password
+        Password,
+        Search
     }
     public enum FieldSize
     {

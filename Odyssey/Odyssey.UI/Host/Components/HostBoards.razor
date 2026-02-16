@@ -1,0 +1,22 @@
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@implements IHasNavigationBarComponent
+
+@code {
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarDefault(OdysseyRoles.Host)
+    };
+}
+
+<ContentContainer>
+    <Frame Gap="FrameSpacing.Panel" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+        <HostSecondaryNavigationBar ActiveTab="HostSecondaryNavigationBarTab.Boards" />
+        <Frame Template="FrameTemplate.ButtonContainer">
+            <Field Type="FieldType.Search" Placeholder='"Search"'></Field>
+            <Button Color="ButtonColor.Text">Import</Button>
+            <Button Color="ButtonColor.Primary">New board</Button>
+        </Frame>
+    </Frame>
+</ContentContainer>

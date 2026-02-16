@@ -1,0 +1,13 @@
+@code {
+    [Parameter]
+    public List<IComponent> Items { get; set; } = [];
+}
+
+<ul>
+    @foreach(var item in Items)
+    {
+        <li>
+            <ObjectComponent Component="item" />
+        </li>
+    }
+</ul>

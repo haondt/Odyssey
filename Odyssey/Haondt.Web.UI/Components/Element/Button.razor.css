@@ -20,6 +20,10 @@
     font-weight: 400;
 }
 
+.button-style-fill.button-color-text {
+    --button-color: var(--haondt-ui-color-text);
+}
+
 .button-style-fill:hover {
     background-color: hsl(from var(--button-color) h s calc(l + var(--button-hover-delta)));
 }

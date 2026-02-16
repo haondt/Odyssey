@@ -16,5 +16,8 @@ namespace Odyssey.UI.Host.Controllers
 
         [HttpGet(OdysseyRoutes.Roles.Host.Sessions.Index)]
         public Task<IResult> GetSessions() => ComponentFactory.RenderComponentAsync<Components.HostSessions>();
+
+        [HttpGet(OdysseyRoutes.Roles.Host.Boards.Index)]
+        public Task<IResult> GetBoards() => ComponentFactory.RenderComponentAsync<Components.HostBoards>();
     }
 }

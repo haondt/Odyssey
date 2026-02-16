@@ -31,6 +31,7 @@
     protected Dictionary<string, object> _labelAttributes  = [];
 
     protected HashSet<string> _inputClasses = ["input"];
+    protected HashSet<string> _rootClasses = ["field"];
 
     [Parameter]
     public Optional<string> InputClasses { get; set; }
@@ -49,6 +50,7 @@
 
             case FieldType.Text:
             case FieldType.Password:
+            case FieldType.Search:
                 {
 
                     if (Placeholder.TryGetValue(out var placeholder))
@@ -66,6 +68,13 @@
                 break;
         }
 
+        switch (Size)
+        {
+            case FieldSize.Fill:
+                _rootClasses.Add("field-size-fill");
+                break;
+        }
+
         if (HxPreserve)
             _inputAttributes["hx-preserve"] = "";
 
@@ -80,15 +89,19 @@
             FieldType.Text => "text",
             FieldType.Checkbox => "checkbox",
             FieldType.Password => "password",
+            FieldType.Search => "search",
             _ => "text"
         };
+
         if (InputClasses.TryGetValue(out var inputClasses))
             _inputClasses.Add(inputClasses);
+
+
 
     }
 }
 
-<div class="field">
+<div class="@string.Join(' ', _rootClasses)">
     <Frame 
         Gap="FrameSpacing.Line"
         Flex="FrameDirection.Col"
@@ -101,7 +114,7 @@
         {
             <label @attributes="_labelAttributes" class="field-title">@title</label>
         }
-        @if(Type is FieldType.Text or FieldType.Password)
+        @if(Type is FieldType.Text or FieldType.Password or FieldType.Search)
         {
             <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
         } 

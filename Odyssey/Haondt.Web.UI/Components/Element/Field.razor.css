@@ -4,6 +4,15 @@
     color: var(--haondt-ui-color-subtitle);
 }
 
-.field-size-fill {
+.flex > .field.field-size-fill, .frame-flex > .field.field-size-fill {
+    flex-grow: 1;
+    width: initial;
+}
+
+.field.field-size-fill {
     width: 100%;
+
+    .input {
+        width: 100%;
+    }
 }
