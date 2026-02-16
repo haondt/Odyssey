@@ -1,3 +1,4 @@
+@using Haondt.Web.UI.Components.Components
 @using Odyssey.Client.Authentication.Services
 @using Odyssey.UI.Core.Models
 @inject NavigationManager Nav
@@ -39,16 +40,48 @@
         }
         break;
     case NavigationBarDefault defaultBar:
-        @if(_username.TryGetValue(out username)) 
-        {
-            <p>Odyssey | @username</p>
-        }
-        else
-        {
-            <p>Odyssey</p>
-        }
+        <div>
+            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-gte-m pb-0"'>
+                <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
+                    <p class="brand-text">Odyssey</p>
+                </Frame>
+                <HorizontalSpacer />
+                <Frame Align="FrameAlignment.Center">
+                    <a hx-boost href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
+                </Frame>
+            </Frame>
+            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"default-bar-lower"'>
+                <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-lte-s"'>
+                    <p class="brand-text">Odyssey</p>
+                    <VerticalBar />
+                </Frame>
+                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"overflow-hidden"'>
+                    <a class="breadcrumb-text" hx-boost="true" href="@defaultBar.RoleRoute">@defaultBar.RoleText</a>
+                    @foreach(var breadcrumb in defaultBar.Breadcrumbs)
+                    {
+                        var crushableClass = breadcrumb.Crushable ? "breadcrumb-text-crushable" : "";
+                        <span class="breadcrumb-divider"></span>
+                        if(breadcrumb.Href.TryGetValue(out var href))
+                        {
+                            <a class="breadcrumb-text @crushableClass" hx-boost="true" href="@href">@breadcrumb.Text</a>
+                        }
+                        else
+                        {
+                            <p class="breadcrumb-text @crushableClass">@breadcrumb.Text</p>
+                        }
+                    }
+                </Frame>
+                <HorizontalSpacer />
+                <Frame AddClasses='"hidden-lte-s"' Align="FrameAlignment.Center">
+                    <a hx-boost href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
+                </Frame>
+            </Frame>
+        </div>
         break;
     case NavigationBarMinimal:
-        <p>Odyssey</p>
+        <Frame Padding="FrameSpacing.Card">
+            <p class="brand-text">Odyssey</p>
+            <VerticalBar />
+        </Frame>
         break;
 }

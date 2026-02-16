@@ -19,10 +19,10 @@ namespace Odyssey.UI.Core.Middlewares
             if (!string.IsNullOrEmpty(context.Response.ContentType))
                 return;
 
-            var component = new ErrorComponent
+            var component = new ErrorPage
             {
                 StatusCode = 404,
-                Message = "Not found",
+                Message = "Not found"
             };
 
             var result = await componentFactory.RenderComponentAsync(component);

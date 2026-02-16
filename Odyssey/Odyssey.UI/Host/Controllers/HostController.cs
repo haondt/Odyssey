@@ -9,7 +9,7 @@ namespace Odyssey.UI.Host.Controllers
     public class HostController : UIController
     {
         [HttpGet]
-        public Task<IResult> Get() => ComponentFactory.RenderComponentAsync<Components.Host>();
+        public IResult Get() => TypedResults.Redirect(OdysseyRoutes.Roles.Host.Party.Index);
 
         [HttpGet(OdysseyRoutes.Roles.Host.Party.Index)]
         public Task<IResult> GetParty() => ComponentFactory.RenderComponentAsync<Components.HostParty>();

@@ -13,6 +13,8 @@
     public Optional<string> Message { get; set; }
     [Parameter]
     public Optional<string> Details { get; set; }
+    [Parameter]
+    public Optional<string> InternalDetails { get; set; }
 
     [CascadingParameter]
     public IResponseData Response { get; set; } = default!;
@@ -28,8 +30,10 @@
     };
 }
 
-<ContentContainer Layout="ContentContainerLayout.Hero">
+<ContentContainer Layout="ContentContainerLayout.Top">
     <Frame
+        Border="FrameBorder.Card"
+        Padding="FrameSpacing.Card"
         Align="FrameAlignment.Start"
         Gap="FrameSpacing.Line"
         Flex="FrameDirection.Col">
@@ -40,9 +44,15 @@
         }
         @if(Details.TryGetValue(out var details)) 
         {
+            <div class="overflow-x-auto overflow-y-hidden">
+                <div class="text" style="white-space:pre-wrap;">@details</div>
+            </div>
+        }
+        @if(InternalDetails.TryGetValue(out var internalDetails)) 
+        {
             <Frame Template="FrameTemplate.Card" AddClasses='"width-full"'>
                 <div class="overflow-x-auto overflow-y-hidden">
-                    <div class="text monospace" style="white-space:pre;">@details</div>
+                    <div class="text monospace" style="white-space:pre;">@internalDetails</div>
                 </div>
             </Frame>
         }

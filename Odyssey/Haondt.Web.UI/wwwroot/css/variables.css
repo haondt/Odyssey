@@ -59,6 +59,7 @@
     --haondt-ui-border-radius: var(--haondt-ui-border-radius-base);
     --haondt-ui-border-width-base: 1px;
     --haondt-ui-border-width: var(--haondt-ui-border-width-base);
+    --haondt-ui-border-focus-width: calc(2 * var(--haondt-ui-border-width-base));
 
     --haondt-ui-line-spacing-base: 0.5rem;
     --haondt-ui-line-spacing: var(--haondt-ui-line-spacing-base);
@@ -105,6 +106,9 @@
     --haondt-ui-hover-transition-duration-enter: 0.1s;
     --haondt-ui-hover-transition-duration-leave: 0.3s;
     --haondt-ui-hover-transition-timing: ease;
+
+    --haondt-ui-blend-box-shadow: 0 0 9px 10px var(--haondt-ui-color-background);
+    --haondt-ui-blend-clip-path: inset(0 -19px -19px -19px);
 }
 
 /* display is smaller or equal to device of size x */

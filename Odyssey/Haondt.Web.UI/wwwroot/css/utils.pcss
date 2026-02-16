@@ -27,7 +27,7 @@
 .flex-row { flex-direction: row !important; }
 .flex-grow-1 { flex-grow: 1 !important; }
 .flex-wrap-wrap { flex-wrap: wrap !important; }
-@media screen and (max-width: 768px) {
+@media (--haondt-ui-media-query-lte-s) {
     .flex-wrap-lte-s { flex-wrap: wrap !important; }
 }
 
@@ -71,13 +71,13 @@
     max-width: var(--haondt-ui-content-width) !important;
 }
 
-@media screen and (min-width: 769px) {
+@media (--haondt-ui-media-query-gte-m) {
     .hidden-gte-m {
         display: none !important;
     }
 }
 
-@media screen and (max-width: 768px) {
+@media (--haondt-ui-media-query-lte-s) {
     .hidden-lte-s {
         display: none !important;
     }

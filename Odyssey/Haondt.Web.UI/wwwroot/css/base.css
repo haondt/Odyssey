@@ -83,8 +83,20 @@ html {
     border-style: solid;
     border-width: var(--haondt-ui-border-width);
     border-color: var(--haondt-ui-color-border);
+    transition: border var(--haondt-ui-hover-transition-duration-leave) var(--haondt-ui-hover-transition-timing);
 }
 
 .input::placeholder {
     color: var(--haondt-ui-color-border);
+}
+
+.input:hover, .input:active {
+    border-color: var(--haondt-ui-color-border-strong);
+    transition-duration: var(--haondt-ui-hover-transition-duration-enter);
+}
+
+.input:focus {
+    border-color: var(--haondt-ui-color-primary);
+    transition-duration: var(--haondt-ui-hover-transition-duration-enter);
+    border-width: var(--haondt-ui-border-focus-width);
 }

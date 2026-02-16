@@ -1,0 +1,42 @@
+.brand-text {
+    font-size: calc(2 * var(--haondt-ui-text-font-size));
+    text-transform: uppercase;
+    color: var(--haondt-ui-color-primary);
+    font-weight: 400;
+}
+
+.breadcrumb-text {
+    white-space: nowrap;
+    /* because otherwise the y-overflow from kerning gets eaten, and we want this consistent between pages :( */
+    padding-bottom: calc(0.2 * var(--haondt-ui-text-font-size));
+    padding-top: calc(0.2 * var(--haondt-ui-text-font-size));
+}
+
+.breadcrumb-text-crushable {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+.breadcrumb-divider:before {
+    content: "/";
+    color: var(--haondt-ui-color-border);
+}
+
+@media (--haondt-ui-media-query-lte-m) {
+    .brand-text {
+        font-size: var(--haondt-ui-text-font-size);
+    }
+}
+
+@media (--haondt-ui-media-query-lte-s) {
+    .brand-text {
+        font-size: var(--haondt-ui-text-font-size);
+    }
+}
+
+
+@media (--haondt-ui-media-query-lte-s) {
+    ::deep .default-bar-lower {
+        padding-top: var(--haondt-ui-line-spacing);
+    }
+}

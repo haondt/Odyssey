@@ -1,0 +1,4 @@
+span {
+    width: var(--haondt-ui-border-width);
+    background-color: var(--haondt-ui-color-border);
+}
