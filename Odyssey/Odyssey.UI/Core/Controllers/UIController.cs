@@ -27,15 +27,7 @@ namespace Odyssey.UI.Core.Controllers
             if (result.IsSuccessful)
                 return result.Value;
 
-            throw new InvalidOperationException("Method does not have validation component attribute.");
-        }
-
-        protected Task<IResult> RenderValidationSummaryComponent(string summary)
-        {
-            return RenderValidationComponent(new()
-            {
-                ["summary"] = summary
-            });
+            throw new InvalidOperationException("Method does not have validation state attribute.");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Haondt.Web.Services;
 using Haondt.Web.UI.Filters;
+using Haondt.Web.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,9 @@ namespace Haondt.Web.UI.Extensions
         {
             services.AddHaondtUIHeadEntries();
             services.AddScoped<ModelStateValidationFilter>();
+            services.AddScoped<ValidationState>();
+            services.AddScoped<IValidationStateReader>(sp => sp.GetRequiredService<ValidationState>());
+            services.AddScoped<IValidationStateWriter>(sp => sp.GetRequiredService<ValidationState>());
             return services;
         }
 

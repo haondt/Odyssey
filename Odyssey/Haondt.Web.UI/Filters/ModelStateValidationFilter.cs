@@ -3,13 +3,14 @@ using Haondt.Web.Core.Extensions;
 using Haondt.Web.Services;
 using Haondt.Web.UI.Attributes;
 using Haondt.Web.UI.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Haondt.Web.UI.Filters
 {
-    public class ModelStateValidationFilter(IComponentFactory componentFactory, IServiceProvider serviceProvider) : IAsyncActionFilter
+    public class ModelStateValidationFilter(IComponentFactory componentFactory) : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -34,53 +35,31 @@ namespace Haondt.Web.UI.Filters
             await next();
         }
 
+        private static void UpdateValidationState(HttpContext httpContext, Dictionary<string, string> validationErrors)
+        {
+            var validationState = httpContext.RequestServices.GetRequiredService<IValidationStateWriter>();
+            validationState.ValidationErrors = validationErrors;
+            validationState.ValidationSummary = string.Join('\n', validationErrors.Values);
+            validationState.IsValidation = true;
+        }
+
         public async Task<Result<IResult>> ApplyValidationErrorAsync(Dictionary<string, string> validationErrors, HttpContext httpContext)
         {
             var endpoint = httpContext.GetEndpoint();
 
-            if (endpoint?.Metadata.GetMetadata<ValidationSummaryAttribute>() is { } summaryAttribute)
+            if (endpoint?.Metadata.GetMetadata<ValidationStateAttribute>() is { } errorsAttribute)
             {
-                var text = string.Join('\n', validationErrors.Values);
-                var instance = ActivatorUtilities.CreateInstance(serviceProvider, summaryAttribute.ComponentType);
+                UpdateValidationState(httpContext, validationErrors);
 
-                if (instance is not IValidationSummaryComponent component)
-                    throw new InvalidOperationException($"{summaryAttribute.ComponentType} must implement {nameof(IValidationSummaryComponent)}.");
-
-                component.ValidationSummary = text;
-                component.IsValidation = true;
-
-
-                var result = await componentFactory.RenderComponentAsync(component, summaryAttribute.ComponentType);
-                var responseData = httpContext.Response.AsResponseData();
-                if (summaryAttribute.HxSwapId.TryGetValue(out var swapId))
-                {
-                    responseData.HxReswap("outerHTML");
-                    responseData.HxRetarget($"#{swapId}");
-                }
-                else
-                {
-                    responseData.HxReswap("none");
-                }
-                responseData.Status(400);
-                return new(result);
-            }
-
-            if (endpoint?.Metadata.GetMetadata<ValidationErrorsAttribute>() is { } errorsAttribute)
-            {
-                var instance = ActivatorUtilities.CreateInstance(serviceProvider, errorsAttribute.ComponentType);
-
-                if (instance is not IValidationErrorsComponent component)
-                    throw new InvalidOperationException($"{errorsAttribute.ComponentType} must implement {nameof(IValidationErrorsComponent)}.");
-
-                component.ValidationErrors = validationErrors;
-                component.IsValidation = true;
-
+                var instance = ActivatorUtilities.CreateInstance(httpContext.RequestServices, errorsAttribute.ComponentType);
+                if (instance is not IComponent component)
+                    throw new InvalidOperationException($"{errorsAttribute.ComponentType} must implement {nameof(IComponent)}.");
 
                 var result = await componentFactory.RenderComponentAsync(component, errorsAttribute.ComponentType);
                 var responseData = httpContext.Response.AsResponseData();
                 if (errorsAttribute.HxSwapId.TryGetValue(out var swapId))
                 {
-                    responseData.HxReswap("outerHTML");
+                    responseData.HxReswap("morph:outerHTML");
                     responseData.HxRetarget($"#{swapId}");
                 }
                 else

@@ -49,3 +49,11 @@ select.input {
     transform: translateX(var(--indicator-tx)) translateY(var(--indicator-ty)) rotate(45deg);
 }
 
+.field.field-invalid {
+    .input, .input:hover, .input:active {
+        border-color: var(--haondt-ui-color-danger);
+    }
+    .input:focus {
+        outline-color: var(--haondt-ui-color-danger);
+    }
+}

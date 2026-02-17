@@ -25,7 +25,7 @@ namespace Odyssey.UI.Host.Controllers
         public Task<IResult> GetBoards() => ComponentFactory.RenderComponentAsync<Components.HostBoards>();
 
         [HttpPost(OdysseyRoutes.Host.Boards.Index)]
-        [ValidationErrors(typeof(NewBoardModalPanel), NewBoardModalPanel.Id)]
+        [ValidationState(typeof(NewBoardModalPanel), NewBoardModalPanel.Id)]
         public Task<IResult> CreateNewBoard([FromForm] NewBoardModel newBoard)
         {
             // TODO

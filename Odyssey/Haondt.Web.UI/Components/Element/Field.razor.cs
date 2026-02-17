@@ -14,6 +14,12 @@ namespace Haondt.Web.UI.Components.Element
     {
         Fill
     }
+    public enum FieldAutocomplete
+    {
+        Username,
+        NewPassword,
+        CurrentPassword
+    }
     public static class FieldExtensions
     {
         extension(FieldSize size)
@@ -24,6 +30,16 @@ namespace Haondt.Web.UI.Components.Element
                 _ => new Optional<string>()
             };
 
+        }
+        extension(FieldAutocomplete autocomplete)
+        {
+            public string StringValue => autocomplete switch
+            {
+                FieldAutocomplete.Username => "username",
+                FieldAutocomplete.NewPassword => "new-password",
+                FieldAutocomplete.CurrentPassword => "current-password",
+                _ => autocomplete.ToString()
+            };
         }
     }
 

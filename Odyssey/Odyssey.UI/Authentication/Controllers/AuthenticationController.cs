@@ -32,13 +32,12 @@ namespace Odyssey.UI.Authentication.Controllers
 
         [HttpPost(OdysseyRoutes.Auth.SignIn)]
         [AllowAnonymous]
-        [ValidationSummary(typeof(SignInPanel), Components.SignInPanel.Id)]
+        [ValidationState(typeof(SignInPanel), Components.SignInPanel.Id)]
         public async Task<IResult> SignIn([FromForm] SignInModel signIn, [FromQuery] string? returnUrl)
         {
             var result = await userService.TrySignInAsync(signIn.Username, signIn.Password);
             if (!result.IsSuccessful)
-                return await RenderValidationSummaryComponent(result.Reason);
-
+                return await RenderValidationComponent(new() { [nameof(SignInModel)] = result.Reason });
 
             if (returnUrl != null)
                 ResponseData.HxRedirect(returnUrl);
@@ -62,7 +61,7 @@ namespace Odyssey.UI.Authentication.Controllers
 
         [HttpPost(OdysseyRoutes.Auth.Register)]
         [AllowAnonymous]
-        [ValidationSummary(typeof(RegisterPanel), RegisterPanel.Id)]
+        [ValidationState(typeof(RegisterPanel), RegisterPanel.Id)]
         public async Task<IResult> Register([FromForm] RegisterModel register)
         {
             // TODO: waiting till we are ready for invite code generation

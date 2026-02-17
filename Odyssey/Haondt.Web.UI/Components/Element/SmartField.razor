@@ -1,0 +1,165 @@
+@using System.Text.RegularExpressions
+@using System.Linq.Expressions
+@using System.Reflection
+@using Haondt.Web.UI.Services
+@using System.ComponentModel.DataAnnotations
+@typeparam TBase
+@inject IValidationStateReader ValidationState
+@code {
+    [Parameter]
+    public Optional<string> Title { get; set; }
+
+    [Parameter]
+    public Optional<bool> IsValid { get; set; }
+
+    [Parameter]
+    public Optional<FieldType> Type { get; set; }
+    private FieldType _type { get; set; } = FieldType.Text;
+
+    [Parameter]
+    public Optional<List<DropdownOption>> Options { get; set; }
+
+    [Parameter]
+    public FieldSize Size { get; set; } = FieldSize.Fill;
+
+    [Parameter]
+    public Optional<string> Name { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Expression<Func<TBase, object>> Field { get; set; }
+
+    [Parameter]
+    public Optional<string> Placeholder { get; set; }
+
+    [Parameter]
+    public Optional<FieldAutocomplete> Autocomplete { get; set; }
+
+    [Parameter]
+    public Optional<string> Error { get; set; }
+
+    /// <summary>
+    /// Uses <a href="https://htmx.org/attributes/hx-preserve/">hx-preserve</a> to keep the input element unchanged during swaps.
+    /// Requires a unique, unchanging <see cref="Id" /> to work correctly.
+    /// </summary>
+    [Parameter]
+    public Optional<bool> HxPreserve { get; set; }
+    private bool _hxPreserve = true;
+
+    [Parameter]
+    public Optional<string> Id { get; set; }
+
+    protected Dictionary<string, object> _inputAttributes  = [];
+    protected Dictionary<string, object> _labelAttributes  = [];
+
+    protected HashSet<string> _inputClasses = ["input"];
+    protected HashSet<string> _rootClasses = ["field"];
+
+    [Parameter]
+    public Optional<string> InputClasses { get; set; }
+
+    private static string ToKebabCase(string value)
+    {
+        if (string.IsNullOrEmpty(value)) return value;
+
+        return Regex.Replace(value,
+               @"(?<!^)(?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z])",
+            "-").ToLower();
+    }
+
+    private static (MemberInfo memberInfo, string path) GetMemberInfo(LambdaExpression expression)
+    {
+        var parts = new List<string>();
+        MemberInfo? lastMember = null;
+
+        Expression? current = expression.Body;
+
+        // Unwrap implicit cast to object (happens with value types)
+        if (current is UnaryExpression unary && unary.NodeType == ExpressionType.Convert)
+            current = unary.Operand;
+
+        while (current is MemberExpression member)
+        {
+            parts.Insert(0, member.Member.Name);
+            lastMember = member.Member;
+            current = member.Expression;
+        }
+
+        if (lastMember == null)
+            throw new ArgumentException("Expression must be a member access expression.");
+
+        // For nested paths (Foo.Bar), get the attribute from the first member
+        // Adjust this logic depending on which member you want the attribute from
+        var path = string.Join(".", parts);
+        return (lastMember, path);
+    }
+
+    protected override void OnInitialized() 
+    {
+        var (memberInfo, path) = GetMemberInfo(Field);
+        var dataTypeAttr = memberInfo.GetCustomAttribute<DataTypeAttribute>();
+        var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
+
+        if (!Title.HasValue && displayAttr?.Name is not null)
+            Title = displayAttr.Name;
+
+        if (!Name.TryGetValue(out var name))
+            Name = name = path;
+        if (ValidationState.IsValidation)
+        {
+            if(!Error.HasValue)
+                Error = ValidationState.ValidationErrors.GetValue(name);
+        }
+        if (!IsValid.HasValue)
+            IsValid = !Error.HasValue;
+        Id = Id.Or(ToKebabCase(name));
+
+        if (Type.HasValue)
+            _type = Type.Value;
+        if (!Type.HasValue && dataTypeAttr is not null)
+        {
+            switch (dataTypeAttr.DataType)
+            {
+                case DataType.Password:
+                    Type = _type = FieldType.Password;
+                    break;
+            }
+        }
+        if (!Type.HasValue && Options.HasValue)
+            Type = _type = FieldType.Dropdown;
+        if (!Type.HasValue && (memberInfo is PropertyInfo p ? p.PropertyType : memberInfo is FieldInfo f ? f.FieldType : null) is Type memberType)
+        {
+            switch (Nullable.GetUnderlyingType(memberType) ?? memberType)
+            {
+                case var t when t == typeof(string):
+                    Type = _type = FieldType.Text;
+                    break;
+            };
+        }
+
+        if (HxPreserve.TryGetValue(out var hxPreserve))
+            _hxPreserve = hxPreserve;
+        else
+        {
+            HxPreserve = _hxPreserve = _type switch
+            {
+                FieldType.Password => false,
+                _ => true
+            };
+        }
+
+    }
+}
+
+<Field
+    IsValid="IsValid"
+    Title="Title"
+    Type="_type"
+    Options="@Options.Or([])"
+    Size="Size"
+    Name="Name"
+    Placeholder="Placeholder"
+    Autocomplete="Autocomplete"
+    Error="Error"
+    HxPreserve="_hxPreserve"
+    Id="Id"
+    InputClasses="InputClasses" />

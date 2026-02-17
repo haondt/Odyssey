@@ -8,6 +8,7 @@ namespace Odyssey.UI.Host.Models
         public required string Name { get; set; }
 
         [Required]
+        [Display(Name = "Game")]
         public required string Game { get; set; }
     }
 }

@@ -7,16 +7,10 @@
 @using Odyssey.UI.Authentication.Models.Authentication
 @using Odyssey.UI.Core.Services
 @using Odyssey.Client.Authentication.Services
-@implements IValidationSummaryComponent
 @inject NavigationManager Nav
 @inject ICachedDataService<ServerSettings> ServerSettingsService
+@inject IValidationStateReader ValidationState
 @code {
-    [Parameter]
-    public Optional<string> ValidationSummary { get; set; }
-
-    [Parameter]
-    public bool IsValidation { get; set; }
-
     public const string Id = "sign-in-panel";
 
     private bool _showRegister = false;
@@ -39,11 +33,9 @@
         <p class="title text-align-center">Sign in</p>
         <form hx-post>
             <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
-                <Field Id='"username"' Title='"Username"' Name="@nameof(SignInModel.Username)" Autocomplete='"username"' HxPreserve="true" />
-                <Field
-                    Type="FieldType.Password"
-                    Title='"Password"' Name="@nameof(SignInModel.Password)" Autocomplete='"current-password"' />
-                @if(ValidationSummary.TryGetValue(out var formError))
+                <SmartField IsValid="!ValidationState.ValidationSummary.HasValue" Error="new()" TBase="SignInModel" Field="m => m.Username" Autocomplete='FieldAutocomplete.Username' HxPreserve="true" />
+                <SmartField IsValid="!ValidationState.ValidationSummary.HasValue" Error="new()" TBase="SignInModel" Field="m => m.Password" Autocomplete='FieldAutocomplete.CurrentPassword'/>
+                @if(ValidationState.IsValidation && ValidationState.ValidationSummary.TryGetValue(out var formError))
                 {
                     <p class="validation-error">@formError</p>
                 }

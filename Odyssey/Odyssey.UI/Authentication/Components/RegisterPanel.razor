@@ -3,15 +3,9 @@
 @using Odyssey.UI.Authentication.Models
 @using Odyssey.UI.Authentication.Models.Authentication
 @using Odyssey.UI.Core.Services
-@implements IValidationSummaryComponent
 @inject NavigationManager Nav
+@inject IValidationStateReader ValidationState
 @code {
-    [Parameter]
-    public Optional<string> ValidationSummary { get; set; }
-
-    [Parameter]
-    public bool IsValidation { get; set; }
-
     public const string Id = "register-panel";
 }
 
@@ -25,10 +19,10 @@
     <form hx-post>
         <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
             <Field Id='"invite-code"' Title='"Invite code"' Name="@nameof(RegisterModel.InviteCode)" HxPreserve="true" />
-            <Field Id='"username"' Title='"Username"' Name="@nameof(RegisterModel.Username)" Autocomplete='"username"' HxPreserve="true" />
-            <Field Type="FieldType.Password" Title='"Password"' Name="@nameof(RegisterModel.Password)" Autocomplete='"new-password"' />
-            <Field Type="FieldType.Password" Title='"Confirm password"' Name="@nameof(RegisterModel.ConfirmPassword)" Autocomplete='"new-password"' />
-            @if(ValidationSummary.TryGetValue(out var formError))
+            <Field Id='"username"' Title='"Username"' Name="@nameof(RegisterModel.Username)" Autocomplete='FieldAutocomplete.Username' HxPreserve="true" />
+            <Field Type="FieldType.Password" Title='"Password"' Name="@nameof(RegisterModel.Password)" Autocomplete='FieldAutocomplete.NewPassword' />
+            <Field Type="FieldType.Password" Title='"Confirm password"' Name="@nameof(RegisterModel.ConfirmPassword)" Autocomplete='FieldAutocomplete.NewPassword' />
+            @if(ValidationState.IsValidation && ValidationState.ValidationSummary.TryGetValue(out var formError))
             {
                 <p class="validation-error">@formError</p>
             }
