@@ -96,7 +96,9 @@ html {
 }
 
 .input:focus {
-    border-color: var(--haondt-ui-color-primary);
+    outline-color: var(--haondt-ui-color-primary);
+    outline-width: var(--haondt-ui-border-focus-width);
+    outline-style: solid;
+    outline-offset: calc(-1 * var(--haondt-ui-border-focus-width));
     transition-duration: var(--haondt-ui-hover-transition-duration-enter);
-    border-width: var(--haondt-ui-border-focus-width);
 }

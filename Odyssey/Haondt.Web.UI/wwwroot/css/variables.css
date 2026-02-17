@@ -109,6 +109,10 @@
 
     --haondt-ui-blend-box-shadow: 0 0 9px 10px var(--haondt-ui-color-background);
     --haondt-ui-blend-clip-path: inset(0 -19px -19px -19px);
+
+    --haondt-ui-modal-width-s: 468px;
+    --haondt-ui-modal-width-m: 964px;
+    --haondt-ui-modal-vertical-spacing: 100px;
 }
 
 /* display is smaller or equal to device of size x */

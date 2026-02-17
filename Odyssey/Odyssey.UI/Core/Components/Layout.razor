@@ -17,7 +17,7 @@
     private string _targetRole = OdysseyRoles.None;
 
     [CascadingParameter]
-    public IRequestData RequestData { get; set; } = default!;
+    public IRequestData Request { get; set; } = default!;
 
     public const string Id = "layout-container";
 
@@ -31,7 +31,7 @@
         var renderPageAttribute = Content.GetType().GetCustomAttributes(typeof(OdysseyRenderPageAttribute), inherit: false).FirstOrDefault().AsOptional().Map(q => (OdysseyRenderPageAttribute)q);
 
         _targetRole = renderPageAttribute.Map(q => q.Role).Or(OdysseyRoles.None);
-        var currentRole = RequestData.HxCurrentPath().Map(q =>
+        var currentRole = Request.HxCurrentPath().Map(q =>
         {
             var segments = q.Split("/").Skip(1).Take(2).ToList();
             if (segments.Count != 2)
@@ -48,7 +48,7 @@
             };
         }).Or(OdysseyRoles.None);
 
-        _swapWebSocket = !RequestData.IsHxRequest() ||  currentRole != _targetRole;
+        _swapWebSocket = !Request.IsHxRequest() ||  currentRole != _targetRole;
     }
 }
 

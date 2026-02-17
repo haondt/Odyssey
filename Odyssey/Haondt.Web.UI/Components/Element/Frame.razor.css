@@ -1,6 +1,8 @@
 .frame-flex { display: flex; }
 .frame-flex-col { flex-direction: column; }
 .frame-flex-row { flex-direction: row; }
+.frame-flex-col-wrap { flex-direction: column; flex-wrap: wrap; }
+.frame-flex-row-wrap { flex-direction: row; flex-wrap: wrap; }
 
 .frame-justify-content-flex-start { justify-content: flex-start; }
 .frame-justify-content-flex-end { justify-content: flex-end; }

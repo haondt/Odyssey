@@ -1,5 +1,6 @@
 .button {
     --button-hover-delta: 5;
+    white-space: nowrap;
 }
 
 .button:hover {

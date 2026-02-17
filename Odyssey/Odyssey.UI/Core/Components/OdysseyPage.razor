@@ -2,6 +2,7 @@
 @using Haondt.Core.Models
 @using Haondt.Web.Core.Extensions
 @using Haondt.Web.Services
+@using Haondt.Web.UI.Components.Containers
 @inject IEnumerable<IHeadEntryDescriptor> HeadEntries
 
 @code {
@@ -22,7 +23,7 @@
     }
     </head>
     <body hx-ext="morph">
-        <div id="modal-container" class="modal" hx-preserve></div>
+        <ModalContainer Active="false" />
         <ToastContainer />
         <ObjectComponent Component="Content"/>
     </body>

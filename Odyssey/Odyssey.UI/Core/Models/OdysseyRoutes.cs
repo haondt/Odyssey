@@ -29,6 +29,10 @@
                 public static class Boards
                 {
                     public const string Index = $"{Roles.Host.Index}/boards";
+                    public static class New
+                    {
+                        public const string Index = $"{Roles.Host.Boards.Index}/new";
+                    }
                 }
                 public static class Soundboard
                 {

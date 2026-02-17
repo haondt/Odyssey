@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.Client.Authentication.Services;
+using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.UI.Authentication.Components;
-using Odyssey.UI.Authentication.Models;
+using Odyssey.UI.Authentication.Models.Authentication;
 using Odyssey.UI.Core.Controllers;
 using Odyssey.UI.Core.Models;
 
@@ -17,7 +18,7 @@ namespace Odyssey.UI.Authentication.Controllers
     public class AuthenticationController(
         ISessionService sessionService,
         IUserSessionService userService,
-        IServerSettingsService serverSettings) : UIController
+        ICachedDataService<ServerSettings> serverSettings) : UIController
     {
         [HttpGet(OdysseyRoutes.Auth.SignIn)]
         [AllowAnonymous]
@@ -53,7 +54,7 @@ namespace Odyssey.UI.Authentication.Controllers
             if (sessionService.IsAuthenticated)
                 return TypedResults.Redirect(OdysseyRoutes.Home);
 
-            if (!(await serverSettings.GetServerSettingsAsync()).Settings.OpenRegistration.Or(false))
+            if (!(await serverSettings.GetDataAsync(ServerSettings.Key)).Data.OpenRegistration.Or(false))
                 return TypedResults.Redirect(OdysseyRoutes.Home);
 
             return await ComponentFactory.RenderComponentAsync<Register>();

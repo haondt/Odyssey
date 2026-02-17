@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.3" />
           <PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260211070327" />
 
   </ItemGroup>

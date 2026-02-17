@@ -20,6 +20,13 @@ namespace Haondt.Web.UI.Components.Element
         Primary
     }
 
+    public enum ButtonType
+    {
+        Button,
+        Submit,
+        Reset
+    }
+
     public static class ButtonExtensions
     {
         extension(ButtonStyle type)
@@ -40,6 +47,17 @@ namespace Haondt.Web.UI.Components.Element
                 ButtonColor.Text => "button-color-text",
                 ButtonColor.Primary => "button-color-primary",
                 _ => new Optional<string>()
+            };
+        }
+
+        extension(ButtonType type)
+        {
+            public string TypeString => type switch
+            {
+                ButtonType.Button => "button",
+                ButtonType.Submit => "submit",
+                ButtonType.Reset => "reset",
+                _ => "button"
             };
         }
     }

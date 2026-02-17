@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odyssey.Games.Domain\Odyssey.Games.Domain.csproj" />
+    <ProjectReference Include="..\Odyssey.Grains\Odyssey.Grains.csproj" />
+  </ItemGroup>
+
+</Project>

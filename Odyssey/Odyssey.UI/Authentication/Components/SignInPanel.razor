@@ -1,13 +1,15 @@
 @using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Services
 @using Odyssey.Client.Authentication.Models
+@using Odyssey.Domain.Core.Models
 @using Odyssey.Domain.Core.Services
 @using Odyssey.UI.Authentication.Models
+@using Odyssey.UI.Authentication.Models.Authentication
 @using Odyssey.UI.Core.Services
 @using Odyssey.Client.Authentication.Services
 @implements IValidationSummaryComponent
 @inject NavigationManager Nav
-@inject IServerSettingsService ServerSettings
+@inject ICachedDataService<ServerSettings> ServerSettingsService
 @code {
     [Parameter]
     public Optional<string> ValidationSummary { get; set; }
@@ -22,8 +24,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var serverSettings = await ServerSettings.GetServerSettingsAsync();
-        _showRegister = serverSettings.Settings.OpenRegistration.Or(false);
+        var serverSettings = await ServerSettingsService.GetDataAsync(ServerSettings.Key);
+        _showRegister = serverSettings.Data.OpenRegistration.Or(false);
     }
 
 }
@@ -51,9 +53,9 @@
                         <Button
                             HxPushUrl='"true"'
                             HxGet="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.Register).ToString()"
-                            Type='"button"' Style="ButtonStyle.Ghost" Color="ButtonColor.Text">Register</Button>
+                            Style="ButtonStyle.Ghost" Color="ButtonColor.Text">Register</Button>
                     }
-                    <Button Color="ButtonColor.Primary">Continue</Button>
+                    <Button Type="ButtonType.Submit" Color="ButtonColor.Primary">Continue</Button>
                 </Frame>
             </Frame>
         </form>

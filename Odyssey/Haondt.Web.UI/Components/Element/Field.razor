@@ -6,6 +6,9 @@
     public FieldType Type { get; set; } = FieldType.Text;
 
     [Parameter]
+    public List<DropdownOption> Options { get; set; } = [];
+
+    [Parameter]
     public FieldSize Size { get; set; } = FieldSize.Fill;
 
     [Parameter]
@@ -66,6 +69,15 @@
                         _inputAttributes["autocomplete"] = autocomplete;
                 }
                 break;
+            case FieldType.Dropdown:
+                {
+                    if (Size.CssClass.TryGetValue(out var size))
+                        _inputClasses.Add(size);
+
+                    if (Name.TryGetValue(out var name))
+                        _inputAttributes["name"] = name;
+                }
+                break;
         }
 
         switch (Size)
@@ -84,20 +96,24 @@
             _labelAttributes["for"] = id;
         }
 
-        _inputAttributes["type"] = Type switch
+        switch (Type)
         {
-            FieldType.Text => "text",
-            FieldType.Checkbox => "checkbox",
-            FieldType.Password => "password",
-            FieldType.Search => "search",
-            _ => "text"
-        };
+            case FieldType.Checkbox:
+                _inputAttributes["type"] = "checkbox";
+                break;
+            case FieldType.Text:
+                _inputAttributes["type"] = "text";
+                break;
+            case FieldType.Password:
+                _inputAttributes["type"] = "password";
+                break;
+            case FieldType.Search:
+                _inputAttributes["type"] = "search";
+                break;
+        }
 
         if (InputClasses.TryGetValue(out var inputClasses))
             _inputClasses.Add(inputClasses);
-
-
-
     }
 }
 
@@ -117,6 +133,23 @@
         @if(Type is FieldType.Text or FieldType.Password or FieldType.Search)
         {
             <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+        } 
+        @if(Type is FieldType.Dropdown)
+        {
+            <div class="select-container">
+                <select @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)">
+                    @foreach(var option in Options)
+                    {
+                        var optionAttributes = new Dictionary<string, object>();
+                        if (option.Value.TryGetValue(out var optionValue))
+                            optionAttributes["value"] = optionValue;
+                        if (option.Selected)
+                            optionAttributes["selected"] = "";
+
+                        <option @attributes="optionAttributes">@option.Text</option>
+                    }
+                </select>
+            </div>
         } 
     </Frame>
 </div>

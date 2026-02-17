@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Odyssey.Grains\Odyssey.Grains.csproj" />
+    <ProjectReference Include="..\Odyssey.Games.Server\Odyssey.Games.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

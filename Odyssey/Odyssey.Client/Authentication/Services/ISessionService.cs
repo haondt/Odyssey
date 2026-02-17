@@ -6,6 +6,7 @@ namespace Odyssey.Client.Authentication.Services
     {
         public bool IsAuthenticated { get; }
 
-        Task<Result<string>> GetUsernameAsync();
+        Task<Result<string>> GetUserIdAsync();
+        Task<Result<string>> GetUserNameAsync();
     }
 }

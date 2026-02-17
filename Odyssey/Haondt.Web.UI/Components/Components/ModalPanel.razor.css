@@ -1,0 +1,26 @@
+#modal-background {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+#modal-content {
+    background: var(--haondt-ui-color-background);
+    border-radius: var(--haondt-ui-border-radius);
+    position: relative;
+    padding: var(--haondt-ui-panel-spacing);
+    width: 100%;
+}
+
+#modal-content.modal-panel-form {
+    max-width: var(--haondt-ui-modal-width-m);
+}
+
+#modal-content.modal-panel-dialog {
+    max-width: var(--haondt-ui-modal-width-s);
+}
+
+@media screen and (max-width: 768px) {
+    #modal-content {
+        padding: var(--haondt-ui-card-spacing);
+    }
+}

@@ -1,0 +1,53 @@
+@using Haondt.Web.Core.Extensions
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Components.Containers;
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    public IResponseData Response { get; set; } = default!;
+
+    [Parameter]
+    public Optional<ModalTemplate> Template { get; set; }
+
+    private ModalContainerLayout _containerLayout = ModalContainerLayout.Hero;
+    private HashSet<string> _contentClasses = [];
+
+    protected override void OnInitialized()
+    {
+        Response
+            .HxReswap("none");
+
+        if (Template.TryGetValue(out var template))
+        {
+            switch(template)
+            {
+                case ModalTemplate.Dialog:
+                    _contentClasses.Add("modal-panel-dialog");
+                    _containerLayout = ModalContainerLayout.Center;
+                    break;
+                case ModalTemplate.Form:
+                    _contentClasses.Add("modal-panel-form");
+                    _containerLayout = ModalContainerLayout.Hero;
+                    break;
+            }
+        }
+        else
+        {
+            _contentClasses.Add("modal-panel-form");
+            _containerLayout = ModalContainerLayout.Hero;
+        }
+    }
+}
+
+<ModalContainer HxSwapOob="true">
+    <div id="modal-background"
+        _="
+            on click remove .active from #@ModalContainer.Id then set #@ModalContainer.Id's innerHTML to '' end
+            on keydown[key is 'Escape'] from elsewhere send click to me end
+    "></div>
+    <div id="modal-content" _="on closeModal send click to #modal-background" class="@string.Join(' ', _contentClasses)">
+        @ChildContent
+    </div>
+</ModalContainer>

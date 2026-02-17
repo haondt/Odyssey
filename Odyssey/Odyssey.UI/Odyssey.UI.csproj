@@ -14,12 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Haondt.Web.UI\Haondt.Web.UI.csproj" />
     <ProjectReference Include="..\Odyssey.Client\Odyssey.Client.csproj" />
+    <ProjectReference Include="..\Odyssey.Games.Client\Odyssey.Games.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,9 @@
 	  <Exec Command="bun run postcss &quot;$(ProjectDir)/**/*.pcss&quot; -v -d $(ProjectDir) --base $(ProjectDir) --ext &quot;css&quot;" />
 	</Target>
 
+	<ItemGroup>
+		<Watch Include="..\**\*.pcss" />
+	</ItemGroup>
 
 
 </Project>

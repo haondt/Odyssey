@@ -17,11 +17,8 @@
     [Parameter]
     public ButtonStyle Style { get; set; }  = ButtonStyle.Fill;
 
-    /// <summary>
-    /// Should probably be one of submit, button or reset
-    /// </summary>
     [Parameter]
-    public Optional<string> Type { get; set; }
+    public ButtonType Type { get; set; } = ButtonType.Button;
 
     [Parameter]
     public ButtonColor Color { get; set; } = ButtonColor.Text;
@@ -41,8 +38,7 @@
             _rootAttributes["hx-get"] = hxGet;
         if (HxPushUrl.TryGetValue(out var hxPushUrl))
             _rootAttributes["hx-push-url"] = hxPushUrl;
-        if (Type.TryGetValue(out var type))
-            _rootAttributes["type"] = type;
+        _rootAttributes["type"] = Type.TypeString;
     }
 }
 <button @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">

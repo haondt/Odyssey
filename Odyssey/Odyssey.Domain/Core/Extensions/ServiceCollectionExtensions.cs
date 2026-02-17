@@ -8,7 +8,8 @@ namespace Odyssey.Domain.Core.Extensions
     {
         public static IServiceCollection AddOdysseyDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IServerSettingsService, ServerSettingsService>();
+            services.AddSingleton(typeof(ICachedDataService<>), typeof(CachedDataService<>));
+
             return services;
         }
     }

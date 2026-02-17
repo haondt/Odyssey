@@ -25,6 +25,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Silo", "Odyssey.Sil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haondt.Orleans.Core", "Haondt.Orleans.Core\Haondt.Orleans.Core.csproj", "{8938331C-E87E-4E52-B6F7-71AB0A766A22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Games.Domain", "Odyssey.Games.Domain\Odyssey.Games.Domain.csproj", "{8ADE00C0-2C0E-43AF-B958-244DB446F034}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Games.Client", "Odyssey.Games.Client\Odyssey.Games.Client.csproj", "{19D403A1-6567-4F28-8F6E-9CA5D5C4B58A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey.Games.Server", "Odyssey.Games.Server\Odyssey.Games.Server.csproj", "{75A394DE-6B92-43E4-A6C1-C7E6F74DE8A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +81,18 @@ Global
 		{8938331C-E87E-4E52-B6F7-71AB0A766A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8938331C-E87E-4E52-B6F7-71AB0A766A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8938331C-E87E-4E52-B6F7-71AB0A766A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ADE00C0-2C0E-43AF-B958-244DB446F034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ADE00C0-2C0E-43AF-B958-244DB446F034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ADE00C0-2C0E-43AF-B958-244DB446F034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ADE00C0-2C0E-43AF-B958-244DB446F034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D403A1-6567-4F28-8F6E-9CA5D5C4B58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D403A1-6567-4F28-8F6E-9CA5D5C4B58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D403A1-6567-4F28-8F6E-9CA5D5C4B58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D403A1-6567-4F28-8F6E-9CA5D5C4B58A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75A394DE-6B92-43E4-A6C1-C7E6F74DE8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75A394DE-6B92-43E4-A6C1-C7E6F74DE8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75A394DE-6B92-43E4-A6C1-C7E6F74DE8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75A394DE-6B92-43E4-A6C1-C7E6F74DE8A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,9 @@ namespace Haondt.Web.UI.Components.Element
     public enum FrameDirection
     {
         Col,
-        Row
+        Row,
+        ColWrap,
+        RowWrap
     }
 
     public enum FrameJustification
@@ -93,6 +95,8 @@ namespace Haondt.Web.UI.Components.Element
             {
                 FrameDirection.Col => "frame-flex-col",
                 FrameDirection.Row => "frame-flex-row",
+                FrameDirection.ColWrap => "frame-flex-col-wrap",
+                FrameDirection.RowWrap => "frame-flex-row-wrap",
                 _ => new Optional<string>()
             };
         }

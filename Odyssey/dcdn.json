@@ -9,6 +9,9 @@
     ],
     "idiomorph": [
       "dist/idiomorph-ext.min.js"
+    ],
+    "lucide-static": [
+      "icons/chevron-down.svg"
     ]
   }
 }

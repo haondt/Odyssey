@@ -1,6 +1,7 @@
 @using Haondt.Web.UI.Services
 @using Odyssey.Client.Authentication.Models
 @using Odyssey.UI.Authentication.Models
+@using Odyssey.UI.Authentication.Models.Authentication
 @using Odyssey.UI.Core.Services
 @implements IValidationSummaryComponent
 @inject NavigationManager Nav
@@ -35,8 +36,8 @@
                 <Button
                     HxPushUrl='"true"'
                     HxGet="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.SignIn).ToString()"
-                    Type='"button"' Style="ButtonStyle.Ghost" Color="ButtonColor.Text">I already have an account</Button>
-                <Button Color="ButtonColor.Primary">Continue</Button>
+                    Style="ButtonStyle.Ghost" Color="ButtonColor.Text">I already have an account</Button>
+                <Button Type="ButtonType.Submit" Color="ButtonColor.Primary">Continue</Button>
             </Frame>
         </Frame>
     </form>

@@ -16,3 +16,36 @@
         width: 100%;
     }
 }
+
+
+select.input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+.select-container {
+    width: 100%;
+    position: relative;
+}
+
+.select-container::after {
+    --indicator-length-px: 8;
+    --indicator-width: 2px;
+
+    position: absolute;
+    border: var(--indicator-width) solid var(--haondt-ui-color-primary);
+
+    content: " ";
+    height: calc(var(--indicator-length-px) * 1px);
+    width: calc(var(--indicator-length-px) * 1px);
+    border-top: none;
+    border-left: none;
+    --indicator-hyp-px: sqrt(calc(2 * calc(var(--indicator-length-px) * var(--indicator-length-px))));
+    /*--indicator-tx: calc(calc(-1px * var(--indicator-hyp-px)) - var(--haondt-ui-control-padding-x));*/
+    --indicator-tx: calc(calc(-0.5px * var(--indicator-hyp-px)) - calc(var(--haondt-ui-control-height) / 2));
+    --indicator-ty: calc(-50% - calc(var(--indicator-hyp-px) * 0.25px));
+    top: 50%;
+    transform: translateX(var(--indicator-tx)) translateY(var(--indicator-ty)) rotate(45deg);
+}
+

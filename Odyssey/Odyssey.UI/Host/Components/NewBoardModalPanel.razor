@@ -1,0 +1,41 @@
+@using Odyssey.Client.Games.Services
+@using Odyssey.UI.Host.Models;
+@inject IGameRegistry GameRegistry
+
+@code {
+    private List<DropdownOption> _dropdownOptions = [];
+    protected override async Task OnInitializedAsync()
+    {
+        _dropdownOptions = (await GameRegistry.GetGamesAsync())
+            .Select(g => new DropdownOption
+            {
+                Text = g.Value,
+                Value = g.Key
+            }).ToList();
+    }
+}
+
+@{
+    var dropdownOptions = new List<DropdownOption>();
+}
+<form>
+    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
+        <p class="subtitle">Create board</p>
+        <Field
+            Type="FieldType.Text"
+            Placeholder='"Name"'
+            Id='"name"'
+            Name="@nameof(NewBoardModel.Name)" />
+        <Field
+            Title='"Game"'
+            Id='"game"'
+            Name="@nameof(NewBoardModel.Game)"
+            Type="FieldType.Dropdown"
+            Options="@_dropdownOptions" />
+        <Frame Template="FrameTemplate.ButtonContainer">
+            <Button Style="ButtonStyle.Ghost">Cancel</Button>
+            <Button Color="ButtonColor.Primary" Type="ButtonType.Submit" >Create</Button>
+        </Frame>
+
+    </Frame>
+</form>

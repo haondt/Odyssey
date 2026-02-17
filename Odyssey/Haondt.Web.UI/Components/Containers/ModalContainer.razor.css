@@ -1,0 +1,26 @@
+#modal-container {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    padding-left: var(--haondt-ui-card-spacing);
+    padding-right: var(--haondt-ui-card-spacing);
+}
+
+#modal-container.active {
+    display: flex;
+}
+
+#modal-container.modal-container-layout-hero {
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--haondt-ui-modal-vertical-spacing);
+    padding-bottom: var(--haondt-ui-modal-vertical-spacing);
+}
+
+#modal-container.modal-container-layout-center {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+

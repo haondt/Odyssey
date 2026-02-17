@@ -1,0 +1,33 @@
+@code {
+    public const string Id = "modal-container";
+    [Parameter]
+    public bool HxSwapOob { get; set; } = false;
+    [Parameter]
+    public ModalContainerLayout Layout { get; set; } = ModalContainerLayout.Hero;
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public bool Active { get; set; } = true;
+}
+
+@{
+    var classes = Active ? "active" : "";
+    switch (Layout)
+    {
+        case ModalContainerLayout.Center:
+            classes += " modal-container-layout-center";
+            break;
+        case ModalContainerLayout.Hero:
+            classes += " modal-container-layout-hero";
+            break;
+    }
+}
+
+@if(HxSwapOob)
+{
+    <div id="@Id" hx-swap-oob="outerHTML" class="@classes">@ChildContent</div>
+}
+else
+{
+    <div id="@Id" class="@classes">@ChildContent</div>
+}

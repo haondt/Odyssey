@@ -7,7 +7,8 @@ namespace Haondt.Web.UI.Components.Element
         Text,
         Checkbox,
         Password,
-        Search
+        Search,
+        Dropdown
     }
     public enum FieldSize
     {
@@ -24,5 +25,12 @@ namespace Haondt.Web.UI.Components.Element
             };
 
         }
+    }
+
+    public record struct DropdownOption
+    {
+        public required string Text { get; set; }
+        public Optional<string> Value { get; set; }
+        public bool Selected { get; set; }
     }
 }
