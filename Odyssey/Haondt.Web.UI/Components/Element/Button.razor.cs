@@ -24,7 +24,8 @@ namespace Haondt.Web.UI.Components.Element
     {
         Button,
         Submit,
-        Reset
+        Reset,
+        CloseModal
     }
 
     public static class ButtonExtensions
@@ -57,6 +58,7 @@ namespace Haondt.Web.UI.Components.Element
                 ButtonType.Button => "button",
                 ButtonType.Submit => "submit",
                 ButtonType.Reset => "reset",
+                ButtonType.CloseModal => "button",
                 _ => "button"
             };
         }

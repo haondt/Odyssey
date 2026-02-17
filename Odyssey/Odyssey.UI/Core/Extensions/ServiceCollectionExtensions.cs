@@ -57,6 +57,7 @@ namespace Odyssey.UI.Core.Extensions
                 Content = @"{
                     ""responseHandling"": [
                         { ""code"": ""204"", ""swap"": false },
+                        { ""code"": ""405"", ""swap"": false },
                         { ""code"": "".*"", ""swap"": true }
                     ],
                     ""scrollIntoViewOnBoost"": false,

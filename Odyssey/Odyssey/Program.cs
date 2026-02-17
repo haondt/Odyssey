@@ -1,5 +1,6 @@
 using Haondt.Core.Extensions;
 using Haondt.Web.Extensions;
+using Haondt.Web.Services;
 using Haondt.Web.UI.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -36,6 +37,10 @@ builder.Services
     {
         options.HtmxScriptUri = "/static/shared/vendored/htmx.org/dist/htmx.min.js";
         options.HyperscriptScriptUri = "/static/shared/vendored/hyperscript.org/dist/_hyperscript.min.js";
+    })
+    .Configure<HtmxOptions>(o =>
+    {
+        o.Extensions.Add("morph");
     })
     .AddOdysseyGrainInterfacesServices(builder.Configuration)
     .AddOdysseyPersistenceServices(builder.Configuration)

@@ -35,6 +35,10 @@
                     public const string Index = $"{Host.Boards.Index}/new";
                 }
             }
+            public static class Board
+            {
+                public const string Index = $"{Host.Index}/board";
+            }
             public static class Soundboard
             {
                 public const string Index = $"{Host.Index}/soundboard";

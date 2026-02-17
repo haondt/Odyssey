@@ -1,8 +1,21 @@
 @using Odyssey.Client.Games.Services
 @using Odyssey.UI.Host.Models;
+@using Haondt.Web.UI.Services;
+@using Haondt.Core.Extensions;
+@using Haondt.Web.UI.Components.Components;
 @inject IGameRegistry GameRegistry
 
+@implements IValidationErrorsComponent
+
 @code {
+    [Parameter]
+    public Dictionary<string, string> ValidationErrors { get; set; } = [];
+
+    [Parameter]
+    public bool IsValidation { get; set; }
+
+    public const string Id = "new-board-modal-panel";
+
     private List<DropdownOption> _dropdownOptions = [];
     protected override async Task OnInitializedAsync()
     {
@@ -18,23 +31,30 @@
 @{
     var dropdownOptions = new List<DropdownOption>();
 }
-<form>
-    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
+<form id="@Id" hx-post>
+    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel" Align="FrameAlignment.Stretch">
         <p class="subtitle">Create board</p>
-        <Field
-            Type="FieldType.Text"
-            Placeholder='"Name"'
-            Id='"name"'
-            Name="@nameof(NewBoardModel.Name)" />
-        <Field
-            Title='"Game"'
-            Id='"game"'
-            Name="@nameof(NewBoardModel.Game)"
-            Type="FieldType.Dropdown"
-            Options="@_dropdownOptions" />
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
+            <Field
+                Type="FieldType.Text"
+                Placeholder='"Name"'
+                Id='"name"'
+                Name="@nameof(NewBoardModel.Name)"
+                HxPreserve="true"
+                Error="@(IsValidation ? ValidationErrors.GetValue(nameof(NewBoardModel.Name)) : new())"/>
+            <Field
+                Title='"Game"'
+                Id='"game"'
+                Name="@nameof(NewBoardModel.Game)"
+                Type="FieldType.Dropdown"
+                Options="@_dropdownOptions" />
+        </Frame>
         <Frame Template="FrameTemplate.ButtonContainer">
-            <Button Style="ButtonStyle.Ghost">Cancel</Button>
-            <Button Color="ButtonColor.Primary" Type="ButtonType.Submit" >Create</Button>
+            <Button
+                Type="ButtonType.CloseModal"
+                Style="ButtonStyle.Ghost">Cancel</Button>
+            <Button
+                Color="ButtonColor.Primary" Type="ButtonType.Submit" >Create</Button>
         </Frame>
 
     </Frame>

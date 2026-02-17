@@ -1,9 +1,13 @@
+@using Haondt.Web.UI.Components.Components;
 @code {
     [Parameter]
     public Optional<string> Text { get; set; } 
 
     [Parameter]
     public Optional<string> HxPost { get; set; } 
+
+    [Parameter]
+    public Optional<string> Hyperscript { get; set; } 
 
     [Parameter]
     public Optional<string> HxGet { get; set; } 
@@ -38,6 +42,13 @@
             _rootAttributes["hx-get"] = hxGet;
         if (HxPushUrl.TryGetValue(out var hxPushUrl))
             _rootAttributes["hx-push-url"] = hxPushUrl;
+        if (Type == ButtonType.CloseModal) 
+        {
+            var snippet = $"on click send click to #{ModalPanel.ModalBackgroundId} end";
+            Hyperscript = $"{snippet} {Hyperscript.Or("")}";
+        }
+        if(Hyperscript.TryGetValue(out var hyperscript))
+            _rootAttributes["_"] = hyperscript;
         _rootAttributes["type"] = Type.TypeString;
     }
 }

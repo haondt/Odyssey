@@ -2,7 +2,6 @@
 using Haondt.Web.Core.Extensions;
 using Haondt.Web.Services;
 using Haondt.Web.UI.Attributes;
-using Haondt.Web.UI.Components.Element;
 using Haondt.Web.UI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -38,9 +37,8 @@ namespace Haondt.Web.UI.Filters
         public async Task<Result<IResult>> ApplyValidationErrorAsync(Dictionary<string, string> validationErrors, HttpContext httpContext)
         {
             var endpoint = httpContext.GetEndpoint();
-            var summaryAttribute = endpoint?.Metadata.GetMetadata<ValidationSummaryAttribute>();
 
-            if (summaryAttribute != null)
+            if (endpoint?.Metadata.GetMetadata<ValidationSummaryAttribute>() is { } summaryAttribute)
             {
                 var text = string.Join('\n', validationErrors.Values);
                 var instance = ActivatorUtilities.CreateInstance(serviceProvider, summaryAttribute.ComponentType);
@@ -55,6 +53,32 @@ namespace Haondt.Web.UI.Filters
                 var result = await componentFactory.RenderComponentAsync(component, summaryAttribute.ComponentType);
                 var responseData = httpContext.Response.AsResponseData();
                 if (summaryAttribute.HxSwapId.TryGetValue(out var swapId))
+                {
+                    responseData.HxReswap("outerHTML");
+                    responseData.HxRetarget($"#{swapId}");
+                }
+                else
+                {
+                    responseData.HxReswap("none");
+                }
+                responseData.Status(400);
+                return new(result);
+            }
+
+            if (endpoint?.Metadata.GetMetadata<ValidationErrorsAttribute>() is { } errorsAttribute)
+            {
+                var instance = ActivatorUtilities.CreateInstance(serviceProvider, errorsAttribute.ComponentType);
+
+                if (instance is not IValidationErrorsComponent component)
+                    throw new InvalidOperationException($"{errorsAttribute.ComponentType} must implement {nameof(IValidationErrorsComponent)}.");
+
+                component.ValidationErrors = validationErrors;
+                component.IsValidation = true;
+
+
+                var result = await componentFactory.RenderComponentAsync(component, errorsAttribute.ComponentType);
+                var responseData = httpContext.Response.AsResponseData();
+                if (errorsAttribute.HxSwapId.TryGetValue(out var swapId))
                 {
                     responseData.HxReswap("outerHTML");
                     responseData.HxRetarget($"#{swapId}");

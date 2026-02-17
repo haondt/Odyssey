@@ -49,6 +49,8 @@
 }
 
 <div id="@Id" class="@_bodyContentClasses">
+    <ModalContainer Active="false" />
+    <ToastContainer />
     @if(_swapWebSocket) 
     {
         @if(_targetRole == OdysseyRoles.None)

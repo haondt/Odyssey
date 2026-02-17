@@ -20,6 +20,9 @@
     [Parameter]
     public Optional<string> Autocomplete { get; set; }
 
+    [Parameter]
+    public Optional<string> Error { get; set; }
+
     /// <summary>
     /// Uses <a href="https://htmx.org/attributes/hx-preserve/">hx-preserve</a> to keep the input element unchanged during swaps.
     /// Requires a unique, unchanging <see cref="Id" /> to work correctly.
@@ -151,5 +154,9 @@
                 </select>
             </div>
         } 
+        @if(Error.TryGetValue(out var error)) 
+        {
+            <p class="validation-error">@error</p>
+        }
     </Frame>
 </div>
