@@ -61,7 +61,7 @@ namespace Odyssey.UI.Core.Extensions
                     ],
                     ""scrollIntoViewOnBoost"": false,
                     ""historyCacheSize"": 0,
-                    ""historyRestoreAsHxRequest"": false
+                    ""historyRestoreAsHxRequest"": true
                 }",
             });
 

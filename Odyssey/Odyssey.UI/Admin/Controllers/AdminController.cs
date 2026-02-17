@@ -6,7 +6,7 @@ using Odyssey.UI.Core.Models;
 
 namespace Odyssey.UI.Admin.Controllers
 {
-    [Route(OdysseyRoutes.Roles.Admin.Index)]
+    [Route(OdysseyRoutes.Admin.Index)]
     [Authorize(Roles = $"{AuthConstants.AdminRole}, {AuthConstants.SuperadminRole}")]
     public class AdminController : UIController
     {

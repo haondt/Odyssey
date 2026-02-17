@@ -8,10 +8,10 @@ namespace Odyssey.UI.Core.Components
         public List<NavigationBreadcrumb> Breadcrumbs { get; set; } = [];
         public string RoleRoute => Role switch
         {
-            OdysseyRoles.Host => OdysseyRoutes.Roles.Host.Index,
-            OdysseyRoles.Admin => OdysseyRoutes.Roles.Admin.Index,
-            OdysseyRoles.Device => OdysseyRoutes.Roles.Device.Index,
-            OdysseyRoles.Display => OdysseyRoutes.Roles.Display.Index,
+            OdysseyRoles.Host => OdysseyRoutes.Host.Index,
+            OdysseyRoles.Admin => OdysseyRoutes.Admin.Index,
+            OdysseyRoles.Device => OdysseyRoutes.Device.Index,
+            OdysseyRoles.Display => OdysseyRoutes.Display.Index,
             _ => OdysseyRoutes.Roles.Index
         };
         public string RoleText => Role switch

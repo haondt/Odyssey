@@ -41,11 +41,10 @@
                 color: var(--haondt-ui-color-accent);
             }
 
-            > a:not(.active), > p:not(.active) {
-            }
+        }
 
-            > a:hover:not(.active), > p:hover:not(.active) {
-            }
+        > li:has(> a) {
+            cursor: pointer;
         }
 
         > li:has(> .active) {

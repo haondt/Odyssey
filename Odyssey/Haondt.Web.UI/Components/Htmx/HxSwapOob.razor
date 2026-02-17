@@ -1,22 +1,32 @@
 @code{
     [Parameter, EditorRequired]
-    public required string Target { get; set; }
+    public string Target { get; set; }
+
     [Parameter]
     public string Strategy { get; set; } = "innerHTML";
 
 
-    [Parameter, EditorRequired]
-    public required IComponent Content { get; set; }
+    [Parameter]
+    public Optional<IComponent> Content { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
 
     [Parameter]
     public bool ScrollToTop { get; set; } = false;
 
 }
+
 <div 
     hx-swap-oob="@Strategy:@Target">
     @if (ScrollToTop)
     {
         <div _="on load go to the top of #page-container then remove me"></div>
     }
-    <ObjectComponent Component="Content" />
+    @if(Content.TryGetValue(out var content))
+    {
+        <ObjectComponent Component="@content" />
+    }
+    @ChildContent
 </div>

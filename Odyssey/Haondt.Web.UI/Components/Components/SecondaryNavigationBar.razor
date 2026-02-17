@@ -35,7 +35,7 @@
             {
                 @if (item.Active)
                 {
-                    <a class="active" href="@href">@item.Text</a>
+                    <a hx-boost="true" class="active" href="@href">@item.Text</a>
                 }
                 else
                 {

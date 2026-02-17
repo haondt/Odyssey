@@ -9,13 +9,13 @@
     protected override void OnInitialized()
     {
         LeftItems = [
-            new("Party", OdysseyRoutes.Roles.Host.Party.Index, ActiveTab == HostSecondaryNavigationBarTab.Party),
-            new("Sessions", OdysseyRoutes.Roles.Host.Sessions.Index, ActiveTab == HostSecondaryNavigationBarTab.Sessions),
-            new("Boards", OdysseyRoutes.Roles.Host.Boards.Index, ActiveTab == HostSecondaryNavigationBarTab.Boards),
-            new("Soundboard", OdysseyRoutes.Roles.Host.Soundboard.Index, ActiveTab == HostSecondaryNavigationBarTab.Soundboard),
+            new("Party", OdysseyRoutes.Host.Party.Index, ActiveTab == HostSecondaryNavigationBarTab.Party),
+            new("Sessions", OdysseyRoutes.Host.Sessions.Index, ActiveTab == HostSecondaryNavigationBarTab.Sessions),
+            new("Boards", OdysseyRoutes.Host.Boards.Index, ActiveTab == HostSecondaryNavigationBarTab.Boards),
+            new("Soundboard", OdysseyRoutes.Host.Soundboard.Index, ActiveTab == HostSecondaryNavigationBarTab.Soundboard),
         ];
         RightItems = [
-            new("Settings", OdysseyRoutes.Roles.Host.Settings.Index, ActiveTab == HostSecondaryNavigationBarTab.Settings),
+            new("Settings", OdysseyRoutes.Host.Settings.Index, ActiveTab == HostSecondaryNavigationBarTab.Settings),
         ];
     }
 

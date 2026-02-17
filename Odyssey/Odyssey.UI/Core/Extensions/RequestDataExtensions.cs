@@ -13,6 +13,10 @@ namespace Odyssey.UI.Core.Extensions
             {
                 return request.Headers.TryGetValue<string>("Hx-Current-Url").Map(q => new Uri(q).AbsolutePath);
             }
+            public bool IsHxHistoryRestoreRequest()
+            {
+                return request.Headers.TryGetValue<bool>("Hx-History-Restore-Request").Or(false); ;
+            }
         }
     }
 }

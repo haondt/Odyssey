@@ -7,6 +7,7 @@ using Haondt.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Odyssey.UI.Core.Components;
+using Odyssey.UI.Core.Extensions;
 
 namespace Odyssey.UI.Core.Services
 {
@@ -30,7 +31,7 @@ namespace Odyssey.UI.Core.Services
             var renderPageAttribute = componentType.GetCustomAttributes(typeof(RenderPageAttribute), inherit: false).FirstOrDefault().AsOptional().Map(q => (RenderPageAttribute)q);
             if (renderPageAttribute.TryGetValue(out var attr))
             {
-                if (request.IsHxRequest())
+                if (request.IsHxRequest() && !request.IsHxHistoryRestoreRequest())
                 {
                     component = await _layoutFactory.GetLayoutAsync(component);
                     componentType = component.GetType();

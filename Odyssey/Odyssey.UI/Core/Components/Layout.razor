@@ -33,12 +33,8 @@
         _targetRole = renderPageAttribute.Map(q => q.Role).Or(OdysseyRoles.None);
         var currentRole = Request.HxCurrentPath().Map(q =>
         {
-            var segments = q.Split("/").Skip(1).Take(2).ToList();
-            if (segments.Count != 2)
-                return OdysseyRoles.None;
-            if (segments[0] != "roles")
-                return OdysseyRoles.None;
-            return segments[1] switch
+            var segment = q.Split("/").Skip(1).FirstOrDefault();
+            return segment switch
             {
                 OdysseyRoles.Host => OdysseyRoles.Host,
                 OdysseyRoles.Admin => OdysseyRoles.Admin,
@@ -61,7 +57,7 @@
         }
         else
         {
-            <div id="websocket-container" hx-ext="ws" ws-connect="/ws/@_targetRole"
+            <div id="websocket-container" hx-ext="ws" ws-connect="wss:/ws/@_targetRole"
                 _="
                     on load
                         log localStorage.clientId

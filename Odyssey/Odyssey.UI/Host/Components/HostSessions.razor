@@ -1,4 +1,5 @@
 @using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Htmx
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
@@ -14,6 +15,7 @@
 <ContentContainer>
     <Frame Gap="FrameSpacing.Panel" Flex="FrameDirection.Col">
         <HostSecondaryNavigationBar ActiveTab="HostSecondaryNavigationBarTab.Sessions" />
-        <p>Host sessions tab</p>
+        <p>Host sessions tab </p>
     </Frame>
 </ContentContainer>
+
