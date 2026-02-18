@@ -1,7 +1,10 @@
-﻿using Haondt.Web.Core.Extensions;
+﻿using Haondt.Core.Extensions;
+using Haondt.Web.Core.Extensions;
 using Haondt.Web.UI.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Odyssey.Client.Authentication.Services;
+using Odyssey.Domain.Core.Services;
 using Odyssey.UI.Core.Controllers;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
@@ -10,7 +13,7 @@ using Odyssey.UI.Host.Models;
 namespace Odyssey.UI.Host.Controllers
 {
     [Route(OdysseyRoutes.Host.Index)]
-    public class HostController : UIController
+    public class HostController(IBoardService boards, ISessionService sessionService) : UIController
     {
         [HttpGet]
         public IResult Get() => TypedResults.Redirect(OdysseyRoutes.Host.Party.Index);
@@ -26,14 +29,20 @@ namespace Odyssey.UI.Host.Controllers
 
         [HttpPost(OdysseyRoutes.Host.Boards.Index)]
         [ValidationState(typeof(NewBoardModalPanel), NewBoardModalPanel.Id)]
-        public Task<IResult> CreateNewBoard([FromForm] NewBoardModel newBoard)
+        public async Task<IResult> CreateNewBoard([FromForm] NewBoardModel newBoard)
         {
             // TODO
-            var newBoardId = Guid.NewGuid();
-            ResponseData.HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{newBoardId}");
-            return ComponentFactory.RenderComponentAsync(new EditBoard
+            var (boardId, board) = await boards.CreateBoard(new()
             {
-                Metadata = new() { Name = newBoard.Name }
+                GameId = newBoard.Game,
+                Name = newBoard.Name,
+                OwnerId = (await sessionService.GetUserIdAsync()).Expect()
+            });
+
+            ResponseData.HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{boardId}");
+            return await ComponentFactory.RenderComponentAsync(new EditBoard
+            {
+                Metadata = board
             });
         }
 

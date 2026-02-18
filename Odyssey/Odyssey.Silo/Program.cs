@@ -25,7 +25,7 @@ builder.UseOrleans((context, silo) =>
         services
             .AddHostedService<SiloStartupService>()
             .AddOdysseyGrainInterfacesServices(context.Configuration)
-            .AddOdysseyPersistenceServices(context.Configuration)
+            .AddOdysseyPersistenceServerServices(context.Configuration)
             .AddOdysseyDomainServices(context.Configuration)
             .AddOdysseySiloServices(context.Configuration)
             .AddGrainStorage(context.Configuration, GrainConstants.GrainStorage);

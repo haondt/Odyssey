@@ -2,6 +2,6 @@
 {
     public class DebugGameConstants
     {
-        public const string Identity = "DebugGame";
+        public const string GameId = "DebugGame";
     }
 }

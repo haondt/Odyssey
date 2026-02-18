@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Odyssey.Domain\Odyssey.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Games\Services\" />
+  </ItemGroup>
+
 </Project>

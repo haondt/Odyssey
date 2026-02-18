@@ -10,6 +10,9 @@
     public Optional<string> Title { get; set; }
 
     [Parameter]
+    public Optional<string> Description { get; set; }
+
+    [Parameter]
     public Optional<bool> IsValid { get; set; }
 
     [Parameter]
@@ -101,6 +104,9 @@
 
         if (!Title.HasValue && displayAttr?.Name is not null)
             Title = displayAttr.Name;
+
+        if (!Description.HasValue && displayAttr?.Description is not null)
+            Description = displayAttr.Description;
 
         if (!Name.TryGetValue(out var name))
             Name = name = path;

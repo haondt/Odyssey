@@ -3,6 +3,9 @@
     public Optional<string> Title { get; set; }
 
     [Parameter]
+    public Optional<string> Description { get; set; }
+
+    [Parameter]
     public FieldType Type { get; set; } = FieldType.Text;
 
     [Parameter]
@@ -163,6 +166,10 @@
         @if(Error.TryGetValue(out var error)) 
         {
             <p class="validation-error">@error</p>
+        }
+        @if (Description.TryGetValue(out var description))
+        {
+            <p>@description</p>
         }
     </Frame>
 </div>

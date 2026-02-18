@@ -4,7 +4,6 @@ using Odyssey.Client.Authentication.Models;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Models;
 using Odyssey.Client.Core.Services;
-using Odyssey.Client.Games.Services;
 
 namespace Odyssey.Client.Core.Extensions
 {
@@ -26,9 +25,6 @@ namespace Odyssey.Client.Core.Extensions
             services.AddScoped<IUserSessionService, UserSessionService>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IClientStartupParticipant, AuthenticationDataSeeder>();
-
-            // games
-            services.AddScoped<IGameRegistry, GameRegistry>();
 
             return services;
 

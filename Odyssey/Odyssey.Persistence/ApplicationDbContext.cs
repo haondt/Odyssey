@@ -9,6 +9,7 @@ namespace Odyssey.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<UserDataSurrogate>
     {
+        public DbSet<BoardMetadataDataModel> BoardMetadatas { get; set; } = default!;
 
         public ApplicationDbContext(DbContextOptions options)
             : base(options)
@@ -23,6 +24,9 @@ namespace Odyssey.Persistence
             configurationBuilder
                 .Properties<AbsoluteDateTime>()
                 .HaveConversion<AbsoluteDateTimeConverter>();
+            configurationBuilder
+                .Properties<NormalizedString>()
+                .HaveConversion<NormalizedStringConverter>();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

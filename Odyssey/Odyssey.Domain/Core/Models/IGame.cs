@@ -2,7 +2,8 @@
 {
     public interface IGame
     {
-        public string Identity { get; }
-        public ValueTask<GameSettings> GetSettingsAsync(string hostUserId);
+        public string Id { get; }
+        public Task<GameSettings> GetSettingsAsync(string hostUserId);
+        Task<(Guid Id, BoardMetadata Metadata)> CreateBoard(string ownerId, string name);
     }
 }

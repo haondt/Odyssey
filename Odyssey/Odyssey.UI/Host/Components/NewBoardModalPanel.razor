@@ -1,9 +1,11 @@
-@using Odyssey.Client.Games.Services
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Domain.Core.Services
 @using Odyssey.UI.Host.Models;
 @using Haondt.Web.UI.Services;
 @using Haondt.Core.Extensions;
 @using Haondt.Web.UI.Components.Components;
 @inject IGameRegistry GameRegistry
+@inject ISessionService SessionService
 
 @code {
     public const string Id = "new-board-modal-panel";
@@ -11,7 +13,7 @@
     private List<DropdownOption> _dropdownOptions = [];
     protected override async Task OnInitializedAsync()
     {
-        _dropdownOptions = (await GameRegistry.GetGamesAsync())
+        _dropdownOptions = (await GameRegistry.GetGameNamesAsync((await SessionService.GetUserIdAsync()).Expect()))
             .Select(g => new DropdownOption
             {
                 Text = g.Value,

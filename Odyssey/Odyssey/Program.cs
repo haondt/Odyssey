@@ -43,7 +43,7 @@ builder.Services
         o.Extensions.Add("morph");
     })
     .AddOdysseyGrainInterfacesServices(builder.Configuration)
-    .AddOdysseyPersistenceServices(builder.Configuration)
+    .AddOdysseyPersistenceClientServices(builder.Configuration)
     .AddOdysseyDomainServices(builder.Configuration)
     .AddOdysseyClientServices(builder.Configuration)
     .AddOdysseyGames();

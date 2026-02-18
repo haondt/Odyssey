@@ -9,10 +9,9 @@ namespace Odyssey.Persistence.Extensions
     {
         public static async Task PerformDatabaseMigrationsAsync(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
         {
-            using var scope = serviceProvider.CreateScope();
-            var persistenceSettings = scope.ServiceProvider.GetRequiredService<IOptions<PersistenceSettings>>();
+            var persistenceSettings = serviceProvider.GetRequiredService<IOptions<PersistenceSettings>>();
 
-            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            using var db = await serviceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContextAsync(cancellationToken);
             if (persistenceSettings.Value.DatabaseSettings.DropDatabaseOnStartup)
                 await db.Database.EnsureDeletedAsync(cancellationToken);
 
