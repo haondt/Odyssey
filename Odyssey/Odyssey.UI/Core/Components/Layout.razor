@@ -13,11 +13,13 @@
     [Parameter]
     public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
 
-    private bool _swapWebSocket = false;
     private string _targetRole = OdysseyRoles.None;
 
     [CascadingParameter]
     public IRequestData Request { get; set; } = default!;
+
+    [CascadingParameter]
+    public IResponseData Response { get; set; } = default!;
 
     public const string Id = "layout-container";
 
@@ -29,49 +31,21 @@
             _bodyContentClasses = "fill-page";
 
         var renderPageAttribute = Content.GetType().GetCustomAttributes(typeof(OdysseyRenderPageAttribute), inherit: false).FirstOrDefault().AsOptional().Map(q => (OdysseyRenderPageAttribute)q);
-
         _targetRole = renderPageAttribute.Map(q => q.Role).Or(OdysseyRoles.None);
-        var currentRole = Request.HxCurrentPath().Map(q =>
-        {
-            var segment = q.Split("/").Skip(1).FirstOrDefault();
-            return segment switch
-            {
-                OdysseyRoles.Host => OdysseyRoles.Host,
-                OdysseyRoles.Admin => OdysseyRoles.Admin,
-                OdysseyRoles.Device => OdysseyRoles.Device,
-                OdysseyRoles.Display => OdysseyRoles.Display,
-                _ => OdysseyRoles.None
-            };
-        }).Or(OdysseyRoles.None);
-
-        _swapWebSocket = !Request.IsHxRequest() ||  currentRole != _targetRole;
     }
 }
 
 <div id="@Id" class="@_bodyContentClasses">
     <ModalContainer Active="false" />
     <ToastContainer />
-    @if(_swapWebSocket) 
+    @if (Request.IsHxRequest())
     {
-        @if(_targetRole == OdysseyRoles.None)
-        {
-            <div id="websocket-container"></div>
-        }
-        else
-        {
-            <div id="websocket-container" hx-ext="ws" ws-connect="wss:/ws/@_targetRole"
-                _="
-                    on load
-                        log localStorage.clientId
-                        set localStorage.clientId to '@Guid.NewGuid()'
-                        log localStorage.clientId
-                    end
-                ">ws: @_targetRole/@Guid.NewGuid()</div>
-        }
+        <div id="@Websocket.Id" hx-preserve></div>
+        <template _="on load send UpdateWebsocket(role: '@_targetRole') to #@Websocket.Id then remove me end"></template>
     }
     else
     {
-        <div id="websocket-container" hx-preserve></div>
+        <Websocket Role="_targetRole" />
     }
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
