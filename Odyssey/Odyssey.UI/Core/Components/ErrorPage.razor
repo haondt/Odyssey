@@ -34,23 +34,27 @@
     <Frame
         Border="FrameBorder.Card"
         Padding="FrameSpacing.Card"
-        Align="FrameAlignment.Start"
-        Gap="FrameSpacing.Line"
+        Gap="FrameSpacing.Card"
         Flex="FrameDirection.Col">
-        <p class="title">@StatusCode.ToString()</p>
-        @if(Message.TryGetValue(out var message)) 
-        {
-            <p class="subtitle">@message</p>
-        }
-        @if(Details.TryGetValue(out var details)) 
-        {
-            <div class="overflow-x-auto overflow-y-hidden">
-                <div class="text" style="white-space:pre-wrap;">@details</div>
-            </div>
-        }
+        <Frame
+            Align="FrameAlignment.Start"
+            Gap="FrameSpacing.Line"
+            Flex="FrameDirection.Col">
+            <p class="title">@StatusCode.ToString()</p>
+            @if(Message.TryGetValue(out var message)) 
+            {
+                <p class="subtitle">@message</p>
+            }
+            @if(Details.TryGetValue(out var details)) 
+            {
+                <div class="overflow-x-auto overflow-y-hidden">
+                    <div class="text" style="white-space:pre-wrap;">@details</div>
+                </div>
+            }
+        </Frame>
         @if(InternalDetails.TryGetValue(out var internalDetails)) 
         {
-            <Frame Template="FrameTemplate.Card" AddClasses='"width-full"'>
+            <Frame AddClasses='"bg-background-strong"' Padding="FrameSpacing.Card" Radius="FrameRadius.Card">
                 <div class="overflow-x-auto overflow-y-hidden">
                     <div class="text monospace" style="white-space:pre;">@internalDetails</div>
                 </div>

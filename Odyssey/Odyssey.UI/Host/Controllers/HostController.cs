@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Domain.Core.Services;
 using Odyssey.UI.Core.Controllers;
+using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
 using Odyssey.UI.Host.Models;
@@ -68,9 +69,10 @@ namespace Odyssey.UI.Host.Controllers
         [HttpGet($"{OdysseyRoutes.Host.Board.Index}/{{id}}")]
         public async Task<IResult> GetBoard(Guid id)
         {
+            throw new KeyNotFoundException("the key was not found");
             var result = await boards.GetBoardAsync(await sessionService.GetUserIdAsync(), id);
             if (!result.TryGetValue(out var metadata))
-                return await Render404NotFoundComponent();
+                throw new NotFoundErrorPageException();
             return await ComponentFactory.RenderComponentAsync(new EditBoard
             {
                 Metadata = metadata

@@ -61,6 +61,13 @@ namespace Haondt.Web.UI.Components.Element
         Panel,
         Card
     }
+    public enum FrameRadius
+    {
+        None,
+        Default,
+        Panel,
+        Card
+    }
 
     public static class FrameExtensions
     {
@@ -107,6 +114,16 @@ namespace Haondt.Web.UI.Components.Element
             {
                 FrameBorder.Panel => "frame-border-panel",
                 FrameBorder.Card => "frame-border-card",
+                _ => new Optional<string>()
+            };
+        }
+
+        extension(FrameRadius radius)
+        {
+            public Optional<string> CssClass => radius switch
+            {
+                FrameRadius.Panel => "frame-radius-panel",
+                FrameRadius.Card => "frame-radius-card",
                 _ => new Optional<string>()
             };
         }

@@ -45,7 +45,6 @@
 
 
 .frame-border {
-    border-radius: var(--frame-border-radius);
     border: var(--frame-border);
 }
 
@@ -64,11 +63,21 @@
 }
 
 .frame-border-card {
-    --frame-border-radius: var(--haondt-ui-card-border-radius);
     --frame-border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
 }
 
 .frame-border-panel {
     --frame-border-radius: var(--haondt-ui-panel-border-radius);
     --frame-border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+}
+
+.frame-radius {
+    --frame-radius: var(--haondt-ui-border-radius);
+    border-radius: var(--frame-border-radius);
+}
+.frame-radius-card {
+    --frame-border-radius: var(--haondt-ui-card-border-radius);
+}
+.frame-radius-panel {
+    --frame-border-radius: var(--haondt-ui-panel-border-radius);
 }

@@ -1,4 +1,5 @@
 using Haondt.Core.Extensions;
+using Haondt.Web.Core.Middleware;
 using Haondt.Web.Core.ModelBinders;
 using Haondt.Web.Extensions;
 using Haondt.Web.Services;
@@ -145,6 +146,7 @@ app.UseCors(OdysseyConstants.CorsPolicyName);
 app.UseAntiforgery();
 
 app.MapControllers();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<UnmappedRouteHandlerMiddleware>();
 app.MapHealthChecks("hc");
 

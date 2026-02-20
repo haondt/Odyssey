@@ -37,6 +37,9 @@
     public Optional<FrameBorder> Border { get; set; }
 
     [Parameter]
+    public Optional<FrameRadius> Radius { get; set; }
+
+    [Parameter]
     public bool Clickable { get; set; } = false;
 
     [Parameter]
@@ -84,6 +87,22 @@
         {
             _rootClasses.Add("frame-border");
             if (border.CssClass.TryGetValue(out var borderClass))
+                _rootClasses.Add(borderClass);
+            if (!Radius.HasValue)
+            {
+                Radius = border switch
+                {
+                    FrameBorder.Card => FrameRadius.Card,
+                    FrameBorder.Panel => FrameRadius.Panel,
+                    _ => new Optional<FrameRadius>()
+                };
+            }
+        }
+
+        if (Radius.TryGetValue(out var radius))
+        {
+            _rootClasses.Add("frame-radius");
+            if (radius.CssClass.TryGetValue(out var borderClass))
                 _rootClasses.Add(borderClass);
         }
 
