@@ -8,7 +8,7 @@
 @using Odyssey.UI.Core.Services
 @using Odyssey.Client.Authentication.Services
 @inject NavigationManager Nav
-@inject ICachedDataService<ServerSettings> ServerSettingsService
+@inject ICachedDataRepository<ServerSettings> ServerSettingsService
 @inject IValidationStateReader ValidationState
 @code {
     public const string Id = "sign-in-panel";

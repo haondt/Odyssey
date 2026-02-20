@@ -18,7 +18,7 @@ namespace Odyssey.UI.Authentication.Controllers
     public class AuthenticationController(
         ISessionService sessionService,
         IUserSessionService userService,
-        ICachedDataService<ServerSettings> serverSettings) : UIController
+        ICachedDataRepository<ServerSettings> serverSettings) : UIController
     {
         [HttpGet(OdysseyRoutes.Auth.SignIn)]
         [AllowAnonymous]

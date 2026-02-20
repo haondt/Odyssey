@@ -6,7 +6,7 @@
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
-@inject IBoardService Boards
+@inject IBoardMetadataRepository Boards
 @inject ISessionService Session
 
 @code {
@@ -21,7 +21,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _boards = await Boards.GetBoardsAsync(await Session.GetUserIdAsync());
+        _boards = await Boards.GetBoardMetadatasAsync(await Session.GetUserIdAsync());
         _ready = true;
     }
 }

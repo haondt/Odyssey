@@ -12,6 +12,7 @@ using Odyssey.Client.Core.Extensions;
 using Odyssey.Client.Core.Models;
 using Odyssey.Core.Constants;
 using Odyssey.Domain.Core.Extensions;
+using Odyssey.Games.Client.Core.Extensions;
 using Odyssey.Games.Domain.Core.Extensions;
 using Odyssey.GrainInterfaces.Core.Extensions;
 using Odyssey.Persistence;
@@ -49,7 +50,8 @@ builder.Services
     .AddOdysseyPersistenceClientServices(builder.Configuration)
     .AddOdysseyDomainServices(builder.Configuration)
     .AddOdysseyClientServices(builder.Configuration)
-    .AddOdysseyGames();
+    .AddOdysseyGames()
+    .AddOdysseyGamesClientServices(builder.Configuration);
 
 
 // Add services to the container.

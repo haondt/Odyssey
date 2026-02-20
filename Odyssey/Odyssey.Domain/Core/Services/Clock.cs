@@ -1,6 +1,6 @@
 ﻿using Haondt.Core.Models;
 
-namespace Odyssey.Games.Domain.Core.Services
+namespace Odyssey.Domain.Core.Services
 {
     public class Clock : IClock
     {

@@ -7,7 +7,7 @@ namespace Odyssey.Silo.Core.Services
 {
     public class InitialServerSettingsApplicatorStartupParticipant(
         IOptions<InitialServerSettings> options,
-        ICachedDataService<ServerSettings> settingsService) : ISiloStartupParticipant
+        ICachedDataRepository<ServerSettings> settingsService) : ISiloStartupParticipant
     {
         public int Priority => 10000;
 

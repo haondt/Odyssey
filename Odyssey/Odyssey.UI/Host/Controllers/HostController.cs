@@ -4,6 +4,7 @@ using Haondt.Web.UI.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.Client.Authentication.Services;
+using Odyssey.Client.Core.Services;
 using Odyssey.Domain.Core.Services;
 using Odyssey.UI.Core.Controllers;
 using Odyssey.UI.Core.Exceptions;
@@ -14,7 +15,8 @@ using Odyssey.UI.Host.Models;
 namespace Odyssey.UI.Host.Controllers
 {
     [Route(OdysseyRoutes.Host.Index)]
-    public partial class HostController(IBoardService boards, ISessionService sessionService) : UIController
+    public partial class HostController(IClientGameRegistry gameRegistry, ISessionService sessionService,
+        IBoardMetadataRepository boards) : UIController
     {
         [HttpGet]
         public IResult Get() => TypedResults.Redirect(OdysseyRoutes.Host.Party.Index);
@@ -32,17 +34,16 @@ namespace Odyssey.UI.Host.Controllers
         [ValidationState(typeof(NewBoardModalPanel), NewBoardModalPanel.Id)]
         public async Task<IResult> CreateNewBoard([FromForm] NewBoardModel newBoard)
         {
-            var (boardId, board) = await boards.CreateBoard(new()
-            {
-                GameId = newBoard.Game,
-                Name = newBoard.Name,
-                OwnerId = await sessionService.GetUserIdAsync()
-            });
+            var game = gameRegistry.GetGame(newBoard.Game);
+            var (boardId, board) = await game.Boards.CreateBoardAsync(
+                await sessionService.GetUserIdAsync(),
+                newBoard.Name);
 
             ResponseData.HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{boardId}");
             return await ComponentFactory.RenderComponentAsync(new EditBoard
             {
-                Metadata = board
+                Metadata = board,
+                Id = boardId
             });
         }
 
@@ -53,8 +54,8 @@ namespace Odyssey.UI.Host.Controllers
         {
             var userId = await sessionService.GetUserIdAsync();
             var boardList = string.IsNullOrWhiteSpace(search)
-                ? await boards.GetBoardsAsync(userId, last.Pagination)
-                : await boards.SearchBoardsAsync(userId, search, last.Pagination);
+                ? await boards.GetBoardMetadatasAsync(userId, last.Pagination)
+                : await boards.SearchBoardMetadatasAsync(userId, search, last.Pagination);
 
             return await ComponentFactory.RenderComponentAsync(new HostBoardsList
             {
@@ -69,12 +70,13 @@ namespace Odyssey.UI.Host.Controllers
         [HttpGet($"{OdysseyRoutes.Host.Board.Index}/{{id}}")]
         public async Task<IResult> GetBoard(Guid id)
         {
-            var result = await boards.GetBoardAsync(await sessionService.GetUserIdAsync(), id);
+            var result = await boards.GetBoardMetadataAsync(await sessionService.GetUserIdAsync(), id);
             if (!result.TryGetValue(out var metadata))
                 throw new NotFoundErrorPageException();
             return await ComponentFactory.RenderComponentAsync(new EditBoard
             {
-                Metadata = metadata
+                Metadata = metadata,
+                Id = id
             });
         }
     }

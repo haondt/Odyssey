@@ -57,10 +57,12 @@
                     Flex = Flex.Or(FrameDirection.RowWrap);
                     Justify = Justify.Or(FrameJustification.End);
                     Gap = Gap.Or(FrameSpacing.Line);
+                    Align = Align.Or(FrameAlignment.Center);
                     break;
                 case FrameTemplate.ChipContainer:
                     Flex = Flex.Or(FrameDirection.RowWrap);
                     Gap = Gap.Or(FrameSpacing.Card);
+                    Align = Align.Or(FrameAlignment.Center);
                     break;
                 case FrameTemplate.Panel:
                     Gap = Gap.Or(FrameSpacing.Panel);

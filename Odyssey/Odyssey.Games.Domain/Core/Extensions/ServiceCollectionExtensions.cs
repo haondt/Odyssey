@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Odyssey.Games.Domain.Core.Services;
 using Odyssey.Games.Domain.DebugGame.Extensions;
 
 namespace Odyssey.Games.Domain.Core.Extensions
@@ -8,8 +7,7 @@ namespace Odyssey.Games.Domain.Core.Extensions
     {
         public static IServiceCollection AddOdysseyGames(this IServiceCollection services)
         {
-            services.AddDebugGame();
-            services.AddSingleton<IClock, Clock>();
+            services.AddDebugGameServices();
             return services;
         }
 

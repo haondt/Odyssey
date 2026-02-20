@@ -2,10 +2,9 @@
 
 namespace Odyssey.Domain.Core.Services
 {
-    public interface IGameRegistry
+    public interface IGameRegistry<out TGameHandle> where TGameHandle : GameHandle
     {
-        IGame GetGame(string gameId);
-        Task<string> GetGameNameAsync(string userId, string gameId);
-        Task<Dictionary<string, string>> GetGameNamesAsync(string userId);
+        TGameHandle GetGame(string gameId);
+        Task<Dictionary<string, string>> GetDisplayNamesAsync(string userId);
     }
 }

@@ -2,12 +2,13 @@
 @using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Models
 @using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
 @using Odyssey.Domain.Core.Models
 @using Odyssey.Domain.Core.Services
 @using System.Text.Json
 @using Odyssey.UI.Authentication.Components
 @using static Odyssey.UI.Host.Controllers.HostController
-@inject IGameRegistry Games
+@inject IClientGameRegistry Games
 @inject ISessionService Session
 @code {
     [Parameter] public bool ForceLoadBoards { get; set; } = false;
@@ -25,7 +26,8 @@
         {
             if (_gameNames.ContainsKey(board.GameId))
                 continue;
-            _gameNames[board.GameId] = await Games.GetGameNameAsync(await Session.GetUserIdAsync(), board.GameId);
+            var game = Games.GetGame(board.GameId);
+            _gameNames[board.GameId] = await game.Settings.GetDisplayNameAsync(await Session.GetUserIdAsync());
         }
         _ready = true;
     }

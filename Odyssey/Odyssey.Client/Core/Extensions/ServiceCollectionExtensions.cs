@@ -26,6 +26,9 @@ namespace Odyssey.Client.Core.Extensions
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IClientStartupParticipant, AuthenticationDataSeeder>();
 
+            // games
+            services.AddSingleton<IClientGameRegistry, ClientGameRegistry>();
+
             return services;
 
         }

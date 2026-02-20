@@ -9,9 +9,11 @@
 .button-color-primary {
     --button-color: var(--haondt-ui-color-primary);
 }
-
 .button-color-text {
     --button-color: var(--haondt-ui-color-subtitle);
+}
+.button-color-danger {
+    --button-color: var(--haondt-ui-color-danger);
 }
 
 .button-style-fill {

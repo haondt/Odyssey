@@ -8,16 +8,32 @@ using Odyssey.Persistence;
 
 namespace Odyssey.Domain.Core.Services
 {
-    public class BoardService(IGameRegistry games,
-        IDbContextFactory<ApplicationDbContext> dbContextFactory) : IBoardService
+    public class BoardMetadataService(
+        IDbContextFactory<ApplicationDbContext> dbContextFactory,
+        IClock clock) : IBoardMetadataRepository
     {
-        public Task<(Guid Id, BoardMetadata Board)> CreateBoard(BoardCreationOptions options)
+        public async Task<(Guid Id, BoardMetadata Board)> CreateBoardMetadataAsync(string gameId, string ownerId, string name)
         {
-            var game = games.GetGame(options.GameId);
-            return game.CreateBoard(options.OwnerId, options.Name);
+            var now = clock.Now;
+            var meta = new BoardMetadata
+            {
+                Name = name,
+                GameId = gameId,
+                CreatedOn = now,
+                ModifiedOn = now
+            };
+            var model = meta.AsDataModel();
+
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var user = await dbContext.Users.FindAsync(ownerId)
+                ?? throw new ArgumentException($"User {ownerId} not found.");
+            user.BoardMetadatas.Add(model);
+            await dbContext.SaveChangesAsync();
+
+            return (model.Id, BoardMetadata.FromDataModel(model));
         }
 
-        public async Task<Result<BoardMetadata>> GetBoardAsync(string ownerId, Guid boardId)
+        public async Task<Result<BoardMetadata>> GetBoardMetadataAsync(string ownerId, Guid boardId)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var board = await dbContext.BoardMetadatas
@@ -25,7 +41,7 @@ namespace Odyssey.Domain.Core.Services
             return board.AsOptional().Map(BoardMetadata.FromDataModel).AsResult();
         }
 
-        public async Task<List<(Guid Id, BoardMetadata Board)>> GetBoardsAsync(string ownerId, PaginationOptions<(Guid Id, AbsoluteDateTime ModifiedOn)> pagination = default)
+        public async Task<List<(Guid Id, BoardMetadata Board)>> GetBoardMetadatasAsync(string ownerId, PaginationOptions<(Guid Id, AbsoluteDateTime ModifiedOn)> pagination = default)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var query = dbContext.BoardMetadatas
@@ -37,10 +53,10 @@ namespace Odyssey.Domain.Core.Services
             var metadata = await query.Take(pagination.PageSize.Or(OdysseyConstants.DefaultPageSize)).ToListAsync();
             return metadata.Select(m => (m.Id, BoardMetadata.FromDataModel(m))).ToList();
         }
-        public async Task<List<(Guid Id, BoardMetadata Board)>> SearchBoardsAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, AbsoluteDateTime ModifiedOn)> pagination = default)
+        public async Task<List<(Guid Id, BoardMetadata Board)>> SearchBoardMetadatasAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, AbsoluteDateTime ModifiedOn)> pagination = default)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
-                return await GetBoardsAsync(ownerId, pagination);
+                return await GetBoardMetadatasAsync(ownerId, pagination);
 
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var query = dbContext.BoardMetadatas

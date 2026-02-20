@@ -1,10 +1,11 @@
 @using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
 @using Odyssey.Domain.Core.Services
 @using Odyssey.UI.Host.Models;
 @using Haondt.Web.UI.Services;
 @using Haondt.Core.Extensions;
 @using Haondt.Web.UI.Components.Components;
-@inject IGameRegistry GameRegistry
+@inject IClientGameRegistry GameRegistry
 @inject ISessionService SessionService
 
 @code {
@@ -15,7 +16,7 @@
     private bool _ready = false;
     protected override async Task OnInitializedAsync()
     {
-        _dropdownOptions = (await GameRegistry.GetGameNamesAsync(await SessionService.GetUserIdAsync()))
+        _dropdownOptions = (await GameRegistry.GetDisplayNamesAsync(await SessionService.GetUserIdAsync()))
         .Select(g => new DropdownOption
             {
                 Text = g.Value,

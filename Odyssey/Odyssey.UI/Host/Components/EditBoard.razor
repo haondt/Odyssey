@@ -1,13 +1,23 @@
 @using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
 @using Odyssey.Domain.Core.Models
+@using Odyssey.Domain.Core.Services
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
+@inject IClientGameRegistry Games
+@inject ISessionService Session
 
 @code {
     [Parameter, EditorRequired]
     public required BoardMetadata Metadata { get; set; } 
+
+    [Parameter, EditorRequired]
+    public required Guid Id { get; set; } 
+
+    private string _gameName = default!;
     public NavigationBar CreateNavigationBar() => new()
     {
         Template = new NavigationBarDefault(OdysseyRoles.Host)
@@ -18,11 +28,39 @@
             ]
         }
     };
+
+    private IComponent _editBoardComponent = default!;
+
+    private bool _ready = false;
+    protected override async Task OnInitializedAsync()
+    {
+        var game = Games.GetGame(Metadata.GameId);
+        _editBoardComponent = await game.UI.GetEditBoardComponentAsync(Id);
+        _gameName = await game.Settings.GetDisplayNameAsync(await Session.GetUserIdAsync());
+        _ready = true;
+    }
 }
 
-<ContentContainer>
-    <Frame Gap="FrameSpacing.Panel" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
-        <SecondaryNavigationBar LeftItems="@([new("Board data", Active: true)])" />
-        <p>Edit Board / TODO</p>
-    </Frame>
-</ContentContainer>
+@if (_ready) {
+    <ContentContainer>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+            <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
+                <SecondaryNavigationBar Sticky="false" LeftItems="@([new("Board data", Active: true)])" />
+                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween">
+                    <Frame Flex="FrameDirection.Col">
+                        <p class="title">@Metadata.Name</p>
+                        <p class="italic">@_gameName</p>
+                    </Frame>
+                    <Frame Template="FrameTemplate.ButtonContainer">
+                        <Button Color="ButtonColor.Primary">Create session</Button>
+                        <Button Color="ButtonColor.Text">Clone</Button>
+                        <Button Color="ButtonColor.Text">Export</Button>
+                        <Button Color="ButtonColor.Danger">Delete</Button>
+                    </Frame>
+                </Frame>
+                <HorizontalBar />
+            </Frame>
+            <ObjectComponent Component="_editBoardComponent" />
+        </Frame>
+    </ContentContainer>
+}

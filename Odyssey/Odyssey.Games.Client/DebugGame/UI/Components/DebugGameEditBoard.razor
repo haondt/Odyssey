@@ -1,0 +1,11 @@
+@using Microsoft.AspNetCore.Components.Web
+@using Odyssey.Games.Domain.DebugGame.Models
+@code {
+    [Parameter, EditorRequired]
+    public required DebugGameBoard Board { get; set; }
+    [Parameter, EditorRequired]
+    public required int Version { get; set; }
+}
+<p>edit board for debug game</p>
+<p>Somestring: @Board.Section.SomeString</p>
+<p>Version: @Version</p>

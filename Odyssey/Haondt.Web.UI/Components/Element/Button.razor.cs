@@ -17,7 +17,8 @@ namespace Haondt.Web.UI.Components.Element
     public enum ButtonColor
     {
         Text,
-        Primary
+        Primary,
+        Danger
     }
 
     public enum ButtonType
@@ -47,6 +48,7 @@ namespace Haondt.Web.UI.Components.Element
             {
                 ButtonColor.Text => "button-color-text",
                 ButtonColor.Primary => "button-color-primary",
+                ButtonColor.Danger => "button-color-danger",
                 _ => new Optional<string>()
             };
         }
