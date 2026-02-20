@@ -118,7 +118,7 @@
             if (Justify.Bind(q => q.CssClass).TryGetValue(out var justificationClass))
                 _rootClasses.Add(justificationClass);
 
-            if(Align.Or(FrameAlignment.Center).CssClass.TryGetValue(out var alignmentClass))
+            if(Align.Or(FrameAlignment.Stretch).CssClass.TryGetValue(out var alignmentClass))
                 _rootClasses.Add(alignmentClass);
 
             if (Spacing.TryGetValue(out var spacingClass))

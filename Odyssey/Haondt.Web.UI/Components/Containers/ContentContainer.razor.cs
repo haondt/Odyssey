@@ -5,7 +5,8 @@ namespace Haondt.Web.UI.Components.Containers
     public enum ContentContainerWidth
     {
         Default,
-        Small
+        Small,
+        Large
     }
 
     /// <summary>
@@ -36,6 +37,7 @@ namespace Haondt.Web.UI.Components.Containers
             {
                 ContentContainerWidth.Default => "content-container-width-default",
                 ContentContainerWidth.Small => "content-container-width-small",
+                ContentContainerWidth.Large => "content-container-width-large",
                 _ => new Optional<string>()
             };
 

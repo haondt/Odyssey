@@ -23,7 +23,7 @@
     case NavigationBarRoles rolesBar:
         @if(SessionService.IsAuthenticated && _username.TryGetValue(out var username))
         {
-            <Frame AddClasses='"big-screen"'
+            <Frame
                 Padding="FrameSpacing.Card"
                 Flex="FrameDirection.Row" Justify="FrameJustification.End">
                 <Frame 
@@ -41,7 +41,7 @@
         break;
     case NavigationBarDefault defaultBar:
         <div>
-            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-gte-m pb-0"'>
+            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-gte-m pb-0"' Align="FrameAlignment.Center">
                 <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
                     <p class="brand-text">Odyssey</p>
                 </Frame>
@@ -50,7 +50,7 @@
                     <a hx-boost href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
                 </Frame>
             </Frame>
-            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"default-bar-lower"'>
+            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"default-bar-lower"' Align="FrameAlignment.Center">
                 <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-lte-s"'>
                     <p class="brand-text">Odyssey</p>
                     <VerticalBar />

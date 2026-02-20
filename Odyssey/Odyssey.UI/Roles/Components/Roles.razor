@@ -1,3 +1,4 @@
+@using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Components.Element
 @using System.Text.Json
 @using Odyssey.Client.Authentication.Services
@@ -40,12 +41,13 @@
     };
 }
 
-<Frame AddClasses="@("big-screen m-auto px-s py-xl max-width-content")">
-    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Center">
-        <h1 id="hero-text" class="fg-primary uppercase font-semibold">Odyssey</h1>
-        <p class="text">Select role to continue</p>
-
-        <Frame Grid="FrameGrid.CollapsibleFillTwo" Gap="FrameSpacing.Card">
+<ContentContainer Layout="ContentContainerLayout.Hero" Width="ContentContainerWidth.Default" >
+    <Frame Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceAround" Gap="FrameSpacing.Panel" Align="FrameAlignment.Center">
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Center">
+            <h1 id="hero-text" class="fg-primary uppercase font-semibold">Odyssey</h1>
+            <p class="text">Select role to continue</p>
+        </Frame>
+        <Frame AddClasses='"mb-2xl"' Flex="FrameDirection.Col" Gap="FrameSpacing.Card">
             @foreach(var (title, body, path) in _roleCards)
             {
                 <a
@@ -64,4 +66,4 @@
             }
         </Frame>
     </Frame>
-</Frame>
+</ContentContainer>
