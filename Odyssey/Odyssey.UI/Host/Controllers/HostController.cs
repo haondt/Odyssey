@@ -69,7 +69,6 @@ namespace Odyssey.UI.Host.Controllers
         [HttpGet($"{OdysseyRoutes.Host.Board.Index}/{{id}}")]
         public async Task<IResult> GetBoard(Guid id)
         {
-            throw new KeyNotFoundException("the key was not found");
             var result = await boards.GetBoardAsync(await sessionService.GetUserIdAsync(), id);
             if (!result.TryGetValue(out var metadata))
                 throw new NotFoundErrorPageException();
