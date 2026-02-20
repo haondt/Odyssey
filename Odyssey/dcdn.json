@@ -11,7 +11,11 @@
       "dist/idiomorph-ext.min.js"
     ],
     "lucide-static": [
-      "icons/chevron-down.svg"
+      "icons/chevron-down.svg",
+      "icons/x.svg"
+    ],
+    "htmx-ext-loading-states": [
+      "loading-states.js"
     ]
   }
 }

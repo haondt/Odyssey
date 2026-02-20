@@ -63,6 +63,7 @@
             case FieldType.Text:
             case FieldType.Password:
             case FieldType.Search:
+            case FieldType.LiveSearch:
                 {
 
                     if (Placeholder.TryGetValue(out var placeholder))
@@ -117,8 +118,14 @@
                 _inputAttributes["type"] = "password";
                 break;
             case FieldType.Search:
+            case FieldType.LiveSearch:
                 _inputAttributes["type"] = "search";
                 break;
+        }
+
+        if (Type == FieldType.LiveSearch)
+        {
+            _inputAttributes["_"] = "on input debounced at 200ms send submit to the closest <form />";
         }
 
         if (IsValid.HasValue && IsValid.Value == false)
@@ -142,7 +149,7 @@
         {
             <label @attributes="_labelAttributes" class="field-title">@title</label>
         }
-        @if(Type is FieldType.Text or FieldType.Password or FieldType.Search)
+        @if(Type is FieldType.Text or FieldType.Password or FieldType.Search or FieldType.LiveSearch)
         {
             <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
         } 

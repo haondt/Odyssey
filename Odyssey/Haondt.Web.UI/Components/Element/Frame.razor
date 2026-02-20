@@ -55,6 +55,10 @@
                     Justify = Justify.Or(FrameJustification.End);
                     Gap = Gap.Or(FrameSpacing.Line);
                     break;
+                case FrameTemplate.ChipContainer:
+                    Flex = Flex.Or(FrameDirection.RowWrap);
+                    Gap = Gap.Or(FrameSpacing.Card);
+                    break;
                 case FrameTemplate.Panel:
                     Gap = Gap.Or(FrameSpacing.Panel);
                     Padding = Padding.Or(FrameSpacing.Panel);
@@ -92,7 +96,7 @@
             if (Justify.Bind(q => q.CssClass).TryGetValue(out var justificationClass))
                 _rootClasses.Add(justificationClass);
 
-            if(Align.Or(FrameAlignment.Center).CssClass.TryGetValue(out var alignmentClass))
+            if(Align.Or(FrameAlignment.Stretch).CssClass.TryGetValue(out var alignmentClass))
                 _rootClasses.Add(alignmentClass);
 
             if (Spacing.TryGetValue(out var spacingClass))
@@ -135,6 +139,4 @@
     }
 }
 
-<div @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">
-    @ChildContent
-</div>
+<div @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">@ChildContent</div>

@@ -40,12 +40,12 @@
     <ToastContainer />
     @if (Request.IsHxRequest())
     {
-        <div id="@Websocket.Id" hx-preserve></div>
-        <template _="on load send UpdateWebsocket(role: '@_targetRole') to #@Websocket.Id then remove me end"></template>
+        <div id="@WebsocketContainer.Id" hx-preserve></div>
+        <template _="on load send UpdateWebsocket(role: '@_targetRole') to #@WebsocketContainer.Id then remove me end"></template>
     }
     else
     {
-        <Websocket Role="_targetRole" />
+        <WebsocketContainer Role="_targetRole" />
     }
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >

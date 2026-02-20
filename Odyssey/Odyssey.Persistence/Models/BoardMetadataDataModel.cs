@@ -13,7 +13,7 @@ namespace Odyssey.Persistence.Models
         public string OwnerId { get; set; } = default!;
 
         public required string Name { get; set; }
-        public required NormalizedString SearchData { get; set; }
+        public required string SearchData { get; set; }
         public required AbsoluteDateTime CreatedOn { get; set; }
         public required AbsoluteDateTime ModifiedOn { get; set; }
     }

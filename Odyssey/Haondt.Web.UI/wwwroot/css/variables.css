@@ -79,9 +79,11 @@
     --haondt-ui-subtitle-font-size: var(--haondt-ui-text-font-size);
     --haondt-ui-subtitle-font-weight: 500;
 
-    --haondt-ui-chip-font-size-base: 0.75rem;
+    --haondt-ui-chip-font-size-base: 0.8rem;
     --haondt-ui-chip-font-size: var(--haondt-ui-chip-font-size-base);
-    --haondt-ui-chip-font-weight: var(--haondt-ui-text-font-weight);
+    --haondt-ui-chip-font-weight: 400;
+    --haondt-ui-chip-padding-x: calc(var(--haondt-ui-chip-font-size) * 0.6);
+    --haondt-ui-chip-padding-y: calc(var(--haondt-ui-chip-font-size) * 0.4);
 
     --haondt-ui-hint-font-size-base: 0.875rem;
     --haondt-ui-hint-font-size: var(--haondt-ui-hint-font-size-base);
@@ -107,8 +109,11 @@
     --haondt-ui-hover-transition-duration-leave: 0.3s;
     --haondt-ui-hover-transition-timing: ease;
 
+    --haondt-ui-blend-height: 16px;
     --haondt-ui-blend-box-shadow: 0 0 9px 10px var(--haondt-ui-color-background);
-    --haondt-ui-blend-clip-path: inset(0 -19px -19px -19px);
+    --haondt-ui-blend-clip-path: inset(0 calc(-1 * var(--haondt-ui-blend-height)) calc(-1 * var(--haondt-ui-blend-height)) calc(-1 * var(--haondt-ui-blend-height)));
+
+    --haondt-ui-button-hover-delta: 5;
 
     --haondt-ui-modal-width-s: 468px;
     --haondt-ui-modal-width-m: 964px;

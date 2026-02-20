@@ -54,14 +54,6 @@ html {
     color: var(--haondt-ui-color-text);
 }
 
-.chip {
-    .chip-text {
-        font-size: var(--haondt-ui-chip-font-size);
-        font-weight: var(--haondt-ui-chip-font-weight);
-        color: var(--haondt-ui-color-text);
-    }
-    background-color: var(--haondt-ui-color-chip-background);
-}
 
 .hint {
     font-size: var(--haondt-ui-hint-font-size);
@@ -101,4 +93,8 @@ html {
     outline-style: solid;
     outline-offset: calc(-1 * var(--haondt-ui-border-focus-width));
     transition-duration: var(--haondt-ui-hover-transition-duration-enter);
+}
+
+[data-loading] {
+    display: none;
 }

@@ -1,4 +1,5 @@
 using Haondt.Core.Extensions;
+using Haondt.Web.Core.ModelBinders;
 using Haondt.Web.Extensions;
 using Haondt.Web.Services;
 using Haondt.Web.UI.Extensions;
@@ -41,6 +42,7 @@ builder.Services
     .Configure<HtmxOptions>(o =>
     {
         o.Extensions.Add("morph");
+        o.Extensions.Add("loading-states");
     })
     .AddOdysseyGrainInterfacesServices(builder.Configuration)
     .AddOdysseyPersistenceClientServices(builder.Configuration)
@@ -108,7 +110,12 @@ builder.Services
     .AddOdysseyUI(builder.Configuration);
 
 
-builder.Services.AddMvc();
+builder.Services.AddMvc(options =>
+{
+    options.ModelBinderProviders.Insert(0, new OptionalModelBinderProvider());
+    options.ModelBinderProviders.Insert(0, new AbsoluteDateTimeModelBinderProvider());
+
+});
 builder.Services.AddServerSideBlazor();
 builder.Services.AddCors(options =>
 {

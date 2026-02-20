@@ -11,28 +11,33 @@
     public const string Id = "new-board-modal-panel";
 
     private List<DropdownOption> _dropdownOptions = [];
+
+    private bool _ready = false;
     protected override async Task OnInitializedAsync()
     {
-        _dropdownOptions = (await GameRegistry.GetGameNamesAsync((await SessionService.GetUserIdAsync()).Expect()))
-            .Select(g => new DropdownOption
+        _dropdownOptions = (await GameRegistry.GetGameNamesAsync(await SessionService.GetUserIdAsync()))
+        .Select(g => new DropdownOption
             {
                 Text = g.Value,
                 Value = g.Key
             }).ToList();
+        _ready = true;
     }
 }
 
-<form id="@Id" hx-post>
-    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel" Align="FrameAlignment.Stretch">
-        <p class="subtitle">Create board</p>
-        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
-            <SmartField TBase="NewBoardModel" Field="c => c.Name" Placeholder='"Name"' />
-            <SmartField TBase="NewBoardModel" Field="m => m.Game" Options="@_dropdownOptions" />
+@if (_ready) {
+    <form id="@Id" hx-post>
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel" Align="FrameAlignment.Stretch">
+            <p class="subtitle">Create board</p>
+            <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
+                <SmartField TBase="NewBoardModel" Field="c => c.Name" Placeholder='"Name"' />
+                <SmartField TBase="NewBoardModel" Field="m => m.Game" Options="@_dropdownOptions" />
+            </Frame>
+            <Frame Template="FrameTemplate.ButtonContainer">
+                <Button Type="ButtonType.CloseModal" Style="ButtonStyle.Ghost">Cancel</Button>
+                <Button
+                    Color="ButtonColor.Primary" Type="ButtonType.Submit" >Create</Button>
+            </Frame>
         </Frame>
-        <Frame Template="FrameTemplate.ButtonContainer">
-            <Button Type="ButtonType.CloseModal" Style="ButtonStyle.Ghost">Cancel</Button>
-            <Button
-                Color="ButtonColor.Primary" Type="ButtonType.Submit" >Create</Button>
-        </Frame>
-    </Frame>
-</form>
+    </form>
+}

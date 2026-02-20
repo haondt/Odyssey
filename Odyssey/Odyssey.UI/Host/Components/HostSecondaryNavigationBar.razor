@@ -3,6 +3,9 @@
     [Parameter, EditorRequired]
     public required HostSecondaryNavigationBarTab ActiveTab {get; set;}
 
+    [Parameter]
+    public bool Sticky { get; set; } = true;
+
     private List<SecondaryNavigationBarItem> LeftItems = [];
     private List<SecondaryNavigationBarItem> RightItems = [];
 
@@ -21,4 +24,4 @@
 
 }
 
-<SecondaryNavigationBar Sticky="true" LeftItems="@LeftItems" RightItems="@RightItems" Spacing="SecondaryNavigationBarSpacing.SpaceApart" />
+<SecondaryNavigationBar Sticky="@Sticky" LeftItems="@LeftItems" RightItems="@RightItems" Spacing="SecondaryNavigationBarSpacing.SpaceApart" />

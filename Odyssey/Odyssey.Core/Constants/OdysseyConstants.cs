@@ -4,5 +4,6 @@
     {
         public const string CorsPolicyName = "OdysseyPolicy";
 
+        public const int DefaultPageSize = 50;
     }
 }

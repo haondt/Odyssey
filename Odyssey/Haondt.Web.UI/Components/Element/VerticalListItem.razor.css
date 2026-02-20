@@ -1,0 +1,16 @@
+li.vertical-list-item:has(+ li.vertical-list-item) {
+    border-bottom: 1px solid var(--haondt-ui-color-border);
+}
+
+li.vertical-list-item {
+    display: flex;
+    flex-direction: column;
+}
+
+li.vertical-list-item.vertical-list-item-hoverable:hover {
+    background-color: var(--haondt-ui-color-background-strong);
+}
+
+li.vertical-list-item.vertical-list-item-clickable {
+    cursor: pointer;
+}

@@ -1,0 +1,142 @@
+span.chip {
+    height: var(--haondt-ui-chip-height);
+    display: flex;
+    flex-direction: row;
+    --chip-content-fill: var(--haondt-ui-color-chip-background);
+    --chip-content-text: var(--haondt-ui-color-text);
+
+    > span:has(+ span) {
+        border-right: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+    }
+    
+    > span:last-child {
+        border-top-right-radius: var(--haondt-ui-border-radius);
+        border-bottom-right-radius: var(--haondt-ui-border-radius);
+    }
+    > span:first-child {
+        border-top-left-radius: var(--haondt-ui-border-radius);
+        border-bottom-left-radius: var(--haondt-ui-border-radius);
+    }
+
+    > span {
+        white-space: pre;
+        text-wrap: nowrap;
+        font-size: var(--haondt-ui-chip-font-size);
+        padding-left: var(--haondt-ui-chip-padding-x);
+        padding-right: var(--haondt-ui-chip-padding-x);
+        padding-top: var(--haondt-ui-chip-padding-y);
+        padding-bottom: var(--haondt-ui-chip-padding-y);
+        display: flex;
+        justify-content: center;
+        font-weight: var(--haondt-ui-chip-font-weight);
+        font-size: var(--haondt-ui-chip-font-size);
+        align-items: center;
+
+        /* useful for childcontent */
+        > * {
+            font-size: var(--haondt-ui-chip-font-size);
+        }
+    }
+
+    > span.chip-label, > span.chip-button {
+        color: var(--haondt-ui-color-text);
+        background-color: var(--haondt-ui-color-chip-background);
+    }
+    > span.chip-text {
+        color: var(--chip-content-text);
+        background-color: var(--chip-content-fill);
+    }
+
+    > span.chip-button {
+        padding-left: var(--haondt-ui-chip-padding-y);
+        padding-right: var(--haondt-ui-chip-padding-y);
+        cursor: pointer;
+    }
+    > span.chip-button:hover {
+        background-color: hsl(from var(--haondt-ui-color-chip-background) h s calc(l + var(--haondt-ui-button-hover-delta)));
+    }
+
+}
+
+span.chip.chip-text-style-monospaced {
+    > span.chip-text {
+        font-family: var(--haondt-ui-monospace-fonts) !important;
+    }
+}
+
+span.chip.chip-color-text {
+    --chip-content-text: var(--haondt-ui-color-text);
+}
+span.chip.chip-color-subtitle {
+    --chip-content-text: var(--haondt-ui-color-subtitle);
+}
+span.chip.chip-color-border {
+    --chip-content-text: var(--haondt-ui-color-border);
+}
+span.chip.chip-color-text-weak {
+    --chip-content-text: var(--haondt-ui-color-text-weak);
+}
+span.chip.chip-color-background-strong {
+    --chip-content-text: var(--haondt-ui-color-background-strong);
+}
+span.chip.chip-color-primary {
+    --chip-content-text: var(--haondt-ui-color-primary);
+}
+span.chip.chip-color-chip-background {
+    --chip-content-text: var(--haondt-ui-color-chip-background);
+}
+
+span.chip.chip-style-fill, span.chip.chip-style-fill.chip-color-text {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-text);
+}
+span.chip.chip-style-fill.chip-color-subtitle {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-subtitle);
+}
+span.chip.chip-style-fill.chip-color-border {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-border);
+}
+span.chip.chip-style-fill.chip-color-text-weak {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-text-weak);
+}
+span.chip.chip-style-fill.chip-color-background-strong {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-background-strong);
+}
+span.chip.chip-style-fill.chip-color-primary {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-primary);
+}
+span.chip.chip-style-fill.chip-color-chip-background {
+    --chip-content-text: var(--haondt-ui-color-background);
+    --chip-content-fill: var(--haondt-ui-color-chip-background);
+}
+
+span.chip.chip-style-outline {
+    --chip-content-fill: var(--haondt-ui-color-background);
+    --chip-border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-chip-background);
+
+    > span:not(.chip-label) {
+        border-top: var(--chip-border);
+        border-bottom: var(--chip-border);
+    }
+    > span:not(.chip-label):first-child {
+        border-left: var(--chip-border);
+    }
+    > span:not(.chip-label):last-child {
+        border-right: var(--chip-border);
+    }
+    > span.chip-label {
+        border-right: none;
+    }
+
+    > span.chip-button {
+        background: var(--haondt-ui-color-background);
+    }
+    > span.chip-button:hover {
+        background-color: hsl(from var(--haondt-ui-color-background) h s calc(l + var(--haondt-ui-button-hover-delta)));
+    }
+}

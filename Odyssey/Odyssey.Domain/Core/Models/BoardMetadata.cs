@@ -18,5 +18,13 @@ namespace Odyssey.Domain.Core.Models
             CreatedOn = CreatedOn,
             ModifiedOn = ModifiedOn
         };
+
+        public static BoardMetadata FromDataModel(BoardMetadataDataModel dataModel) => new()
+        {
+            Name = dataModel.Name,
+            GameId = dataModel.GameId,
+            CreatedOn = dataModel.CreatedOn,
+            ModifiedOn = dataModel.ModifiedOn
+        };
     }
 }

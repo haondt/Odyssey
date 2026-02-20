@@ -1,0 +1,8 @@
+li {
+    min-height: 1px;
+    width: 100%;
+}
+
+.infinite-scroll-loading-state {
+    width: 100%;
+}

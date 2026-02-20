@@ -1,6 +1,7 @@
 @using System.Text.RegularExpressions
 @using System.Linq.Expressions
 @using System.Reflection
+@using Haondt.Web.UI.Models
 @using Haondt.Web.UI.Services
 @using System.ComponentModel.DataAnnotations
 @typeparam TBase
@@ -60,15 +61,6 @@
     [Parameter]
     public Optional<string> InputClasses { get; set; }
 
-    private static string ToKebabCase(string value)
-    {
-        if (string.IsNullOrEmpty(value)) return value;
-
-        return Regex.Replace(value,
-               @"(?<!^)(?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z])",
-            "-").ToLower();
-    }
-
     private static (MemberInfo memberInfo, string path) GetMemberInfo(LambdaExpression expression)
     {
         var parts = new List<string>();
@@ -113,11 +105,11 @@
         if (ValidationState.IsValidation)
         {
             if(!Error.HasValue)
-                Error = ValidationState.ValidationErrors.GetValue(name);
+                Error = ValidationState.ValidationErrors.ReadOnlyGetValue(name);
         }
         if (!IsValid.HasValue)
             IsValid = !Error.HasValue;
-        Id = Id.Or(ToKebabCase(name));
+        Id = Id.Or(StringFormatter.PascalToKebabCase(name));
 
         if (Type.HasValue)
             _type = Type.Value;

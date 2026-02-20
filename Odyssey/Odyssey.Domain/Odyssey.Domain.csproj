@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
     <ItemGroup>
+    <PackageReference Include="Haondt.Json" Version="0.2.11-alpha-20260219200611" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="10.0.1" />
   </ItemGroup>
@@ -13,6 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Odyssey.GrainInterfaces\Odyssey.GrainInterfaces.csproj" />
     <ProjectReference Include="..\Odyssey.Persistence\Odyssey.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
 
 

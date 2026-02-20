@@ -1,22 +1,46 @@
+@using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Domain.Core.Models
+@using Odyssey.Domain.Core.Services
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
+@inject IBoardService Boards
+@inject ISessionService Session
 
 @code {
     public NavigationBar CreateNavigationBar() => new()
     {
         Template = new NavigationBarDefault(OdysseyRoles.Host)
     };
+
+
+    private List<(Guid Id, BoardMetadata Board)> _boards = [];
+    private bool _ready = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _boards = await Boards.GetBoardsAsync(await Session.GetUserIdAsync());
+        _ready = true;
+    }
 }
 
-<ContentContainer>
-    <Frame Gap="FrameSpacing.Panel" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
-        <HostSecondaryNavigationBar ActiveTab="HostSecondaryNavigationBarTab.Boards" />
-        <Frame Template="FrameTemplate.ButtonContainer">
-            <Field Type="FieldType.Search" Placeholder='"Search"'></Field>
-            <Button Color="ButtonColor.Text">Import</Button>
-            <Button HxGet="@OdysseyRoutes.Host.Boards.New.Index" Color="ButtonColor.Primary">New board</Button>
+@if (_ready) {
+    <ContentContainer>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+            <Frame AddClasses='"sticky blend-shadow bg-background mb-blend"' Gap="FrameSpacing.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+                <HostSecondaryNavigationBar Sticky="false" ActiveTab="HostSecondaryNavigationBarTab.Boards" />
+                <Frame Template="FrameTemplate.ButtonContainer">
+                    <form class="flex-grow-1" hx-get="@OdysseyRoutes.Host.Boards.Search.Index" hx-target="#@HostBoardsList.Id" hx-swap="outerHTML">
+                        <Field Name='"search"' Type="FieldType.LiveSearch" Placeholder='"Search"' />
+                    </form>
+                    <Button Color="ButtonColor.Text">Import</Button>
+                    <Button HxGet="@OdysseyRoutes.Host.Boards.New.Index" Color="ButtonColor.Primary">New board</Button>
+                </Frame>
+                <HorizontalBar />
+            </Frame>
+            <HostBoardsList ForceLoadBoards="true" />
         </Frame>
-    </Frame>
-</ContentContainer>
+    </ContentContainer>
+}

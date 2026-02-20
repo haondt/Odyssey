@@ -13,7 +13,7 @@ using Odyssey.UI.Host.Models;
 namespace Odyssey.UI.Host.Controllers
 {
     [Route(OdysseyRoutes.Host.Index)]
-    public class HostController(IBoardService boards, ISessionService sessionService) : UIController
+    public partial class HostController(IBoardService boards, ISessionService sessionService) : UIController
     {
         [HttpGet]
         public IResult Get() => TypedResults.Redirect(OdysseyRoutes.Host.Party.Index);
@@ -31,12 +31,11 @@ namespace Odyssey.UI.Host.Controllers
         [ValidationState(typeof(NewBoardModalPanel), NewBoardModalPanel.Id)]
         public async Task<IResult> CreateNewBoard([FromForm] NewBoardModel newBoard)
         {
-            // TODO
             var (boardId, board) = await boards.CreateBoard(new()
             {
                 GameId = newBoard.Game,
                 Name = newBoard.Name,
-                OwnerId = (await sessionService.GetUserIdAsync()).Expect()
+                OwnerId = await sessionService.GetUserIdAsync()
             });
 
             ResponseData.HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{boardId}");
@@ -46,7 +45,36 @@ namespace Odyssey.UI.Host.Controllers
             });
         }
 
+        [HttpGet(OdysseyRoutes.Host.Boards.Search.Index)]
+        public async Task<IResult> SearchBoards(
+            [FromQuery] string? search,
+            [FromQuery] TemporalContinuationData<Guid> last)
+        {
+            var userId = await sessionService.GetUserIdAsync();
+            var boardList = string.IsNullOrWhiteSpace(search)
+                ? await boards.GetBoardsAsync(userId, last.Pagination)
+                : await boards.SearchBoardsAsync(userId, search, last.Pagination);
+
+            return await ComponentFactory.RenderComponentAsync(new HostBoardsList
+            {
+                Boards = boardList,
+                CurrentSearch = search.AsOptional(),
+            });
+        }
+
         [HttpGet(OdysseyRoutes.Host.Boards.New.Index)]
         public Task<IResult> GetNewBoard() => ComponentFactory.RenderComponentAsync<Components.NewBoardModal>();
+
+        [HttpGet($"{OdysseyRoutes.Host.Board.Index}/{{id}}")]
+        public async Task<IResult> GetBoard(Guid id)
+        {
+            var result = await boards.GetBoardAsync(await sessionService.GetUserIdAsync(), id);
+            if (!result.TryGetValue(out var metadata))
+                return await Render404NotFoundComponent();
+            return await ComponentFactory.RenderComponentAsync(new EditBoard
+            {
+                Metadata = metadata
+            });
+        }
     }
 }

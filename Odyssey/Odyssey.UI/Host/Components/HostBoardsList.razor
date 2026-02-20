@@ -1,13 +1,89 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Models
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Domain.Core.Models
+@using Odyssey.Domain.Core.Services
+@using System.Text.Json
+@using Odyssey.UI.Authentication.Components
+@using static Odyssey.UI.Host.Controllers.HostController
+@inject IGameRegistry Games
+@inject ISessionService Session
 @code {
-    [Parameter]
-    public List<IComponent> Items { get; set; } = [];
+    [Parameter] public bool ForceLoadBoards { get; set; } = false;
+    [Parameter] public List<(Guid Id, BoardMetadata Board)> Boards { get; set; } = [];
+    [Parameter] public Optional<string> CurrentSearch { get; set; }
+    public const string Id = "host-boards-list";
+
+    private Dictionary<string, string> _gameNames = [];
+    private List<(Guid Id, BoardMetadata Board)> _boards { get; set; } = [];
+    private bool _ready = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        foreach(var (_, board) in Boards)
+        {
+            if (_gameNames.ContainsKey(board.GameId))
+                continue;
+            _gameNames[board.GameId] = await Games.GetGameNameAsync(await Session.GetUserIdAsync(), board.GameId);
+        }
+        _ready = true;
+    }
 }
 
-<ul>
-    @foreach(var item in Items)
-    {
-        <li>
-            <ObjectComponent Component="item" />
-        </li>
-    }
-</ul>
+@if (_ready) {
+    <VerticalList Clickable="true" Id="@Id">
+        @foreach(var (id, board) in Boards)
+        {
+            <VerticalListItem>
+                <a hx-boost="true" href="@OdysseyRoutes.Host.Board.Index/@id">
+                    <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Col">
+                        <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
+                            <p class="subtitle">@board.Name</p>
+                            <p class="italic">@_gameNames[board.GameId]</p>
+                        </Frame>
+                        <Frame Template="FrameTemplate.ChipContainer">
+                            <Chip Label='"Last Modified"' Text="@StringFormatter.FormatDate(board.ModifiedOn)" />
+                        </Frame>
+                    </Frame>
+                </a>
+            </VerticalListItem>
+        }
+        @if(Boards.Count > 0 || ForceLoadBoards)
+        {
+            var searchData = new
+            {
+                search = CurrentSearch.Unwrap(),
+                last = Boards.Count > 0 ? new TemporalContinuationData<Guid>
+                {
+                    Id = Boards[^1].Id,
+                    Time = Boards[^1].Board.ModifiedOn
+                } : null
+            };
+            <InfiniteScrollTrigger
+                HxGet="@OdysseyRoutes.Host.Boards.Search.Index"
+                HxVals="@JsonUtils.SerializeHxVals(searchData)">
+                <Skeleton>
+                    <Frame Flex="FrameDirection.Col">
+                        @for(int i = 0; i<2; i ++)
+                        {
+                            if (Boards.Count > 0 || i > 0)
+                            {
+                                <HorizontalBar />
+                            }
+                            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+                                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap">
+                                    <Chip Color="ChipColor.TextWeak" Skeleton="170" />
+                                    <Chip Color="ChipColor.Border" Skeleton="150" />
+                                </Frame>
+                                <Frame Template="FrameTemplate.ChipContainer">
+                                    <Chip Color="ChipColor.ChipBackground" Skeleton="200" />
+                                </Frame>
+                            </Frame>
+                        }
+                    </Frame>
+                </Skeleton>
+            </InfiniteScrollTrigger>
+        }
+    </VerticalList>
+}

@@ -9,7 +9,6 @@ namespace Haondt.Web.UI.Components.Element
         ColWrap,
         RowWrap
     }
-
     public enum FrameJustification
     {
         None,
@@ -53,7 +52,8 @@ namespace Haondt.Web.UI.Components.Element
     {
         ButtonContainer,
         Panel,
-        Card
+        Card,
+        ChipContainer
     }
     public enum FrameBorder
     {

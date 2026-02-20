@@ -1,8 +1,6 @@
 ﻿using Haondt.Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Npgsql;
 using Odyssey.Domain.Core.Models;
 using Odyssey.Persistence.Models;
@@ -20,7 +18,7 @@ namespace Odyssey.Silo.Core.Extensions
             public IServiceCollection AddOdysseySiloServices(IConfiguration configuration)
             {
                 services.Configure<InitialServerSettings>(configuration.GetSection(nameof(InitialServerSettings)));
-                services.ConfigureJsonSerializationOptions(configuration);
+                services.Configure<OrleansJsonSerializerOptions>(JsonUtils.ConfigureOrleansSerializerOptions);
 
                 // core
                 services.AddSingleton<ISiloStartupParticipant, InitialServerSettingsApplicatorStartupParticipant>();
@@ -53,26 +51,6 @@ namespace Odyssey.Silo.Core.Extensions
                         throw new ArgumentException($"Unknown database driver {persistenceSettings.DatabaseSettings.Driver}.");
                 }
 
-                return services;
-
-            }
-
-            public IServiceCollection ConfigureJsonSerializationOptions(IConfiguration configuration)
-            {
-                services.Configure<OrleansJsonSerializerOptions>(options =>
-                {
-                    options.JsonSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
-                    options.JsonSerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
-                    options.JsonSerializerSettings.Formatting = Formatting.None;
-                    options.JsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                    options.JsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
-                    {
-                        NamingStrategy = new CamelCaseNamingStrategy
-                        {
-                            ProcessDictionaryKeys = false
-                        }
-                    };
-                });
                 return services;
             }
         }

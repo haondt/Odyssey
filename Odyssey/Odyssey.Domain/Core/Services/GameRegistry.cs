@@ -11,6 +11,13 @@ namespace Odyssey.Domain.Core.Services
             return _games[gameId];
         }
 
+        public async Task<string> GetGameNameAsync(string userId, string gameId)
+        {
+            var game = _games[gameId];
+            var gameSettings = await game.GetSettingsAsync(userId);
+            return gameSettings.DisplayName;
+        }
+
         public async Task<Dictionary<string, string>> GetGameNamesAsync(string userId)
         {
             var result = new Dictionary<string, string>();

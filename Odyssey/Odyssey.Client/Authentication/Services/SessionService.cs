@@ -28,16 +28,18 @@ namespace Odyssey.Client.Authentication.Services
             return surrogate.AsOptional().Bind(q => q.UserName.AsOptional()).AsResult();
         }
 
-        public async Task<Result<string>> GetUserIdAsync()
+        public async Task<string> GetUserIdAsync()
         {
             var user = httpContextAccessor.HttpContext?.User;
             if (user == null)
-                return new();
+                throw new InvalidOperationException("Unable to retrieve user from http context");
             if (user.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id)
                 return id;
 
-            var surrogate = await userService.GetUserAsync(user);
-            return surrogate.Map(q => q.Id);
+            var surrogateResult = await userService.GetUserAsync(user);
+            if (!surrogateResult.TryGetValue(out var surrogate))
+                throw new InvalidOperationException("User not found");
+            return surrogate.Id;
         }
     }
 }

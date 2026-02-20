@@ -1,0 +1,56 @@
+@using Haondt.Web.UI.Models
+@code {
+    [Parameter]
+    public Optional<string> Label { get; set; }
+
+    [Parameter]
+    public ChipTextStyle TextStyle { get; set; } = ChipTextStyle.Default;
+
+    [Parameter]
+    public bool Deletable { get; set; }
+
+    [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public Optional<int> Skeleton  { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public Optional<ChipStyle> Style { get; set; }
+
+    [Parameter]
+    public ChipColor Color { get; set; } = ChipColor.Text;
+
+    protected override void OnInitialized()
+    {
+        if (!Style.HasValue && Skeleton.HasValue)
+            Style = ChipStyle.Fill;
+    }
+}
+
+<span class="chip chip-style-@StringFormatter.PascalToKebabCase(Style.Or(ChipStyle.Default).ToString()) chip-color-@StringFormatter.PascalToKebabCase(Color.ToString()) chip-text-style-@StringFormatter.PascalToKebabCase(TextStyle.ToString())">
+    @if (Label.TryGetValue(out var label)) 
+    {
+        <span class="chip-label">@label</span>
+    }
+    <span class="chip-text">
+
+    @if(Skeleton.TryGetValue(out var width))
+    {
+        <span style="width:@(width)px;height:1em;"></span>
+    }
+    else 
+    {
+       @Text@ChildContent
+    }
+    </span>
+    @if (Deletable)
+    {
+        <span class="chip-button">
+            <LucideIcon Size="12" Name="x" />
+        </span>
+    }
+</span>

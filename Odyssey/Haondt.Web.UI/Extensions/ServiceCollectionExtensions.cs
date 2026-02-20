@@ -14,7 +14,9 @@ namespace Haondt.Web.UI.Extensions
             services.AddScoped<ModelStateValidationFilter>();
             services.AddScoped<ValidationState>();
             services.AddScoped<IValidationStateReader>(sp => sp.GetRequiredService<ValidationState>());
+            services.Configure<LucideIconOptions>(_ => { });
             services.AddScoped<IValidationStateWriter>(sp => sp.GetRequiredService<ValidationState>());
+            services.AddSingleton<ILucideIconService, LucideIconService>();
             return services;
         }
 

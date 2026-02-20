@@ -47,6 +47,8 @@
 .fg-text-weak { color: var(--haondt-ui-color-text-weak) !important; }
 .fg-danger { color: var(--haondt-ui-color-danger) !important; }
 
+.bg-background { background-color: var(--haondt-ui-color-background) !important; }
+
 /* spacing */
 
 .gap-m { gap: 1rem !important; }
@@ -71,6 +73,11 @@
     max-width: var(--haondt-ui-content-width) !important;
 }
 
+.sticky {
+    position: sticky !important;
+    top: 0 !important;
+}
+
 @media (--haondt-ui-media-query-gte-m) {
     .hidden-gte-m {
         display: none !important;
@@ -81,4 +88,9 @@
     .hidden-lte-s {
         display: none !important;
     }
+}
+
+.blend-shadow {
+    box-shadow: var(--haondt-ui-blend-box-shadow) !important;
+    clip-path: var(--haondt-ui-blend-clip-path) !important;
 }

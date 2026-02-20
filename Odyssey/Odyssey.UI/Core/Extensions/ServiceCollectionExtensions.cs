@@ -14,6 +14,7 @@ namespace Odyssey.UI.Core.Extensions
             services.AddSingleton<IComponentFactory, OdysseyComponentFactory>();
             services.AddOdysseyHeadEntries();
 
+
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();
             //services.AddSingleton<ILucideIconService, LucideIconService>();
 
@@ -35,10 +36,10 @@ namespace Odyssey.UI.Core.Extensions
             {
                 Uri = "/static/shared/css/style.css",
             });
-            //services.AddScoped<IHeadEntryDescriptor>(sp => new ScriptDescriptor
-            //{
-            //    Uri = "/static/shared/vendored/htmx-ext-loading-states/loading-states.js"
-            //});
+            services.AddScoped<IHeadEntryDescriptor>(sp => new ScriptDescriptor
+            {
+                Uri = "/static/shared/vendored/htmx-ext-loading-states/loading-states.js"
+            });
             services.AddScoped<IHeadEntryDescriptor>(sp => new ScriptDescriptor
             {
                 Uri = "/static/shared/vendored/idiomorph/dist/idiomorph-ext.min.js"

@@ -16,6 +16,14 @@
             public const string Index = "/roles";
 
         }
+        public static class Fragments
+        {
+            public const string Index = $"/fragments";
+            public static class WebSocket
+            {
+                public const string Index = $"{Fragments.Index}/ws";
+            }
+        }
         public static class Host
         {
             public const string Index = $"/{OdysseyRoles.Host}";
@@ -33,6 +41,10 @@
                 public static class New
                 {
                     public const string Index = $"{Host.Boards.Index}/new";
+                }
+                public static class Search
+                {
+                    public const string Index = $"{Host.Boards.Index}/search";
                 }
             }
             public static class Board

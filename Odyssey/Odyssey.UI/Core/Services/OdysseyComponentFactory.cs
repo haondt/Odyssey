@@ -12,7 +12,8 @@ namespace Odyssey.UI.Core.Services
 {
     public class OdysseyComponentFactory(
         IHttpContextAccessor httpContext,
-        ILayoutComponentFactory layoutFactory) : ComponentFactory(httpContext, layoutFactory)
+        ILayoutComponentFactory layoutFactory
+        ) : ComponentFactory(httpContext, layoutFactory)
     {
         private readonly IHttpContextAccessor _httpContext = httpContext;
         private readonly ILayoutComponentFactory _layoutFactory = layoutFactory;
@@ -50,7 +51,9 @@ namespace Odyssey.UI.Core.Services
                 Type = componentType
             };
 
+
             return new RazorComponentResult<RootComponent>(rootComponent.ToDictionary());
         }
     }
+
 }

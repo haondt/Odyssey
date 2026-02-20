@@ -7,7 +7,7 @@
     background: var(--haondt-ui-color-background);
     border-radius: var(--haondt-ui-border-radius);
     position: relative;
-    padding: var(--haondt-ui-panel-spacing);
+    padding: var(--haondt-ui-card-spacing);
     width: 100%;
 }
 

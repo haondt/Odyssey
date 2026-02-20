@@ -1,0 +1,27 @@
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public Optional<object> Template { get; set; }
+
+    [CascadingParameter(Name = nameof(_verticalListId))]
+    private Optional<string> _verticalListId { get; set; }
+
+    [CascadingParameter(Name = nameof(Clickable))]
+    public Optional<bool> Clickable { get; set; }
+
+    [CascadingParameter(Name = nameof(Hoverable))]
+    public Optional<bool> Hoverable { get; set; }
+
+    private HashSet<string> _rootClasses = ["vertical-list-item"];
+    protected override void OnInitialized()
+    {
+        if (Clickable.Or(false))
+            _rootClasses.Add("vertical-list-item-clickable");
+        if (Hoverable.Or(Clickable.Or(false)))
+            _rootClasses.Add("vertical-list-item-hoverable");
+    }
+}
+<li class="@string.Join(' ', _rootClasses)">
+    @ChildContent
+</li>

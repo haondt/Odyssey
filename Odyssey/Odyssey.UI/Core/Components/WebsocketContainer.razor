@@ -1,0 +1,16 @@
+@code {
+    public const string Id = "websocket-container";
+    private string _internalId { get; set; } = Guid.NewGuid().ToString();
+
+    [Parameter]
+    public Optional<string> Role { get; set; }
+
+}
+<div id="@Id" 
+    data-role="@Role.Or(OdysseyRoles.None)" data-id="@_internalId"
+    _="
+        on UpdateWebsocket(role)
+            set @@data-role to role
+            set my innerHTML to `${@@data-role}:${@@data-id}`
+        end
+    ">@Role.Or(OdysseyRoles.None):@_internalId</div>

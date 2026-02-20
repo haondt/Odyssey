@@ -1,0 +1,33 @@
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public Optional<bool> Clickable { get; set; }
+
+    [Parameter]
+    public Optional<bool> Hoverable { get; set; }
+
+    [Parameter]
+    public Optional<string> Id { get; set; }
+
+    private Optional<string> _verticalListId;
+
+    private Dictionary<string, object> _rootAttributes = [];
+    protected override void OnInitialized()
+    {
+        if (Id.TryGetValue(out var id))
+            _rootAttributes["id"] = id;
+        _verticalListId = Id;
+    }
+
+}
+<ol @attributes="_rootAttributes">
+    <CascadingValue Value="_verticalListId" Name="@nameof(_verticalListId)">
+        <CascadingValue Value="Clickable" Name="@nameof(Clickable)">
+            <CascadingValue Value="Hoverable" Name="@nameof(Hoverable)">
+                @ChildContent
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+</ol>

@@ -1,0 +1,41 @@
+@code {
+    [Parameter, EditorRequired]
+    public required string HxGet { get; set; }
+    [Parameter]
+    public Optional<string> HxVals { get; set; }
+
+    [Parameter]
+    public RenderFragment? Skeleton { get; set; }
+
+    [Parameter]
+    public bool LoadingStates { get; set; } = true;
+
+    [CascadingParameter(Name = nameof(_verticalListId))]
+    private Optional<string> _verticalListId { get; set; }
+
+    private HashSet<string> _rootClasses =[];
+    private Dictionary<string, object> _rootAttributes =[];
+    protected override void OnInitialized()
+    {
+        _rootClasses.Add("infinite-scroll-trigger");
+        _rootAttributes["hx-get"] = HxGet;
+        if (HxVals.TryGetValue(out var hxVals))
+            _rootAttributes["hx-vals"] = hxVals;
+        if (_verticalListId.TryGetValue(out var listId))
+            _rootAttributes["hx-select"] = $"#{listId} > *";
+        _rootAttributes["hx-trigger"] = "intersect once";
+        _rootAttributes["hx-swap"] = "outerHTML";
+
+    }
+}
+<li @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">
+    @if (Skeleton != null) {
+        if (LoadingStates) {
+            <div class="infinite-scroll-loading-state" data-loading-delay="500" data-loading>@Skeleton</div>
+        }
+        else {
+            @Skeleton
+        }
+    }
+</li>
+

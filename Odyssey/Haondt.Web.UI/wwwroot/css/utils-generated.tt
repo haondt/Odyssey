@@ -14,6 +14,7 @@
 	.Append(("panel", "var(--haondt-ui-panel-spacing)"))
 	.Append(("card", "var(--haondt-ui-card-spacing)"))
 	.Append(("line", "var(--haondt-ui-line-spacing)"))
+	.Append(("blend", "var(--haondt-ui-blend-height)"))
 	.ToList();
 
 	foreach(var (paddingType, prefix) in new List<(string, string)> { ("margin", "m"), ("padding", "p") })
