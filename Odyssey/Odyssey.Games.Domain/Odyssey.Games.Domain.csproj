@@ -14,4 +14,8 @@
     <Folder Include="Core\Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Haondt.Web.Core" Version="0.2.11-alpha-20260222112707" />
+  </ItemGroup>
+
 </Project>

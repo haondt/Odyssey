@@ -1,0 +1,68 @@
+@using System.Linq.Expressions
+@using Haondt.Core.Models
+@using Haondt.Web.Components
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Models
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent {get; set;}
+
+    [Parameter]
+    public bool Collapsible { get; set; } = true;
+
+    [Parameter]
+    public Optional<string> Name { get; set; }
+
+    [Parameter]
+    public Expression<Func<object>>? Field { get; set; }
+
+    private HashSet<string> _rootClasses = ["section", "section-open"];
+
+
+    protected override void OnInitialized() 
+    {
+        if (Field is { } field) 
+        {
+            var (memberInfo, path) = ExpressionUtils.GetMemberInfo(field);
+            var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
+
+            if (!Name.HasValue && displayAttr?.Name is { } name)
+            {
+                Name = name;
+            }
+        }
+
+        if (Collapsible)
+            _rootClasses.Add("section-collapsible");
+    }
+
+}
+
+
+<div class="@string.Join(' ', _rootClasses)">
+    @if (Collapsible) 
+    {
+        <div class="section-header"  _="on click toggle .section-open on the closest .section end">
+            <LucideIcon Size="20" Name="chevron-right" />
+            @if (Name.TryGetValue(out var name))
+            {
+                <p class="subtitle">@name</p>
+            }
+        </div>
+    }
+    else if (Name.HasValue)
+    {
+        <div class="section-header">
+            @if (Name.TryGetValue(out var name))
+            {
+                <p class="subtitle">@name</p>
+            }
+        </div>
+    }
+    <div class="section-content">
+        @ChildContent
+    </div>
+</div>

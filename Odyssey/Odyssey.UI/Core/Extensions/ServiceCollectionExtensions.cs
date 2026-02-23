@@ -18,6 +18,8 @@ namespace Odyssey.UI.Core.Extensions
             services.AddOdysseyHeadEntries();
 
             services.AddSingleton<IExceptionActionResultFactory, ExceptionActionResultFactoryDelegator>();
+            services.AddSingleton<ITargetedExceptionActionResultFactory, StandaloneModelBinderValidationExceptionActionResultFactory>();
+            services.AddSingleton<ITargetedExceptionActionResultFactory, ToastExceptionActionResultFactory>();
             services.AddSingleton<ITargetedExceptionActionResultFactory, ErrorPageExceptionActionResultFactory>();
             services.Configure<UISettings>(configuration.GetSection(nameof(UISettings)));
             services.AddSingleton<ITargetedExceptionActionResultFactory, CatchAllErrorPageExceptionActionResultFactory>();

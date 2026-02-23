@@ -1,0 +1,32 @@
+behavior Toast
+	on load
+		add .created to me
+		then wait 5s
+		then if :me
+			repeat forever
+				if :m
+					wait for mouseleave
+				end
+				set :me to false
+				wait 2s
+				if not :me
+					break
+				end
+			end
+		end
+		then remove .created from me
+		then wait for transitionend
+		then send deleted to me
+	end
+	on deleted
+		remove me
+	end
+
+	on mouseenter
+		set :me to true
+		set :m to true
+	end
+	on mouseleave
+		set :m to false
+	end
+end

@@ -12,7 +12,8 @@
     ],
     "lucide-static": [
       "icons/chevron-down.svg",
-      "icons/x.svg"
+      "icons/x.svg",
+      "icons/chevron-right.svg"
     ],
     "htmx-ext-loading-states": [
       "loading-states.js"

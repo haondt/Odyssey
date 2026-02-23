@@ -32,23 +32,21 @@ namespace Odyssey.Grains.Core
             if (version > _state.State.Version)
                 await _state.ReadStateAsync();
 
-            if (version == _state.State.Version)
-            {
-                _state.State.Version += 1;
-                _state.State.Data = data;
-                await WriteStateAndReadOnFailureAsync();
-                try
-                {
-                    await _subsManager.Notify(s => s.Notify(_state.State.Data, _state.State.Version).AsTask());
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Exception occurred while notifying observers.");
-                }
-                return _state.State.Version;
-            }
+            if (version != _state.State.Version)
+                throw new InconsistentStateException($"Given version {version} is different than expected version {_state.State.Version}");
+            _state.State.Version += 1;
+            _state.State.Data = data;
+            await WriteStateAndReadOnFailureAsync();
 
-            throw new InconsistentStateException($"Given version {version} is different than expected version {_state.State.Version}");
+            try
+            {
+                await _subsManager.Notify(s => s.Notify(_state.State.Data, _state.State.Version).AsTask());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception occurred while notifying observers.");
+            }
+            return _state.State.Version;
         }
 
         public ValueTask<(TData Data, int Version)> GetDataAsync() => ValueTask.FromResult((_state.State.Data, _state.State.Version));

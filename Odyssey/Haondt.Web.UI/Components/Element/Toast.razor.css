@@ -1,0 +1,38 @@
+.toast {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    background-color: var(--haondt-ui-color-background);
+    box-shadow: var(--haondt-ui-blend-box-shadow);
+
+    border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+    border-radius: var(--haondt-ui-border-radius);
+    max-width: var(--haondt-ui-toast-width);
+
+    clip-path: inset(var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size));
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--haondt-ui-line-spacing);
+    padding: var(--haondt-ui-line-spacing);
+}
+
+.toast-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .toast-delete-button {
+        color: var(--haondt-ui-color-danger);
+        cursor: pointer;
+    }
+}
+
+.toast-body {
+
+}
+
+
+.toast.created {
+    opacity: 1;
+}

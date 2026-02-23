@@ -1,6 +1,7 @@
 ﻿using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Games.Domain.DebugGame.Models;
+using Odyssey.Persistence.Models;
 
 namespace Odyssey.Games.Domain.DebugGame.Services
 {
@@ -10,6 +11,8 @@ namespace Odyssey.Games.Domain.DebugGame.Services
         IBoardMetadataRepository boardMetadataRepository) : IGame
     {
         protected ICachedDataRepository<DebugGameBoard> boards = boards;
+        protected IBoardMetadataRepository boardMetadataRepository = boardMetadataRepository;
+        protected ICachedDataRepository<DebugGameGameSettings> gameSettings = gameSettings;
         public string Id => DebugGameConstants.GameId;
 
         public async Task<string> GetDisplayNameAsync(string ownerId)
@@ -22,7 +25,7 @@ namespace Odyssey.Games.Domain.DebugGame.Services
         public async Task<(Guid Id, BoardMetadata Metadata)> CreateBoardAsync(string ownerId, string name)
         {
             var (id, meta) = await boardMetadataRepository.CreateBoardMetadataAsync(Id, ownerId, name);
-            await boards.SetDataAsync(id.ToString(), new(), 0);
+            await boards.SetDataAsync(new OwnedEntityId<Guid>(ownerId, id).StringValue, new(), 0);
             return (id, meta);
         }
 

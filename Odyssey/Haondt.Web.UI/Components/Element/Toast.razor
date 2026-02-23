@@ -1,14 +1,28 @@
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Components.Components
 @code {
 
+    [Parameter]
+    public Optional<string> Title { get; set; }
+
     [Parameter, EditorRequired]
-    public required string Message { get; set; }
+    public required string Text { get; set; }
 
     [Parameter]
     public ToastSeverity Severity { get; set; } = ToastSeverity.Error;
     private string SeverityString { get; set; } = default!;
 
+    [Parameter]
+    public Optional<int> StatusCode { get; set; }
+
+    [CascadingParameter]
+    public IResponseData Response { get; set; } = default!;
+
     protected override void OnInitialized()
     {
+        if(StatusCode.TryGetValue(out var statusCode))
+            Response.Status(statusCode);
+
         SeverityString = Severity switch
         {
             ToastSeverity.Warning => "warning",
@@ -20,50 +34,14 @@
     }
 }
 
-<p>three</p>
-
-<div hx-swap-oob="afterbegin:#toast-container">
-    <div
-        class="toast"
-        _="
-            on load
-                add .created to me
-                then wait 5s
-                then if :me
-                    repeat forever
-                        if :m
-                            wait for mouseleave
-                        end
-                        set :me to false
-                        wait 2s
-                        if not :me
-                            break
-                        end
-                    end
-                end
-                then remove .created from me
-                then wait for transitionend
-                then send deleted to me
-            end
-            on deleted
-                remove me
-            end
-
-            on mouseenter
-                set :me to true
-                set :m to true
-            end
-            on mouseleave
-                set :m to false
-            end
-            ">
-        <div class="toast-header">
-            <p class="has-text-@SeverityString">@Severity</p>
-            <button class="delete" _="on click send deleted to the closest <div.toast />"></button>
-        </div>
-        <div class="toast-body">
-            <p style="white-space:pre-wrap;">@Message</p>
-        </div>
+<div class="toast" _="install Toast" hx-swap-oob="afterbegin:#@ToastContainer.Id">
+    <div class="toast-header">
+        <p class="fg-@SeverityString">@Title.Or(Severity.ToString())</p>
+        <button _="on click send deleted to the closest <div.toast />" class="toast-delete-button">
+            <LucideIcon Size="16" Name="x" />
+        </button>
+    </div>
+    <div class="toast-body">
+        <p style="white-space:pre-wrap;">@Text</p>
     </div>
 </div>
-

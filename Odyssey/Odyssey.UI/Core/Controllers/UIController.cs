@@ -19,15 +19,17 @@ namespace Odyssey.UI.Core.Controllers
         {
             get => field ??= HttpContext.Response.AsResponseData();
         }
+        protected IRequestData RequestData
+        {
+            get => field ??= HttpContext.Request.AsRequestData();
+        }
 
 
         protected async Task<IResult> RenderValidationComponent(Dictionary<string, string> errors)
         {
-            var result = await ModelStateValidationFilter.ApplyValidationErrorAsync(errors, HttpContext);
-            if (result.IsSuccessful)
-                return result.Value;
+            ModelStateValidationFilter.SetValidationState(HttpContext, errors);
 
-            throw new InvalidOperationException("Method does not have validation state attribute.");
+            return await ModelStateValidationFilter.ApplyValidationComponentAsync(HttpContext);
         }
     }
 }

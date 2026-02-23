@@ -9,8 +9,8 @@ namespace Odyssey.Domain.Core.Extensions
         public static IServiceCollection AddOdysseyDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(typeof(ICachedDataRepository<>), typeof(CachedDataRepository<>));
-            services.AddSingleton<IClock, Clock>();
             services.AddSingleton<IBoardMetadataRepository, BoardMetadataService>();
+            services.AddSingleton<IGrainLeaseService, GrainLeaseService>();
 
             return services;
         }

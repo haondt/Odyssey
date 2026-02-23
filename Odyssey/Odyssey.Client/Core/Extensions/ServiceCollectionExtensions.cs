@@ -16,6 +16,7 @@ namespace Odyssey.Client.Core.Extensions
             services.Configure<RouteSettings>(configuration.GetSection(nameof(RouteSettings)));
             services.Configure<AdminSettings>(configuration.GetSection(nameof(AdminSettings)));
             AdminSettings.Validate(services.AddOptions<AdminSettings>()).ValidateOnStart();
+            services.AddSingleton<IStandaloneModelBinder, StandaloneModelBinder>();
 
             // orleans
             services.AddHostedService<ClientStartupService>();
@@ -28,6 +29,7 @@ namespace Odyssey.Client.Core.Extensions
 
             // games
             services.AddSingleton<IClientGameRegistry, ClientGameRegistry>();
+
 
             return services;
 

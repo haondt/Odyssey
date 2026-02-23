@@ -11,7 +11,7 @@
             flex-direction: column;
         }
     }
-    padding-bottom: 80px;
+    padding-bottom: var(--haondt-ui-footer-min-height);
 }
 
 #layout-container.fill-page {
@@ -24,5 +24,9 @@
             flex-grow: 1;
         }
     }
+    padding-bottom: 0;
+}
+
+#layout-container:has(.form-action-bar) {
     padding-bottom: 0;
 }

@@ -1,6 +1,6 @@
 ﻿using Haondt.Core.Models;
 
-namespace Odyssey.Domain.Core.Services
+namespace Odyssey.GrainInterfaces.Core.Services
 {
     public interface IClock
     {

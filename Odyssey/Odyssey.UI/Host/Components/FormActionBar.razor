@@ -1,0 +1,28 @@
+@using Haondt.Web.UI.Components.Components
+@code {
+    [Parameter, EditorRequired]
+    public required string FormId { get; set; }
+
+    private string _formSelector => $"#{FormId}";
+
+    [Parameter]
+    public bool SaveButton { get; set; } = true;
+
+    [Parameter]
+    public Optional<string> DiscardButtonPath { get; set; }
+
+}
+
+<div class="form-action-bar">
+    <HorizontalBar />
+    <Frame  Padding="FrameSpacing.Line" Template="FrameTemplate.ButtonContainer">
+        @if(DiscardButtonPath.TryGetValue(out var discardPath))
+        {
+            <Button HxGet="discardPath" HxSwap='"none"' Color="ButtonColor.Danger" Style="ButtonStyle.Ghost">Discard changes</Button>
+        }
+        @if(SaveButton)
+        {
+            <Button Hyperscript='$"on click send submit to {_formSelector} end"'  Color="ButtonColor.Success">Save changes</Button>
+        }
+    </Frame>
+</div>

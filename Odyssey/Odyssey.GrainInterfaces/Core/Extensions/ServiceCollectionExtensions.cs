@@ -10,6 +10,7 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
         {
             public IServiceCollection AddOdysseyGrainInterfacesServices(IConfiguration configuration)
             {
+                services.AddSingleton<IClock, Clock>();
                 services.AddOdysseyGrainFactories();
                 return services;
             }
@@ -19,6 +20,7 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 // core
                 services.AddSingleton(typeof(IDataStorageGrainFactory<>), typeof(DataStorageGrainFactory<>));
                 services.AddSingleton(typeof(IDataStorageCacheGrainFactory<>), typeof(DataStorageCacheGrainFactory<>));
+                services.AddSingleton<IGrainLeaseGrainFactory, GrainLeaseGrainFactory>();
                 return services;
             }
         }

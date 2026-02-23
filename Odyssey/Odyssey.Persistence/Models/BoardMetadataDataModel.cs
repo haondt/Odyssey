@@ -6,7 +6,8 @@ namespace Odyssey.Persistence.Models
 {
     public record BoardMetadataDataModel
     {
-        public Guid Id { get; set; } = default!;
+        public required string Id { get; set; }
+        public required Guid EntityId { get; set; }
         public required string GameId { get; set; }
 
         public UserDataSurrogate Owner { get; set; } = default!;

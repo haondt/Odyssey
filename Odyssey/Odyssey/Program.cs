@@ -4,6 +4,7 @@ using Haondt.Web.Core.ModelBinders;
 using Haondt.Web.Extensions;
 using Haondt.Web.Services;
 using Haondt.Web.UI.Extensions;
+using Haondt.Web.UI.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -36,6 +37,7 @@ builder.Configuration.AddEnvironmentVariables();
 
 
 builder.Services
+    .AddHaondtUIHyperscriptScripts()
     .AddHaondtWebServices(builder.Configuration, options =>
     {
         options.HtmxScriptUri = "/static/shared/vendored/htmx.org/dist/htmx.min.js";
@@ -148,6 +150,7 @@ app.UseCors(OdysseyConstants.CorsPolicyName);
 app.UseAntiforgery();
 
 app.MapControllers();
+app.UseMiddleware<RenderContextMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<UnmappedRouteHandlerMiddleware>();
 app.MapHealthChecks("hc");

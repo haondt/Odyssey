@@ -4,11 +4,24 @@
 @using Haondt.Web.UI.Models
 @using Haondt.Web.UI.Services
 @using System.ComponentModel.DataAnnotations
-@typeparam TBase
+@using System.Collections.Concurrent
+@typeparam TBase where TBase : notnull
 @inject IValidationStateReader ValidationState
+@inject IRenderContextAccessor RenderContext
+
 @code {
     [Parameter]
     public Optional<string> Title { get; set; }
+
+    // using ? for the type inference
+    [Parameter]
+    public TBase? Base { get; set; }
+
+    [Parameter]
+    public bool Hidden { get; set; }
+
+    [Parameter]
+    public Optional<object> Value { get; set; }
 
     [Parameter]
     public Optional<string> Description { get; set; }
@@ -31,6 +44,8 @@
 
     [Parameter, EditorRequired]
     public required Expression<Func<TBase, object>> Field { get; set; }
+    private static readonly ConcurrentDictionary<string, Func<TBase, object>> _compiledCache = new();
+
 
     [Parameter]
     public Optional<string> Placeholder { get; set; }
@@ -61,36 +76,10 @@
     [Parameter]
     public Optional<string> InputClasses { get; set; }
 
-    private static (MemberInfo memberInfo, string path) GetMemberInfo(LambdaExpression expression)
-    {
-        var parts = new List<string>();
-        MemberInfo? lastMember = null;
-
-        Expression? current = expression.Body;
-
-        // Unwrap implicit cast to object (happens with value types)
-        if (current is UnaryExpression unary && unary.NodeType == ExpressionType.Convert)
-            current = unary.Operand;
-
-        while (current is MemberExpression member)
-        {
-            parts.Insert(0, member.Member.Name);
-            lastMember = member.Member;
-            current = member.Expression;
-        }
-
-        if (lastMember == null)
-            throw new ArgumentException("Expression must be a member access expression.");
-
-        // For nested paths (Foo.Bar), get the attribute from the first member
-        // Adjust this logic depending on which member you want the attribute from
-        var path = string.Join(".", parts);
-        return (lastMember, path);
-    }
 
     protected override void OnInitialized() 
     {
-        var (memberInfo, path) = GetMemberInfo(Field);
+        var (memberInfo, path) = ExpressionUtils.GetMemberInfo(Field);
         var dataTypeAttr = memberInfo.GetCustomAttribute<DataTypeAttribute>();
         var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
 
@@ -109,7 +98,7 @@
         }
         if (!IsValid.HasValue)
             IsValid = !Error.HasValue;
-        Id = Id.Or(StringFormatter.PascalToKebabCase(name));
+        Id = Id.Or(StringFormatter.PascalToKebabCase(name.Replace('.','-')));
 
         if (Type.HasValue)
             _type = Type.Value;
@@ -131,12 +120,17 @@
                 case var t when t == typeof(string):
                     Type = _type = FieldType.Text;
                     break;
+                case var t when t == typeof(bool):
+                    Type = _type = FieldType.Checkbox;
+                    break;
             };
         }
 
         if (HxPreserve.TryGetValue(out var hxPreserve))
             _hxPreserve = hxPreserve;
-        else
+        else if (RenderContext.IsReset)
+            HxPreserve = _hxPreserve = false;
+        else if (ValidationState.IsValidation)
         {
             HxPreserve = _hxPreserve = _type switch
             {
@@ -145,12 +139,19 @@
             };
         }
 
+        if(!Value.HasValue && Base is not null) {
+            var compiled = _compiledCache.GetOrAdd(path, _ => Field.Compile());
+            Value = compiled(Base);
+        }
+
     }
 }
 
 <Field
     IsValid="IsValid"
     Title="Title"
+    Description="Description"
+    Hidden="Hidden"
     Type="_type"
     Options="@Options.Or([])"
     Size="Size"
@@ -160,4 +161,5 @@
     Error="Error"
     HxPreserve="_hxPreserve"
     Id="Id"
-    InputClasses="InputClasses" />
+    InputClasses="InputClasses"
+    Value="Value" />

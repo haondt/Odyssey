@@ -50,6 +50,19 @@
             public static class Board
             {
                 public const string Index = $"{Host.Index}/board";
+                public static Id IdP(string id) => new(id);
+                public class Id(string id)
+                {
+                    public const string Index = $"{Host.Board.Index}/{{id}}";
+                    public Reset ResetP => new($"{Host.Board.Index}/{id}");
+
+                    public class Reset(string upperPath)
+                    {
+                        public const string Index = $"{Host.Board.Id.Index}/reset";
+                        public string IndexP => $"{upperPath}/reset";
+                    }
+
+                }
             }
             public static class Soundboard
             {

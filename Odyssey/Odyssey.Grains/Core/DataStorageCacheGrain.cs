@@ -29,7 +29,7 @@ namespace Odyssey.Grains.Core
             _timer = this.RegisterGrainTimer(
                 static (self, ct) => self._grain.Subscribe(self.AsReference<IDataStorageCacheGrain<TData>>()).AsTask(),
                 this,
-                new(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1)));
+                new(TimeSpan.Zero, TimeSpan.FromMinutes(1)));
         }
 
         public override async Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)

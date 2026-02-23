@@ -87,12 +87,23 @@ html {
     transition-duration: var(--haondt-ui-hover-transition-duration-enter);
 }
 
-.input:focus {
+.input:focus:not([type=checkbox]) {
     outline-color: var(--haondt-ui-color-primary);
     outline-width: var(--haondt-ui-border-focus-width);
     outline-style: solid;
     outline-offset: calc(-1 * var(--haondt-ui-border-focus-width));
+}
+.input:focus {
     transition-duration: var(--haondt-ui-hover-transition-duration-enter);
+}
+.input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    appearance: auto;
+    accent-color: var(--haondt-ui-color-primary);
+    background-color: var(--haondt-ui-color-text-weak);
+    cursor: pointer;
 }
 
 [data-loading] {

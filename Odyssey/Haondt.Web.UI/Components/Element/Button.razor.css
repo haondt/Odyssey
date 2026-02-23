@@ -15,6 +15,9 @@
 .button-color-danger {
     --button-color: var(--haondt-ui-color-danger);
 }
+.button-color-success {
+    --button-color: var(--haondt-ui-color-success);
+}
 
 .button-style-fill {
     color: var(--haondt-ui-color-background);

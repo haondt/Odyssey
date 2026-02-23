@@ -35,18 +35,19 @@
     protected override async Task OnInitializedAsync()
     {
         var game = Games.GetGame(Metadata.GameId);
-        _editBoardComponent = await game.UI.GetEditBoardComponentAsync(Id);
-        _gameName = await game.Settings.GetDisplayNameAsync(await Session.GetUserIdAsync());
+        var ownerId = await Session.GetUserIdAsync();
+        _editBoardComponent = await game.UI.GetEditBoardComponentAsync(new(ownerId, Id));
+        _gameName = await game.Settings.GetDisplayNameAsync(ownerId);
         _ready = true;
     }
 }
 
 @if (_ready) {
     <ContentContainer>
-        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Gap="FrameSpacing.Panel">
             <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <SecondaryNavigationBar Sticky="false" LeftItems="@([new("Board data", Active: true)])" />
-                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween">
+                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Start">
                     <Frame Flex="FrameDirection.Col">
                         <p class="title">@Metadata.Name</p>
                         <p class="italic">@_gameName</p>
@@ -58,9 +59,11 @@
                         <Button Color="ButtonColor.Danger">Delete</Button>
                     </Frame>
                 </Frame>
-                <HorizontalBar />
             </Frame>
-            <ObjectComponent Component="_editBoardComponent" />
+            <form hx-post hx-swap="none" id="edit-board-form">
+                <ObjectComponent Component="_editBoardComponent" />
+            </form>
+            <FormActionBar DiscardButtonPath='@OdysseyRoutes.Host.Board.IdP(Id.ToString()).ResetP.IndexP' FormId="edit-board-form" />
         </Frame>
     </ContentContainer>
 }

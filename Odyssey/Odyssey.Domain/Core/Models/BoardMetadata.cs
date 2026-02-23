@@ -7,13 +7,15 @@ namespace Odyssey.Domain.Core.Models
     {
         public required string Name { get; set; }
         public required string GameId { get; set; }
-        public required AbsoluteDateTime CreatedOn { get; set; }
-        public required AbsoluteDateTime ModifiedOn { get; set; }
+        public required AbsoluteDateTime CreatedOn { get; init; }
+        public required AbsoluteDateTime ModifiedOn { get; init; }
 
-        public BoardMetadataDataModel AsDataModel() => new()
+        public BoardMetadataDataModel AsDataModel(OwnedEntityId<Guid> id) => new()
         {
-            GameId = GameId,
+            Id = id.StringValue,
             Name = Name,
+            GameId = GameId,
+            EntityId = id.EntityId,
             SearchData = NormalizedString.Create(Name),
             CreatedOn = CreatedOn,
             ModifiedOn = ModifiedOn

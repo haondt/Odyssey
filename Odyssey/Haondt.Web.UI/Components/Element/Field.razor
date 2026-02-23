@@ -3,6 +3,9 @@
     public Optional<string> Title { get; set; }
 
     [Parameter]
+    public bool Hidden { get; set; }
+
+    [Parameter]
     public Optional<string> Description { get; set; }
 
     [Parameter]
@@ -19,6 +22,9 @@
 
     [Parameter]
     public Optional<string> Placeholder { get; set; }
+
+    [Parameter]
+    public Optional<object> Value { get; set; }
 
     [Parameter]
     public Optional<FieldAutocomplete> Autocomplete { get; set; }
@@ -57,6 +63,8 @@
 
                     if (Name.TryGetValue(out var name))
                         _inputAttributes["name"] = name;
+                    if (Value.TryGetValue(out var value) && value is bool boolValue && boolValue)
+                        _inputAttributes["checked"] = "";
                 }
                 break;
 
@@ -77,6 +85,9 @@
 
                     if (Autocomplete.TryGetValue(out var autocomplete))
                         _inputAttributes["autocomplete"] = autocomplete.StringValue;
+
+                    if (Value.TryGetValue(out var value))
+                        _inputAttributes["value"] = value;
                 }
                 break;
             case FieldType.Dropdown:
@@ -133,6 +144,9 @@
 
         if (InputClasses.TryGetValue(out var inputClasses))
             _inputClasses.Add(inputClasses);
+
+        if (Hidden)
+            _rootClasses.Add("field-hidden");
     }
 }
 
@@ -141,13 +155,18 @@
         Gap="FrameSpacing.Line"
         Flex="FrameDirection.Col"
         Align="FrameAlignment.Start">
-        @if(Type == FieldType.Checkbox)
+        @if(Type == FieldType.Checkbox || Title.HasValue) 
         {
-            <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
-        }
-        @if(Title.TryGetValue(out var title))
-        {
-            <label @attributes="_labelAttributes" class="field-title">@title</label>
+            <div class="label-container">
+                @if(Type == FieldType.Checkbox)
+                {
+                    <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+                }
+                @if(Title.TryGetValue(out var title))
+                {
+                    <label @attributes="_labelAttributes" class="field-title">@title</label>
+                }
+            </div>
         }
         @if(Type is FieldType.Text or FieldType.Password or FieldType.Search or FieldType.LiveSearch)
         {

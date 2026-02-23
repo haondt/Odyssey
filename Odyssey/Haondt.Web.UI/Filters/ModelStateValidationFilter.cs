@@ -6,11 +6,12 @@ using Haondt.Web.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Haondt.Web.UI.Filters
 {
-    public class ModelStateValidationFilter(IComponentFactory componentFactory) : IAsyncActionFilter
+    public class ModelStateValidationFilter : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -20,22 +21,24 @@ namespace Haondt.Web.UI.Filters
                 return;
             }
 
+            SetValidationState(context.HttpContext, context.ModelState);
+            var result = await ApplyValidationComponentAsync(context.HttpContext);
+            await result.ExecuteAsync(context.HttpContext);
+        }
 
-            var errors = context.ModelState
+        public static void SetValidationState(HttpContext httpContext, ModelStateDictionary modelState)
+        {
+            if (modelState.IsValid)
+                return;
+
+            var errors = modelState
                 .Where(x => x.Value?.Errors.Count > 0)
                 .ToDictionary(x => x.Key, x => string.Join('\n', x.Value!.Errors.Select(e => e.ErrorMessage)));
 
-            var result = await ApplyValidationErrorAsync(errors, context.HttpContext);
-            if (result.IsSuccessful)
-            {
-                await result.Value.ExecuteAsync(context.HttpContext);
-                return;
-            }
-
-            await next();
+            SetValidationState(httpContext, errors);
         }
 
-        private static void UpdateValidationState(HttpContext httpContext, Dictionary<string, string> validationErrors)
+        public static void SetValidationState(HttpContext httpContext, Dictionary<string, string> validationErrors)
         {
             var validationState = httpContext.RequestServices.GetRequiredService<IValidationStateWriter>();
             validationState.ValidationErrors = validationErrors;
@@ -43,34 +46,44 @@ namespace Haondt.Web.UI.Filters
             validationState.IsValidation = true;
         }
 
-        public async Task<Result<IResult>> ApplyValidationErrorAsync(Dictionary<string, string> validationErrors, HttpContext httpContext)
+        public Task<IResult> ApplyValidationComponentAsync<TValidationComponent>(HttpContext httpContext, Optional<string> hxSwapId = default) where TValidationComponent : IComponent
+        {
+            return ApplyValidationComponentAsync(typeof(TValidationComponent), httpContext, hxSwapId);
+        }
+
+
+        public Task<IResult> ApplyValidationComponentAsync(HttpContext httpContext)
+        {
+            var endpoint = httpContext.GetEndpoint();
+            if (endpoint?.Metadata.GetMetadata<ValidationStateAttribute>() is not { } errorsAttribute)
+                throw new InvalidOperationException($"Endpoint {endpoint} is missing {nameof(ValidatableTypeAttribute)}");
+
+            return ApplyValidationComponentAsync(errorsAttribute.ComponentType, httpContext, errorsAttribute.HxSwapId);
+        }
+
+        public static async Task<IResult> ApplyValidationComponentAsync(Type validationComponentType, HttpContext httpContext, Optional<string> hxSwapId = default)
         {
             var endpoint = httpContext.GetEndpoint();
 
-            if (endpoint?.Metadata.GetMetadata<ValidationStateAttribute>() is { } errorsAttribute)
+            var instance = ActivatorUtilities.CreateInstance(httpContext.RequestServices, validationComponentType);
+            if (instance is not IComponent component)
+                throw new InvalidOperationException($"{validationComponentType.Name} must implement {nameof(IComponent)}.");
+
+            var componentFactory = httpContext.RequestServices.GetRequiredService<IComponentFactory>();
+            var result = await componentFactory.RenderComponentAsync(component, validationComponentType);
+            var responseData = httpContext.Response.AsResponseData();
+            if (hxSwapId.TryGetValue(out var swapId))
             {
-                UpdateValidationState(httpContext, validationErrors);
-
-                var instance = ActivatorUtilities.CreateInstance(httpContext.RequestServices, errorsAttribute.ComponentType);
-                if (instance is not IComponent component)
-                    throw new InvalidOperationException($"{errorsAttribute.ComponentType} must implement {nameof(IComponent)}.");
-
-                var result = await componentFactory.RenderComponentAsync(component, errorsAttribute.ComponentType);
-                var responseData = httpContext.Response.AsResponseData();
-                if (errorsAttribute.HxSwapId.TryGetValue(out var swapId))
-                {
-                    responseData.HxReswap("morph:outerHTML");
-                    responseData.HxRetarget($"#{swapId}");
-                }
-                else
-                {
-                    responseData.HxReswap("none");
-                }
-                responseData.Status(400);
-                return new(result);
+                responseData.HxReswap("morph:outerHTML");
+                responseData.HxRetarget($"#{swapId}");
             }
+            else
+            {
+                responseData.HxReswap("none");
+            }
+            responseData.Status(400);
 
-            return new();
+            return result;
         }
     }
 }

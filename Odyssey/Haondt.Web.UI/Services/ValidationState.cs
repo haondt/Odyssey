@@ -24,4 +24,5 @@ namespace Haondt.Web.UI.Services
         Optional<string> ValidationSummary { get; set; }
         bool IsValidation { get; set; }
     }
+
 }

@@ -33,8 +33,8 @@
         <p class="title text-align-center">Sign in</p>
         <form hx-post>
             <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
-                <SmartField IsValid="!ValidationState.ValidationSummary.HasValue" Error="new()" TBase="SignInModel" Field="m => m.Username" Autocomplete='FieldAutocomplete.Username' HxPreserve="true" />
-                <SmartField IsValid="!ValidationState.ValidationSummary.HasValue" Error="new()" TBase="SignInModel" Field="m => m.Password" Autocomplete='FieldAutocomplete.CurrentPassword'/>
+                <SmartField IsValid="!ValidationState.ValidationSummary.HasValue" Error="new()" TBase="SignInModel" Field="m => m.Username" Autocomplete='FieldAutocomplete.Username' />
+                <SmartField IsValid="!ValidationState.ValidationSummary.HasValue" Error="new()" TBase="SignInModel" Field="m => m.Password" Autocomplete='FieldAutocomplete.CurrentPassword' />
                 @if(ValidationState.IsValidation && ValidationState.ValidationSummary.TryGetValue(out var formError))
                 {
                     <p class="validation-error">@formError</p>

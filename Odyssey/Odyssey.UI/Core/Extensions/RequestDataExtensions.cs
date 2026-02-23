@@ -17,6 +17,10 @@ namespace Odyssey.UI.Core.Extensions
             {
                 return request.Headers.TryGetValue<bool>("Hx-History-Restore-Request").Or(false); ;
             }
+            public bool IsHxBoosted()
+            {
+                return request.Headers.TryGetValue<bool>("Hx-Boosted").Or(false); ;
+            }
         }
     }
 }

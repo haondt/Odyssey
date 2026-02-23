@@ -4,19 +4,24 @@
     color: var(--haondt-ui-color-subtitle);
 }
 
-.flex > .field.field-size-fill, .frame-flex > .field.field-size-fill {
+:is(.flex, .frame-flex) > .field.field-size-fill {
     flex-grow: 1;
     width: initial;
 }
 
+
 .field.field-size-fill {
     width: 100%;
 
-    .input {
+    /* using > to skip the one inside the label-container (checkboxes) */
+    > .frame > .input {
         width: 100%;
     }
 }
 
+.field-hidden {
+    display: none;
+}
 
 select.input {
     appearance: none;
@@ -27,6 +32,10 @@ select.input {
 .select-container {
     width: 100%;
     position: relative;
+
+    > select {
+        width: 100%;
+    }
 }
 
 .select-container::after {
@@ -49,6 +58,17 @@ select.input {
     transform: translateX(var(--indicator-tx)) translateY(var(--indicator-ty)) rotate(45deg);
 }
 
+.label-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--haondt-ui-line-spacing);
+
+    > .input[type=checkbox] + .field-title {
+        cursor: pointer;
+    }
+}
+
 .field.field-invalid {
     .input, .input:hover, .input:active {
         border-color: var(--haondt-ui-color-danger);
@@ -57,3 +77,4 @@ select.input {
         outline-color: var(--haondt-ui-color-danger);
     }
 }
+

@@ -112,13 +112,19 @@
 
     --haondt-ui-blend-height: 16px;
     --haondt-ui-blend-box-shadow: 0 0 9px 10px var(--haondt-ui-color-background);
-    --haondt-ui-blend-clip-path: inset(0 calc(-1 * var(--haondt-ui-blend-height)) calc(-1 * var(--haondt-ui-blend-height)) calc(-1 * var(--haondt-ui-blend-height)));
+    --haondt-ui-blend-clip-path-size: calc(-1 * var(--haondt-ui-blend-height));
+    --haondt-ui-blend-clip-path: inset(0 var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size));
 
     --haondt-ui-button-hover-delta: 5;
 
     --haondt-ui-modal-width-s: 468px;
     --haondt-ui-modal-width-m: 964px;
     --haondt-ui-modal-vertical-spacing: 100px;
+
+    --haondt-ui-footer-min-height: 32px;
+
+    --haondt-ui-toast-width: 25rem;
+    --haondt-ui-toast-offset: 0px;
 }
 
 /* display is smaller or equal to device of size x */
@@ -130,3 +136,4 @@
 @custom-media --haondt-ui-media-query-gte-m screen and (min-width: 769px);
 @custom-media --haondt-ui-media-query-gte-l screen and (min-width: 1025px);
 @custom-media --haondt-ui-media-query-gte-xl screen and (min-width: 1201px);
+
