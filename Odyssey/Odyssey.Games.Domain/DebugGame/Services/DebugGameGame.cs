@@ -1,4 +1,5 @@
-﻿using Odyssey.Domain.Core.Models;
+﻿using Microsoft.Extensions.Logging;
+using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Games.Domain.DebugGame.Models;
 using Odyssey.Persistence.Models;
@@ -8,11 +9,13 @@ namespace Odyssey.Games.Domain.DebugGame.Services
     public class DebugGameGame(
         ICachedDataRepository<DebugGameGameSettings> gameSettings,
         ICachedDataRepository<DebugGameBoard> boards,
-        IBoardMetadataRepository boardMetadataRepository) : IGame
+        IBoardMetadataRepository boardMetadataRepository,
+        ILogger<DebugGameGame> logger) : IGame
     {
         protected ICachedDataRepository<DebugGameBoard> boards = boards;
         protected IBoardMetadataRepository boardMetadataRepository = boardMetadataRepository;
         protected ICachedDataRepository<DebugGameGameSettings> gameSettings = gameSettings;
+        protected ILogger<DebugGameGame> logger = logger;
         public string Id => DebugGameConstants.GameId;
 
         public async Task<string> GetDisplayNameAsync(string ownerId)

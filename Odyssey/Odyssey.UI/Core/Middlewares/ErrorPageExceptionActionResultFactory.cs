@@ -7,7 +7,7 @@ namespace Odyssey.UI.Core.Middlewares
 {
     public class ErrorPageExceptionActionResultFactory(IComponentFactory componentFactory) : ITargetedExceptionActionResultFactory
     {
-        public bool CanHandle(Exception exception) => exception is ErrorPageException;
+        public bool CanHandle(Exception exception, HttpContext context) => exception is ErrorPageException;
 
         public async Task<IResult> CreateAsync(Exception exception, HttpContext context)
         {

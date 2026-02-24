@@ -16,10 +16,18 @@
     [Parameter]
     public Optional<string> Name { get; set; }
 
+    /// <summary>
+    /// Will be used in conjunction with hx-preserve to preserve open state
+    /// </summary>
+    [Parameter]
+    public Optional<string> HeaderId { get; set; }
+
     [Parameter]
     public Expression<Func<object>>? Field { get; set; }
 
-    private HashSet<string> _rootClasses = ["section", "section-open"];
+    private HashSet<string> _rootClasses = ["section"];
+    private HashSet<string> _headerClasses = ["section-header", "section-open"];
+    private Dictionary<string, object> _headerAttributes = [];
 
 
     protected override void OnInitialized() 
@@ -33,10 +41,21 @@
             {
                 Name = name;
             }
+
+            if (!HeaderId.HasValue)
+                HeaderId = $"section-header--{StringFormatter.PascalToKebabCase(path.Replace('.', '-'))}";
         }
+        if (!HeaderId.HasValue && Name.HasValue)
+            HeaderId = $"section-header--{StringFormatter.PascalToKebabCase(Name.Value.Replace('.', '-'))}";
 
         if (Collapsible)
             _rootClasses.Add("section-collapsible");
+
+        if (HeaderId.HasValue)
+        {
+            _headerAttributes["id"] = HeaderId.Value;
+            _headerAttributes["hx-preserve"] = "";
+        }
     }
 
 }
@@ -45,7 +64,7 @@
 <div class="@string.Join(' ', _rootClasses)">
     @if (Collapsible) 
     {
-        <div class="section-header"  _="on click toggle .section-open on the closest .section end">
+        <div @attributes="@_headerAttributes" class="@string.Join(' ', _headerClasses)"  _="on click toggle .section-open on me end">
             <LucideIcon Size="20" Name="chevron-right" />
             @if (Name.TryGetValue(out var name))
             {
@@ -55,7 +74,7 @@
     }
     else if (Name.HasValue)
     {
-        <div class="section-header">
+        <div @attributes="@_headerAttributes" class="@string.Join(' ', _headerClasses)">
             @if (Name.TryGetValue(out var name))
             {
                 <p class="subtitle">@name</p>

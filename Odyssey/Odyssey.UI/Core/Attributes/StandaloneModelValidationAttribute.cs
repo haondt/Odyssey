@@ -13,5 +13,6 @@ namespace Odyssey.UI.Core.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class StandaloneModelValidationAttribute : Attribute
     {
+        public bool ShowToast { get; set; } = false;
     }
 }

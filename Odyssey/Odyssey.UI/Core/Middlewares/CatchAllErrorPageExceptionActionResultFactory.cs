@@ -12,7 +12,7 @@ namespace Odyssey.UI.Core.Middlewares
         ILogger<CatchAllErrorPageExceptionActionResultFactory> logger,
         IOptions<UISettings> uiSettings) : ITargetedExceptionActionResultFactory
     {
-        public bool CanHandle(Exception exception) => true;
+        public bool CanHandle(Exception exception, HttpContext context) => true;
 
         public async Task<IResult> CreateAsync(Exception exception, HttpContext context)
         {

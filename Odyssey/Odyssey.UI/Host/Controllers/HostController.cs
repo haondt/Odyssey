@@ -1,10 +1,13 @@
 ﻿using Haondt.Core.Extensions;
+using Haondt.Core.Models;
 using Haondt.Web.Components;
 using Haondt.Web.Core.Extensions;
 using Haondt.Web.UI.Attributes;
 using Haondt.Web.UI.Components.Element;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Models;
 using Odyssey.Client.Core.Services;
@@ -17,6 +20,7 @@ using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
 using Odyssey.UI.Host.Models;
+using Orleans.Storage;
 
 namespace Odyssey.UI.Host.Controllers
 {
@@ -24,7 +28,8 @@ namespace Odyssey.UI.Host.Controllers
     public partial class HostController(
         IClientGameRegistry gameRegistry,
         ISessionService sessionService,
-        IBoardMetadataRepository boards) : UIController
+        IBoardMetadataRepository boards,
+        ILogger<HostController> logger) : UIController
     {
         [HttpGet]
         public IResult Get() => TypedResults.Redirect(OdysseyRoutes.Host.Party.Index);
@@ -88,7 +93,7 @@ namespace Odyssey.UI.Host.Controllers
         }
 
         [HttpPost(OdysseyRoutes.Host.Board.Id.Index)]
-        [StandaloneModelValidation]
+        [StandaloneModelValidation(ShowToast = true)]
         public async Task<IResult> UpdateBoardState(Guid id)
         {
             var ownedId = new OwnedEntityId<Guid>(await sessionService.GetUserIdAsync(), id);
@@ -97,7 +102,20 @@ namespace Odyssey.UI.Host.Controllers
                 throw new NotFoundToastException($"Metadata for board {id} not found.");
 
             ClientGameHandle game = gameRegistry.GetGame(metadata.GameId);
-            var boardUpdates = await game.UI.HandleBoardStateUpdateAsync(ownedId, HttpContext);
+            Optional<IComponent> boardUpdates;
+            try
+            {
+                boardUpdates = await game.UI.HandleBoardStateUpdateAsync(ownedId, HttpContext);
+            }
+            catch (InconsistentStateException ex)
+            {
+                logger.LogError(ex, $"Caught {nameof(InconsistentStateException)} while updating board state");
+                throw new ToastException("Board was updated from another device. Reload the page to get the latest version.", ex)
+                {
+                    Severity = ToastSeverity.Error,
+                    StatusCode = 409
+                };
+            }
 
             var layout = new AppendComponentLayout
             {

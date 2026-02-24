@@ -6,26 +6,24 @@
     cursor: pointer;
 }
 
-.section {
+.section ::deep {
     display: flex;
     flex-direction: column;
     gap: var(--haondt-ui-card-spacing);
     > .section-header > svg {
         transition: transform 0.1s ease-out;
     }
+    > .section-header.section-open ::deep > svg {
+        transform: rotate(90deg);
+    }
     > .section-content {
         display: flex;
         flex-direction: column;
         gap: var(--haondt-ui-card-spacing);
     }
+
 }
 
-.section.section-open > .section-header {
-    > svg {
-        transform: rotate(90deg);
-    }
-}
-
-.section:not(.section-open) > .section-content {
+.section:has(> .section-header:not(.section-open)) > .section-content {
     display: none;
 }

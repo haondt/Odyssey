@@ -1,7 +1,9 @@
 ﻿using Haondt.Core.Models;
 using Haondt.Web.Core.Extensions;
+using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Odyssey.Client.Core.Services;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Games.Client.DebugGame.UI.Components;
@@ -15,8 +17,9 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
         ICachedDataRepository<DebugGameGameSettings> gameSettings,
         ICachedDataRepository<DebugGameBoard> boards,
         IBoardMetadataRepository boardMetadataRepository,
-        IStandaloneModelBinder modelBinder
-        ) : DebugGameGame(gameSettings, boards, boardMetadataRepository), IClientGame
+        IStandaloneModelBinder modelBinder,
+        ILogger<DebugGameGame> logger
+        ) : DebugGameGame(gameSettings, boards, boardMetadataRepository, logger), IClientGame
     {
         public async Task<IComponent> GetEditBoardComponentAsync(OwnedEntityId<Guid> id)
         {

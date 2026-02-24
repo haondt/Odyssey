@@ -1,7 +1,9 @@
 ﻿using Haondt.Core.Models;
+using Haondt.Web.Components;
 using Haondt.Web.Core.Extensions;
 using Haondt.Web.Services;
 using Haondt.Web.UI.Attributes;
+using Haondt.Web.UI.Components.Element;
 using Haondt.Web.UI.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -61,16 +63,30 @@ namespace Haondt.Web.UI.Filters
             return ApplyValidationComponentAsync(errorsAttribute.ComponentType, httpContext, errorsAttribute.HxSwapId);
         }
 
-        public static async Task<IResult> ApplyValidationComponentAsync(Type validationComponentType, HttpContext httpContext, Optional<string> hxSwapId = default)
+        public static async Task<IResult> ApplyValidationComponentAsync(Type validationComponentType, HttpContext httpContext, Optional<string> hxSwapId = default, bool showToast = false)
         {
             var endpoint = httpContext.GetEndpoint();
 
             var instance = ActivatorUtilities.CreateInstance(httpContext.RequestServices, validationComponentType);
             if (instance is not IComponent component)
                 throw new InvalidOperationException($"{validationComponentType.Name} must implement {nameof(IComponent)}.");
+            var componentType = validationComponentType;
+            if (showToast)
+            {
+                var toast = new Toast
+                {
+                    Severity = ToastSeverity.Error,
+                    Text = "Operation failed, check the form for errors"
+                };
+                component = new AppendComponentLayout
+                {
+                    Components = [toast, component]
+                };
+                componentType = typeof(AppendComponentLayout);
+            }
 
             var componentFactory = httpContext.RequestServices.GetRequiredService<IComponentFactory>();
-            var result = await componentFactory.RenderComponentAsync(component, validationComponentType);
+            var result = await componentFactory.RenderComponentAsync(component, componentType);
             var responseData = httpContext.Response.AsResponseData();
             if (hxSwapId.TryGetValue(out var swapId))
             {

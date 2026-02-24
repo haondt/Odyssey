@@ -8,7 +8,7 @@ namespace Odyssey.UI.Core.Middlewares
 {
     public class ToastExceptionActionResultFactory(IComponentFactory componentFactory) : ITargetedExceptionActionResultFactory
     {
-        public bool CanHandle(Exception exception) => exception is ToastException;
+        public bool CanHandle(Exception exception, HttpContext context) => exception is ToastException;
 
         public async Task<IResult> CreateAsync(Exception exception, HttpContext context)
         {
