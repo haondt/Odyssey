@@ -1,0 +1,35 @@
+@using Haondt.Web.UI.Components.Element
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool Hidden { get; set; } = true;
+
+    [Parameter]
+    public TooltipAlignment Align {get; set;} = TooltipAlignment.Left;
+
+    [Parameter]
+    public TooltipPosition Position {get; set;} = TooltipPosition.Below;
+
+    [Parameter]
+    public Optional<TooltipStyle> Style {get; set;}
+
+    private HashSet<string> _contentClasses = ["tooltip-content"];
+    private HashSet<string> _rootClasses = ["tooltip"];
+    protected override void OnInitialized()
+    {
+        _contentClasses.Add(Align.CssClass);
+        _contentClasses.Add(Position.CssClass);
+        _rootClasses.Add(Style.Or(TooltipStyle.Default).CssClass);
+        if (Hidden)
+            _rootClasses.Add("hidden");
+    }
+}
+
+<div class="@string.Join(' ', _rootClasses)">
+    <div class="@string.Join(' ', _contentClasses)">
+        @ChildContent
+    </div>
+</div>

@@ -1,0 +1,25 @@
+#confirmation-dialog {
+    display: flex;
+    flex-direction: column;
+
+    > *:not(:first-child):not(.confirmation-dialog-buttons) {
+        margin-top: var(--haondt-ui-line-spacing);
+    }
+}
+
+#confirmation-dialog > .confirmation-dialog-buttons {
+    margin-top: var(--haondt-ui-panel-spacing);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--haondt-ui-line-spacing);
+}
+
+@media screen and (max-width: 768px) {
+    #confirmation-dialog > .confirmation-dialog-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        flex-flow: column-reverse;
+    }
+}

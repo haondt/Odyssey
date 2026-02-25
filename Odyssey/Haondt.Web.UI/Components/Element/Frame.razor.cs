@@ -7,7 +7,8 @@ namespace Haondt.Web.UI.Components.Element
         Col,
         Row,
         ColWrap,
-        RowWrap
+        RowWrap,
+        Responsive
     }
     public enum FrameJustification
     {
@@ -45,7 +46,7 @@ namespace Haondt.Web.UI.Components.Element
         Line,
         Small,
         Medium,
-        Large
+        Large,
     }
 
     public enum FrameTemplate
@@ -104,6 +105,7 @@ namespace Haondt.Web.UI.Components.Element
                 FrameDirection.Row => "frame-flex-row",
                 FrameDirection.ColWrap => "frame-flex-col-wrap",
                 FrameDirection.RowWrap => "frame-flex-row-wrap",
+                FrameDirection.Responsive => "frame-flex-responsive",
                 _ => new Optional<string>()
             };
         }

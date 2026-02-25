@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.3" />
-          <PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260222112707" />
+          <PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260225032008" />
 
   </ItemGroup>
 
@@ -46,6 +46,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Components\Relays\" />
 	  <Folder Include="Exceptions\" />
 	</ItemGroup>
 

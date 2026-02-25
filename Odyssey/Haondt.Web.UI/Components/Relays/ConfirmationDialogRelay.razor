@@ -1,0 +1,47 @@
+@using Haondt.Web.UI.Components.Components
+@code  {
+    public const string Id = "confirmation-dialog-relay";
+}
+<form id="@Id" class="hidden" hx-trigger="getDialog" hx-get="/haondt-ui/fragments/confirmation-dialog" _="
+    set :im to the first <input[name='@nameof(ConfirmationDialogModel.Message)'] /> in me
+    set :ii to the first <input[name='@nameof(ConfirmationDialogModel.Intent)'] /> in me
+    set :it to the first <input[name='@nameof(ConfirmationDialogModel.Title)'] /> in me
+    set :in to the first <input[name='@nameof(ConfirmationDialogModel.CancelText)'] /> in me
+    set :iy to the first <input[name='@nameof(ConfirmationDialogModel.ConfirmText)'] /> in me
+    on htmx:confirm from elsewhere
+        if the event's detail.question is empty exit end
+        halt the event
+        set :ir to the event's detail.issueRequest
+
+        reset() me
+
+        set :im's value to the event's detail.question
+
+        set ii to the event's detail.elt's @@data-confirmation-dialog-intent
+        if ii is not empty
+            set :ii's value to ii
+        else if the event's detail.verb is 'delete'
+            set :ii's value to '@ConfirmationDialogIntent.Destroy'
+        else if the event's detail.verb is 'post'
+            set :ii's value to '@ConfirmationDialogIntent.Create'
+        else if the event's detail.verb is 'put'
+            set :ii's value to '@ConfirmationDialogIntent.Modify'
+        end
+
+        set :it's value to the event's detail.elt's @@data-confirmation-dialog-title
+        set :in's value to the event's detail.elt's @@data-confirmation-dialog-cancel-text
+        set :iy's value to the event's detail.elt's @@data-confirmation-dialog-confirm-text
+        
+        send getDialog to me
+    end
+    on confirm
+        call :ir(true)
+        set :ir to null
+    end
+">
+    <input type="hidden" name="@nameof(ConfirmationDialogModel.Message)" />
+    <input type="hidden" name="@nameof(ConfirmationDialogModel.Title)" />
+    <input type="hidden" name="@nameof(ConfirmationDialogModel.CancelText)" />
+    <input type="hidden" name="@nameof(ConfirmationDialogModel.ConfirmText)" />
+    <input type="hidden" name="@nameof(ConfirmationDialogModel.Intent)" />
+</form>

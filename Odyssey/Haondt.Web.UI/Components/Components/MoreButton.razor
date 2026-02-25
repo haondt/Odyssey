@@ -1,0 +1,30 @@
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Element
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public Optional<TooltipStyle> TooltipStyle {get; set;}
+
+    [Parameter]
+    public Optional<string> AddClasses { get; set; }
+
+    protected HashSet<string> _rootClasses = ["more-button"];
+
+    protected override void OnInitialized()
+    {
+        if (AddClasses.TryGetValue(out var addClasses))
+            _rootClasses.Add(addClasses);
+    }
+}
+
+<div _="install MoreButton" class="@string.Join(' ', _rootClasses)">
+    <Button Style="ButtonStyle.Ghost">
+        <Frame Flex="FrameDirection.Row" Gap="FrameSpacing.Line" Align="FrameAlignment.Center">
+            <p>More</p>
+            <LucideIcon Size="18" Name="chevron-down"/>
+        </Frame>
+    </Button>
+    <Tooltip Style="TooltipStyle" Align="TooltipAlignment.Right">@ChildContent</Tooltip>
+</div>

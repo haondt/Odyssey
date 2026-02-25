@@ -4,6 +4,7 @@
 @using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Components.Element
 @using Haondt.Web.UI.Components.Htmx
+@using Haondt.Web.UI.Components.Relays
 @using Odyssey.UI.Core.Extensions
 @using Odyssey.UI.Core.Services
 @code {
@@ -37,6 +38,7 @@
 
 <div id="@Id" class="@_bodyContentClasses">
     <ModalContainer Active="false" />
+    <ConfirmationDialogRelay />
     <ToastContainer />
     @if (Request.IsHxRequest())
     {

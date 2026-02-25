@@ -3,6 +3,7 @@
     [Parameter]
     public Optional<string> Text { get; set; } 
 
+
     [Parameter]
     public Optional<string> HxPost { get; set; } 
 
@@ -13,6 +14,9 @@
     public Optional<string> HxGet { get; set; } 
 
     [Parameter]
+    public Optional<string> HxDelete { get; set; } 
+
+    [Parameter]
     public Optional<string> HxTarget { get; set; } 
 
     [Parameter]
@@ -20,6 +24,9 @@
 
     [Parameter]
     public Optional<string> HxSwap { get; set; } 
+
+    [Parameter]
+    public Union<string, ConfirmationDialogModel>? HxConfirm { get; set; } 
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -33,11 +40,17 @@
     [Parameter]
     public ButtonColor Color { get; set; } = ButtonColor.Text;
 
+    [Parameter]
+    public Optional<string> AddClasses { get; set; }
+
     protected HashSet<string> _rootClasses = ["button"];
     protected Dictionary<string, object> _rootAttributes = [];
 
     protected override void OnInitialized()
     {
+        // disable during request flight
+        _rootAttributes["data-loading-disable"] = true;
+
         if(Style.CssClass.TryGetValue(out var style))
             _rootClasses.Add(style);
         if(Color.CssClass.TryGetValue(out var color))
@@ -46,12 +59,27 @@
             _rootAttributes["hx-post"] = hxPost;
         if (HxGet.TryGetValue(out var hxGet))
             _rootAttributes["hx-get"] = hxGet;
+        if (HxDelete.TryGetValue(out var hxDelete))
+            _rootAttributes["hx-delete"] = hxDelete;
         if (HxTarget.TryGetValue(out var hxTarget))
             _rootAttributes["hx-target"] = hxTarget;
         if (HxPushUrl.TryGetValue(out var hxPushUrl))
             _rootAttributes["hx-push-url"] = hxPushUrl;
         if (HxSwap.TryGetValue(out var hxSwap))
             _rootAttributes["hx-swap"] = hxSwap;
+        if (HxConfirm is { } hxConfirm)
+        {
+            if (hxConfirm.Is<string>(out var hxConfirmString))
+                _rootAttributes["hx-confirm"] = hxConfirmString;
+            else
+            {
+                var hxConfirmModel = hxConfirm.Cast<ConfirmationDialogModel>();
+                _rootAttributes["hx-confirm"] = hxConfirmModel.Message;
+                foreach (var (k, v) in hxConfirmModel.DataFields)
+                    _rootAttributes[k] = v;
+            }
+
+        }
         if (Type == ButtonType.CloseModal) 
         {
             var snippet = $"on click send click to #{ModalPanel.ModalBackgroundId} end";
@@ -60,6 +88,9 @@
         if(Hyperscript.TryGetValue(out var hyperscript))
             _rootAttributes["_"] = hyperscript;
         _rootAttributes["type"] = Type.TypeString;
+
+        if (AddClasses.TryGetValue(out var addClasses))
+            _rootClasses.Add(addClasses);
     }
 }
 <button @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">

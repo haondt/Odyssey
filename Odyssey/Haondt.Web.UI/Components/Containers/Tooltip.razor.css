@@ -1,0 +1,64 @@
+.tooltip {
+    height: 0;
+    position: relative;
+}
+
+.tooltip-content {
+    position: absolute;
+
+    border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+    border-radius: var(--haondt-ui-border-radius);
+
+    background: var(--haondt-ui-color-background);
+
+    border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+    border-radius: var(--haondt-ui-border-radius);
+
+    box-shadow: var(--haondt-ui-blend-box-shadow);
+
+    --tooltip-clip-path-left: var(--haondt-ui-blend-clip-path-size);
+    --tooltip-clip-path-right: var(--haondt-ui-blend-clip-path-size);
+    --tooltip-clip-path-top: var(--haondt-ui-blend-clip-path-size);
+    --tooltip-clip-path-bottom: var(--haondt-ui-blend-clip-path-size);
+    clip-path: inset(var(--tooltip-clip-path-top) var(--tooltip-clip-path-right)  var(--tooltip-clip-path-bottom)  var(--tooltip-clip-path-left));
+}
+
+.tooltip-content.tooltip-align-left {
+    left: 0;
+}
+
+.tooltip-content.tooltip-align-right {
+    right: 0;
+}
+
+.tooltip-content.tooltip-align-top {
+    top: 0;
+}
+
+.tooltip-content.tooltip-align-bottom {
+    bottom: 0;
+}
+
+.tooltip-content.tooltip-position-below {
+    top: var(--haondt-ui-line-spacing);
+    --tooltip-clip-path-top: calc(-1 * var(--haondt-ui-line-spacing));
+}
+.tooltip-content.tooltip-position-above {
+    bottom: var(--haondt-ui-line-spacing);
+}
+.tooltip-content.tooltip-left-of {
+    right: var(--haondt-ui-line-spacing);
+}
+.tooltip-content.tooltip-right-of {
+    left: var(--haondt-ui-line-spacing);
+}
+
+.tooltip.tooltip-style-context-menu {
+    > .tooltip-content {
+        display: flex;
+        flex-direction: column;
+        min-width: 200px;
+        padding-top: var(--haondt-ui-line-spacing);
+        padding-bottom: var(--haondt-ui-line-spacing);
+    }
+}

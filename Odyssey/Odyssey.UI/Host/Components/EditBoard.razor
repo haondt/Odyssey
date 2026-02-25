@@ -47,16 +47,29 @@
         <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Gap="FrameSpacing.Panel">
             <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <SecondaryNavigationBar Sticky="false" LeftItems="@([new("Board data", Active: true)])" />
-                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Start">
-                    <Frame Flex="FrameDirection.Col">
+                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Stretch">
+                    <Frame AddClasses='"flex-grow-1"' Flex="FrameDirection.Col">
                         <p class="title">@Metadata.Name</p>
                         <p class="italic">@_gameName</p>
                     </Frame>
-                    <Frame Template="FrameTemplate.ButtonContainer">
+                    <Frame AddClasses='"flex-grow-1"' Template="FrameTemplate.ButtonContainer">
                         <Button Color="ButtonColor.Primary">Create session</Button>
-                        <Button Color="ButtonColor.Text">Clone</Button>
-                        <Button Color="ButtonColor.Text">Export</Button>
-                        <Button Color="ButtonColor.Danger">Delete</Button>
+                        <Button AddClasses='"hidden-lte-s"' Color="ButtonColor.Text">Clone</Button>
+                        <Button AddClasses='"hidden-lte-s"' Color="ButtonColor.Text">Export</Button>
+                        @{
+                            var confirm = new ConfirmationDialogModel
+                            {
+                                Message = $"Are you sure you want to delete the board \"{Metadata.Name}\"?",
+                                ConfirmText = "Delete",
+                                Title = "Delete board"
+                            };
+                        }
+                        <Button HxDelete='""' HxConfirm="@confirm" AddClasses='"hidden-lte-s"' Color="ButtonColor.Danger">Delete</Button>
+                        <MoreButton AddClasses='"hidden-gte-m"' TooltipStyle="TooltipStyle.ContextMenu">
+                            <Button Style="ButtonStyle.Borderless">Clone</Button>
+                            <Button Style="ButtonStyle.Borderless">Export</Button>
+                            <Button HxDelete='""' HxConfirm="@confirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
+                        </MoreButton>
                     </Frame>
                 </Frame>
             </Frame>

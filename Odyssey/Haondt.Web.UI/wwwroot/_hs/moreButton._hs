@@ -1,0 +1,24 @@
+behavior MoreButton
+	set :tt to the first .tooltip in me
+	set :button to the first .button in me
+	set :active to false
+	on click from :button
+		set :active to not :active
+		send updateState to me
+	end
+	on htmx:trigger from :tt
+		set :active to not :active
+		send updateState to me
+	end
+	on click from elsewhere
+		set :active to false
+		send updateState to me
+	end
+	on updateState
+		if :active
+			remove .hidden from :tt
+		else
+			add .hidden to :tt
+		end
+	end
+end

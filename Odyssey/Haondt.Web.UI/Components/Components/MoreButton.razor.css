@@ -1,0 +1,13 @@
+.more-button {
+    display: flex;
+    flex-direction: column;
+}
+
+.more-button ::deep .button {
+    z-index: 1; /* so it gets drawn on top of the tooltip box shadow */
+}
+
+p {
+    font-weight: inherit;
+    color: inherit;
+}

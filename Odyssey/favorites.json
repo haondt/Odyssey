@@ -1,0 +1,88 @@
+{
+  "version": 2,
+  "items": [
+    {
+      "name": "Components",
+      "children": [
+        {
+          "name": "EditBoard.razor",
+          "path": "Odyssey.UI\\Host\\Components\\EditBoard.razor"
+        },
+        {
+          "name": "FormActionBar.razor",
+          "path": "Odyssey.UI\\Host\\Components\\FormActionBar.razor"
+        },
+        {
+          "name": "HostBoards.razor",
+          "path": "Odyssey.UI\\Host\\Components\\HostBoards.razor"
+        },
+        {
+          "name": "HostBoardsList.razor",
+          "path": "Odyssey.UI\\Host\\Components\\HostBoardsList.razor"
+        },
+        {
+          "name": "HostParty.razor",
+          "path": "Odyssey.UI\\Host\\Components\\HostParty.razor"
+        },
+        {
+          "name": "HostSecondaryNavigationBar.razor",
+          "path": "Odyssey.UI\\Host\\Components\\HostSecondaryNavigationBar.razor"
+        },
+        {
+          "name": "HostSessions.razor",
+          "path": "Odyssey.UI\\Host\\Components\\HostSessions.razor"
+        },
+        {
+          "name": "NewBoardModal.razor",
+          "path": "Odyssey.UI\\Host\\Components\\NewBoardModal.razor"
+        },
+        {
+          "name": "NewBoardModalPanel.razor",
+          "path": "Odyssey.UI\\Host\\Components\\NewBoardModalPanel.razor"
+        }
+      ]
+    },
+    {
+      "name": "Containers",
+      "children": [
+        {
+          "name": "ContentContainer.razor",
+          "path": "Haondt.Web.UI\\Components\\Containers\\ContentContainer.razor"
+        },
+        {
+          "name": "ModalContainer.razor",
+          "path": "Haondt.Web.UI\\Components\\Containers\\ModalContainer.razor"
+        },
+        {
+          "name": "NavigationContainer.razor",
+          "path": "Haondt.Web.UI\\Components\\Containers\\NavigationContainer.razor"
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "children": [
+        {
+          "name": "AuthenticationDataSeeder.cs",
+          "path": "Odyssey.Client\\Core\\Services\\AuthenticationDataSeeder.cs"
+        },
+        {
+          "name": "ClientGameRegistry.cs",
+          "path": "Odyssey.Client\\Core\\Services\\ClientGameRegistry.cs"
+        },
+        {
+          "name": "IClientGame.cs",
+          "path": "Odyssey.Client\\Core\\Services\\IClientGame.cs"
+        },
+        {
+          "name": "IClientGameRegistry.cs",
+          "path": "Odyssey.Client\\Core\\Services\\IClientGameRegistry.cs"
+        }
+      ]
+    },
+    {
+      "name": "HostController.cs",
+      "path": "Odyssey.UI\\Host\\Controllers\\HostController.cs"
+    }
+  ]
+}

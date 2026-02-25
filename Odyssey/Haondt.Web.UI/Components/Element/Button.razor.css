@@ -12,6 +12,9 @@
 .button-color-text {
     --button-color: var(--haondt-ui-color-subtitle);
 }
+.button-color-text-weak {
+    --button-color: var(--haondt-ui-color-text-weak);
+}
 .button-color-danger {
     --button-color: var(--haondt-ui-color-danger);
 }
@@ -25,7 +28,7 @@
     font-weight: 400;
 }
 
-.button-style-fill.button-color-text {
+.button-color-text:is(.button-style-fill, .button-style-outline) {
     --button-color: var(--haondt-ui-color-text);
 }
 
@@ -37,8 +40,52 @@
     color: var(--button-color);
 }
 
+.button-style-ghost:not(.button-color-text),
+.button-style-skeleton:not(.button-color-text),
+.button-style-outline:not(.button-color-text),
+.button-style-border:not(.button-color-text),
+.button-style-borderless:not(.button-color-text) {
+    font-weight: 400;
+}
+
 .button-style-skeleton {
     color: var(--button-color);
     --haondt-ui-control-padding-x: 0;
     --haondt-ui-control-height: initial;
 }
+
+.button-style-outline {
+    color: var(--button-color);
+    border: var(--haondt-ui-border-width) solid var(--button-color);
+    background-color: var(--haondt-ui-color-background);
+}
+.button-style-border {
+    color: var(--button-color);
+    border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+    background-color: var(--haondt-ui-color-background);
+}
+.button-style-borderless {
+    color: var(--button-color);
+    background-color: var(--haondt-ui-color-background);
+}
+
+:is(.button-style-outline, .button-style-border, .button-style-borderless):hover {
+    background-color: var(--haondt-ui-color-background-strong);
+}
+
+.tooltip.tooltip-style-context-menu > .tooltip-content > .button {
+    width: 100%;
+    border-radius: 0;
+    text-align: left;
+}
+
+.button[disabled] {
+    pointer-events: none;
+    &.button-style-fill {
+        background-color: hsl(from var(--button-color) h s calc(l + var(--haondt-ui-button-hover-delta)));
+    }
+    &:is(.button-style-outline, .button-style-border, .button-style-borderless) {
+        background-color: var(--haondt-ui-color-background-strong);
+    }
+}
+

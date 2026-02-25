@@ -150,6 +150,7 @@ app.UseCors(OdysseyConstants.CorsPolicyName);
 app.UseAntiforgery();
 
 app.MapControllers();
+app.AddHaondtWebUIEndpoints();
 app.UseMiddleware<RenderContextMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<UnmappedRouteHandlerMiddleware>();

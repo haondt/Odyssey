@@ -160,7 +160,8 @@
             <div class="label-container">
                 @if(Type == FieldType.Checkbox)
                 {
-                    <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+                    <input _="on change toggle @@checked on me" @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+                    <i class="field-icon"></i>
                 }
                 @if(Title.TryGetValue(out var title))
                 {

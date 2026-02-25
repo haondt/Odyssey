@@ -97,8 +97,8 @@ html {
     transition-duration: var(--haondt-ui-hover-transition-duration-enter);
 }
 .input[type=checkbox] {
-    width: 16px;
-    height: 16px;
+    width: var(--haondt-ui-checkbox-size);
+    height: var(--haondt-ui-checkbox-size);
     padding: 0;
     appearance: auto;
     accent-color: var(--haondt-ui-color-primary);

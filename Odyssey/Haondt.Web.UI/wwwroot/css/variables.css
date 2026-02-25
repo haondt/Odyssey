@@ -125,6 +125,8 @@
 
     --haondt-ui-toast-width: 25rem;
     --haondt-ui-toast-offset: 0px;
+
+    --haondt-ui-checkbox-size: var(--haondt-ui-text-font-size);
 }
 
 /* display is smaller or equal to device of size x */

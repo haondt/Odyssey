@@ -1,3 +1,19 @@
+.field {
+    --indicator-length: calc(var(--haondt-ui-text-font-size) / 2);
+    --indicator-width: calc(var(--haondt-ui-text-font-size) / 8);
+
+    /* TODO: falback assumption 1rem = 16px until firefox supports division by units.
+        see https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/calc#browser_compatibility
+        and https://bugzilla.mozilla.org/show_bug.cgi?id=1264520
+    */
+    --indicator-length-px: 8;
+}
+@supports (width: calc(1px * calc(1px / 1px))) {
+    .field {
+        --indicator-length-px: calc(var(--indicator-length) / 1px);
+    }
+}
+
 .field-title {
     font-size: var(--haondt-ui-subtitle-font-size);
     font-weight: var(--haondt-ui-subtitle-font-weight);
@@ -39,8 +55,6 @@ select.input {
 }
 
 .select-container::after {
-    --indicator-length-px: 8;
-    --indicator-width: 2px;
 
     position: absolute;
     border: var(--indicator-width) solid var(--haondt-ui-color-primary);
@@ -63,9 +77,43 @@ select.input {
     flex-direction: row;
     align-items: center;
     gap: var(--haondt-ui-line-spacing);
+    position: relative;
 
-    > .input[type=checkbox] + .field-title {
+    &:has(> .input[type=checkbox]) > .field-title {
         cursor: pointer;
+    }
+
+    > .input[type=checkbox] {
+        opacity: 0;
+    }
+    > .input[type=checkbox] + .field-icon {
+        background: var(--haondt-ui-color-chip-background);
+        z-index: -1;
+        border-radius: calc(var(--haondt-ui-checkbox-size) / 5);
+        border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
+        width: var(--haondt-ui-checkbox-size);
+        height: var(--haondt-ui-checkbox-size);
+        position: absolute;
+    }
+    > .input[type=checkbox][checked] + .field-icon {
+        background: var(--haondt-ui-color-primary);
+        border: none;
+    }
+    > .input[type=checkbox][checked] + .field-icon::before {
+        background-clip: padding-box;
+        border: var(--indicator-width) solid var(--haondt-ui-color-chip-background);
+        border-left-width: 0;
+        border-top-width: 0;
+        content: " ";
+        height: calc(1 / 2 * var(--haondt-ui-checkbox-size));
+        width: calc(1 / 4 * var(--haondt-ui-checkbox-size));
+        position: absolute;
+        left: calc(-1 / 8 * var(--haondt-ui-checkbox-size) - 1 / 2 * var(--indicator-width));
+        top: calc(-1 / 4 * var(--haondt-ui-checkbox-size) - 1 / 2 * var(--indicator-width));
+        --r: calc(1 / 4 * var(--haondt-ui-checkbox-size));
+        --z: calc((var(--r) - var(--indicator-width) / 2) / (2 * sqrt(2)));
+        --t: calc(var(--z) * -1 / sqrt(2));
+        transform: rotate(45deg) translateX(calc(sqrt(2) * var(--haondt-ui-checkbox-size) / 2)) translate(var(--t), var(--t));
     }
 }
 
