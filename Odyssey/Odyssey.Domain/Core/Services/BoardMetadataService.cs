@@ -24,7 +24,7 @@ namespace Odyssey.Domain.Core.Services
                 CreatedOn = now,
                 ModifiedOn = now
             };
-            var model = meta.AsDataModel(new(ownerId, Guid.NewGuid()));
+            var model = meta.AsDataModel((ownerId, Guid.NewGuid()));
 
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var user = await dbContext.Users.FindAsync(ownerId)
@@ -35,12 +35,11 @@ namespace Odyssey.Domain.Core.Services
             return (model.EntityId, BoardMetadata.FromDataModel(model));
         }
 
-        public async Task<Result<BoardMetadata>> GetBoardMetadataAsync(OwnedEntityId<Guid> id)
+        public async Task<Result<BoardMetadata>> GetBoardMetadataAsync(OwnedEntityGuid id)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            var stringId = id.StringValue;
             var board = await dbContext.BoardMetadatas
-                .FirstOrDefaultAsync(q => q.Id == stringId);
+                .FirstOrDefaultAsync(q => q.Id == id);
             return board.AsOptional().Map(BoardMetadata.FromDataModel).AsResult();
         }
 
@@ -73,12 +72,11 @@ namespace Odyssey.Domain.Core.Services
             return metadata.Select(m => (m.EntityId, BoardMetadata.FromDataModel(m))).ToList();
         }
 
-        public async Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityId<Guid> id, string name)
+        public async Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityGuid id, string name)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            var stringId = id.StringValue;
             var board = await dbContext.BoardMetadatas
-                .FirstOrDefaultAsync(q => q.Id == stringId)
+                .FirstOrDefaultAsync(q => q.Id == id)
                 ?? throw new KeyNotFoundException($"Board with id {id} does not exist.");
             board.Name = name;
             board.ModifiedOn = clock.Now;
@@ -86,12 +84,11 @@ namespace Odyssey.Domain.Core.Services
             return BoardMetadata.FromDataModel(board);
         }
 
-        public async Task DeleteBoardMetadataAsync(OwnedEntityId<Guid> id)
+        public async Task DeleteBoardMetadataAsync(OwnedEntityGuid id)
         {
-            var stringId = id.StringValue;
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             await dbContext.BoardMetadatas
-                .Where(q => q.Id == stringId)
+                .Where(q => q.Id == id)
                 .ExecuteDeleteAsync();
         }
     }

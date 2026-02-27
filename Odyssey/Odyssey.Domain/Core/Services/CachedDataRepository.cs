@@ -16,5 +16,10 @@ namespace Odyssey.Domain.Core.Services
             var grain = grainFactory.GetGrain(key);
             return grain.SetDataAsync(data, version);
         }
+        public Task ClearDataAsync(string key)
+        {
+            var grain = grainFactory.GetGrain(key);
+            return grain.ClearDataAsync();
+        }
     }
 }

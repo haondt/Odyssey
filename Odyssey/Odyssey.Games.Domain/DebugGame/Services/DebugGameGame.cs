@@ -39,9 +39,13 @@ namespace Odyssey.Games.Domain.DebugGame.Services
                 }
             };
 
-            await boards.SetDataAsync(new OwnedEntityId<Guid>(ownerId, id).StringValue, board, 0);
+            await boards.SetDataAsync(new OwnedEntityGuid(ownerId, id), board, 0);
             return (id, meta);
         }
 
+        public async Task DeleteBoardAsync(OwnedEntityGuid id)
+        {
+            await boards.ClearDataAsync(id);
+        }
     }
 }

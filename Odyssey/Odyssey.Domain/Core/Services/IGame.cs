@@ -1,4 +1,5 @@
 ﻿using Odyssey.Domain.Core.Models;
+using Odyssey.Persistence.Models;
 
 namespace Odyssey.Domain.Core.Services
 {
@@ -17,5 +18,6 @@ namespace Odyssey.Domain.Core.Services
     public interface IGameBoardsService
     {
         Task<(Guid Id, BoardMetadata Metadata)> CreateBoardAsync(string ownerId, string name);
+        Task DeleteBoardAsync(OwnedEntityGuid id);
     }
 }

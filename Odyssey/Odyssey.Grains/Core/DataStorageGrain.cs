@@ -40,6 +40,7 @@ namespace Odyssey.Grains.Core
             await _state.WriteStateAsync();
             return _state.State.Version;
         }
+        public Task ClearDataAsync() => _state.ClearStateAsync();
 
         public Task<(TData Data, int Version)> GetDataAsync() => Task.FromResult((_state.State.Data, _state.State.Version));
 

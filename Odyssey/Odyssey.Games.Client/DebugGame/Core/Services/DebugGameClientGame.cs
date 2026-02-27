@@ -1,6 +1,5 @@
 ﻿using Haondt.Core.Models;
 using Haondt.Web.Core.Extensions;
-using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -21,9 +20,9 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
         ILogger<DebugGameGame> logger
         ) : DebugGameGame(gameSettings, boards, boardMetadataRepository, logger), IClientGame
     {
-        public async Task<IComponent> GetEditBoardComponentAsync(OwnedEntityId<Guid> id)
+        public async Task<IComponent> GetEditBoardComponentAsync(OwnedEntityGuid id)
         {
-            var (board, version) = await boards.GetDataAsync(id.StringValue);
+            var (board, version) = await boards.GetDataAsync(id);
             return new DebugGameEditBoard
             {
                 Board = board,
@@ -31,9 +30,9 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
             };
         }
 
-        public async Task<IComponent> GetResetEditBoardComponentAsync(OwnedEntityId<Guid> id)
+        public async Task<IComponent> GetResetEditBoardComponentAsync(OwnedEntityGuid id)
         {
-            var (board, version) = await boards.GetDataAsync(id.StringValue);
+            var (board, version) = await boards.GetDataAsync(id);
             return new DebugGameEditBoard
             {
                 Board = board,
@@ -42,11 +41,11 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
             };
         }
 
-        public async Task<Optional<IComponent>> HandleBoardStateUpdateAsync(OwnedEntityId<Guid> id, HttpContext context)
+        public async Task<Optional<IComponent>> HandleBoardStateUpdateAsync(OwnedEntityGuid id, HttpContext context)
         {
             var version = context.Request.Form.GetValue<int>("version");
             var model = await modelBinder.BindAndValidateFormAsync<DebugGameBoard, DebugGameEditBoard>(context);
-            version = await boards.SetDataAsync(id.StringValue, model, version);
+            version = await boards.SetDataAsync(id, model, version);
 
             return new DebugGameEditBoard
             {

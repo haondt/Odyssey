@@ -6,5 +6,6 @@ namespace Odyssey.Domain.Core.Services
     {
         Task<(T Data, int Version)> GetDataAsync(string key);
         Task<int> SetDataAsync(string key, T data, int version);
+        Task ClearDataAsync(string key);
     }
 }

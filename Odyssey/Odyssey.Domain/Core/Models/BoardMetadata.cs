@@ -10,9 +10,9 @@ namespace Odyssey.Domain.Core.Models
         public required AbsoluteDateTime CreatedOn { get; init; }
         public required AbsoluteDateTime ModifiedOn { get; init; }
 
-        public BoardMetadataDataModel AsDataModel(OwnedEntityId<Guid> id) => new()
+        public BoardMetadataDataModel AsDataModel(OwnedEntityGuid id) => new()
         {
-            Id = id.StringValue,
+            Id = id,
             Name = Name,
             GameId = GameId,
             EntityId = id.EntityId,

@@ -89,3 +89,4 @@
 - charades
 - price is right
 - balderdash
+- wheel of fortune

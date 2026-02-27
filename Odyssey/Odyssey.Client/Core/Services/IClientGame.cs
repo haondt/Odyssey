@@ -12,8 +12,8 @@ namespace Odyssey.Client.Core.Services
 
     public interface IClientGameUIService
     {
-        Task<IComponent> GetEditBoardComponentAsync(OwnedEntityId<Guid> id);
-        Task<IComponent> GetResetEditBoardComponentAsync(OwnedEntityId<Guid> id);
-        Task<Optional<IComponent>> HandleBoardStateUpdateAsync(OwnedEntityId<Guid> id, HttpContext context);
+        Task<IComponent> GetEditBoardComponentAsync(OwnedEntityGuid id);
+        Task<IComponent> GetResetEditBoardComponentAsync(OwnedEntityGuid id);
+        Task<Optional<IComponent>> HandleBoardStateUpdateAsync(OwnedEntityGuid id, HttpContext context);
     }
 }

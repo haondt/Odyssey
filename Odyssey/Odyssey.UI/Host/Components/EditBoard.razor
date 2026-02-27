@@ -36,7 +36,7 @@
     {
         var game = Games.GetGame(Metadata.GameId);
         var ownerId = await Session.GetUserIdAsync();
-        _editBoardComponent = await game.UI.GetEditBoardComponentAsync(new(ownerId, Id));
+        _editBoardComponent = await game.UI.GetEditBoardComponentAsync((ownerId, Id));
         _gameName = await game.Settings.GetDisplayNameAsync(ownerId);
         _ready = true;
     }

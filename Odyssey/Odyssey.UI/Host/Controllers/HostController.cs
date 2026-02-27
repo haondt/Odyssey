@@ -95,7 +95,7 @@ namespace Odyssey.UI.Host.Controllers
         [StandaloneModelValidation(ShowToast = true)]
         public async Task<IResult> UpdateBoardState(Guid id)
         {
-            var ownedId = new OwnedEntityId<Guid>(await sessionService.GetUserIdAsync(), id);
+            var ownedId = new OwnedEntityGuid(await sessionService.GetUserIdAsync(), id);
             var metadataResult = await boards.GetBoardMetadataAsync(ownedId);
             if (!metadataResult.TryGetValue(out var metadata))
                 throw new NotFoundToastException($"Metadata for board {id} not found.");
@@ -132,11 +132,35 @@ namespace Odyssey.UI.Host.Controllers
             return await ComponentFactory.RenderComponentAsync(layout);
         }
 
+        [HttpDelete(OdysseyRoutes.Host.Board.Id.Index)]
+        public async Task<IResult> DeleteBoard(Guid id)
+        {
+            var ownedId = new OwnedEntityGuid(await sessionService.GetUserIdAsync(), id);
+            var metadataResult = await boards.GetBoardMetadataAsync(ownedId);
+            if (metadataResult.TryGetValue(out var metadata))
+            {
+                await boards.DeleteBoardMetadataAsync(ownedId);
+                try
+                {
+                    var game = gameRegistry.GetGame(metadata.GameId);
+                    await game.Boards.DeleteBoardAsync(ownedId);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Failed to delete board data after deleting metadata.");
+                }
+            }
+
+            ResponseData.HxTriggerAfterSwap("closeModal")
+                .HxLocation(OdysseyRoutes.Host.Boards.Index);
+            return TypedResults.Ok();
+        }
+
         [HttpGet(OdysseyRoutes.Host.Board.Id.Reset.Index)]
         [ResetRenderContext]
         public async Task<IResult> ResetBoardState(Guid id)
         {
-            var ownedId = new OwnedEntityId<Guid>(await sessionService.GetUserIdAsync(), id);
+            var ownedId = new OwnedEntityGuid(await sessionService.GetUserIdAsync(), id);
             var result = await boards.GetBoardMetadataAsync(ownedId);
             if (!result.TryGetValue(out var metadata))
                 throw new NotFoundToastException($"Metadata for board {id} not found.");
@@ -151,7 +175,7 @@ namespace Odyssey.UI.Host.Controllers
         [ValidationState(typeof(EditBoardMetadataPanel))]
         public async Task<IResult> UpdateBoardMetadata(Guid id, [FromForm] EditBoardMetadataPanelModel update)
         {
-            var ownedId = new OwnedEntityId<Guid>(await sessionService.GetUserIdAsync(), id);
+            var ownedId = new OwnedEntityGuid(await sessionService.GetUserIdAsync(), id);
             var updated = await boards.UpdateBoardMetadataAsync(ownedId, update.Name);
             var game = gameRegistry.GetGame(updated.GameId);
 

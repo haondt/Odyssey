@@ -8,5 +8,6 @@ namespace Odyssey.GrainInterfaces.Core
         [AlwaysInterleave]
         Task<(TData Data, int Version)> GetDataAsync();
         Task<int> SetDataAsync(TData data, int version);
+        Task ClearDataAsync();
     }
 }
