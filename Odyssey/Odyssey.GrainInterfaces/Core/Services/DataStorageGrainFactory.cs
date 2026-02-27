@@ -1,6 +1,6 @@
 ﻿namespace Odyssey.GrainInterfaces.Core.Services
 {
-    public class DataStorageGrainFactory<TData>(IGrainFactory grainFactory) : IDataStorageGrainFactory<TData> where TData : class, new()
+    public class DataStorageGrainFactory<TData>(IGrainFactory grainFactory) : IDataStorageGrainFactory<TData> where TData : IDataStorageData<TData>
     {
         public IDataStorageGrain<TData> GetGrain(string key)
         {

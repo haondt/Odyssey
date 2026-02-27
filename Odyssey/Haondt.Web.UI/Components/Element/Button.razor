@@ -27,6 +27,12 @@
 
     [Parameter]
     public Union<string, ConfirmationDialogModel>? HxConfirm { get; set; } 
+    
+    [Parameter]
+    public Optional<string> HxPrompt { get; set; } 
+
+    [Parameter]
+    public Optional<string> Form { get; set; } 
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -67,6 +73,8 @@
             _rootAttributes["hx-push-url"] = hxPushUrl;
         if (HxSwap.TryGetValue(out var hxSwap))
             _rootAttributes["hx-swap"] = hxSwap;
+        if (HxPrompt.TryGetValue(out var hxPrompt))
+            _rootAttributes["hx-prompt"] = hxPrompt;
         if (HxConfirm is { } hxConfirm)
         {
             if (hxConfirm.Is<string>(out var hxConfirmString))
@@ -87,6 +95,9 @@
         }
         if(Hyperscript.TryGetValue(out var hyperscript))
             _rootAttributes["_"] = hyperscript;
+        if (Form.TryGetValue(out var form))
+            _rootAttributes["form"] = form;
+
         _rootAttributes["type"] = Type.TypeString;
 
         if (AddClasses.TryGetValue(out var addClasses))

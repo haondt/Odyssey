@@ -1,6 +1,7 @@
 .tooltip {
     height: 0;
     position: relative;
+    z-index: 199;
 }
 
 .tooltip-content {

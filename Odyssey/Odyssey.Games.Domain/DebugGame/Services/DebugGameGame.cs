@@ -28,7 +28,18 @@ namespace Odyssey.Games.Domain.DebugGame.Services
         public async Task<(Guid Id, BoardMetadata Metadata)> CreateBoardAsync(string ownerId, string name)
         {
             var (id, meta) = await boardMetadataRepository.CreateBoardMetadataAsync(Id, ownerId, name);
-            await boards.SetDataAsync(new OwnedEntityId<Guid>(ownerId, id).StringValue, new(), 0);
+
+            var board = new DebugGameBoard
+            {
+                SomeCheckbox = true,
+                Section = new DebugGameBoardSection()
+                {
+                    SomeOtherString = "Some other value",
+                    SomeString = "Some value"
+                }
+            };
+
+            await boards.SetDataAsync(new OwnedEntityId<Guid>(ownerId, id).StringValue, board, 0);
             return (id, meta);
         }
 

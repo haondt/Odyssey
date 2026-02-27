@@ -10,7 +10,7 @@ namespace Odyssey.Domain.Core.Services
         Task<Result<BoardMetadata>> GetBoardMetadataAsync(OwnedEntityId<Guid> id);
         Task<List<(Guid Id, BoardMetadata Board)>> SearchBoardMetadatasAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, AbsoluteDateTime ModifiedOn)> pagination = default);
         Task<(Guid Id, BoardMetadata Board)> CreateBoardMetadataAsync(string gameId, string ownerId, string name);
-        Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityId<Guid> id, BoardMetadata board);
+        Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityId<Guid> id, string name);
         Task DeleteBoardMetadataAsync(OwnedEntityId<Guid> id);
     }
 }

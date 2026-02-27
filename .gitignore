@@ -402,6 +402,7 @@ FodyWeavers.xsd
 
 odyssey.db*
 prototyping
+Odyssey/favorites.json
 
 # dcdn defaults
 node_modules

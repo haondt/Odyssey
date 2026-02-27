@@ -1,0 +1,20 @@
+
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Relays
+
+@code {
+    [Parameter]
+    public RenderFragment? Buttons { get; set; }
+    [Parameter]
+    public RenderFragment? Body { get; set; }
+}
+<ModalPanel Template="ModalTemplate.Dialog">
+    <div class="dialog-container"> 
+        @Body
+        <div class="dialog-container-buttons">
+            @Buttons
+        </div>
+    </div>
+</ModalPanel>

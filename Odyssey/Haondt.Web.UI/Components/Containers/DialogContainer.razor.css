@@ -1,13 +1,13 @@
-#confirmation-dialog {
+.dialog-container {
     display: flex;
     flex-direction: column;
 
-    > *:not(:first-child):not(.confirmation-dialog-buttons) {
+    > *:not(:first-child):not(.dialog-container-buttons) {
         margin-top: var(--haondt-ui-line-spacing);
     }
 }
 
-#confirmation-dialog > .confirmation-dialog-buttons {
+.dialog-container > .dialog-container-buttons {
     margin-top: var(--haondt-ui-panel-spacing);
     display: flex;
     flex-direction: row;
@@ -17,7 +17,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    #confirmation-dialog > .confirmation-dialog-buttons {
+    .dialog-container > .dialog-container-buttons {
         flex-direction: column;
         align-items: stretch;
         flex-flow: column-reverse;

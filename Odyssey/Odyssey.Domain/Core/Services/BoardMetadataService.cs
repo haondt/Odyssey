@@ -73,16 +73,17 @@ namespace Odyssey.Domain.Core.Services
             return metadata.Select(m => (m.EntityId, BoardMetadata.FromDataModel(m))).ToList();
         }
 
-        public async Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityId<Guid> id, BoardMetadata board)
+        public async Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityId<Guid> id, string name)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            var model = dbContext.BoardMetadatas.Update(board.AsDataModel(id) with
-            {
-                ModifiedOn = clock.Now
-            });
-
+            var stringId = id.StringValue;
+            var board = await dbContext.BoardMetadatas
+                .FirstOrDefaultAsync(q => q.Id == stringId)
+                ?? throw new KeyNotFoundException($"Board with id {id} does not exist.");
+            board.Name = name;
+            board.ModifiedOn = clock.Now;
             await dbContext.SaveChangesAsync();
-            return BoardMetadata.FromDataModel(model.Entity);
+            return BoardMetadata.FromDataModel(board);
         }
 
         public async Task DeleteBoardMetadataAsync(OwnedEntityId<Guid> id)

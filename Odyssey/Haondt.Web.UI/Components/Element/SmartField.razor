@@ -13,12 +13,18 @@
     [Parameter]
     public Optional<string> Title { get; set; }
 
+    [Parameter]
+    public Optional<string> Form { get; set; } 
+
     // using ? for the type inference
     [Parameter]
     public TBase? Base { get; set; }
 
     [Parameter]
     public bool Hidden { get; set; }
+
+    [Parameter]
+    public bool Autofocus { get; set; }
 
     [Parameter]
     public Optional<object> Value { get; set; }
@@ -148,8 +154,10 @@
 }
 
 <Field
+    Autofocus="Autofocus"
     IsValid="IsValid"
     Title="Title"
+    Form="Form"
     Description="Description"
     Hidden="Hidden"
     Type="_type"

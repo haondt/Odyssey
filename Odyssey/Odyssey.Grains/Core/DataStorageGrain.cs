@@ -1,10 +1,12 @@
 ﻿using Odyssey.GrainInterfaces.Core;
 using Odyssey.GrainInterfaces.Core.Models;
+using Odyssey.GrainInterfaces.Core.Services;
 using Orleans.Storage;
 
 namespace Odyssey.Grains.Core
 {
-    public class DataStorageGrain<TData> : Grain, IDataStorageGrain<TData> where TData : class, new()
+
+    public class DataStorageGrain<TData> : Grain, IDataStorageGrain<TData> where TData : IDataStorageData<TData>
     {
         private readonly IPersistentState<DataStorageModel<TData>> _state;
 
@@ -17,6 +19,13 @@ namespace Odyssey.Grains.Core
                 StateName = $"{nameof(DataStorageGrain<>)}+{typeof(TData).Name}",
                 StorageName = GrainConstants.GrainStorage
             });
+        }
+
+        public override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            if (!_state.RecordExists)
+                _state.State.Data = TData.Factory();
+            return base.OnActivateAsync(cancellationToken);
         }
 
         public async Task<int> SetDataAsync(TData data, int version)

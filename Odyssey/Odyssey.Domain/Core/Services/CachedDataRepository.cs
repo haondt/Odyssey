@@ -3,7 +3,7 @@
 namespace Odyssey.Domain.Core.Services
 {
     public class CachedDataRepository<T>(
-        IDataStorageGrainFactory<T> grainFactory) : ICachedDataRepository<T> where T : class, new()
+        IDataStorageGrainFactory<T> grainFactory) : ICachedDataRepository<T> where T : IDataStorageData<T>
     {
         public Task<(T Data, int Version)> GetDataAsync(string key)
         {

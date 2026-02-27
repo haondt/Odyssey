@@ -1,7 +1,7 @@
 #toast-container {
     overflow-y: auto;
     position: fixed;
-    z-index: 1000;
+    z-index: 3000;
     right: 0;
     top: 0;
 
@@ -16,4 +16,13 @@
     padding-right: calc(var(--haondt-ui-toast-offset) + calc(2 * var(--haondt-ui-blend-height)));
     padding-bottom: var(--haondt-ui-blend-height);
     padding-left: var(--haondt-ui-blend-height);
+}
+
+#layout-container:has(> #modal-container.active) > #toast-container {
+    box-shadow:none;
+    border-color: rgba(0,0,0,0.5);
+    padding-left: 0;
+    padding-bottom: 0;
+    padding-top: calc(var(--haondt-ui-toast-offset) + var(--haondt-ui-blend-height));
+    padding-right: calc(var(--haondt-ui-toast-offset) + calc(2 * var(--haondt-ui-blend-height)));
 }

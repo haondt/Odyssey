@@ -62,6 +62,14 @@
                         public string IndexP => $"{upperPath}/reset";
                     }
 
+                    public Metadata MetadataP => new($"{Host.Board.Index}/{id}");
+                    public class Metadata(string upperPath)
+                    {
+                        public const string Segment = "metadata";
+                        public const string Index = $"{Host.Board.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+                    }
+
                 }
             }
             public static class Soundboard

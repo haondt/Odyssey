@@ -6,6 +6,12 @@
     public bool Hidden { get; set; }
 
     [Parameter]
+    public bool Autofocus { get; set; }
+
+    [Parameter]
+    public Optional<string> Form { get; set; } 
+
+    [Parameter]
     public Optional<string> Description { get; set; }
 
     [Parameter]
@@ -135,9 +141,10 @@
         }
 
         if (Type == FieldType.LiveSearch)
-        {
             _inputAttributes["_"] = "on input debounced at 200ms send submit to the closest <form />";
-        }
+
+        if (Form.TryGetValue(out var form))
+            _inputAttributes["form"] = form;
 
         if (IsValid.HasValue && IsValid.Value == false)
             _rootClasses.Add("field-invalid");
@@ -147,6 +154,9 @@
 
         if (Hidden)
             _rootClasses.Add("field-hidden");
+
+        if (Autofocus)
+            _inputAttributes["autofocus"] = true;
     }
 }
 

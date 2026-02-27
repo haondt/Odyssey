@@ -18,16 +18,16 @@
     [Parameter, EditorRequired]
     public required ConfirmationDialogIntent Intent { get; set; }
 }
-<ModalPanel Template="ModalTemplate.Dialog">
-    <div id="confirmation-dialog"> 
+<DialogContainer>
+    <Body>
         @if (Title.TryGetValue(out var title))
         {
             <p class="subtitle">@title</p>
         }
         <p>@Message</p>
-        <div class="confirmation-dialog-buttons">
-            <Button Style="ButtonStyle.Ghost" Type="ButtonType.CloseModal">@CancelText.Or("Cancel")</Button>
-            <Button Color="Intent.ButtonColor" Hyperscript='$"on click send confirm to #{ConfirmationDialogRelay.Id} end"' Type="ButtonType.CloseModal">@ConfirmText.Or("Confirm")</Button>
-        </div>
-    </div>
-</ModalPanel>
+    </Body>
+    <Buttons>
+        <Button Style="ButtonStyle.Ghost" Type="ButtonType.CloseModal">@CancelText.Or("Cancel")</Button>
+        <Button Color="Intent.ButtonColor" Hyperscript='$"on click send confirm to #{ConfirmationDialogRelay.Id} end"' Type="ButtonType.CloseModal">@ConfirmText.Or("Confirm")</Button>
+    </Buttons>
+</DialogContainer>

@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Models;
 using Odyssey.Client.Core.Services;
-using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Persistence.Models;
 using Odyssey.UI.Core.Attributes;
@@ -148,12 +147,31 @@ namespace Odyssey.UI.Host.Controllers
             return await ComponentFactory.RenderComponentAsync(component);
         }
 
-        [HttpPost($"{OdysseyRoutes.Host.Board.Index}/{{id}}/metadata")]
-        public async Task<IResult> UpdateBoardMetadata(Guid id, [FromForm] BoardMetadata metadata)
+        [HttpPut(OdysseyRoutes.Host.Board.Id.Metadata.Index)]
+        [ValidationState(typeof(EditBoardMetadataPanel))]
+        public async Task<IResult> UpdateBoardMetadata(Guid id, [FromForm] EditBoardMetadataPanelModel update)
         {
-            metadata = await boards.UpdateBoardMetadataAsync(new(await sessionService.GetUserIdAsync(), id), metadata);
-            // TODO
-            throw new NotImplementedException();
+            var ownedId = new OwnedEntityId<Guid>(await sessionService.GetUserIdAsync(), id);
+            var updated = await boards.UpdateBoardMetadataAsync(ownedId, update.Name);
+            var game = gameRegistry.GetGame(updated.GameId);
+
+            ResponseData.HxTriggerAfterSwap("closeModal");
+            return await ComponentFactory.RenderComponentAsync(new EditBoardMetadataSection
+            {
+                Name = update.Name,
+                GameName = await game.Settings.GetDisplayNameAsync(ownedId.OwnerId),
+                HxSwapOob = true
+            });
+
+        }
+
+        [HttpGet(OdysseyRoutes.Host.Board.Id.Metadata.Index)]
+        public async Task<IResult> GetEditBoardMetadata(Guid id)
+        {
+            return await ComponentFactory.RenderComponentAsync(new EditBoardMetadataPanel
+            {
+                BoardId = id
+            });
         }
     }
 }

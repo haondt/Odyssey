@@ -48,14 +48,9 @@
             <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <SecondaryNavigationBar Sticky="false" LeftItems="@([new("Board data", Active: true)])" />
                 <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Stretch">
-                    <Frame AddClasses='"flex-grow-1"' Flex="FrameDirection.Col">
-                        <p class="title">@Metadata.Name</p>
-                        <p class="italic">@_gameName</p>
-                    </Frame>
+                    <EditBoardMetadataSection Name="@Metadata.Name" GameName="@_gameName" />
                     <Frame AddClasses='"flex-grow-1"' Template="FrameTemplate.ButtonContainer">
                         <Button Color="ButtonColor.Primary">Create session</Button>
-                        <Button AddClasses='"hidden-lte-s"' Color="ButtonColor.Text">Clone</Button>
-                        <Button AddClasses='"hidden-lte-s"' Color="ButtonColor.Text">Export</Button>
                         @{
                             var confirm = new ConfirmationDialogModel
                             {
@@ -64,8 +59,10 @@
                                 Title = "Delete board"
                             };
                         }
-                        <Button HxDelete='""' HxConfirm="@confirm" AddClasses='"hidden-lte-s"' Color="ButtonColor.Danger">Delete</Button>
-                        <MoreButton AddClasses='"hidden-gte-m"' TooltipStyle="TooltipStyle.ContextMenu">
+                        <MoreButton TooltipStyle="TooltipStyle.ContextMenu">
+                            <Button
+                                HxGet="OdysseyRoutes.Host.Board.IdP(Id.ToString()).MetadataP.IndexP"
+                                Style="ButtonStyle.Borderless">Rename</Button>
                             <Button Style="ButtonStyle.Borderless">Clone</Button>
                             <Button Style="ButtonStyle.Borderless">Export</Button>
                             <Button HxDelete='""' HxConfirm="@confirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>

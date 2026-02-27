@@ -111,7 +111,12 @@
     --haondt-ui-hover-transition-timing: ease;
 
     --haondt-ui-blend-height: 16px;
-    --haondt-ui-blend-box-shadow: 0 0 9px 10px var(--haondt-ui-color-background);
+    --haondt-ui-blend-box-shadow-h-offset: 0;
+    --haondt-ui-blend-box-shadow-v-offset: 0;
+    --haondt-ui-blend-box-shadow-blur: 9px;
+    --haondt-ui-blend-box-shadow-spread: 10px;
+    --haondt-ui-blend-box-shadow-color: var(--haondt-ui-color-background);
+    --haondt-ui-blend-box-shadow: var(--haondt-ui-blend-box-shadow-h-offset) var(--haondt-ui-blend-box-shadow-v-offset) var(--haondt-ui-blend-box-shadow-blur) var(--haondt-ui-blend-box-shadow-spread) var(--haondt-ui-blend-box-shadow-color);
     --haondt-ui-blend-clip-path-size: calc(-1 * var(--haondt-ui-blend-height));
     --haondt-ui-blend-clip-path: inset(0 var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size));
 
