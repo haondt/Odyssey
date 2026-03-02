@@ -7,6 +7,8 @@
     "postcss-custom-media": "^12.0.0"
   },
   "dependencies": {
+    "@haondt/htmx-signalr": "v0.0.1/hx-signalr.min.js",
+    "@microsoft/signalr": "10.0.0",
     "htmx-ext-loading-states": "2.0.0",
     "htmx.org": "2.0.8",
     "hyperscript.org": "0.9.14",

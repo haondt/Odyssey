@@ -23,9 +23,15 @@ namespace Haondt.Web.UI.Filters
                 return;
             }
 
-            SetValidationState(context.HttpContext, context.ModelState);
-            var result = await ApplyValidationComponentAsync(context.HttpContext);
-            await result.ExecuteAsync(context.HttpContext);
+            if (TryGetValidationStateAttribute(context.HttpContext).TryGetValue(out var attr))
+            {
+                SetValidationState(context.HttpContext, context.ModelState);
+                var result = await ApplyValidationComponentFromAttributeAsync(context.HttpContext, attr);
+                await result.ExecuteAsync(context.HttpContext);
+                return;
+            }
+
+            await next();
         }
 
         public static void SetValidationState(HttpContext httpContext, ModelStateDictionary modelState)
@@ -48,19 +54,26 @@ namespace Haondt.Web.UI.Filters
             validationState.IsValidation = true;
         }
 
+        private Result<ValidationStateAttribute> TryGetValidationStateAttribute(HttpContext context)
+        {
+            var endpoint = context.GetEndpoint();
+            if (endpoint?.Metadata.GetMetadata<ValidationStateAttribute>() is { } attr)
+                return new(attr);
+            return new();
+        }
+
         public Task<IResult> ApplyValidationComponentAsync<TValidationComponent>(HttpContext httpContext, Optional<string> hxSwapId = default) where TValidationComponent : IComponent
         {
             return ApplyValidationComponentAsync(typeof(TValidationComponent), httpContext, hxSwapId);
         }
 
-
-        public Task<IResult> ApplyValidationComponentAsync(HttpContext httpContext)
+        public Task<IResult> ApplyValidationComponentFromAttributeAsync(HttpContext httpContext, ValidationStateAttribute? validationState = null)
         {
-            var endpoint = httpContext.GetEndpoint();
-            if (endpoint?.Metadata.GetMetadata<ValidationStateAttribute>() is not { } errorsAttribute)
-                throw new InvalidOperationException($"Endpoint {endpoint} is missing {nameof(ValidatableTypeAttribute)}");
+            if (validationState is not { } attr)
+                if (!TryGetValidationStateAttribute(httpContext).TryGetValue(out attr))
+                    throw new InvalidOperationException($"Endpoint {httpContext.GetEndpoint()} is missing {nameof(ValidatableTypeAttribute)}");
 
-            return ApplyValidationComponentAsync(errorsAttribute.ComponentType, httpContext, errorsAttribute.HxSwapId);
+            return ApplyValidationComponentAsync(attr.ComponentType, httpContext, attr.HxSwapId);
         }
 
         public static async Task<IResult> ApplyValidationComponentAsync(Type validationComponentType, HttpContext httpContext, Optional<string> hxSwapId = default, bool showToast = false)
@@ -86,8 +99,8 @@ namespace Haondt.Web.UI.Filters
             }
 
             var componentFactory = httpContext.RequestServices.GetRequiredService<IComponentFactory>();
-            var result = await componentFactory.RenderComponentAsync(component, componentType);
             var responseData = httpContext.Response.AsResponseData();
+            var result = await componentFactory.RenderComponentAsync(component, componentType);
             if (hxSwapId.TryGetValue(out var swapId))
             {
                 responseData.HxReswap("morph:outerHTML");

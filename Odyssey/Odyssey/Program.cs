@@ -47,6 +47,7 @@ builder.Services
     {
         o.Extensions.Add("morph");
         o.Extensions.Add("loading-states");
+        o.Extensions.Add("signalr");
     })
     .AddOdysseyGrainInterfacesServices(builder.Configuration)
     .AddOdysseyPersistenceClientServices(builder.Configuration)

@@ -1,7 +1,10 @@
 @using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Host.Services
 @using Odyssey.UI.Core.Services
+@using Odyssey.UI.Host.Hubs
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
+@inject IClientHostService HostService
 
 @code {
     public NavigationBar CreateNavigationBar() => new()
@@ -9,11 +12,29 @@
         Template = new NavigationBarDefault(OdysseyRoles.Host)
     };
 
+    private string _joinCode = default!;
+    private bool _ready;
+    protected override async Task OnInitializedAsync()
+    {
+        var party = await HostService.GetPartyAsync();
+        _joinCode = await party.GetJoinCodeAsync();
+
+        _ready = true;
+    }
+
 }
 
-<ContentContainer>
-    <Frame Gap="FrameSpacing.Panel" Flex="FrameDirection.Col">
-        <HostSecondaryNavigationBar ActiveTab="HostSecondaryNavigationBarTab.Party" />
-        <p>Host party tab</p>
-    </Frame>
-</ContentContainer>
+@if (_ready) {
+    <ContentContainer>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card">
+            <HostSecondaryNavigationBar Sticky="false" ActiveTab="HostSecondaryNavigationBarTab.Party" />
+            <div class="hidden" signalr-connection="@Websocket.Id" signalr-subscribe="@nameof(IHostClient.ReceivePartyEvent)"></div>
+            <Frame Template="FrameTemplate.ButtonContainer">
+                <Button Color="ButtonColor.Danger" Style="ButtonStyle.Ghost">Disband party</Button>
+            </Frame>
+            <HostPartyJoinCode Code="@_joinCode" />
+            <div style="overflow-y:auto;">
+            </div>
+        </Frame>
+    </ContentContainer>
+}

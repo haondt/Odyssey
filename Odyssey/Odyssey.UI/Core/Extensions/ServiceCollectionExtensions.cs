@@ -24,6 +24,9 @@ namespace Odyssey.UI.Core.Extensions
             services.Configure<UISettings>(configuration.GetSection(nameof(UISettings)));
             services.AddSingleton<ITargetedExceptionActionResultFactory, CatchAllErrorPageExceptionActionResultFactory>();
 
+            services.AddSignalR()
+                .AddNewtonsoftJsonProtocol();
+
 
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();
             //services.AddSingleton<ILucideIconService, LucideIconService>();
@@ -54,6 +57,14 @@ namespace Odyssey.UI.Core.Extensions
             {
                 Uri = "/static/shared/vendored/idiomorph/dist/idiomorph-ext.min.js"
             });
+            services.AddScoped<IHeadEntryDescriptor>(sp => new ScriptDescriptor
+            {
+                Uri = "/static/shared/vendored/@microsoft/signalr/dist/browser/signalr.min.js"
+            });
+            services.AddScoped<IHeadEntryDescriptor>(sp => new ScriptDescriptor
+            {
+                Uri = "/static/shared/vendored/@haondt/htmx-signalr/dist/hx-signalr.min.js"
+            });
             services.AddScoped<IHeadEntryDescriptor>(_ => new StyleSheetDescriptor
             {
                 Uri = "/static/Odyssey.styles.css",
@@ -73,7 +84,8 @@ namespace Odyssey.UI.Core.Extensions
                     ],
                     ""scrollIntoViewOnBoost"": false,
                     ""historyCacheSize"": 0,
-                    ""historyRestoreAsHxRequest"": true
+                    ""historyRestoreAsHxRequest"": true,
+                    ""disableInheritance"": true
                 }",
             });
 

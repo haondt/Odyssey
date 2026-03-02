@@ -49,7 +49,9 @@ namespace Odyssey.UI.Host.Controllers
             var game = gameRegistry.GetGame(newBoard.Game);
             var (boardId, board) = await game.Boards.CreateBoardAsync(await sessionService.GetUserIdAsync(), newBoard.Name);
 
-            ResponseData.HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{boardId}");
+            ResponseData
+                .HxTriggerAfterSwap("closeModal")
+                .HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{boardId}");
             return await ComponentFactory.RenderComponentAsync(new EditBoard
             {
                 Metadata = board,

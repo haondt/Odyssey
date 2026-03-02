@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Converters\" />
+    <Folder Include="Host\Services\" />
   </ItemGroup>
 
 

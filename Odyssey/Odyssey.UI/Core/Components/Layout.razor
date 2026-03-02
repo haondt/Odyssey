@@ -37,18 +37,7 @@
 }
 
 <div id="@Id" class="@_bodyContentClasses">
-    <ModalContainer Active="false" />
-    <ConfirmationDialogRelay />
-    <ToastContainer />
-    @if (Request.IsHxRequest())
-    {
-        <div id="@WebsocketContainer.Id" hx-preserve></div>
-        <template _="on load send UpdateWebsocket(role: '@_targetRole') to #@WebsocketContainer.Id then remove me end"></template>
-    }
-    else
-    {
-        <WebsocketContainer Role="_targetRole" />
-    }
+    <template _="on load send UpdateWebsocket(role: '@_targetRole') to #@Websocket.Id then remove me end"></template>
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
             @if(Content is IHasNavigationBarComponent hasNav)

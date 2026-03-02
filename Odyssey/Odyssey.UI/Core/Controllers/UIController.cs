@@ -4,12 +4,14 @@ using Haondt.Web.UI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Odyssey.UI.Core.Attributes;
 
 namespace Odyssey.UI.Core.Controllers
 {
 
     [ServiceFilter(typeof(ModelStateValidationFilter))]
     [Authorize]
+    [HxVaryHeader]
     public class UIController : Haondt.Web.Core.Controllers.UIController
     {
         [FromServices]
@@ -29,7 +31,7 @@ namespace Odyssey.UI.Core.Controllers
         {
             ModelStateValidationFilter.SetValidationState(HttpContext, errors);
 
-            return await ModelStateValidationFilter.ApplyValidationComponentAsync(HttpContext);
+            return await ModelStateValidationFilter.ApplyValidationComponentFromAttributeAsync(HttpContext);
         }
     }
 }

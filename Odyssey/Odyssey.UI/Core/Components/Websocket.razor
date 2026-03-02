@@ -1,9 +1,62 @@
 @code {
     public const string Id = "websocket";
-    private string _internalId { get; set; } = Guid.NewGuid().ToString();
+    public const string TargetRoleId = "websocket-target-role";
+    private string _instanceId { get; set; } = Guid.NewGuid().ToString();
 
     [Parameter]
     public string Role { get; set; } = OdysseyRoles.None;
 
+    private string _connect = default!;
+
+    protected override void OnInitialized()
+    {
+        _connect = Role switch
+        {
+            OdysseyRoles.Host => OdysseyRoutes.Hubs.Host.Index,
+            OdysseyRoles.None => "",
+            _ => throw new InvalidOperationException($"Unknown role \"{Role}\"")
+        };
+    }
+
 }
-<template id="websocket" hx-ext="ws" ws-connect="wss:/ws/@Role"></template>
+@if (Role == OdysseyRoles.None) 
+{
+    <form id="@Id" 
+        hx-get="@OdysseyRoutes.Fragments.Websocket.Index"
+        hx-trigger="refresh"
+        hx-swap="outerHTML"
+        data-role="@Role"
+        _ ="
+            on UpdateWebsocket(role)
+                if role != my @@data-role
+                    set #@Websocket.TargetRoleId's value to role
+                    set my @@data-role to role
+                    send refresh to me
+                end
+            end
+        "
+        data-instance-id="@_instanceId"><input type="hidden" id="@TargetRoleId" name="targetRole" value="@Role" /></form>
+}
+else
+{
+    <form id="@Id" 
+        hx-get="@OdysseyRoutes.Fragments.Websocket.Index"
+        hx-trigger="refresh"
+        hx-swap="outerHTML"
+        signalr-connect="@_connect"
+        data-role="@Role"
+        _="
+            on UpdateWebsocket(role)
+                if role != my @@data-role
+                    set #@Websocket.TargetRoleId's value to role
+                    set my @@data-role to role
+                    send refresh to me
+                end
+            end
+            on htmx:signalr:start(connectionId) set my @@data-connection-id to connectionId end
+            on htmx:signalr:reconnected(connectionId) set my @@data-connection-id to connectionId end
+            on htmx:signalr:close remove my @@data-connection-id end
+        "
+        data-instance-id="@_instanceId">
+        <input type="hidden" id="@TargetRoleId" name="targetRole" value="@Role" /></form>
+}

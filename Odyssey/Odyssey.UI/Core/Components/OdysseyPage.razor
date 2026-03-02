@@ -1,0 +1,22 @@
+
+@using Haondt.Web.Core.Extensions
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Attributes
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Htmx
+@using Haondt.Web.UI.Components.Relays
+@using Odyssey.UI.Core.Extensions
+@using Odyssey.UI.Core.Services
+@code {
+    public const string Id = "odyssey-page-container";
+
+    [Parameter, EditorRequired]
+    public required IComponent  Content {get; set;}
+}
+
+<ModalContainer Active="false" />
+<ConfirmationDialogRelay />
+<ToastContainer />
+<Websocket />
+<ObjectComponent Component="@Content" />

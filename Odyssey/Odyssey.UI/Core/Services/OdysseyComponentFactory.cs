@@ -6,6 +6,7 @@ using Haondt.Web.Core.Http;
 using Haondt.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Odyssey.UI.Core.Components;
 using Odyssey.UI.Core.Extensions;
 
 namespace Odyssey.UI.Core.Services
@@ -17,6 +18,11 @@ namespace Odyssey.UI.Core.Services
     {
         private readonly IHttpContextAccessor _httpContext = httpContext;
         private readonly ILayoutComponentFactory _layoutFactory = layoutFactory;
+
+        protected override Microsoft.AspNetCore.Components.IComponent EmbedLayoutIntoPage(Microsoft.AspNetCore.Components.IComponent layout)
+        {
+            return new Page { Content = new OdysseyPage { Content = layout } };
+        }
 
         public override async Task<IResult> RenderComponentAsync(Microsoft.AspNetCore.Components.IComponent component, Type componentType, IRequestData? requestData = null, IResponseData? responseData = null)
         {

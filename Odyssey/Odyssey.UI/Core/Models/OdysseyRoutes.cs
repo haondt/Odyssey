@@ -11,6 +11,15 @@
             public const string SignIn = $"{Auth.Index}/sign-in";
             public const string SignOut = $"{Auth.Index}/sign-out";
         }
+
+        public static class Hubs
+        {
+            public const string Index = "/hubs";
+            public static class Host
+            {
+                public const string Index = $"{Hubs.Index}/host";
+            }
+        }
         public static class Roles
         {
             public const string Index = "/roles";
@@ -19,11 +28,12 @@
         public static class Fragments
         {
             public const string Index = $"/fragments";
-            public static class WebSocket
+            public class Websocket
             {
-                public const string Index = $"{Fragments.Index}/ws";
+                public const string Index = $"{Fragments.Index}/websocket";
             }
         }
+
         public static class Host
         {
             public const string Index = $"/{OdysseyRoles.Host}";

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Domain.Core.Services;
 
@@ -11,6 +12,8 @@ namespace Odyssey.Domain.Core.Extensions
             services.AddSingleton(typeof(ICachedDataRepository<>), typeof(CachedDataRepository<>));
             services.AddSingleton<IBoardMetadataRepository, BoardMetadataService>();
             services.AddSingleton<IGrainLeaseService, GrainLeaseService>();
+            services.AddTransient<IComponentStringRenderer, ComponentStringRenderer>();
+            services.AddTransient<HtmlRenderer>();
 
             return services;
         }

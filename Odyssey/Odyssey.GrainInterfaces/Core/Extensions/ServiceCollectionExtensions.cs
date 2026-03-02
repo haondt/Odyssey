@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.GrainInterfaces.Core.Services;
+using Odyssey.GrainInterfaces.Sessions;
 
 namespace Odyssey.GrainInterfaces.Core.Extensions
 {
@@ -20,6 +21,10 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 // core
                 services.AddSingleton(typeof(IDataStorageGrainFactory<>), typeof(DataStorageGrainFactory<>));
                 services.AddSingleton<IGrainLeaseGrainFactory, GrainLeaseGrainFactory>();
+
+                // sessions
+                services.AddSingleton<IGrainFactory<string, IHostGrain>, StringKeyGrainFactory<IHostGrain>>();
+                services.AddSingleton<IGrainFactory<string, IHostPartyGrain>, StringKeyGrainFactory<IHostPartyGrain>>();
                 return services;
             }
         }
