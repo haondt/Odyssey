@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
     <ItemGroup>
-    <PackageReference Include="Haondt.Json" Version="0.2.11-alpha-20260225032008" />
+    <PackageReference Include="Haondt.Json" Version="0.2.11-alpha-20260302180722" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="10.0.1" />
   </ItemGroup>
@@ -18,7 +18,8 @@
 
   <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="Host\Services\" />
+    <Folder Include="Host\Events\" />
+    <Folder Include="Host\Models\" />
   </ItemGroup>
 
 

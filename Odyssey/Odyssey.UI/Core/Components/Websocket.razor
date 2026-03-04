@@ -12,7 +12,7 @@
     {
         _connect = Role switch
         {
-            OdysseyRoles.Host => OdysseyRoutes.Hubs.Host.Index,
+            OdysseyRoles.Host => OdysseyRoutes.Hubs.Host.Browser.Index,
             OdysseyRoles.None => "",
             _ => throw new InvalidOperationException($"Unknown role \"{Role}\"")
         };

@@ -1,0 +1,30 @@
+@using Odyssey.Client.Host.Services
+@using Odyssey.UI.Host.Hubs
+@inject IClientHostService HostService
+
+@code {
+
+    [Parameter]
+    public bool HxSwapOob { get; set; }
+
+    protected Dictionary<string, object> _rootAttributes  = [];
+    private string _joinCode = default!;
+    private bool _ready;
+    protected override async Task OnInitializedAsync()
+    {
+        var party = await HostService.GetPartyAsync();
+        _joinCode = await party.GetJoinCodeAsync();
+        if (HxSwapOob)
+            _rootAttributes["hx-swap-oob"] = "morph";
+
+        _ready = true;
+    }
+}
+@if(_ready)
+{
+    <div @attributes="_rootAttributes" id="host-party-panel" class="flex flex-col gap-card" >
+        <HostPartyJoinCode Code="@_joinCode" />
+        <div style="overflow-y:auto;">
+        </div>
+    </div>
+}

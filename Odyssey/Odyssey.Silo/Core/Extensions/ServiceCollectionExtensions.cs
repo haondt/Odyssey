@@ -36,6 +36,8 @@ namespace Odyssey.Silo.Core.Extensions
                     case DatabaseDriver.Postgres:
                         services.AddAdoNetGrainStorage(storageName, options =>
                         {
+                            // TODO, once https://github.com/dotnet/orleans/pull/8535 ends up in a public release version
+                            // options.DeleteStateOnClear = true
                             options.Invariant = AdoNetInvariants.InvariantNamePostgreSql;
                             options.ConnectionString = new NpgsqlConnectionStringBuilder
                             {

@@ -1,11 +1,12 @@
 ﻿namespace Odyssey.UI.Host.Hubs
 {
-    public interface IHostClient
+    public interface IHostHubReceiver<TOutbound>
     {
-        // TODO: type that b
-        Task ReceivePartyEvent(object payload);
+        Task ReceivePartyEvent(TOutbound body);
+    }
 
-        Task Counter(string count);
-
+    public interface IHostHubSender<TInbound>
+    {
+        Task SendPartyEvent(TInbound body);
     }
 }

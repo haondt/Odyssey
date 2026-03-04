@@ -1,68 +1,74 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Haondt.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Client.Authentication.Services;
-using Odyssey.Domain.Core.Services;
-using Odyssey.UI.Host.Components;
+using Odyssey.Client.Core.Services;
+using Odyssey.UI.Host.Services;
 
 namespace Odyssey.UI.Host.Hubs
 {
 
     [Authorize]
-    public class HostHub : Hub<IHostClient>
+    public abstract class HostHub<TInbound, TOutbound>(ISignalRConnectionRegistry<IHostSignalRConnectionBridge<TInbound>> registry) : Hub<IHostHubReceiver<TOutbound>>, IHostHubSender<TInbound>
     {
-        public static int count = 0;
-        public override async Task OnConnectedAsync()
-        {
-            await TryLinkDeliveryGrainAsync();
-            count += 1;
+        public abstract IHostSignalRConnectionBridge<TInbound> CreateBridge(IServiceProvider serviceProvider, string userId);
 
-            var renderer = Context.GetHttpContext()!.RequestServices.GetRequiredService<IComponentStringRenderer>();
-            await Clients.All.Counter(await renderer.RenderComponentAsync(new TestComponent { Count = count }));
-            await base.OnConnectedAsync();
-        }
-
-        private async Task TryLinkDeliveryGrainAsync()
+        private async Task<Result<(string, HttpContext)>> GetAuthenticatedUserIdAsync()
         {
-            Console.WriteLine("linking..");
             if (Context.GetHttpContext() is not { } context)
-                return;
+                return new();
 
             var sessionService = context.RequestServices.GetRequiredService<ISessionService>();
             if (!sessionService.IsAuthenticated)
-                return;
+                return new();
 
             var userId = await sessionService.GetUserIdAsync();
 
-            Console.WriteLine($"user {userId} connected.");
+            return new((userId, context));
+        }
 
+
+        public override async Task OnConnectedAsync()
+
+        {
+            if (await GetAuthenticatedUserIdAsync() is not { IsSuccessful: true, Value: var (userId, context) })
+            {
+                Context.Abort();
+                return;
+            }
+
+            var bridge = CreateBridge(context.RequestServices, userId);
+
+            registry.Register(Context.ConnectionId, bridge);
+            try
+            {
+                await bridge.OnConnectedAsync();
+            }
+            catch
+            {
+                registry.Unregister(Context.ConnectionId);
+                throw;
+            }
+
+            await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            if (registry.Unregister(Context.ConnectionId).TryGetValue(out var bridge))
+                await bridge.OnDisconnectedAsync();
 
-            await TryUnlinkDeliveryGrainAsync();
-            count -= 1;
-            var renderer = Context.GetHttpContext()!.RequestServices.GetRequiredService<IComponentStringRenderer>();
-            await Clients.All.Counter(await renderer.RenderComponentAsync(new TestComponent { Count = count }));
             await base.OnDisconnectedAsync(exception);
         }
 
-        private async Task TryUnlinkDeliveryGrainAsync()
+        public Task SendPartyEvent(TInbound body)
         {
-            Console.WriteLine("unlinking..");
-            if (Context.GetHttpContext() is not { } context)
-                return;
+            if (!registry.TryGetValue(Context.ConnectionId, out var connection))
+                return Task.CompletedTask;
 
-            var sessionService = context.RequestServices.GetRequiredService<ISessionService>();
-            if (!sessionService.IsAuthenticated)
-                return;
-
-            var userId = await sessionService.GetUserIdAsync();
-
-            Console.WriteLine($"user {userId} disconnected.");
-
+            return connection.SendPartyEvent(body);
         }
-
     }
 }

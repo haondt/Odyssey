@@ -18,6 +18,7 @@ namespace Odyssey.Client.Core.Extensions
             services.Configure<AdminSettings>(configuration.GetSection(nameof(AdminSettings)));
             AdminSettings.Validate(services.AddOptions<AdminSettings>()).ValidateOnStart();
             services.AddSingleton<IStandaloneModelBinder, StandaloneModelBinder>();
+            services.AddSingleton(typeof(ISignalRConnectionRegistry<>), typeof(SignalRConnectionRegsitry<>));
 
             // orleans
             services.AddHostedService<ClientStartupService>();
@@ -25,8 +26,10 @@ namespace Odyssey.Client.Core.Extensions
             // authentication
             services.Configure<AuthenticationSettings>(configuration.GetSection(nameof(AuthenticationSettings)));
             services.AddScoped<IUserSessionService, UserSessionService>();
+            services.AddScoped<SessionContext>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IClientStartupParticipant, AuthenticationDataSeeder>();
+            services.AddSingleton<ISignalRScopeFactory, SignalRScopeFactory>();
 
             // games
             services.AddSingleton<IClientGameRegistry, ClientGameRegistry>();

@@ -74,8 +74,6 @@ namespace Odyssey.Silo.Core.Extensions
 
                 return builder;
             }
-
-
         }
     }
 }

@@ -16,6 +16,7 @@ using Odyssey.Domain.Core.Extensions;
 using Odyssey.Games.Client.Core.Extensions;
 using Odyssey.Games.Domain.Core.Extensions;
 using Odyssey.GrainInterfaces.Core.Extensions;
+using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.Persistence;
 using Odyssey.Persistence.Extensions;
 using Odyssey.Persistence.Models;
@@ -105,7 +106,9 @@ builder.Services.Configure<IdentityOptions>(o =>
 
 builder.Services.AddOrleansClient(client =>
 {
-    client.ConfigureCluster(builder.Configuration);
+    client
+        .ConfigureCluster(builder.Configuration)
+        .AddMemoryStreams(GrainConstants.SignalRStreams);
 });
 
 
@@ -150,11 +153,12 @@ app.UseAuthorization();
 app.UseCors(OdysseyConstants.CorsPolicyName);
 app.UseAntiforgery();
 
-app.MapControllers();
-app.AddHaondtWebUIEndpoints();
 app.UseMiddleware<RenderContextMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<UnmappedRouteHandlerMiddleware>();
+
+app.MapControllers();
+app.AddHaondtWebUIEndpoints();
 app.MapHealthChecks("hc");
 
 

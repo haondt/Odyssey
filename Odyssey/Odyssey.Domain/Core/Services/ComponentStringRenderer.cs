@@ -28,7 +28,7 @@ namespace Odyssey.Domain.Core.Services
     // stolen with love from Haondt.Web.Core
     internal static class ComponentExtensions
     {
-        private static ConcurrentDictionary<Type, PropertyInfo[]> ParameterCache = new();
+        private static ConcurrentDictionary<Type, PropertyInfo[]> _parameterCache = new();
 
         public static Dictionary<string, object?> ToDictionary<T>(this T component) where T : class, IComponent
         {
@@ -38,7 +38,7 @@ namespace Odyssey.Domain.Core.Services
         }
         public static Dictionary<string, object?> ToDictionary(this IComponent component, Type componentType)
         {
-            var parameters = ParameterCache.GetOrAdd(componentType,
+            var parameters = _parameterCache.GetOrAdd(componentType,
                 t => t.GetProperties()
                     .Where(p => p.GetCustomAttribute<ParameterAttribute>() != null)
                     .ToArray());

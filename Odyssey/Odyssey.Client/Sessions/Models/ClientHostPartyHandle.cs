@@ -7,5 +7,6 @@ namespace Odyssey.Client.Sessions.Models
     {
         private IHostPartyGrain _party = partyFactory.GetGrain(userId);
         public Task<string> GetJoinCodeAsync() => _party.GetJoinCodeAsync();
+        public Task ResetPartyAsync() => _party.ResetPartyAsync();
     }
 }

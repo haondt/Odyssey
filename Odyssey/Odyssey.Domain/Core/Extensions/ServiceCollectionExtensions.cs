@@ -14,6 +14,7 @@ namespace Odyssey.Domain.Core.Extensions
             services.AddSingleton<IGrainLeaseService, GrainLeaseService>();
             services.AddTransient<IComponentStringRenderer, ComponentStringRenderer>();
             services.AddTransient<HtmlRenderer>();
+            services.AddSingleton<IEventTransformerRegistry, EventTransformerRegistry>();
 
             return services;
         }

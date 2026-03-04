@@ -2,24 +2,21 @@
 using Newtonsoft.Json;
 using Odyssey.Domain.Core.Models;
 
-namespace Odyssey.UI.Host.Controllers
+namespace Odyssey.UI.Core.Models
 {
-    public partial class HostController
+    public class TemporalContinuationData<TId> where TId : notnull
     {
-        public class TemporalContinuationData<TId> where TId : notnull
+        public TId? Id { get; set; } = default;
+        public AbsoluteDateTime? Time { get; set; } = default;
+        [JsonIgnore]
+        public PaginationOptions<(TId, AbsoluteDateTime)> Pagination
         {
-            public TId? Id { get; set; } = default;
-            public AbsoluteDateTime? Time { get; set; } = default;
-            [JsonIgnore]
-            public PaginationOptions<(TId, AbsoluteDateTime)> Pagination
+            get
             {
-                get
-                {
-                    var last = new Optional<(TId, AbsoluteDateTime)>();
-                    if (Id != null && Time.HasValue)
-                        last = (Id, Time.Value);
-                    return new(last);
-                }
+                var last = new Optional<(TId, AbsoluteDateTime)>();
+                if (Id != null && Time.HasValue)
+                    last = (Id, Time.Value);
+                return new(last);
             }
         }
     }

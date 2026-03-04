@@ -1,17 +1,21 @@
 ﻿using Haondt.Core.Extensions;
 using Haondt.Core.Models;
 using Microsoft.AspNetCore.Http;
+using Odyssey.Client.Authentication.Models;
 using System.Security.Claims;
 
 namespace Odyssey.Client.Authentication.Services
 {
     public class SessionService(IHttpContextAccessor httpContextAccessor,
-        IUserSessionService userService) : ISessionService
+        IUserSessionService userService,
+        SessionContext sessionContext) : ISessionService
     {
         public bool IsAuthenticated
         {
             get
             {
+                if (sessionContext.IsAuthenticated.TryGetValue(out var isAuthenticated))
+                    return isAuthenticated;
                 return httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated == true;
             }
         }
@@ -30,9 +34,11 @@ namespace Odyssey.Client.Authentication.Services
 
         public async Task<string> GetUserIdAsync()
         {
-            var user = httpContextAccessor.HttpContext?.User;
-            if (user == null)
-                throw new InvalidOperationException("Unable to retrieve user from http context");
+            if (sessionContext.UserId.HasValue)
+                return sessionContext.UserId.Value;
+
+            var user = (httpContextAccessor.HttpContext?.User)
+                ?? throw new InvalidOperationException("Unable to retrieve user from http context");
             if (user.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id)
                 return id;
 

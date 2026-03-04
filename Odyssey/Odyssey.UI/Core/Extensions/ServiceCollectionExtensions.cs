@@ -2,9 +2,12 @@
 using Haondt.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Odyssey.Domain.Host.Services;
 using Odyssey.UI.Core.Middlewares;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Core.Services;
+using Odyssey.UI.Host.Models;
+using Odyssey.UI.Host.Services;
 using LayoutComponentFactory = Odyssey.UI.Core.Services.LayoutComponentFactory;
 
 namespace Odyssey.UI.Core.Extensions
@@ -30,6 +33,10 @@ namespace Odyssey.UI.Core.Extensions
 
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();
             //services.AddSingleton<ILucideIconService, LucideIconService>();
+
+
+            // host
+            services.AddKeyedSingleton<IHostEventTransformer<HtmxSignalRMessage, string>, BrowserHostEventTransformer>(HostClientType.Browser);
 
             return services;
         }

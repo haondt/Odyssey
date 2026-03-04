@@ -18,6 +18,10 @@
             public static class Host
             {
                 public const string Index = $"{Hubs.Index}/host";
+                public static class Browser
+                {
+                    public const string Index = $"{Hubs.Host.Index}/browser";
+                }
             }
         }
         public static class Roles
@@ -40,6 +44,10 @@
             public static class Party
             {
                 public const string Index = $"{Host.Index}/party";
+                public static class Reset
+                {
+                    public const string Index = $"{Party.Index}/reset";
+                }
             }
             public static class Sessions
             {

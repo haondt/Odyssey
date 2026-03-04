@@ -16,6 +16,8 @@ builder.UseOrleans((context, silo) =>
     silo
         .ConfigureCluster(context.Configuration)
         .AddGrainStorage(context.Configuration, GrainConstants.GrainStorage)
+        .AddMemoryGrainStorage(GrainConstants.SignalRStreams)
+        .AddMemoryStreams(GrainConstants.SignalRStreams)
         .AddStartupTask((serviceProvider, ct) =>
             serviceProvider.PerformDatabaseMigrationsAsync(ct),
             ServiceLifecycleStage.First)

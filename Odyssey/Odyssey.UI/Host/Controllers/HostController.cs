@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Models;
 using Odyssey.Client.Core.Services;
+using Odyssey.Client.Host.Services;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Persistence.Models;
 using Odyssey.UI.Core.Attributes;
@@ -24,10 +25,11 @@ using Orleans.Storage;
 namespace Odyssey.UI.Host.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route(OdysseyRoutes.Host.Index)]
-    public partial class HostController(
+    public class HostController(
         IClientGameRegistry gameRegistry,
         ISessionService sessionService,
         IBoardMetadataRepository boards,
+        IClientHostService hostService,
         ILogger<HostController> logger) : UIController
     {
         [HttpGet]
@@ -35,6 +37,14 @@ namespace Odyssey.UI.Host.Controllers
 
         [HttpGet(OdysseyRoutes.Host.Party.Index)]
         public Task<IResult> GetParty() => ComponentFactory.RenderComponentAsync<Components.HostParty>();
+
+        [HttpPost(OdysseyRoutes.Host.Party.Reset.Index)]
+        public async Task<IResult> ResetParty()
+        {
+            var party = await hostService.GetPartyAsync();
+            await party.ResetPartyAsync();
+            return TypedResults.NoContent();
+        }
 
         [HttpGet(OdysseyRoutes.Host.Sessions.Index)]
         public Task<IResult> GetSessions() => ComponentFactory.RenderComponentAsync<Components.HostSessions>();
@@ -199,5 +209,6 @@ namespace Odyssey.UI.Host.Controllers
                 BoardId = id
             });
         }
+
     }
 }

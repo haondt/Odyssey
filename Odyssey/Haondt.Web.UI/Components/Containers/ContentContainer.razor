@@ -18,6 +18,9 @@
     [Parameter]
     public Optional<string> BodyId { get; set; }
 
+    [Parameter]
+    public bool HxSwapOob { get; set; } = false;
+
     protected HashSet<string> _shellClasses = ["content-container-shell"];
     protected Dictionary<string, object> _shellAttributes  = [];
 
@@ -36,6 +39,8 @@
 
         if (Id.TryGetValue(out var id))
             _shellAttributes["id"] = id;
+        if (HxSwapOob)
+            _shellAttributes["hx-swap-oob"] = "morph";
         if (ShellId.TryGetValue(out var shellId))
             _shellAttributes["id"] = shellId;
         if (BodyId.TryGetValue(out var bodyId))

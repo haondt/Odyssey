@@ -21,10 +21,13 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 // core
                 services.AddSingleton(typeof(IDataStorageGrainFactory<>), typeof(DataStorageGrainFactory<>));
                 services.AddSingleton<IGrainLeaseGrainFactory, GrainLeaseGrainFactory>();
+                services.AddSingleton<ICrockfordService, CrockfordService>();
 
                 // sessions
                 services.AddSingleton<IGrainFactory<string, IHostGrain>, StringKeyGrainFactory<IHostGrain>>();
                 services.AddSingleton<IGrainFactory<string, IHostPartyGrain>, StringKeyGrainFactory<IHostPartyGrain>>();
+                services.AddSingleton<IGrainFactory<string, IPartyGrain>, StringKeyGrainFactory<IPartyGrain>>();
+                services.AddSingleton<IGrainFactory<string, IJoinCodeGrain>, StringKeyGrainFactory<IJoinCodeGrain>>();
                 return services;
             }
         }

@@ -4,6 +4,13 @@ using Haondt.Orleans.Core.Surrogates;
 namespace Haondt.Orleans.Core.Converters
 {
     [RegisterConverter]
+    public sealed class ResultConverter : IConverter<Result, bool>
+    {
+        public Result ConvertFromSurrogate(in bool surrogate) => surrogate ? Result.Success : Result.Failure;
+        public bool ConvertToSurrogate(in Result value) => value.IsSuccessful;
+    }
+
+    [RegisterConverter]
     public sealed class ResultConverter<T> : IConverter<Result<T>, ResultSurrogate<T>>
     {
         public Result<T> ConvertFromSurrogate(in ResultSurrogate<T> surrogate)
