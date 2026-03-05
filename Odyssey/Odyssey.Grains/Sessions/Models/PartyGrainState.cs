@@ -1,4 +1,5 @@
 ﻿using Odyssey.GrainInterfaces.Sessions;
+using Odyssey.GrainInterfaces.Sessions.Models;
 
 namespace Odyssey.Grains.Sessions.Models
 {
@@ -9,6 +10,9 @@ namespace Odyssey.Grains.Sessions.Models
         public required string JoinCode { get; set; }
 
         [Id(1)]
-        public List<IPartyMember> Members { get; set; } = [];
+        public List<IPartyMemberGrain> Members { get; set; } = [];
+
+        [Id(2)]
+        public HostPartyData HostData { get; set; } = new();
     }
 }

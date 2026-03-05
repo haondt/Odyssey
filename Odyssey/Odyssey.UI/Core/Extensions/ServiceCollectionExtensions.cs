@@ -1,11 +1,13 @@
 ﻿using Haondt.Web.Core.Services;
 using Haondt.Web.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Domain.Host.Services;
 using Odyssey.UI.Core.Middlewares;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Core.Services;
+using Odyssey.UI.Display.Filters;
 using Odyssey.UI.Host.Models;
 using Odyssey.UI.Host.Services;
 using LayoutComponentFactory = Odyssey.UI.Core.Services.LayoutComponentFactory;
@@ -27,8 +29,11 @@ namespace Odyssey.UI.Core.Extensions
             services.Configure<UISettings>(configuration.GetSection(nameof(UISettings)));
             services.AddSingleton<ITargetedExceptionActionResultFactory, CatchAllErrorPageExceptionActionResultFactory>();
 
-            services.AddSignalR()
-                .AddNewtonsoftJsonProtocol();
+            services.AddSingleton<DisplaySessionHubFilter>();
+            services.AddSignalR(hubOptions =>
+            {
+                hubOptions.AddFilter<DisplaySessionHubFilter>();
+            }).AddNewtonsoftJsonProtocol();
 
 
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();

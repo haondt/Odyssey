@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Core\Attributes\" />
+    <Folder Include="Display\Attributes\" />
     <Folder Include="Host\Models\" />
     <Folder Include="Sessions\Services\" />
   </ItemGroup>

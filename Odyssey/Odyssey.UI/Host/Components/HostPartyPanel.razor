@@ -1,4 +1,5 @@
 @using Odyssey.Client.Host.Services
+@using Odyssey.GrainInterfaces.Sessions.Models
 @using Odyssey.UI.Host.Hubs
 @inject IClientHostService HostService
 
@@ -8,12 +9,12 @@
     public bool HxSwapOob { get; set; }
 
     protected Dictionary<string, object> _rootAttributes  = [];
-    private string _joinCode = default!;
     private bool _ready;
+    private HostPartyDetails _party = default!;
     protected override async Task OnInitializedAsync()
     {
         var party = await HostService.GetPartyAsync();
-        _joinCode = await party.GetJoinCodeAsync();
+        _party = await party.GetPartyDetailsAsync();
         if (HxSwapOob)
             _rootAttributes["hx-swap-oob"] = "morph";
 
@@ -22,9 +23,45 @@
 }
 @if(_ready)
 {
-    <div @attributes="_rootAttributes" id="host-party-panel" class="flex flex-col gap-card" >
-        <HostPartyJoinCode Code="@_joinCode" />
-        <div style="overflow-y:auto;">
-        </div>
+    <div @attributes="_rootAttributes" id="host-party-panel" class="flex flex-col gap-panel" >
+        <HostPartyJoinCode Code="@_party.JoinCode" />
+        @{
+            var description = "A player device may have its player assignment delegated to another device."
+                        + " When a session starts and the primary device is assigned to a player, the other device"
+                        + " will be assigned to the same player.";
+        }
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+            <Field Type="FieldType.None" Title='"Members"' Description="@description" />
+            <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+                @foreach(var member in _party.Members)
+                {
+                    switch (member)
+                    {
+                        case DisplayProfile displayProfile:
+                            var displayData = _party.Data.DisplayData.GetValue(displayProfile.Id);
+                            <DisplayHostPartyMemberPanel 
+                                    DisplayId="displayProfile.Id" 
+                                    PlaySounds="displayData.Map(q => q.PlaySounds).Or(false)"
+                                    ReflectSoundboard="displayData.Map(q => q.ReflectSoundBoard).Or(false)"
+                                    Name="@displayProfile.Name" 
+                                    Type="@displayProfile.Type" />
+                            break;
+                        default:
+                            <p>TODO</p>
+                            break;
+                        
+                    }
+                }
+                <Frame
+                    Flex="FrameDirection.Row" 
+                    Justify="FrameJustification.Center" 
+                    Padding="FrameSpacing.Card" 
+                    AddClasses='"bg-background-strong"'
+                    Id='"empty-party-panel"'
+                    Radius="FrameRadius.Card">
+                    <p class="fg-text-weak">Your party is currently empty. Share the join code to add members.</p>
+                </Frame>
+            </Frame>
+        </Frame>
     </div>
 }

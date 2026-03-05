@@ -31,6 +31,7 @@
   <ItemGroup>
     <Folder Include="Admin\Components\" />
     <Folder Include="Authentication\Components\" />
+    <Folder Include="Display\Hubs\" />
     <Folder Include="wwwroot\vendored\%40haondt\htmx-signalr\dist\" />
   </ItemGroup>
 

@@ -47,5 +47,6 @@ namespace Odyssey.Client.Authentication.Services
                 throw new InvalidOperationException("User not found");
             return surrogate.Id;
         }
+
     }
 }

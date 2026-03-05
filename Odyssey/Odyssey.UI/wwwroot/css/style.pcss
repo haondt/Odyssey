@@ -8,24 +8,29 @@
 
 @media (--haondt-ui-media-query-gte-l) {
     .big-screen {
-        --haondt-ui-text-font-size: calc(2 * var(--haondt-ui-text-font-size-base));
-        --haondt-ui-subtitle-font-size: calc(2 * var(--haondt-ui-subtitle-font-size-base));
 
-        --haondt-ui-grid-gap-s: 24px;
-        --haondt-ui-grid-gap-m: 32px;
-        --haondt-ui-grid-gap-l: 40px;
-
-        --haondt-ui-content-gap-s: 0.5rem;
-        --haondt-ui-content-gap-m: 1.5rem;
-        --haondt-ui-content-gap-l: 2rem;
-
-        --haondt-ui-card-spacing: calc(2 * var(--haondt-ui-card-spacing-base));
-        --haondt-ui-card-border-radius: calc(2 * var(--haondt-ui-card-border-radius-base));
-
-        --haondt-ui-panel-spacing: calc(2 * var(--haondt-ui-panel-spacing-base));
-        --haondt-ui-panel-border-radius: calc(2 * var(--haondt-ui-panel-border-radius-base));
+        --haondt-ui-text-font-size-base: 2rem;
+        --haondt-ui-title-font-size-base: 4.5rem;
+        --haondt-ui-chip-font-size-base: 1.6rem;
+        --haondt-ui-hint-font-size-base: 1.75rem;
 
         --haondt-ui-spacing-base: 2rem;
+        --haondt-ui-card-spacing-base: 32px;
+        --haondt-ui-card-border-radius-base: 20px;
+        --haondt-ui-panel-spacing-base: 64px;
+        --haondt-ui-panel-border-radius-base: 20px;
+        --haondt-ui-line-spacing-base: 1rem;
+
+        --haondt-ui-border-radius-base: 12px;
+
+        --haondt-ui-control-height-base: 5rem;
+        --haondt-ui-control-padding-base: 2rem;
+
+        --haondt-ui-blend-height: 32px;
+        --haondt-ui-blend-box-shadow-blur: 18px;
+        --haondt-ui-blend-box-shadow-spread: 20px;
+
+        @mixin derived-vars;
     }
 }
 

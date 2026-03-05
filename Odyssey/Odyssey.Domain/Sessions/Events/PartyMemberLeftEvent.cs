@@ -12,7 +12,5 @@
     [GenerateSerializer]
     public class PartyMemberLeftOutboundEvent : PartyOutboundEvent
     {
-        [Id(0)]
-        public required string MemberId { get; set; }
     }
 }

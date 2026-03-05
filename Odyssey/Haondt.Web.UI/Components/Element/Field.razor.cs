@@ -9,7 +9,8 @@ namespace Haondt.Web.UI.Components.Element
         Password,
         Search,
         Dropdown,
-        LiveSearch
+        LiveSearch,
+        None
     }
     public enum FieldSize
     {

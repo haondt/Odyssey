@@ -6,7 +6,7 @@ namespace Odyssey.UI.Core.Attributes
 {
     public sealed class HxVaryHeaderAttribute : ActionFilterAttribute
     {
-        public override void OnResultExecuting(ResultExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             //context.HttpContext.Response.AsResponseData().Header().Headers.AppendCommaSeparatedValues(
             //    HeaderNames.Vary,

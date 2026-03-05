@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Client.Authentication.Services;
+using Odyssey.Core.Exceptions;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Domain.Host.Services;
 using Odyssey.Domain.Sessions.Events;
@@ -17,7 +18,7 @@ namespace Odyssey.UI.Host.Services
             {
                 PartyDisbandedInboundEvent.Type => new PartyDisbandedInboundEvent() { OriginConnectionId = connectionId },
                 PartyMemberLeftInboundEvent.Type => throw new NotImplementedException(),
-                _ => throw new ArgumentException($"Unknown event type \"{inbound.Type}\"")
+                _ => throw ExceptionFactory.CasesExhaustedException(inbound.Type, "event type")
             };
         }
 
@@ -32,10 +33,16 @@ namespace Odyssey.UI.Host.Services
                 {
                     HxSwapOob = true
                 }),
-                PartyMemberLeftOutboundEvent memberLeftEvent => $"<p>Member {memberLeftEvent.MemberId} left the party.</p>",
-                _ => throw new ArgumentException($"Unknown event type \"{outbound.GetType()}\"")
+                // TODO: make these more efficient, e.g. just remove the left member, just add the new member at the end, etc
+                PartyMemberLeftOutboundEvent memberLeftEvent => await RegenerateHostPartyPanelAsync(renderer),
+                PartyMemberJoinedOutboundEvent memberJoinedEvent => await RegenerateHostPartyPanelAsync(renderer),
+                _ => throw ExceptionFactory.CasesExhaustedException(outbound.GetType().Name, "event type")
             };
         }
 
+        private static Task<string> RegenerateHostPartyPanelAsync(IComponentStringRenderer renderer) => renderer.RenderComponentAsync(new HostPartyPanel
+        {
+            HxSwapOob = true
+        });
     }
 }

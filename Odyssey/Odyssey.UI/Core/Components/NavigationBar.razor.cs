@@ -1,4 +1,5 @@
 ﻿using Haondt.Core.Models;
+using Odyssey.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 
 namespace Odyssey.UI.Core.Components
@@ -20,7 +21,7 @@ namespace Odyssey.UI.Core.Components
             OdysseyRoles.Admin => "Admin",
             OdysseyRoles.Device => "Device",
             OdysseyRoles.Display => "Display",
-            _ => throw new InvalidOperationException($"Unknown role: {Role}")
+            _ => throw ExceptionFactory.CasesExhaustedException(Role, "role")
         };
     }
 

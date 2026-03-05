@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.GrainInterfaces.Core.Services;
 using Odyssey.GrainInterfaces.Sessions;
+using Orleans.Serialization;
 
 namespace Odyssey.GrainInterfaces.Core.Extensions
 {
@@ -13,6 +14,11 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
             {
                 services.AddSingleton<IClock, Clock>();
                 services.AddOdysseyGrainFactories();
+                services.Configure<ExceptionSerializationOptions>(options =>
+                {
+                    options.SupportedNamespacePrefixes.Add("Newtonsoft.Json.JsonSerializationException");
+                    options.SupportedNamespacePrefixes.Add("Odyssey.GrainInterfaces.Sessions.Exceptions");
+                });
                 return services;
             }
 
@@ -25,9 +31,11 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
 
                 // sessions
                 services.AddSingleton<IGrainFactory<string, IHostGrain>, StringKeyGrainFactory<IHostGrain>>();
-                services.AddSingleton<IGrainFactory<string, IHostPartyGrain>, StringKeyGrainFactory<IHostPartyGrain>>();
                 services.AddSingleton<IGrainFactory<string, IPartyGrain>, StringKeyGrainFactory<IPartyGrain>>();
+                services.AddSingleton<ICastedGrainFactory<string, IHostPartyGrain>, CastedGrainFactory<string, IPartyGrain, IHostPartyGrain>>();
+                services.AddSingleton<ICastedGrainFactory<string, IMemberPartyGrain>, CastedGrainFactory<string, IPartyGrain, IMemberPartyGrain>>();
                 services.AddSingleton<IGrainFactory<string, IJoinCodeGrain>, StringKeyGrainFactory<IJoinCodeGrain>>();
+                services.AddSingleton<IGrainFactory<Guid, IDisplayGrain>, GuidKeyGrainFactory<IDisplayGrain>>();
                 return services;
             }
         }

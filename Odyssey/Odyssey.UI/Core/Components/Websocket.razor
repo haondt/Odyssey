@@ -1,21 +1,43 @@
+@using Haondt.Web.Core.Extensions
+@using Haondt.Web.Core.Http
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.WebUtilities
+@using Odyssey.Client.Display.Services
+@using Odyssey.Core.Exceptions;
+@using Odyssey.UI.Display.Filters
 @code {
     public const string Id = "websocket";
     public const string TargetRoleId = "websocket-target-role";
+    public const string DisplayIdId = "websocket-display-id";
     private string _instanceId { get; set; } = Guid.NewGuid().ToString();
 
     [Parameter]
     public string Role { get; set; } = OdysseyRoles.None;
 
+    [CascadingParameter]
+    public IRequestData RequestData { get; set; } = default!;
+
     private string _connect = default!;
+    private Guid? _displayId;
 
     protected override void OnInitialized()
     {
         _connect = Role switch
         {
             OdysseyRoles.Host => OdysseyRoutes.Hubs.Host.Browser.Index,
+            OdysseyRoles.Display => OdysseyRoutes.Hubs.Display.Browser.Index,
             OdysseyRoles.None => "",
-            _ => throw new InvalidOperationException($"Unknown role \"{Role}\"")
+            _ => throw ExceptionFactory.CasesExhaustedException(Role, "role")
         };
+
+        // always forward display id if it is given
+        if (DisplaySessionAttribute.TryGetDisplayId(RequestData, out var displayId)) 
+        {
+            if (Role == OdysseyRoles.Display)
+                _connect = QueryHelpers.AddQueryString(_connect, DisplaySessionAttribute.DisplayIdQueryParameter, displayId.ToString());
+
+            _displayId = displayId;
+        }
     }
 
 }
@@ -27,15 +49,19 @@
         hx-swap="outerHTML"
         data-role="@Role"
         _ ="
-            on UpdateWebsocket(role)
+            on UpdateWebsocket(role, displayId)
                 if role != my @@data-role
                     set #@Websocket.TargetRoleId's value to role
+                    set #@Websocket.DisplayIdId's value to displayId
                     set my @@data-role to role
                     send refresh to me
                 end
             end
         "
-        data-instance-id="@_instanceId"><input type="hidden" id="@TargetRoleId" name="targetRole" value="@Role" /></form>
+        data-instance-id="@_instanceId">
+            <input type="hidden" id="@TargetRoleId" name="targetRole" value="@Role" />
+            <input type="hidden" id="@DisplayIdId" name="@DisplaySessionAttribute.DisplayIdQueryParameter" value="@(_displayId.HasValue ? _displayId.Value : "")" />
+        </form>
 }
 else
 {
@@ -46,9 +72,10 @@ else
         signalr-connect="@_connect"
         data-role="@Role"
         _="
-            on UpdateWebsocket(role)
+            on UpdateWebsocket(role, displayId)
                 if role != my @@data-role
                     set #@Websocket.TargetRoleId's value to role
+                    set #@Websocket.DisplayIdId's value to displayId
                     set my @@data-role to role
                     send refresh to me
                 end
@@ -58,5 +85,11 @@ else
             on htmx:signalr:close remove my @@data-connection-id end
         "
         data-instance-id="@_instanceId">
-        <input type="hidden" id="@TargetRoleId" name="targetRole" value="@Role" /></form>
+            <input type="hidden" id="@TargetRoleId" name="targetRole" value="@Role" />
+            <input type="hidden" id="@DisplayIdId" name="@DisplaySessionAttribute.DisplayIdQueryParameter" value="@(_displayId.HasValue ? _displayId.Value : "")" />
+            @if (_displayId.HasValue)
+            {
+                <template _="on htmx:configRequest from <body /> set the event's detail.headers['@DisplaySessionAttribute.DisplayIdHeader'] to '@_displayId.Value' end"></template>
+            }
+    </form>
 }

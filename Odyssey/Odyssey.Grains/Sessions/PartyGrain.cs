@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
 using Odyssey.GrainInterfaces.Sessions;
+using Odyssey.GrainInterfaces.Sessions.Exceptions;
+using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.Grains.Sessions.Models;
 
 namespace Odyssey.Grains.Sessions
@@ -45,7 +47,7 @@ namespace Odyssey.Grains.Sessions
         private async Task<Result> ClaimJoinCode(string joinCode, CancellationToken cancellationToken = default)
         {
             var joinCodeGrain = _joinCodeGrainFactory.GetGrain(joinCode);
-            var currentOwner = await joinCodeGrain.GetOwnerId();
+            var currentOwner = await joinCodeGrain.GetOwnerIdAsync();
 
             if (await joinCodeGrain.Claim(_id) is not { IsSuccessful: true })
                 return Result.Failure;
@@ -127,5 +129,122 @@ namespace Odyssey.Grains.Sessions
                 _ = member.NotifyPartyDisbandedAsync(oldJoinCode);
         }
 
+        public async Task LeaveAsync(IPartyMemberGrain member)
+        {
+            if (!_state.State.Members.Contains(member))
+                return;
+
+            _state.State.Members.Remove(member);
+            try
+            {
+                await _state.WriteStateAsync();
+            }
+            catch
+            {
+                _state.State.Members.Add(member);
+                throw;
+            }
+
+            _ = _hostGrain.NotifyPartyMemberLeftAsync();
+            foreach (var partyMember in _state.State.Members)
+                _ = partyMember.NotifyPartyMemberLeftAsync();
+        }
+
+        private Task TryReleaseJoinCode(string joinCode)
+        {
+            var joinCodeGrain = _joinCodeGrainFactory.GetGrain(joinCode);
+            return joinCodeGrain.Release(_id);
+        }
+
+        public async Task<bool> JoinAsync(IPartyMemberGrain member, string joinCode)
+        {
+            if (_state.State.Members.Contains(member))
+                return true;
+
+            if (_state.State.JoinCode != joinCode)
+            {
+                await TryReleaseJoinCode(joinCode);
+                return false;
+            }
+
+            _state.State.Members.Add(member);
+            try
+            {
+                await _state.WriteStateAsync();
+            }
+            catch
+            {
+                _state.State.Members.Remove(member);
+                throw;
+            }
+
+            _ = _hostGrain.NotifyPartyMemberJoinedAsync();
+            foreach (var partyMember in _state.State.Members)
+                _ = partyMember.NotifyPartyMemberJoinedAsync();
+
+            return true;
+        }
+
+        public async Task<MemberPartyDetails> GetPartyDetailsAsync(IPartyMemberGrain requester, PartyMemberProfile requesterProfile)
+        {
+            if (!_state.State.Members.Contains(requester))
+                throw new NotPartyMemberException();
+
+            var details = new MemberPartyDetails
+            {
+                JoinCode = _state.State.JoinCode,
+                Members = []
+            };
+
+            var requesterGrainId = requester.GetGrainId();
+            foreach (var member in _state.State.Members)
+            {
+                // avoid deadlock
+                PartyMemberProfile profile;
+                if (member.GetGrainId() == requesterGrainId)
+                    profile = requesterProfile;
+                else
+                    profile = await member.GetMemberProfileAsync();
+
+                details.Members.Add(profile);
+            }
+
+            return details;
+        }
+
+        public Task DeactivateOnIdleAsync()
+        {
+            DeactivateOnIdle();
+            return Task.CompletedTask;
+        }
+
+        public async Task<HostPartyDetails> GetPartyDetailsAsync()
+        {
+            var details = new HostPartyDetails
+            {
+                JoinCode = _state.State.JoinCode,
+                Members = [],
+                Data = _state.State.HostData
+            };
+
+            foreach (var member in _state.State.Members)
+            {
+                var profile = await member.GetMemberProfileAsync();
+                details.Members.Add(profile);
+            }
+
+            return details;
+        }
+
+        public async Task SetHostDataAsync(HostPartyData data)
+        {
+            _state.State.HostData = data;
+            await _state.WriteStateAsync();
+        }
+
+        public Task<HostPartyData> GetHostDataAsync()
+        {
+            return Task.FromResult(_state.State.HostData);
+        }
     }
 }

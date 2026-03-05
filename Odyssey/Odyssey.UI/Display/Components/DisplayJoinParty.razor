@@ -1,0 +1,22 @@
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Services
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Display)]
+@attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+@code {
+    public NavigationBar CreateNavigationBar() => new() { Template = new NavigationBarEmpty() };
+}
+
+<ContentContainer Layout="ContentContainerLayout.Center" Width="ContentContainerWidth.Small">
+    <Frame
+        Gap="FrameSpacing.Panel"
+        Flex="FrameDirection.Col"
+        Align="FrameAlignment.Stretch">
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+            <p class="title text-align-center">Join party</p>
+            <p class="text-align-center">Enter a join code to connect</p>
+        </Frame>
+        <DisplayJoinPartyPanel />
+    </Frame>
+</ContentContainer>

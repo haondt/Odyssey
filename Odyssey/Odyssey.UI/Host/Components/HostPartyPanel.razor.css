@@ -1,0 +1,3 @@
+::deep #empty-party-panel:not(:first-child) {
+    display: none;
+}

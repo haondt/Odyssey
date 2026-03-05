@@ -6,15 +6,17 @@
 @using Haondt.Web.UI.Components.Element
 @using Haondt.Web.UI.Components.Htmx
 @using Haondt.Web.UI.Components.Relays
+@using Odyssey.Client.Display.Services
 @using Odyssey.UI.Core.Extensions
 @using Odyssey.UI.Core.Services
+@using Odyssey.UI.Display.Filters
 @code {
     public const string Id = "odyssey-page-container";
 
     [Parameter, EditorRequired]
     public required IComponent  Content {get; set;}
-}
 
+}
 <ModalContainer Active="false" />
 <ConfirmationDialogRelay />
 <ToastContainer />

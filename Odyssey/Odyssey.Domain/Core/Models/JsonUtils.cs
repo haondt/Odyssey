@@ -44,6 +44,8 @@ namespace Odyssey.Domain.Core.Models
             options.JsonSerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
             options.JsonSerializerSettings.Formatting = Formatting.None;
             options.JsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            options.JsonSerializerSettings.Converters.Add(new AbsoluteDateTimeJsonConverter());
+            options.JsonSerializerSettings.Converters.Add(new GenericOptionalJsonConverter());
             options.JsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
             {
                 NamingStrategy = new CamelCaseNamingStrategy

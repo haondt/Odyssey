@@ -1,0 +1,35 @@
+@using Haondt.Web.UI.Components.Components
+@code {
+    [Parameter, EditorRequired]
+    public required Guid DisplayId {get; set;}  
+
+    [Parameter, EditorRequired]
+    public required bool PlaySounds { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool ReflectSoundboard { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Name { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Type { get; set; }
+}
+
+<Frame Template="FrameTemplate.Card">
+    <Frame>
+        <p class="subtitle">@Name</p>
+        <p class="italic">Display</p>
+        <p class="italic fg-text-weak">@Type</p>
+        <HorizontalSpacer/>
+        <Chip>@DisplayId</Chip>
+    </Frame>
+    <Frame>
+        <form>
+            <!-- TODO buttonses and onclick it sends the signalr event -->
+        </form>
+    </Frame>
+    <Frame Template="FrameTemplate.ButtonContainer">
+        <Button Style="ButtonStyle.Ghost" Color="ButtonColor.Danger">Remove</Button>
+    </Frame>
+</Frame>

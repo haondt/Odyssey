@@ -5,8 +5,10 @@
 @using Haondt.Web.UI.Components.Element
 @using Haondt.Web.UI.Components.Htmx
 @using Haondt.Web.UI.Components.Relays
+@using Odyssey.Client.Display.Services
 @using Odyssey.UI.Core.Extensions
 @using Odyssey.UI.Core.Services
+@using Odyssey.UI.Display.Filters
 @code {
     [Parameter, EditorRequired]
     public required IComponent Content { get; set; }
@@ -15,6 +17,7 @@
     public Optional<LayoutOptionsAttribute> LayoutOptionsAttribute { get; set; }
 
     private string _targetRole = OdysseyRoles.None;
+    private string _displayId = "";
 
     [CascadingParameter]
     public IRequestData Request { get; set; } = default!;
@@ -33,11 +36,13 @@
 
         var renderPageAttribute = Content.GetType().GetCustomAttributes(typeof(OdysseyRenderPageAttribute), inherit: false).FirstOrDefault().AsOptional().Map(q => (OdysseyRenderPageAttribute)q);
         _targetRole = renderPageAttribute.Map(q => q.Role).Or(OdysseyRoles.None);
+        if (DisplaySessionAttribute.TryGetDisplayId(Request, out var displayId))
+            _displayId = displayId.ToString();
     }
 }
 
 <div id="@Id" class="@_bodyContentClasses">
-    <template _="on load send UpdateWebsocket(role: '@_targetRole') to #@Websocket.Id then remove me end"></template>
+    <template _="on load send UpdateWebsocket(role: '@_targetRole', displayId: '@_displayId') to #@Websocket.Id then remove me end"></template>
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
             @if(Content is IHasNavigationBarComponent hasNav)

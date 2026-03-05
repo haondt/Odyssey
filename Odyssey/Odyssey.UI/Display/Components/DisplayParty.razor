@@ -1,0 +1,14 @@
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Display)]
+@attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+@code {
+    public NavigationBar CreateNavigationBar() => new() { Template = new NavigationBarEmpty() };
+}
+<ContentContainer AddClasses='"big-screen"' Layout="ContentContainerLayout.Center">
+    <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Center">
+        <h1 id="hero-text" class="fg-primary uppercase font-semibold font-display-l">Odyssey</h1>
+        <p>Waiting for host to start a session</p>
+    </Frame>
+</ContentContainer>

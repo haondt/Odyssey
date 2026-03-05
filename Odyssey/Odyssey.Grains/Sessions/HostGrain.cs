@@ -13,7 +13,7 @@ namespace Odyssey.Grains.Sessions
         private readonly IAsyncStream<SignalROutboundEvent> _hostEventStream;
 
         public HostGrain(IGrainFactory<string, IHostGrain> grainFactory,
-            IGrainFactory<string, IHostPartyGrain> partyGrainFactory)
+            ICastedGrainFactory<string, IHostPartyGrain> partyGrainFactory)
         {
             var id = grainFactory.GetIdentity(this);
             _party = partyGrainFactory.GetGrain(id);
@@ -21,9 +21,22 @@ namespace Odyssey.Grains.Sessions
                 .GetStream<SignalROutboundEvent>(GrainConstants.HostEventsStreamNamespace, id);
         }
 
-        public Task NotifyPartyDisbandedAsync(string partyId)
+        public async Task NotifyPartyDisbandedAsync(string partyId)
         {
-            return _hostEventStream.OnNextAsync(new PartyDisbandedOutboundEvent { PartyId = partyId });
+            await _party.SetHostDataAsync(new());
+            await _hostEventStream.OnNextAsync(new PartyDisbandedOutboundEvent { PartyId = partyId });
+        }
+
+        public Task NotifyPartyMemberJoinedAsync()
+        {
+            // TODO: create new entry in host party data
+            return _hostEventStream.OnNextAsync(new PartyMemberJoinedOutboundEvent());
+        }
+
+        public Task NotifyPartyMemberLeftAsync()
+        {
+            // TODO: remove entry from host party data
+            return _hostEventStream.OnNextAsync(new PartyMemberLeftOutboundEvent());
         }
     }
 }

@@ -65,12 +65,14 @@ namespace Odyssey.GrainInterfaces.Core.Services
 
         public string Normalize(string input)
         {
-            if (string.IsNullOrEmpty(input))
-                throw new ArgumentException("Input cannot be null or empty.");
+            if (input == null)
+                throw new NullReferenceException("Input cannot be null");
 
             var sb = new StringBuilder(input.Length);
-            foreach (var c in input.ToUpperInvariant())
+            foreach (var c in input.Trim().ToUpperInvariant())
             {
+                if (!_alphabet.Contains(c))
+                    continue;
                 sb.Append(c switch
                 {
                     'O' => '0',

@@ -1,5 +1,7 @@
 @code {
     [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
     public Optional<string> Title { get; set; }
 
     [Parameter]
@@ -115,7 +117,7 @@
         }
 
         if (HxPreserve)
-            _inputAttributes["hx-preserve"] = "";
+            _inputAttributes["hx-preserve"] = true;
 
         if (Id.TryGetValue(out var id))
         {
@@ -200,6 +202,7 @@
                 </select>
             </div>
         } 
+        @ChildContent
         @if(Error.TryGetValue(out var error)) 
         {
             <p class="validation-error">@error</p>

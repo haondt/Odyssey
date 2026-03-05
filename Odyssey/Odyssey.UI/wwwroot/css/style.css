@@ -8,24 +8,75 @@
 
 @media screen and (min-width: 1025px) {
     .big-screen {
-        --haondt-ui-text-font-size: calc(2 * var(--haondt-ui-text-font-size-base));
-        --haondt-ui-subtitle-font-size: calc(2 * var(--haondt-ui-subtitle-font-size-base));
 
-        --haondt-ui-grid-gap-s: 24px;
-        --haondt-ui-grid-gap-m: 32px;
-        --haondt-ui-grid-gap-l: 40px;
-
-        --haondt-ui-content-gap-s: 0.5rem;
-        --haondt-ui-content-gap-m: 1.5rem;
-        --haondt-ui-content-gap-l: 2rem;
-
-        --haondt-ui-card-spacing: calc(2 * var(--haondt-ui-card-spacing-base));
-        --haondt-ui-card-border-radius: calc(2 * var(--haondt-ui-card-border-radius-base));
-
-        --haondt-ui-panel-spacing: calc(2 * var(--haondt-ui-panel-spacing-base));
-        --haondt-ui-panel-border-radius: calc(2 * var(--haondt-ui-panel-border-radius-base));
+        --haondt-ui-text-font-size-base: 2rem;
+        --haondt-ui-title-font-size-base: 4.5rem;
+        --haondt-ui-chip-font-size-base: 1.6rem;
+        --haondt-ui-hint-font-size-base: 1.75rem;
 
         --haondt-ui-spacing-base: 2rem;
+        --haondt-ui-card-spacing-base: 32px;
+        --haondt-ui-card-border-radius-base: 20px;
+        --haondt-ui-panel-spacing-base: 64px;
+        --haondt-ui-panel-border-radius-base: 20px;
+        --haondt-ui-line-spacing-base: 1rem;
+
+        --haondt-ui-border-radius-base: 12px;
+
+        --haondt-ui-control-height-base: 5rem;
+        --haondt-ui-control-padding-base: 2rem;
+
+        --haondt-ui-blend-height: 32px;
+        --haondt-ui-blend-box-shadow-blur: 18px;
+        --haondt-ui-blend-box-shadow-spread: 20px;
+
+        --haondt-ui-card-border-radius: var(--haondt-ui-card-border-radius-base);
+
+        --haondt-ui-card-spacing: var(--haondt-ui-card-spacing-base);
+
+        --haondt-ui-panel-border-radius: var(--haondt-ui-panel-border-radius-base);
+
+        --haondt-ui-panel-spacing: var(--haondt-ui-panel-spacing-base);
+
+        --haondt-ui-border-radius: var(--haondt-ui-border-radius-base);
+
+        --haondt-ui-border-width: var(--haondt-ui-border-width-base);
+
+        --haondt-ui-border-focus-width: calc(2 * var(--haondt-ui-border-width-base));
+
+        --haondt-ui-line-spacing: var(--haondt-ui-line-spacing-base);
+
+        --haondt-ui-content-width-s: calc(0.3 * var(--haondt-ui-content-width-base));
+
+        --haondt-ui-content-width: var(--haondt-ui-content-width-base);
+
+        --haondt-ui-content-width-l: calc(1.3 * var(--haondt-ui-content-width-base));
+
+        --haondt-ui-text-font-size: var(--haondt-ui-text-font-size-base);
+
+        --haondt-ui-title-font-size: var(--haondt-ui-title-font-size-base);
+
+        --haondt-ui-chip-font-size: var(--haondt-ui-chip-font-size-base);
+
+        --haondt-ui-chip-padding-x: calc(var(--haondt-ui-chip-font-size) * 0.6);
+
+        --haondt-ui-chip-padding-y: calc(var(--haondt-ui-chip-font-size) * 0.4);
+
+        --haondt-ui-hint-font-size: var(--haondt-ui-hint-font-size-base);
+
+        --haondt-ui-control-height: var(--haondt-ui-control-height-base);
+
+        --haondt-ui-control-padding-x: calc(0.625 * var(--haondt-ui-control-padding-base));
+
+        --haondt-ui-blend-box-shadow-color: var(--haondt-ui-color-background);
+
+        --haondt-ui-blend-box-shadow: var(--haondt-ui-blend-box-shadow-h-offset) var(--haondt-ui-blend-box-shadow-v-offset) var(--haondt-ui-blend-box-shadow-blur) var(--haondt-ui-blend-box-shadow-spread) var(--haondt-ui-blend-box-shadow-color);
+
+        --haondt-ui-blend-clip-path-size: calc(-1 * var(--haondt-ui-blend-height));
+
+        --haondt-ui-blend-clip-path: inset(0 var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size) var(--haondt-ui-blend-clip-path-size));
+
+        --haondt-ui-checkbox-size: var(--haondt-ui-text-font-size);
     }
 }
 

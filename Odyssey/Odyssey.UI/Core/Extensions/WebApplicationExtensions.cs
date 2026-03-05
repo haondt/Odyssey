@@ -9,6 +9,7 @@ namespace Odyssey.UI.Core.Extensions
         public static WebApplication UseOdysseyUI(this WebApplication app)
         {
             app.MapHub<BrowserHostHub>(OdysseyRoutes.Hubs.Host.Browser.Index);
+            app.MapHub<DisplayHub>(OdysseyRoutes.Hubs.Display.Browser.Index);
             return app;
         }
     }

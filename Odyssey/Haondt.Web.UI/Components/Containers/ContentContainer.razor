@@ -7,6 +7,9 @@
     public ContentContainerLayout Layout { get; set; } = ContentContainerLayout.Top;
 
     [Parameter]
+    public Optional<string> AddClasses { get; set; }
+
+    [Parameter]
     public ContentContainerWidth Width { get; set; } = ContentContainerWidth.Default;
 
     [Parameter]
@@ -45,6 +48,8 @@
             _shellAttributes["id"] = shellId;
         if (BodyId.TryGetValue(out var bodyId))
             _bodyAttributes["id"] = bodyId;
+        if (AddClasses.TryGetValue(out var addClasses))
+            _shellClasses.Add(addClasses);
     }
 }
 <div class="@string.Join(' ', _shellClasses)" @attributes="_shellAttributes">

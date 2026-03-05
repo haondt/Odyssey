@@ -17,6 +17,11 @@
     overflow-x: hidden;
 }
 
+.breadcrumb-divider {
+    display: flex;
+    align-items: center;
+}
+
 .breadcrumb-divider:before {
     content: "/";
     color: var(--haondt-ui-color-border);

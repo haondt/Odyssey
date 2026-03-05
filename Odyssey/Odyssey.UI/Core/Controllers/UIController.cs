@@ -9,9 +9,9 @@ using Odyssey.UI.Core.Attributes;
 namespace Odyssey.UI.Core.Controllers
 {
 
-    [ServiceFilter(typeof(ModelStateValidationFilter))]
     [Authorize]
-    [HxVaryHeader]
+    [ServiceFilter(typeof(ModelStateValidationFilter), Order = 50)]
+    [HxVaryHeader(Order = 10)]
     public class UIController : Haondt.Web.Core.Controllers.UIController
     {
         [FromServices]

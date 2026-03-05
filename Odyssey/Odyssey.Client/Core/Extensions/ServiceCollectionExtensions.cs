@@ -4,6 +4,8 @@ using Odyssey.Client.Authentication.Models;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Models;
 using Odyssey.Client.Core.Services;
+using Odyssey.Client.Display.Models;
+using Odyssey.Client.Display.Services;
 using Odyssey.Client.Host.Services;
 
 namespace Odyssey.Client.Core.Extensions
@@ -37,7 +39,10 @@ namespace Odyssey.Client.Core.Extensions
             // host
             services.AddScoped<IClientHostService, ClientHostService>();
 
-
+            // display
+            services.AddScoped<DisplaySessionContext>();
+            services.AddScoped<IDisplaySessionService, DisplaySessionService>();
+            services.AddScoped<IClientDisplayService, ClientDisplayService>();
 
             return services;
 
