@@ -42,7 +42,10 @@
 }
 
 <div id="@Id" class="@_bodyContentClasses">
-    <template _="on load send UpdateWebsocket(role: '@_targetRole', displayId: '@_displayId') to #@Websocket.Id then remove me end"></template>
+    <template _="on load
+        send UpdateWebsocket(role: '@_targetRole', displayId: '@_displayId') to #@Websocket.Id
+        send @(LayoutOptionsAttribute.Map(q => q.UseBottomSheet).Or(false) ? "activate" : "deactivate") to #@BottomSheetContainer.Id
+        then remove me end"></template>
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
             @if(Content is IHasNavigationBarComponent hasNav)

@@ -1,0 +1,39 @@
+@using Haondt.Web.UI.Components.Components;
+@using Haondt.Web.UI.Components.Element
+
+@code {
+    public const string Id = "bottom-sheet-container";
+    [Parameter]
+    public Optional<BottomSheet> Sheet { get; set; }
+    [Parameter]
+    public bool Active { get; set; } = false;
+}
+
+@{
+    var classes = Active ? "active" : "";
+}
+
+<div id="@Id" class="@classes" _="on activate add .active to me end on deactivate remove .active from me end">
+    <div class="bottom-sheet-background"></div>
+    <div class="bottom-sheet-content">
+        <button class="bottom-sheet-tab" _="on click toggle .active on the closest .bottom-sheet-content">
+            <svg class="svg-tab" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 30" width="200" height="30">
+              <path d="
+                M 0 30
+                Q 15 30 21.70820393249937 16.58359213500126
+                L 23.29179606750063 13.416407864998737
+                Q 30 0 45 0
+                L 155.0 0
+                Q 170.0 0 176.70820393249937 13.416407864998737
+                L 178.29179606750063 16.58359213500126
+                Q 185.0 30 200.0 30
+                Z
+              " fill="currentColor"></path>
+            </svg>
+            <div class="icon-container">
+                <LucideIcon CssClass="svg-icon fg-primary" Size="28" Name="chevron-down"/>
+            </div>
+        </button>
+        <ObjectComponentT Component="@Sheet.Or(() => new())" />
+    </div>
+</div>

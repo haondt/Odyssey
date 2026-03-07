@@ -30,8 +30,6 @@ namespace Odyssey.UI.Host.Hubs
                 return;
             }
 
-            Console.WriteLine($"Hello {displayId}!");
-
             await base.OnConnectedAsync();
         }
     }

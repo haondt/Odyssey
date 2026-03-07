@@ -2,7 +2,7 @@
 @using Haondt.Web.UI.Services
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Display)]
-@attribute [LayoutOptions(FillPage = true)]
+@attribute [LayoutOptions(FillPage = true, UseBottomSheet = true)]
 @implements IHasNavigationBarComponent
 @code {
     public NavigationBar CreateNavigationBar() => new() { Template = new NavigationBarEmpty() };

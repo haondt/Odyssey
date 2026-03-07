@@ -85,3 +85,17 @@
     font-size: var(--haondt-ui-hint-font-size);
     color: var(--haondt-ui-color-danger);
 }
+
+.idle-brand-display-text {
+    font-size: 192px;
+}
+@media screen and (max-width: 1024px) {
+    .idle-brand-display-text {
+        font-size: 96px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .idle-brand-display-text {
+        font-size: 64px;
+    }
+}

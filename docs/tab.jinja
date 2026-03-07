@@ -1,0 +1,47 @@
+{% set tab_angle_direction = (tail_size, 0 - height) %}
+{% set tab_angle_magnitude = sqrt((tab_angle_direction[0] ** 2 + tab_angle_direction[1] ** 2)) %}
+{% set tab_angle_norm = (tab_angle_direction[0] / tab_angle_magnitude, tab_angle_direction[1] / tab_angle_magnitude) %}
+
+{% set a = p(0, height) %}
+{% set i1 = p(tail_size, height) %}
+{% set theta = atan(height / tail_size) %}
+{% set i1b = p(cos(theta) * tail_size, sin(theta) * -tail_size) %}
+{% set b = i1 + i1b %}
+{% set i2 = p(tail_size * 2, 0) %}
+{% set c = i2 + p(-abs(i1b.x), abs(i1b.y)) %}
+{% set d = p(i2.x + tail_size, 0) %}
+{% set m = p(width / 2, 0) %}
+{% set e = p((m+m-d).x, d.y) %}
+{% set i3 = p((m+m-i2).x, i2.y) %}
+{% set f = p((m+m-c).x, c.y) %}
+{% set i4 = p((m+m-i1).x, i1.y) %}
+{% set g = p((m+m-b).x, b.y) %}
+{% set h = p((m+m-a).x, a.y) %}
+
+
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-tab" viewBox="0 0 {{ width }} {{ height }}" width="{{ width }}" height="{{ height }}"
+  {% if scale %} style="width:100%;height:auto;"{% endif %}
+>
+  <path d="
+    M {{ a.x }} {{ a.y }}
+    Q {{ i1.x }} {{ i1.y }} {{ b.x }} {{ b.y }}
+    L {{ c. x }} {{ c.y }}
+    Q {{ i2.x }} {{ i2.y }} {{ d.x }} {{ d.y }}
+    L {{ e.x }} {{ e.y }}
+    Q {{ i3.x }} {{ i3.y }} {{ f.x }} {{ f.y }}
+    L {{ g.x }} {{ g.y }}
+    Q {{ i4.x }} {{ i4.y }} {{ h.x }} {{ h.y }}
+    Z
+  "
+    fill="{{ fill }}"
+  />
+</svg>
+
+
+<!--
+width: 200
+height: 30
+tail_size: 15
+scale: false
+fill: 'currentColor'
+-->

@@ -1,0 +1,21 @@
+#bottom-sheet {
+    background: var(--haondt-ui-color-chip-background);
+    transition: background var(--bottom-sheet-transition-duration) ease;
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+    padding: 60px;
+    flex-grow: 1;
+}
+
+.bottom-sheet-content.active > #bottom-sheet {
+    background: var(--haondt-ui-color-background);
+}
+
+@media (--haondt-ui-media-query-lte-s) {
+    #bottom-sheet {
+        border-top-left-radius: 45px;
+        border-top-right-radius: 45px;
+        padding: 30px;
+        flex-grow: 1;
+    }
+}

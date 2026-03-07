@@ -1,5 +1,6 @@
 ﻿using Haondt.Web.Services;
 using Haondt.Web.UI.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -15,6 +16,7 @@ namespace Odyssey.UI.Display.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route(OdysseyRoutes.Display.Index)]
     [DisplaySession(Order = 40)]
+    [AllowAnonymous]
     public class DisplayController(IComponentFactory componentFactory,
         IDisplaySessionService displaySessionService,
         IClientDisplayService display,
