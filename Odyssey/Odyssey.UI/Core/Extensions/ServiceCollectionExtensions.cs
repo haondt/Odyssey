@@ -28,6 +28,7 @@ namespace Odyssey.UI.Core.Extensions
             services.AddSingleton<ITargetedExceptionActionResultFactory, ErrorPageExceptionActionResultFactory>();
             services.Configure<UISettings>(configuration.GetSection(nameof(UISettings)));
             services.AddSingleton<ITargetedExceptionActionResultFactory, CatchAllErrorPageExceptionActionResultFactory>();
+            services.AddScoped<UIRequestContext>();
 
             services.AddSingleton<DisplaySessionHubFilter>();
             services.AddSignalR(hubOptions =>

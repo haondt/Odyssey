@@ -44,6 +44,12 @@
             {
                 public const string Index = $"{Fragments.Index}/websocket";
             }
+            public static BottomSheetContent BottomSheetContentP(string role) => new(role);
+
+            public class BottomSheetContent(string role)
+            {
+                public string IndexP = $"{Fragments.Index}/bottom-sheet-content/{role}";
+            }
         }
 
         public static class Host

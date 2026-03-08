@@ -5,10 +5,13 @@
 @using Haondt.Web.UI.Components.Element
 @using Haondt.Web.UI.Components.Htmx
 @using Haondt.Web.UI.Components.Relays
+@using Microsoft.Extensions.DependencyInjection
 @using Odyssey.Client.Display.Services
 @using Odyssey.UI.Core.Extensions
+@using Odyssey.UI.Core.Models
 @using Odyssey.UI.Core.Services
 @using Odyssey.UI.Display.Filters
+@inject UIRequestContext UIRequestContext
 @code {
     [Parameter, EditorRequired]
     public required IComponent Content { get; set; }
@@ -46,6 +49,13 @@
         send UpdateWebsocket(role: '@_targetRole', displayId: '@_displayId') to #@Websocket.Id
         send @(LayoutOptionsAttribute.Map(q => q.UseBottomSheet).Or(false) ? "activate" : "deactivate") to #@BottomSheetContainer.Id
         then remove me end"></template>
+    @if (Request.IsHxRequest()) 
+    {
+        @if (UIRequestContext.BottomSheetRelayUri != UIRequestContext.BottomSheetTargetUri)
+        {
+            <BottomSheetContentContainer HxSwapOob="true" />
+        }
+    }
     <div id="page-container">
         <NavigationContainer LayoutOptionsAttribute="LayoutOptionsAttribute" >
             @if(Content is IHasNavigationBarComponent hasNav)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Odyssey.Client.Display.Services;
 using Odyssey.Core.Exceptions;
 using Odyssey.GrainInterfaces.Core.Services;
+using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Controllers;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Display.Components;
@@ -17,6 +18,7 @@ namespace Odyssey.UI.Display.Controllers
     [Microsoft.AspNetCore.Mvc.Route(OdysseyRoutes.Display.Index)]
     [DisplaySession(Order = 40)]
     [AllowAnonymous]
+    [EnforceBottomSheetContent(Uri = OdysseyRoutes.Display.Index, Type = typeof(DisplayBottomSheetContent))]
     public class DisplayController(IComponentFactory componentFactory,
         IDisplaySessionService displaySessionService,
         IClientDisplayService display,

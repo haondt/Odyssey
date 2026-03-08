@@ -6,6 +6,7 @@
 @using Haondt.Web.UI.Components.Element
 @using Haondt.Web.UI.Components.Htmx
 @using Haondt.Web.UI.Components.Relays
+@using Haondt.Web.UI.Components.Components
 @using Odyssey.Client.Display.Services
 @using Odyssey.UI.Core.Extensions
 @using Odyssey.UI.Core.Services
@@ -16,10 +17,12 @@
     [Parameter, EditorRequired]
     public required IComponent  Content {get; set;}
 
+    private BottomSheet _bottomSheet = new BottomSheet { Content = new BottomSheetContentContainer() };
+
 }
 <ModalContainer Active="false" />
 <ConfirmationDialogRelay />
 <ToastContainer />
 <Websocket />
-<BottomSheetContainer Active="false" />
+<BottomSheetContainer Sheet="@_bottomSheet" Active="false" />
 <ObjectComponent Component="@Content" />

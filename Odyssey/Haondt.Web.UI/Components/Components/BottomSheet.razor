@@ -1,9 +1,9 @@
 @code {
     public const string Id = "bottom-sheet";
     [Parameter]
-    public bool HxSwapOob { get; set; } = false;
-    [Parameter]
     public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public Optional<IComponent> Content { get; set; }
     [Parameter]
     public bool Active { get; set; } = false;
 }
@@ -13,6 +13,9 @@
 }
 
 <div id="@Id">
-    <p>I am an empty bottom sheet</p>
     @ChildContent
+    @if (Content.HasValue)
+    {
+        <ObjectComponent Component="Content.Value" />
+    }
 </div>

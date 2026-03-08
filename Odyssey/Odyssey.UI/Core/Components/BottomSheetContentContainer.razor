@@ -1,0 +1,30 @@
+@using Odyssey.UI.Core.Models
+@inject UIRequestContext UIRequestContext
+
+@code {
+    public const string Id = "bottom-sheet-content-relay";
+    public const string CurrentRoleHeader = "Ody-BSR-Role";
+    [Parameter]
+    public bool HxSwapOob { get; set; } = false;
+
+    protected Dictionary<string, object> _rootAttributes  = [];
+
+    protected override void OnInitialized()
+    {
+        // we cannot use morph here, seems like it does not process the hyperscript event handler properly
+        if (HxSwapOob)
+            _rootAttributes["hx-swap-oob"] = "outerHTML";
+    }
+
+}
+<div @attributes="@_rootAttributes" id="@Id"
+    _="
+        on htmx:configRequest from <body /> 
+            set the event's detail.headers['@CurrentRoleHeader'] to '@UIRequestContext.BottomSheetTargetUri'  
+        end
+    ">
+    @if(UIRequestContext.BottomSheetTargetUriComponentType.TryGetValue(out var componentType))
+    {
+        <ObjectComponent Type="@componentType" Component="@((IComponent)Activator.CreateInstance(componentType)!)" />
+    }
+</div>

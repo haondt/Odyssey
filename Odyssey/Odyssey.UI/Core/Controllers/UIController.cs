@@ -12,6 +12,7 @@ namespace Odyssey.UI.Core.Controllers
     [Authorize]
     [ServiceFilter(typeof(ModelStateValidationFilter), Order = 50)]
     [HxVaryHeader(Order = 10)]
+    [EnrichUIRequestContext(Order = 10)]
     public class UIController : Haondt.Web.Core.Controllers.UIController
     {
         [FromServices]
