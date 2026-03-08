@@ -1,1 +1,56 @@
-<p>TODO: bottom sheet display content</p>
+<Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel" Align="FrameAlignment.Stretch">
+    <Frame Flex="FrameDirection.RowWrap" Gap="FrameSpacing.Line">
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line" AddClasses='"flex-grow-1"'>
+            <p class="title">Kodiak</p>
+            <Chip Text="@Guid.NewGuid().ToString()" />
+        </Frame>
+        <Frame Template="FrameTemplate.ButtonContainer" Align="FrameAlignment.Start">
+            <Button Style="ButtonStyle.Ghost" Color="ButtonColor.Primary">Change role</Button>
+            <Button Style="ButtonStyle.Ghost" Color="ButtonColor.Danger">Leave party</Button>
+        </Frame>
+    </Frame>
+    <Field Title='"Join code"' Type="FieldType.None">
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line" AddClasses='"width-full"'>
+            <Frame Template="FrameTemplate.Card" Padding="FrameSpacing.Panel">
+                <p class="title uppercase monospace text-align-center">MZY38</p>
+            </Frame>
+        </Frame>
+    </Field>
+    <Field Title='"Party"' Type="FieldType.None">
+        <Frame
+            Flex="FrameDirection.Row" 
+            Justify="FrameJustification.Center" 
+            Padding="FrameSpacing.Card" 
+            AddClasses='"bg-background-strong width-full"'
+            Radius="FrameRadius.Card">
+            <p class="fg-text-weak">Not in a party</p>
+        </Frame>
+    </Field>
+    <Field Title='"Party members"' Type="FieldType.None">
+        <Frame Template="FrameTemplate.Card" AddClasses='"width-full"'>
+            <VerticalList Gap="VerticalListSpacing.Line">
+                <VerticalListItem>
+                    <Frame Flex="FrameDirection.Row" Gap="FrameSpacing.Card">
+                        <p class="subtitle fg-primary">Haondt</p>
+                        <p class="italic">Web App</p>
+                    </Frame>
+                </VerticalListItem>
+                @foreach(var (name, type) in new List<(string, string)>
+                {
+                    ("Mojave", "Web App"),
+                    ("Juneau", "Web App"),
+                    ("Banff", "Beacon"),
+                    ("Sedona", "Web App"),
+                })
+                {
+                    <VerticalListItem>
+                        <Frame Flex="FrameDirection.Row" Gap="FrameSpacing.Card">
+                            <p class="subtitle">@name</p>
+                            <p class="italic">@type</p>
+                        </Frame>
+                    </VerticalListItem>
+                }
+            </VerticalList>
+        </Frame>
+    </Field>
+</Frame>

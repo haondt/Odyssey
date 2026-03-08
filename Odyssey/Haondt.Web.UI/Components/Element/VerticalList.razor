@@ -11,6 +11,9 @@
     [Parameter]
     public Optional<string> Id { get; set; }
 
+    [Parameter]
+    public VerticalListSpacing Gap { get; set; } = VerticalListSpacing.None;
+
     private Optional<string> _verticalListId;
 
     private Dictionary<string, object> _rootAttributes = [];
@@ -23,10 +26,12 @@
 
 }
 <ol @attributes="_rootAttributes">
-    <CascadingValue Value="_verticalListId" Name="@nameof(_verticalListId)">
-        <CascadingValue Value="Clickable" Name="@nameof(Clickable)">
-            <CascadingValue Value="Hoverable" Name="@nameof(Hoverable)">
-                @ChildContent
+    <CascadingValue Value="Gap" Name="@nameof(Gap)">
+        <CascadingValue Value="_verticalListId" Name="@nameof(_verticalListId)">
+            <CascadingValue Value="Clickable" Name="@nameof(Clickable)">
+                <CascadingValue Value="Hoverable" Name="@nameof(Hoverable)">
+                    @ChildContent
+                </CascadingValue>
             </CascadingValue>
         </CascadingValue>
     </CascadingValue>

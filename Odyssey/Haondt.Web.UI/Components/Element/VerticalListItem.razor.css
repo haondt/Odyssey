@@ -14,3 +14,30 @@ li.vertical-list-item.vertical-list-item-hoverable:hover {
 li.vertical-list-item.vertical-list-item-clickable {
     cursor: pointer;
 }
+
+.vertical-list-item.vertical-list-item-gap-line {
+    &:has(+ li.vertical-list-item) {
+        padding-bottom: var(--haondt-ui-line-spacing);
+    }
+    + li.vertical-list-item {
+        padding-top: var(--haondt-ui-line-spacing);
+    }
+}
+
+.vertical-list-item.vertical-list-item-gap-card {
+    &:has(+ li.vertical-list-item) {
+        padding-bottom: var(--haondt-ui-card-spacing);
+    }
+    + li.vertical-list-item {
+        padding-top: var(--haondt-ui-card-spacing);
+    }
+}
+
+.vertical-list-item.vertical-list-item-gap-panel {
+    &:has(+ li.vertical-list-item) {
+        padding-bottom: var(--haondt-ui-panel-spacing);
+    }
+    + li.vertical-list-item {
+        padding-top: var(--haondt-ui-panel-spacing);
+    }
+}

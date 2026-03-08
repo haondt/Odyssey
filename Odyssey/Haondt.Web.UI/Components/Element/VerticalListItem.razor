@@ -1,3 +1,4 @@
+@using Haondt.Web.UI.Models
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -13,6 +14,9 @@
     [CascadingParameter(Name = nameof(Hoverable))]
     public Optional<bool> Hoverable { get; set; }
 
+    [CascadingParameter(Name = nameof(Gap))]
+    public VerticalListSpacing Gap { get; set; } = VerticalListSpacing.None;
+
     private HashSet<string> _rootClasses = ["vertical-list-item"];
     protected override void OnInitialized()
     {
@@ -20,6 +24,7 @@
             _rootClasses.Add("vertical-list-item-clickable");
         if (Hoverable.Or(Clickable.Or(false)))
             _rootClasses.Add("vertical-list-item-hoverable");
+        _rootClasses.Add($"vertical-list-item-gap-{StringFormatter.PascalToKebabCase(Gap.ToString())}");
     }
 }
 <li class="@string.Join(' ', _rootClasses)">

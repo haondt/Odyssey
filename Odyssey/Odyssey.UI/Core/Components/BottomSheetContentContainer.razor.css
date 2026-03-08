@@ -1,0 +1,6 @@
+#bottom-sheet-content-container {
+    /* shove the scrollbar into the sheet padding */
+    margin-right: calc(-1 * var(--haondt-ui-card-spacing));
+    padding-right: var(--haondt-ui-card-spacing);
+    overflow-y: auto;
+}
