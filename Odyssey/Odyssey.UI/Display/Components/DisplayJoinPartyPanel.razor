@@ -1,14 +1,31 @@
 @using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Services
+@using Odyssey.Client.Display.Services
+@using Odyssey.GrainInterfaces.Sessions.Models
+
+@inject IDisplaySessionService DisplaySession
+@inject IClientDisplayService Display
 
 @code {
     public const string Id = "device-join-party-panel";
+
+    private bool _ready;
+    private DisplayProfile _profile = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        _profile = await Display.GetDisplayProfileAsync();
+        _ready = true;
+        base.OnInitialized();
+    }
 }
 
-<form id="@Id" hx-post="@OdysseyRoutes.Display.Party.Join.Index">
-    <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
-        <SmartField TBase="DisplayJoinPartyModel" Field="m => m.JoinCode" />
-        <SmartField TBase="DisplayJoinPartyModel" Field="m => m.DisplayName" />
-        <Button Type="ButtonType.Submit" Color="ButtonColor.Primary">Join</Button>
-    </Frame>
-</form>
+@if(_ready)
+{
+    <form id="@Id" hx-post="@OdysseyRoutes.Display.Party.Join.Index">
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
+            <SmartField TBase="DisplayJoinPartyModel" Field="m => m.JoinCode" />
+            <SmartField TBase="DisplayJoinPartyModel" Field="m => m.DisplayName" Value="_profile.Name" />
+            <Button Type="ButtonType.Submit" Color="ButtonColor.Primary">Join</Button>
+        </Frame>
+    </form>
+}

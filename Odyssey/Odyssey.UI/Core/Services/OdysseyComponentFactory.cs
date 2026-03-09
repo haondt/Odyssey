@@ -4,6 +4,7 @@ using Haondt.Web.Core.Attributes;
 using Haondt.Web.Core.Extensions;
 using Haondt.Web.Core.Http;
 using Haondt.Web.Services;
+using Haondt.Web.UI.Components.Containers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Odyssey.UI.Core.Components;
@@ -38,6 +39,7 @@ namespace Odyssey.UI.Core.Services
                     componentType = component.GetType();
                     response
                         .HxTriggerAfterSwap("closeModal")
+                        .HxTriggerAfterSwap("close", target: $"#{BottomSheetContainer.Id}")
                         .HxRetarget($"#{Odyssey.UI.Core.Components.Layout.Id}")
                         .HxReselect("unset")
                         .HxReswap("morph:outerHTML");
