@@ -20,7 +20,7 @@ namespace Odyssey.UI.Host.Hubs
             if (Context.GetHttpContext() is not { } context)
                 return new();
 
-            var sessionService = context.RequestServices.GetRequiredService<ISessionService>();
+            var sessionService = context.RequestServices.GetRequiredService<IHostSessionService>();
             if (!sessionService.IsAuthenticated)
                 return new();
 

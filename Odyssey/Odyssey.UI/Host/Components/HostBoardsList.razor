@@ -10,7 +10,7 @@
 @using Odyssey.UI.Core.Models
 @using static Odyssey.UI.Host.Controllers.HostController
 @inject IClientGameRegistry Games
-@inject ISessionService Session
+@inject IHostSessionService Session
 @code {
     [Parameter] public bool ForceLoadBoards { get; set; } = false;
     [Parameter] public List<(Guid Id, BoardMetadata Board)> Boards { get; set; } = [];

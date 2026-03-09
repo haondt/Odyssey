@@ -9,7 +9,7 @@ namespace Odyssey.Client.Authentication.Services
         public IServiceScope CreateScope(string userId)
         {
             var scope = scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<SessionContext>();
+            var context = scope.ServiceProvider.GetRequiredService<HostSessionContext>();
             context.IsAuthenticated = true;
             context.UserId = userId;
             return scope;

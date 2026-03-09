@@ -27,7 +27,7 @@ namespace Odyssey.UI.Host.Controllers
     [Microsoft.AspNetCore.Mvc.Route(OdysseyRoutes.Host.Index)]
     public class HostController(
         IClientGameRegistry gameRegistry,
-        ISessionService sessionService,
+        IHostSessionService sessionService,
         IBoardMetadataRepository boards,
         IClientHostService hostService,
         ILogger<HostController> logger) : UIController
@@ -164,10 +164,6 @@ namespace Odyssey.UI.Host.Controllers
             ResponseData
                 .HxPushUrl(OdysseyRoutes.Host.Boards.Index);
             return await ComponentFactory.RenderComponentAsync<Components.HostBoards>();
-
-            ResponseData
-                .HxLocation(OdysseyRoutes.Host.Boards.Index);
-            //return TypedResults.Ok();
         }
 
         [HttpGet(OdysseyRoutes.Host.Board.Id.Reset.Index)]

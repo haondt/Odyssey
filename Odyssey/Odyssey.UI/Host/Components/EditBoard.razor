@@ -8,7 +8,7 @@
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
 @inject IClientGameRegistry Games
-@inject ISessionService Session
+@inject IHostSessionService Session
 
 @code {
     [Parameter, EditorRequired]

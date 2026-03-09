@@ -5,5 +5,6 @@ namespace Odyssey.Persistence.Models
     public class UserDataSurrogate : IdentityUser
     {
         public ICollection<BoardMetadataDataModel> BoardMetadatas { get; set; } = [];
+        public ICollection<SessionMetadataDataModel> SessionMetadatas { get; set; } = [];
     }
 }

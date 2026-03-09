@@ -46,6 +46,14 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
             var version = context.Request.Form.GetValue<int>("version");
             var model = await modelBinder.BindAndValidateFormAsync<DebugGameBoard, DebugGameEditBoard>(context);
             version = await boards.SetDataAsync(id, model, version);
+            try
+            {
+                await boardMetadataRepository.TouchBoardMetadataAsync(id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Caught exception while touching board metadata after updating board state");
+            }
 
             return new DebugGameEditBoard
             {

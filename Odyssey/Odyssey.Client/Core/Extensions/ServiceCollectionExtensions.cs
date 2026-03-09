@@ -28,8 +28,8 @@ namespace Odyssey.Client.Core.Extensions
             // authentication
             services.Configure<AuthenticationSettings>(configuration.GetSection(nameof(AuthenticationSettings)));
             services.AddScoped<IUserSessionService, UserSessionService>();
-            services.AddScoped<SessionContext>();
-            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<HostSessionContext>();
+            services.AddScoped<IHostSessionService, HostSessionService>();
             services.AddScoped<IClientStartupParticipant, AuthenticationDataSeeder>();
             services.AddSingleton<ISignalRScopeFactory, SignalRScopeFactory>();
 

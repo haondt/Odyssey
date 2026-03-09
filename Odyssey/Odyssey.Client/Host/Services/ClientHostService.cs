@@ -4,7 +4,7 @@ using Odyssey.Client.Sessions.Models;
 
 namespace Odyssey.Client.Host.Services
 {
-    public class ClientHostService(ISessionService sessionService, IServiceProvider serviceProvider) : IClientHostService
+    public class ClientHostService(IHostSessionService sessionService, IServiceProvider serviceProvider) : IClientHostService
     {
         public async Task<ClientHostPartyHandle> GetPartyAsync()
         {

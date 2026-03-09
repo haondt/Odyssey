@@ -6,9 +6,9 @@ using System.Security.Claims;
 
 namespace Odyssey.Client.Authentication.Services
 {
-    public class SessionService(IHttpContextAccessor httpContextAccessor,
+    public class HostSessionService(IHttpContextAccessor httpContextAccessor,
         IUserSessionService userService,
-        SessionContext sessionContext) : ISessionService
+        HostSessionContext sessionContext) : IHostSessionService
     {
         public bool IsAuthenticated
         {

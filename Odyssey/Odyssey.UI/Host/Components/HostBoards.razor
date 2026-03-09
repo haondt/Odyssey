@@ -7,7 +7,7 @@
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
 @inject IBoardMetadataRepository Boards
-@inject ISessionService Session
+@inject IHostSessionService Session
 
 @code {
     public NavigationBar CreateNavigationBar() => new()

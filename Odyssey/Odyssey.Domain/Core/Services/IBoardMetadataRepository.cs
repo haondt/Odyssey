@@ -12,5 +12,6 @@ namespace Odyssey.Domain.Core.Services
         Task<(Guid Id, BoardMetadata Board)> CreateBoardMetadataAsync(string gameId, string ownerId, string name);
         Task<BoardMetadata> UpdateBoardMetadataAsync(OwnedEntityGuid id, string name);
         Task DeleteBoardMetadataAsync(OwnedEntityGuid id);
+        Task<BoardMetadata> TouchBoardMetadataAsync(OwnedEntityGuid id);
     }
 }

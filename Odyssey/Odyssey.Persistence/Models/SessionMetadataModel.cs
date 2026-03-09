@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Odyssey.Persistence.Models
 {
-    public record BoardMetadataDataModel
+    public class SessionMetadataDataModel
     {
         public required string Id { get; set; }
         public required Guid EntityId { get; set; }
         public required string GameId { get; set; }
+        public BoardMetadataDataModel? BoardMetadata { get; set; }
+        public string? BoardMetadataId { get; set; }
 
         public UserDataSurrogate Owner { get; set; } = default!;
         public string OwnerId { get; set; } = default!;
@@ -16,20 +18,23 @@ namespace Odyssey.Persistence.Models
         public required string Name { get; set; }
         public required string SearchData { get; set; }
         public required AbsoluteDateTime CreatedOn { get; set; }
-        public required AbsoluteDateTime ModifiedOn { get; set; }
-
-        public ICollection<SessionMetadataDataModel> SessionMetadatas { get; set; } = [];
+        public required AbsoluteDateTime? LastPlayedOn { get; init; }
+        public SessionStatus Status { get; set; } = SessionStatus.Created;
     }
 
-    public class BoardMetadataDataModelConfiguration : IEntityTypeConfiguration<BoardMetadataDataModel>
+    public class SessionMetadataDataModelConfiguration : IEntityTypeConfiguration<SessionMetadataDataModel>
     {
-        public void Configure(EntityTypeBuilder<BoardMetadataDataModel> builder)
+        public void Configure(EntityTypeBuilder<SessionMetadataDataModel> builder)
         {
             builder.HasOne(x => x.Owner)
-                .WithMany(r => r.BoardMetadatas)
+                .WithMany(r => r.SessionMetadatas)
                 .HasForeignKey(x => x.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.BoardMetadata)
+                .WithMany(r => r.SessionMetadatas)
+                .HasForeignKey(x => x.BoardMetadataId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
-
 }

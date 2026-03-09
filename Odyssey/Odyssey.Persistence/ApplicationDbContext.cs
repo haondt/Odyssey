@@ -10,6 +10,7 @@ namespace Odyssey.Persistence
     public class ApplicationDbContext : IdentityDbContext<UserDataSurrogate>
     {
         public DbSet<BoardMetadataDataModel> BoardMetadatas { get; set; } = default!;
+        public DbSet<SessionMetadataDataModel> SessionMetadatas { get; set; } = default!;
 
         public ApplicationDbContext(DbContextOptions options)
             : base(options)

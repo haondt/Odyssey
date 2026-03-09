@@ -2,7 +2,7 @@
 
 namespace Odyssey.Client.Authentication.Services
 {
-    public interface ISessionService
+    public interface IHostSessionService
     {
         public bool IsAuthenticated { get; }
 

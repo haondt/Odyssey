@@ -2,7 +2,7 @@
 @using Odyssey.Client.Authentication.Services
 @using Odyssey.UI.Core.Models
 @inject NavigationManager Nav
-@inject ISessionService SessionService
+@inject IHostSessionService SessionService
 @code {
     [Parameter, EditorRequired]
     public required Union<NavigationBarEmpty, NavigationBarDefault, NavigationBarRoles, NavigationBarMinimal> Template { get; set; }

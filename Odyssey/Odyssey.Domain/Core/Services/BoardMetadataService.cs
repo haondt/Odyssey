@@ -84,6 +84,17 @@ namespace Odyssey.Domain.Core.Services
             return BoardMetadata.FromDataModel(board);
         }
 
+        public async Task<BoardMetadata> TouchBoardMetadataAsync(OwnedEntityGuid id)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var board = await dbContext.BoardMetadatas
+                .FirstOrDefaultAsync(q => q.Id == id)
+                ?? throw new KeyNotFoundException($"Board with id {id} does not exist.");
+            board.ModifiedOn = clock.Now;
+            await dbContext.SaveChangesAsync();
+            return BoardMetadata.FromDataModel(board);
+        }
+
         public async Task DeleteBoardMetadataAsync(OwnedEntityGuid id)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();

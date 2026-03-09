@@ -16,7 +16,7 @@ namespace Odyssey.UI.Authentication.Controllers
 {
     [Route(OdysseyRoutes.Auth.Index)]
     public class AuthenticationController(
-        ISessionService sessionService,
+        IHostSessionService sessionService,
         IUserSessionService userService,
         ICachedDataRepository<ServerSettings> serverSettings) : UIController
     {
