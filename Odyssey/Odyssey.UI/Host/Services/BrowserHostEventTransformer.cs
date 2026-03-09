@@ -29,6 +29,7 @@ namespace Odyssey.UI.Host.Services
 
             return outbound switch
             {
+                // TODO: this will be different when its the bottom sheet version..
                 PartyDisbandedOutboundEvent disbandedEvent => await renderer.RenderComponentAsync(new HostPartyPanel
                 {
                     HxSwapOob = true

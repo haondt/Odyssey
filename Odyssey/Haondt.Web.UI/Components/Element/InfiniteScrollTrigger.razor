@@ -1,8 +1,9 @@
+@using Haondt.Web.UI.Models
 @code {
     [Parameter, EditorRequired]
     public required string HxGet { get; set; }
     [Parameter]
-    public Optional<string> HxVals { get; set; }
+    public Optional<HxVals> HxVals { get; set; }
 
     [Parameter]
     public RenderFragment? Skeleton { get; set; }

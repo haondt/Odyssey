@@ -1,0 +1,45 @@
+@using System.Text
+@using Newtonsoft.Json
+@code {
+    [Parameter, EditorRequired]
+    public required string Event {get; set; }
+
+    [Parameter]
+    public Optional<Dictionary<string, object>> Arguments { get; set; }
+
+    [Parameter]
+    public Optional<string> Target {get; set; }
+
+    public static Trigger Create(string @event, Optional<string> target = default, params (string, object)[] args) => new()
+        {
+            Event = @event,
+            Target = target,
+            Arguments = args.ToDictionary(q => q.Item1, q => q.Item2)
+        };
+
+    private string _body = default!;
+    protected override void OnInitialized()
+    {
+        var sb = new StringBuilder($"on load send {Event}");
+        if (Arguments.TryGetValue(out var arguments) && arguments.Count > 0)
+        {
+            var argString = string.Join(", ",
+                arguments.Select(q => $"{q.Key}:{JsonConvert.SerializeObject(q.Value)}"));
+            sb.Append($"({argString})");
+        }
+        sb.Append(' ');
+
+        if (Target.TryGetValue(out var target))
+        {
+            sb.Append("to ");
+            sb.Append(target);
+            sb.Append(' ');
+        }
+
+        sb.Append("then remove me end");
+
+        _body = sb.ToString();
+    }
+}
+
+<template _='@_body' class="hidden"></template>

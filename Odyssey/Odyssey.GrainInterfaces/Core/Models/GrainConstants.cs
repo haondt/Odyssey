@@ -5,5 +5,6 @@
         public const string GrainStorage = "Grains";
         public const string SignalRStreams = "SignalRStreams";
         public const string HostEventsStreamNamespace = "HostEvents";
+        public const string DisplayEventsStreamNamespace = "DisplayEvents";
     }
 }

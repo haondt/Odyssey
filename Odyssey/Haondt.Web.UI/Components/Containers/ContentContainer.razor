@@ -24,8 +24,8 @@
     [Parameter]
     public bool HxSwapOob { get; set; } = false;
 
-    protected HashSet<string> _shellClasses = ["content-container-shell"];
-    protected Dictionary<string, object> _shellAttributes  = [];
+    private HashSet<string> _shellClasses = ["content-container-shell"];
+    private Dictionary<string, object> _shellAttributes  = [];
 
     protected HashSet<string> _bodyClasses = ["content-container-body"];
     protected Dictionary<string, object> _bodyAttributes  = [];

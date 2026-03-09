@@ -1,4 +1,5 @@
 @using Haondt.Web.UI.Components.Components;
+@using Haondt.Web.UI.Models
 @code {
     [Parameter]
     public Optional<string> Text { get; set; } 
@@ -6,6 +7,9 @@
 
     [Parameter]
     public Optional<string> HxPost { get; set; } 
+
+    [Parameter]
+    public Optional<HxVals> HxVals { get; set; } 
 
     [Parameter]
     public Optional<string> Hyperscript { get; set; } 
@@ -27,7 +31,7 @@
 
     [Parameter]
     public Union<string, ConfirmationDialogModel>? HxConfirm { get; set; } 
-    
+
     [Parameter]
     public Optional<string> HxPrompt { get; set; } 
 
@@ -67,6 +71,8 @@
             _rootAttributes["hx-get"] = hxGet;
         if (HxDelete.TryGetValue(out var hxDelete))
             _rootAttributes["hx-delete"] = hxDelete;
+        if (HxVals.TryGetValue(out var hxVals))
+            _rootAttributes["hx-vals"] = hxVals;
         if (HxTarget.TryGetValue(out var hxTarget))
             _rootAttributes["hx-target"] = hxTarget;
         if (HxPushUrl.TryGetValue(out var hxPushUrl))

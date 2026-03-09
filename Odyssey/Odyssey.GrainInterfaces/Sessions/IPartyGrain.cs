@@ -1,4 +1,5 @@
-﻿using Odyssey.GrainInterfaces.Core;
+﻿using Haondt.Core.Models;
+using Odyssey.GrainInterfaces.Core;
 using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.GrainInterfaces.Testing;
 
@@ -19,7 +20,7 @@ namespace Odyssey.GrainInterfaces.Sessions
 
     public interface IMemberPartyGrain : ICommonPartyGrain
     {
-        Task LeaveAsync(IPartyMemberGrain member);
+        Task<bool> LeaveAsync(IPartyMemberGrain member, Optional<string> joinCode = default);
         Task<bool> JoinAsync(IPartyMemberGrain member, string joinCode);
         Task<MemberPartyDetails> GetPartyDetailsAsync(IPartyMemberGrain requester, PartyMemberProfile requesterProfile);
     }

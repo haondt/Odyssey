@@ -60,7 +60,6 @@ namespace Odyssey.UI.Host.Controllers
             var (boardId, board) = await game.Boards.CreateBoardAsync(await sessionService.GetUserIdAsync(), newBoard.Name);
 
             ResponseData
-                .HxTriggerAfterSwap("closeModal")
                 .HxPushUrl($"{OdysseyRoutes.Host.Board.Index}/{boardId}");
             return await ComponentFactory.RenderComponentAsync(new EditBoard
             {
@@ -162,10 +161,13 @@ namespace Odyssey.UI.Host.Controllers
                     logger.LogError(ex, "Failed to delete board data after deleting metadata.");
                 }
             }
+            ResponseData
+                .HxPushUrl(OdysseyRoutes.Host.Boards.Index);
+            return await ComponentFactory.RenderComponentAsync<Components.HostBoards>();
 
-            ResponseData.HxTriggerAfterSwap("closeModal")
+            ResponseData
                 .HxLocation(OdysseyRoutes.Host.Boards.Index);
-            return TypedResults.Ok();
+            //return TypedResults.Ok();
         }
 
         [HttpGet(OdysseyRoutes.Host.Board.Id.Reset.Index)]

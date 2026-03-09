@@ -1,4 +1,5 @@
-﻿using Odyssey.Domain.Core.Events;
+﻿using Microsoft.Extensions.Logging;
+using Odyssey.Domain.Core.Events;
 using Odyssey.Domain.Sessions.Events;
 using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
@@ -9,32 +10,51 @@ namespace Odyssey.Grains.Sessions
 {
     public class HostGrain : Grain, IHostGrain
     {
+        private readonly string _id;
         private readonly IHostPartyGrain _party;
         private readonly IAsyncStream<SignalROutboundEvent> _hostEventStream;
+        private readonly ILogger<HostGrain> _logger;
 
         public HostGrain(IGrainFactory<string, IHostGrain> grainFactory,
-            ICastedGrainFactory<string, IHostPartyGrain> partyGrainFactory)
+            ICastedGrainFactory<string, IHostPartyGrain> partyGrainFactory,
+            ILogger<HostGrain> logger)
         {
-            var id = grainFactory.GetIdentity(this);
-            _party = partyGrainFactory.GetGrain(id);
+            _id = grainFactory.GetIdentity(this);
+            _party = partyGrainFactory.GetGrain(_id);
             _hostEventStream = this.GetStreamProvider(GrainConstants.SignalRStreams)
-                .GetStream<SignalROutboundEvent>(GrainConstants.HostEventsStreamNamespace, id);
+                .GetStream<SignalROutboundEvent>(GrainConstants.HostEventsStreamNamespace, _id);
+            _logger = logger;
         }
 
-        public async Task NotifyPartyDisbandedAsync(string partyId)
+        public async Task NotifyPartyDisbandedAsync(string joinCode)
         {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { HostId = _id }))
+                    _logger.LogDebug("Received party {JoinCode} disbanded event", joinCode);
+            }
             await _party.SetHostDataAsync(new());
-            await _hostEventStream.OnNextAsync(new PartyDisbandedOutboundEvent { PartyId = partyId });
+            await _hostEventStream.OnNextAsync(new PartyDisbandedOutboundEvent { PartyId = joinCode });
         }
 
         public Task NotifyPartyMemberJoinedAsync()
         {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DisplayId = _id }))
+                    _logger.LogDebug("Received party member joined event");
+            }
             // TODO: create new entry in host party data
             return _hostEventStream.OnNextAsync(new PartyMemberJoinedOutboundEvent());
         }
 
         public Task NotifyPartyMemberLeftAsync()
         {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DisplayId = _id }))
+                    _logger.LogDebug("Received party member left event");
+            }
             // TODO: remove entry from host party data
             return _hostEventStream.OnNextAsync(new PartyMemberLeftOutboundEvent());
         }

@@ -6,7 +6,7 @@ namespace Odyssey.GrainInterfaces.Sessions
     public interface IHostGrain : IGrain<string>, IGrainWithStringKey
     {
         [OneWay]
-        Task NotifyPartyDisbandedAsync(string partyId);
+        Task NotifyPartyDisbandedAsync(string joinCode);
 
         [OneWay]
         Task NotifyPartyMemberJoinedAsync();

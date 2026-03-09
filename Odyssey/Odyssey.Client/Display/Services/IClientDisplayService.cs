@@ -8,6 +8,8 @@ namespace Odyssey.Client.Display.Services
     {
         Task<Optional<MemberPartyDetails>> GetPartyAsync();
         Task<DetailedResult<MemberPartyDetails, JoinPartyReason>> JoinPartyAsync(string joinCode);
-        Task ConfigureDisplayProfile(DisplayProfile profile);
+        Task<DetailedResult<LeavePartyReason>> LeavePartyAsync(string joinCode);
+        Task ConfigureDisplayProfileAsync(DisplayProfile profile);
+        Task<DisplayProfile> GetDisplayProfileAsync();
     }
 }

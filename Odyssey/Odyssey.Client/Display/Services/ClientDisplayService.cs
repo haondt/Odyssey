@@ -8,10 +8,16 @@ namespace Odyssey.Client.Display.Services
 {
     public class ClientDisplayService(IDisplaySessionService sessionService, IGrainFactory<Guid, IDisplayGrain> grainFactory) : IClientDisplayService
     {
-        public Task ConfigureDisplayProfile(DisplayProfile profile)
+        public Task ConfigureDisplayProfileAsync(DisplayProfile profile)
         {
             var grain = grainFactory.GetGrain(sessionService.DisplayId);
             return grain.SetProfileAsync(profile);
+        }
+
+        public Task<DisplayProfile> GetDisplayProfileAsync()
+        {
+            var grain = grainFactory.GetGrain(sessionService.DisplayId);
+            return grain.GetProfileAsync();
         }
 
         public Task<Optional<MemberPartyDetails>> GetPartyAsync()
@@ -29,6 +35,12 @@ namespace Odyssey.Client.Display.Services
 
             var partyDetails = await joinResult.Value.GetPartyDetailsAsync(grain, await grain.GetMemberProfileAsync());
             return new(partyDetails);
+        }
+
+        public Task<DetailedResult<LeavePartyReason>> LeavePartyAsync(string joinCode)
+        {
+            var grain = grainFactory.GetGrain(sessionService.DisplayId);
+            return grain.LeavePartyAsync(joinCode);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Haondt.Core.Models;
+using Microsoft.Extensions.Logging;
 using Odyssey.Domain.Core.Events;
+using Odyssey.Domain.Display.Events;
 using Odyssey.Domain.Sessions.Events;
 using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
@@ -14,21 +16,25 @@ namespace Odyssey.Grains.Sessions
 {
     public class DisplayGrain : Grain, IDisplayGrain
     {
+        private readonly Guid _id;
         private readonly IPersistentState<DisplayGrainState> _state;
         private readonly IGrainFactory<string, IJoinCodeGrain> _joinCodeGrainFactory;
+        private readonly ILogger<DisplayGrain> _logger;
         private readonly IAsyncStream<SignalROutboundEvent> _displayEventStream;
 
         public DisplayGrain(
             [PersistentState(nameof(DisplayGrainState), GrainConstants.GrainStorage)] IPersistentState<DisplayGrainState> state,
             IGrainFactory<string, IJoinCodeGrain> joinCodeGrainFactory,
-            IGrainFactory<Guid, IDisplayGrain> grainFactory
+            IGrainFactory<Guid, IDisplayGrain> grainFactory,
+            ILogger<DisplayGrain> logger
             )
         {
-            var id = grainFactory.GetIdentity(this);
+            _id = grainFactory.GetIdentity(this);
             _state = state;
             _joinCodeGrainFactory = joinCodeGrainFactory;
+            _logger = logger;
             _displayEventStream = this.GetStreamProvider(GrainConstants.SignalRStreams)
-                .GetStream<SignalROutboundEvent>(GrainConstants.HostEventsStreamNamespace, id);
+                .GetStream<SignalROutboundEvent>(GrainConstants.DisplayEventsStreamNamespace, _id);
         }
 
         public Task<PartyMemberProfile> GetMemberProfileAsync() => Task.FromResult<PartyMemberProfile>(_state.State.Profile);
@@ -61,18 +67,31 @@ namespace Odyssey.Grains.Sessions
             return new(_state.State.Party.Value!);
         }
 
-        public async Task LeavePartyAsync(string joinCode)
+        public async Task<DetailedResult<LeavePartyReason>> LeavePartyAsync(string joinCode)
         {
             if (!_state.State.Party.TryGetValue(out var currentParty))
-                return;
+                return new(LeavePartyReason.PartyDoesNotExist);
 
-            await currentParty.LeaveAsync(this.AsReference<IDisplayGrain>());
+            if (await currentParty.LeaveAsync(this.AsReference<IDisplayGrain>(), joinCode) == false)
+                return new(LeavePartyReason.PartyDoesNotExist);
+
             _state.State.Party = new();
             await _state.WriteStateAsync();
+
+
+            // we are no longer part of the party so we don't receive any notification about our own removal
+            await _displayEventStream.OnNextAsync(new DisplaySelfLeftPartyOutboundEvent());
+
+            return new();
         }
 
         public async Task NotifyPartyDisbandedAsync(string joinCode)
         {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DisplayId = _id }))
+                    _logger.LogDebug("Received party {JoinCode} disbanded event", joinCode);
+            }
             _state.State.Party = new();
             try
             {
@@ -124,14 +143,22 @@ namespace Odyssey.Grains.Sessions
 
         public Task NotifyPartyMemberJoinedAsync()
         {
-            // TODO
-            throw new NotImplementedException();
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DisplayId = _id }))
+                    _logger.LogDebug("Received party member joined event");
+            }
+            return _displayEventStream.OnNextAsync(new PartyMemberJoinedOutboundEvent());
         }
 
         public Task NotifyPartyMemberLeftAsync()
         {
-            // TODO
-            throw new NotImplementedException();
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DisplayId = _id }))
+                    _logger.LogDebug("Received party member left event");
+            }
+            return _displayEventStream.OnNextAsync(new PartyMemberLeftOutboundEvent());
         }
     }
 }

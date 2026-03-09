@@ -132,6 +132,11 @@
                 {
                     public const string Index = $"{Party.Index}/join";
                 }
+
+                public static class Leave
+                {
+                    public const string Index = $"{Party.Index}/leave";
+                }
             }
         }
 

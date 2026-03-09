@@ -13,10 +13,13 @@
     var classes = Active ? "active" : "";
 }
 
-<div id="@Id" class="@classes" _="on activate add .active to me end on deactivate remove .active from me end">
+<div id="@Id" class="@classes" _="
+    on activate add .active to me end on deactivate remove .active from me end
+    on open add .active to #bottom-sheet-content end on close remove .active from #bottom-sheet-content end
+    ">
     <div class="bottom-sheet-background"></div>
-    <div class="bottom-sheet-content">
-        <button class="bottom-sheet-tab" _="on click toggle .active on the closest .bottom-sheet-content">
+    <div id="bottom-sheet-content">
+        <button class="bottom-sheet-tab" _="on click toggle .active on #bottom-sheet-content">
             <svg class="svg-tab" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 30" width="200" height="30">
               <path d="
                 M 0 30

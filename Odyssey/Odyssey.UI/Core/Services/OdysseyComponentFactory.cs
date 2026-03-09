@@ -37,6 +37,7 @@ namespace Odyssey.UI.Core.Services
                     component = await _layoutFactory.GetLayoutAsync(component);
                     componentType = component.GetType();
                     response
+                        .HxTriggerAfterSwap("closeModal")
                         .HxRetarget($"#{Odyssey.UI.Core.Components.Layout.Id}")
                         .HxReselect("unset")
                         .HxReswap("morph:outerHTML");

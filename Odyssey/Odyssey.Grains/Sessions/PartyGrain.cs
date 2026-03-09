@@ -129,10 +129,13 @@ namespace Odyssey.Grains.Sessions
                 _ = member.NotifyPartyDisbandedAsync(oldJoinCode);
         }
 
-        public async Task LeaveAsync(IPartyMemberGrain member)
+        public async Task<bool> LeaveAsync(IPartyMemberGrain member, Optional<string> joinCode = default)
         {
             if (!_state.State.Members.Contains(member))
-                return;
+                return true;
+
+            if (joinCode.HasValue && _state.State.JoinCode != joinCode.Value)
+                return false;
 
             _state.State.Members.Remove(member);
             try
@@ -148,6 +151,8 @@ namespace Odyssey.Grains.Sessions
             _ = _hostGrain.NotifyPartyMemberLeftAsync();
             foreach (var partyMember in _state.State.Members)
                 _ = partyMember.NotifyPartyMemberLeftAsync();
+
+            return true;
         }
 
         private Task TryReleaseJoinCode(string joinCode)

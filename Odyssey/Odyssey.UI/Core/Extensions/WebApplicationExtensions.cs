@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Odyssey.UI.Core.Models;
+using Odyssey.UI.Display.Hubs;
 using Odyssey.UI.Host.Hubs;
 
 namespace Odyssey.UI.Core.Extensions

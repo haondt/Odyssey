@@ -1,0 +1,29 @@
+
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Relays
+
+@code {
+    [Parameter]
+    public Optional<string> Title { get; set; }
+
+    [Parameter]
+    public Optional<string> Message { get; set; }
+
+    [Parameter]
+    public string OkText { get; set; } = "Ok";
+
+    [Parameter]
+    public bool OkCloseModal { get; set; } = true;
+    [Parameter]
+    public Optional<string> OkHxGet { get; set; }
+}
+
+<DialogContainer>
+    <Body>
+        <Field Type="FieldType.None" Title="@Title" Description="@Message" />
+    </Body>
+    <Buttons>
+        <Button HxGet="OkHxGet" Style="ButtonStyle.Ghost" Type="OkCloseModal ? ButtonType.CloseModal : ButtonType.Button">@OkText</Button>
+    </Buttons>
+</DialogContainer>

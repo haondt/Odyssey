@@ -54,10 +54,10 @@
         }
         @if(Boards.Count > 0 || ForceLoadBoards)
         {
-            var searchData = new
+            var searchData = new HxVals()
             {
-                search = CurrentSearch.Unwrap(),
-                last = Boards.Count > 0 ? new TemporalContinuationData<Guid>
+                ["search"] = CurrentSearch.Unwrap(),
+                ["last"] = Boards.Count > 0 ? new TemporalContinuationData<Guid>
                 {
                     Id = Boards[^1].Id,
                     Time = Boards[^1].Board.ModifiedOn
@@ -65,7 +65,7 @@
             };
             <InfiniteScrollTrigger
                 HxGet="@OdysseyRoutes.Host.Boards.Search.Index"
-                HxVals="@JsonUtils.SerializeHxVals(searchData)">
+                HxVals="@searchData">
                 <Skeleton>
                     <Frame Flex="FrameDirection.Col">
                         @for(int i = 0; i<2; i ++)

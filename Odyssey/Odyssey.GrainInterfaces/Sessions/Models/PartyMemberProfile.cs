@@ -4,7 +4,7 @@
     public abstract class PartyMemberProfile
     {
         [Id(0)]
-        public string Name { get; set; } = "";
+        public virtual string Name { get; set; } = "";
         [Id(1)]
         public string Type { get; set; } = "Unknown";
     }

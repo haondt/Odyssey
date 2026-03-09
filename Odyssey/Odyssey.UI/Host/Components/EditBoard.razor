@@ -62,10 +62,11 @@
                         <MoreButton TooltipStyle="TooltipStyle.ContextMenu">
                             <Button
                                 HxGet="OdysseyRoutes.Host.Board.IdP(Id.ToString()).MetadataP.IndexP"
+                                HxSwap='"none"'
                                 Style="ButtonStyle.Borderless">Rename</Button>
                             <Button Style="ButtonStyle.Borderless">Clone</Button>
                             <Button Style="ButtonStyle.Borderless">Export</Button>
-                            <Button HxDelete='""' HxConfirm="@confirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
+                            <Button HxSwap='"none"' HxDelete='""' HxConfirm="@confirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
                         </MoreButton>
                     </Frame>
                 </Frame>

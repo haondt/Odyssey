@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Client.Authentication.Models;
+using Odyssey.Client.Display.Models;
 
 namespace Odyssey.Client.Authentication.Services
 {
@@ -11,6 +12,14 @@ namespace Odyssey.Client.Authentication.Services
             var context = scope.ServiceProvider.GetRequiredService<SessionContext>();
             context.IsAuthenticated = true;
             context.UserId = userId;
+            return scope;
+        }
+
+        public IServiceScope CreateDisplayScope(Guid displayId)
+        {
+            var scope = scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<DisplaySessionContext>();
+            context.DisplayId = displayId;
             return scope;
         }
     }
