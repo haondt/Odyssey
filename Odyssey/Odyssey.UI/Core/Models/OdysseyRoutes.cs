@@ -78,10 +78,11 @@
             public static class Session
             {
                 public const string Index = $"{Host.Index}/session";
-                public static Id IdP(string id) => new(id);
-                public class Id(string id)
+                public static Id IdP(Guid id) => new(id);
+                public class Id(Guid id)
                 {
                     public const string Index = $"{Host.Session.Index}/{{id}}";
+                    public string IndexP => $"{Host.Session.Index}/{id}";
 
                     public Metadata MetadataP => new($"{Host.Session.Index}/{id}");
                     public class Metadata(string upperPath)
@@ -91,6 +92,30 @@
                         public string IndexP => $"{upperPath}/{Segment}";
                     }
 
+                    public GameState GameStateP => new($"{Host.Session.Index}/{id}");
+                    public class GameState(string upperPath)
+                    {
+                        public const string Segment = "game-state";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+
+                        public Raw RawP => new($"{upperPath}/{Segment}");
+                        public class Raw(string upperPath)
+                        {
+                            public const string Segment = "raw";
+                            public const string Index = $"{Host.Session.Id.GameState.Index}/{Segment}";
+                            public string IndexP => $"{upperPath}/{Segment}";
+                        }
+                    }
+
+                    public Settings SettingsP => new($"{Host.Session.Index}/{id}");
+                    public class Settings(string upperPath)
+                    {
+                        public const string Segment = "settings";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+
+                    }
                 }
             }
             public static class Boards
@@ -112,8 +137,8 @@
             public static class Board
             {
                 public const string Index = $"{Host.Index}/board";
-                public static Id IdP(string id) => new(id);
-                public class Id(string id)
+                public static Id IdP(Guid id) => new(id);
+                public class Id(Guid id)
                 {
                     public const string Index = $"{Host.Board.Index}/{{id}}";
                     public Reset ResetP => new($"{Host.Board.Index}/{id}");

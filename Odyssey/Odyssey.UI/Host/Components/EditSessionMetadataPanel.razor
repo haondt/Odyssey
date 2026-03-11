@@ -4,29 +4,29 @@
 @using Odyssey.Client.Authentication.Services
 @using Odyssey.Domain.Core.Services
 @inject IHostSessionService SessionService
-@inject IBoardMetadataRepository Boards
+@inject ISessionMetadataRepository Sessions
 @inject IValidationStateReader ValidationState
 @code {
     [Parameter]
-    public Optional<Guid> BoardId { get; set; }
+    public Optional<Guid> Id { get; set; }
 
     [Parameter]
     public bool HxSwap { get; set; } = false;
 
     private bool _ready;
-    private EditBoardMetadataPanelModel _model = default!;
+    private EditSessionMetadataPanelModel _model = default!;
     private Dictionary<string, object> _formAttributes = [];
     protected override async Task OnInitializedAsync()
     {
-        if (BoardId.TryGetValue(out var id) && _model == null)
+        if (Id.TryGetValue(out var id) && _model == null)
         {
-            var metadata = await Boards.GetBoardMetadataAsync(new(await SessionService.GetUserIdAsync(), id));
+            var metadata = await Sessions.GetSessionMetadataAsync(new(await SessionService.GetUserIdAsync(), id));
             if (metadata.IsSuccessful)
                 _model = new()
                 {
                     Name = metadata.Value.Name
                 };
-            _formAttributes["hx-put"] = OdysseyRoutes.Host.Board.IdP(BoardId.Or(Guid.Empty)).MetadataP.IndexP;
+            _formAttributes["hx-put"] = OdysseyRoutes.Host.Session.IdP(Id.Or(Guid.Empty)).MetadataP.IndexP;
         }
         if (_model is null)
             _model = new();
@@ -39,12 +39,12 @@
 @if(_ready) {
     <DialogContainer>
         <Body>
-            <form class="hidden" id="edit-board-metadata-form" @attributes="_formAttributes"></form>
-            <SmartField Select="true" AutoFocus="true" Form='"edit-board-metadata-form"' Base="_model" Field="static m => m.Name"/>
+            <form class="hidden" id="edit-session-metadata-form" @attributes="_formAttributes"></form>
+            <SmartField Select="true" AutoFocus="true" Form='"edit-session-metadata-form"' Base="_model" Field="static m => m.Name"/>
         </Body>
         <Buttons>
             <Button Style="ButtonStyle.Ghost" Type="ButtonType.CloseModal">Cancel</Button>
-            <Button Form='"edit-board-metadata-form"' Color="ButtonColor.Success" Type="ButtonType.Submit">Save</Button>
+            <Button Form='"edit-session-metadata-form"' Color="ButtonColor.Success" Type="ButtonType.Submit">Save</Button>
         </Buttons>
     </DialogContainer>
 }

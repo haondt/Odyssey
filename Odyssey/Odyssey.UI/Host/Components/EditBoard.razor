@@ -61,7 +61,7 @@
                         }
                         <MoreButton TooltipStyle="TooltipStyle.ContextMenu">
                             <Button
-                                HxGet="OdysseyRoutes.Host.Board.IdP(Id.ToString()).MetadataP.IndexP"
+                                HxGet="OdysseyRoutes.Host.Board.IdP(Id).MetadataP.IndexP"
                                 HxSwap='"none"'
                                 Style="ButtonStyle.Borderless">Rename</Button>
                             <Button Style="ButtonStyle.Borderless">Clone</Button>
@@ -74,7 +74,7 @@
             <form hx-post hx-swap="none" id="edit-board-form">
                 <ObjectComponent Component="_editBoardComponent" />
             </form>
-            <FormActionBar DiscardButtonPath='@OdysseyRoutes.Host.Board.IdP(Id.ToString()).ResetP.IndexP' FormId="edit-board-form" />
+            <FormActionBar DiscardButtonPath='@OdysseyRoutes.Host.Board.IdP(Id).ResetP.IndexP' FormId="edit-board-form" />
         </Frame>
     </ContentContainer>
 }

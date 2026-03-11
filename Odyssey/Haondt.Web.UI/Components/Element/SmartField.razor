@@ -30,6 +30,9 @@
     public bool Autofocus { get; set; }
 
     [Parameter]
+    public bool Select { get; set; }
+
+    [Parameter]
     public Optional<object> Value { get; set; }
 
     [Parameter]
@@ -175,6 +178,7 @@
     Type="_type"
     Options="@Options.Or([])"
     Size="Size"
+    Select="Select"
     Name="Name"
     Placeholder="Placeholder"
     Autocomplete="Autocomplete"

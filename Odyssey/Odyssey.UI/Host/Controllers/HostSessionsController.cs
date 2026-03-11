@@ -39,5 +39,24 @@ namespace Odyssey.UI.Host.Controllers
         {
             throw new ToastException("Not implemented yet");
         }
+
+        [HttpGet(OdysseyRoutes.Host.Session.Id.Index)]
+        public Task<IResult> GetSession(Guid id) => ComponentFactory.RenderComponentAsync(new EditSession { Id = id });
+
+        [HttpPut(OdysseyRoutes.Host.Session.Id.Metadata.Index)]
+        [ValidationState(typeof(EditSessionMetadataPanel))]
+        public async Task<IResult> UpdateSessionMetadata(Guid id, [FromForm] EditSessionMetadataPanelModel update)
+        {
+            throw new ToastException("Not implemented yet");
+        }
+
+        [HttpGet(OdysseyRoutes.Host.Session.Id.Metadata.Index)]
+        public async Task<IResult> GetEditSessionMetadata(Guid id)
+        {
+            return await ComponentFactory.RenderComponentAsync(new EditSessionMetadataPanel
+            {
+                Id = id
+            });
+        }
     }
 }

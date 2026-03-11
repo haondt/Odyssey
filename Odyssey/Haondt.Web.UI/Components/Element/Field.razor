@@ -12,6 +12,9 @@
     public bool Autofocus { get; set; }
 
     [Parameter]
+    public bool Select { get; set; }
+
+    [Parameter]
     public Optional<string> Form { get; set; } 
 
     [Parameter]
@@ -199,6 +202,13 @@
 
         if (Autofocus)
             _inputAttributes["autofocus"] = true;
+
+        if (Select)
+        {
+            if (!_inputAttributes.TryGetValue("_", out var hs))
+                hs = "";
+            _inputAttributes["_"] = hs + " on load me.select() end";
+        }
     }
 }
 

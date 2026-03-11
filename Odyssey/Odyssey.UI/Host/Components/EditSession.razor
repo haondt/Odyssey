@@ -1,0 +1,116 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Models
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
+@using Odyssey.Domain.Core.Models
+@using Odyssey.Domain.Core.Services
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@implements IHasNavigationBarComponent
+
+@code {
+    [Parameter, EditorRequired]
+    public required Guid Id { get; set; } 
+
+    private string _gameName = default!;
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarDefault(OdysseyRoles.Host)
+        {
+            Breadcrumbs = [
+                new("Sessions", OdysseyRoutes.Host.Sessions.Index),
+                new("placeholder")
+            ]
+        }
+    };
+
+    private bool _ready = false;
+    protected override async Task OnInitializedAsync()
+    {
+        _ready = true;
+    }
+}
+
+@if (_ready) {
+    <ContentContainer>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Gap="FrameSpacing.Panel">
+            <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
+                <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.SessionOverview" />
+                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Stretch">
+                    <EditSessionMetadataSection Name="Placeholder" />
+                    <Frame AddClasses='"flex-grow-1"' Template="FrameTemplate.ButtonContainer">
+                        <Button Color="ButtonColor.Primary">Launch session</Button>
+                        @{
+                            var confirm = new ConfirmationDialogModel
+                            {
+                                Message = $"Are you sure you want to delete the session \"{"Placeholder"}\"?",
+                                ConfirmText = "Delete",
+                                Title = "Delete session"
+                            };
+                        }
+                        <MoreButton TooltipStyle="TooltipStyle.ContextMenu">
+                            <Button
+                                HxGet="OdysseyRoutes.Host.Session.IdP(Id).MetadataP.IndexP"
+                                HxSwap='"none"'
+                                Style="ButtonStyle.Borderless">Rename</Button>
+                            <Button HxSwap='"none"' HxDelete='""' HxConfirm="@confirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
+                        </MoreButton>
+                    </Frame>
+                </Frame>
+            </Frame>
+            <Frame Grid="FrameGrid.CollapsibleFillTwo" Gap="FrameSpacing.Card">
+                <Frame Template="FrameTemplate.Card">
+                    <p class="subtitle">Session</p>
+                    @foreach(var (l, r) in new (string, string)[] {
+                        ("ID", Id.ToString()),
+                        ("Last played", StringFormatter.FormatDate(AbsoluteDateTime.Now)),
+                        ("Created", StringFormatter.FormatDate(AbsoluteDateTime.Now))
+                    })
+                    {
+                        <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+                            <p>@l</p><p>@r</p>
+                        </Frame>
+                    }
+                </Frame>
+                <Frame Template="FrameTemplate.Card">
+                    <p class="subtitle">Game state</p>
+                    <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+                        <p>Game</p><a>Domestic Dispute</a>
+                    </Frame>
+                    <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+                        <p>Board</p><a>90s Pop Culture</a>
+                    </Frame>
+                    <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+                        <p>Status</p><p>Completed</p>
+                    </Frame>
+                </Frame>
+                <Frame Template="FrameTemplate.Card">
+                    <p class="subtitle">Players</p>
+                    @foreach(var (l, r) in new (string, string)[] {
+                        ("Mara", "15 points"),
+                        ("Jonah", "30 points"),
+                        ("Tessa", "0 points"),
+                        ("Rowan", "90 points"),
+                    })
+                    {
+                        <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+                            <p>@l</p><p>@r</p>
+                        </Frame>
+                    }
+                </Frame>
+                <Frame Template="FrameTemplate.Card">
+                    <p class="subtitle">Game Summary</p>
+                    @foreach(var (l, r) in new (string, string)[] {
+                        ("Round", "3"),
+                    })
+                    {
+                        <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+                            <p>@l</p><p>@r</p>
+                        </Frame>
+                    }
+                </Frame>
+            </Frame>
+        </Frame>
+    </ContentContainer>
+}

@@ -1,0 +1,22 @@
+
+@code {
+    public const string Id = "edit-session-metadata-section";
+    [Parameter]
+    public bool HxSwapOob {get;set;} = false;
+
+    [Parameter]
+    public required string Name { get; set; }
+    private Dictionary<string, object> _rootAttributes = [];
+    protected override void OnInitialized()
+    {
+        if (HxSwapOob)
+            _rootAttributes["hx-swap-oob"] = "true";
+    }
+
+
+}
+
+
+<div @attributes="_rootAttributes" id="@Id" class="flex flex-grow-1 flex-col gap-line">
+    <p class="title">@Name</p>
+</div>
