@@ -1,6 +1,8 @@
 ﻿using Haondt.Core.Extensions;
+using Haondt.Web.UI.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
 
@@ -30,5 +32,12 @@ namespace Odyssey.UI.Host.Controllers
 
         [HttpGet(OdysseyRoutes.Host.Sessions.New.Index)]
         public Task<IResult> GetCreateSession() => ComponentFactory.RenderComponentAsync<Components.NewSessionModal>();
+
+        [HttpPost(OdysseyRoutes.Host.Sessions.Index)]
+        [ValidationState(typeof(NewSessionModalPanel), NewSessionModalPanel.Id)]
+        public async Task<IResult> CreateSession([FromForm] NewSessionModel newSession)
+        {
+            throw new ToastException("Not implemented yet");
+        }
     }
 }
