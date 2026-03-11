@@ -10,7 +10,8 @@ namespace Haondt.Web.UI.Components.Element
         Search,
         Dropdown,
         LiveSearch,
-        None
+        None,
+        Hidden
     }
     public enum FieldSize
     {
@@ -50,5 +51,23 @@ namespace Haondt.Web.UI.Components.Element
         public required string Text { get; set; }
         public Optional<string> Value { get; set; }
         public bool Selected { get; set; }
+    }
+
+    public record struct SuggestionSource
+    {
+        public required string Uri { get; set; }
+        public Optional<(string Text, Optional<string> Value)> Selected { get; set; }
+    }
+    public record struct Suggestion
+    {
+        public required string Text { get; set; }
+        public Optional<string> Value { get; set; }
+
+        public static implicit operator Suggestion((string, string) t) => new()
+        {
+            Text = t.Item1,
+            Value = t.Item2
+        };
+        public static implicit operator Suggestion(string s) => new() { Text = s };
     }
 }

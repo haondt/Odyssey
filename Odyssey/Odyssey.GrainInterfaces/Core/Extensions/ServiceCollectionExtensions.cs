@@ -28,6 +28,7 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 services.AddSingleton(typeof(IDataStorageGrainFactory<>), typeof(DataStorageGrainFactory<>));
                 services.AddSingleton<IGrainLeaseGrainFactory, GrainLeaseGrainFactory>();
                 services.AddSingleton<ICrockfordService, CrockfordService>();
+                services.AddSingleton<INameGenerator, NameGenerator>();
 
                 // sessions
                 services.AddSingleton<IGrainFactory<string, IHostGrain>, StringKeyGrainFactory<IHostGrain>>();

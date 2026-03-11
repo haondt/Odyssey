@@ -1,0 +1,25 @@
+@code {
+    [Parameter]
+    public List<Suggestion> Values { get; set; } = [];
+
+    [Parameter]
+    public bool SelectFirst { get; set; } = true;
+}
+@for(int i=0; i< Values.Count; i++)
+{
+    var value = Values[i];
+    var classes = "field-suggestion";
+    if (SelectFirst && i == 0)
+    {
+        classes += " hovered";
+    }
+    var attributes = new Dictionary<string, object>() { ["data-field-suggestion-value"] = value.Value.Or(value.Text) };
+
+    <Button
+        Hyperscript='"install FieldSuggestion"'
+        Text="value.Text"
+        AddClasses="@classes"
+        Style="ButtonStyle.Borderless"
+        AddAttributes="@attributes"
+    />
+}

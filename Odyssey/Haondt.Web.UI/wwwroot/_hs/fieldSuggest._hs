@@ -1,0 +1,83 @@
+behavior FieldSuggestion
+	on click send selected(text:(my textContent), value:(my @data-field-suggestion-value)) to the previous .field-suggest-search-input end
+end
+
+behavior FieldSuggest
+	on load
+		set :vi to the previous <.field-suggest-input /> 
+		set :vt to the previous <.field-suggest-text /> 
+		set :sg to the next <.field-suggest-suggestions-target />
+	end
+	on selected(text, value)
+		log the event
+		set :vt's innerHTML to text
+		remove .fg-border from :vt
+		if value is not empty
+			set :vi's value to value
+		else
+			set :vi's value to text
+		end
+		send deactivate to me
+	end
+	on activate
+		remove .hidden from the closest .tooltip
+		me.focus()
+		send update to :sg
+	end
+	on deactivate 
+		set my value to ''
+		add .hidden to the closest .tooltip
+	end
+	on input debounced at 200ms
+		send update to :sg
+	end
+	on keydown
+		if the event's key is 'Escape'
+			halt the event
+			send deactivate to me
+		end
+		if the event's key is 'ArrowDown'
+			halt the event
+			set selected to the first <.button.hovered /> in :sg
+			if selected is null
+				set desired to the first <.button /> in :sg
+				if desired is not null
+					add .hovered to desired
+				end
+			else
+				set desired to the first <.button.hovered + .button /> in :sg
+				if desired is not null
+					add .hovered to desired
+					remove .hovered from selected
+				end
+			end
+		end
+		if the event's key is 'ArrowUp'
+			halt the event
+			set selected to the first <.button.hovered /> in :sg
+			if selected is not null
+				set desired to the first <.button:has(+ .button.hovered) /> in :sg
+				if desired is not null
+					add .hovered to desired
+					remove .hovered from selected
+				end
+			end
+		end
+		if the event's key is 'Enter'
+			halt the event
+			set selected to the first <.button.hovered /> in :sg
+			if selected is not null
+				send selected(text:(selected's textContent), value:(selected's @data-field-suggestion-value)) to me
+			end
+		end
+	end
+end
+
+behavior FieldSuggestTarget
+	on load
+		set :si to the previous <.field-suggest-search-input /> 
+	end
+	on htmx:configRequest
+		set the event's detail.parameters['search'] to :si's value
+	end
+end

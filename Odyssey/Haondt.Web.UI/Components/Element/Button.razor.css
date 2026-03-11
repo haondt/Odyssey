@@ -2,7 +2,7 @@
     white-space: nowrap;
 }
 
-.button:hover {
+.button:hover, .button.hovered {
     cursor: pointer;
 }
 
@@ -32,7 +32,7 @@
     --button-color: var(--haondt-ui-color-text);
 }
 
-.button-style-fill:hover {
+.button-style-fill:hover, .button-style-fill.hovered {
     background-color: hsl(from var(--button-color) h s calc(l + var(--haondt-ui-button-hover-delta)));
 }
 
@@ -69,11 +69,12 @@
     background-color: var(--haondt-ui-color-background);
 }
 
-:is(.button-style-outline, .button-style-border, .button-style-borderless):hover {
+:is(.button-style-outline, .button-style-border, .button-style-borderless):hover,
+:is(.button-style-outline, .button-style-border, .button-style-borderless).hovered {
     background-color: var(--haondt-ui-color-background-strong);
 }
 
-.tooltip.tooltip-style-context-menu > .tooltip-content > .button {
+.tooltip.tooltip-style-context-menu > .tooltip-content  .button {
     width: 100%;
     border-radius: 0;
     text-align: left;
@@ -81,11 +82,18 @@
 
 .button[disabled] {
     pointer-events: none;
-    &.button-style-fill {
+
+    /* a bit on the fence with this
+        doesn't work great for buttons inside context menus (e.g. suggest input)
+        and the fill background is pretty subtle
+    */
+/*    &.button-style-fill {
         background-color: hsl(from var(--button-color) h s calc(l + var(--haondt-ui-button-hover-delta)));
     }
     &:is(.button-style-outline, .button-style-border, .button-style-borderless) {
         background-color: var(--haondt-ui-color-background-strong);
     }
+*/
+
 }
 

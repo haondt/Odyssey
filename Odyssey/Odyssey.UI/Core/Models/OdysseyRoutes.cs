@@ -66,6 +66,32 @@
             public static class Sessions
             {
                 public const string Index = $"{Host.Index}/sessions";
+                public static class New
+                {
+                    public const string Index = $"{Host.Sessions.Index}/new";
+                }
+                public static class Search
+                {
+                    public const string Index = $"{Host.Sessions.Index}/search";
+                }
+            }
+            public static class Session
+            {
+                public const string Index = $"{Host.Index}/session";
+                public static Id IdP(string id) => new(id);
+                public class Id(string id)
+                {
+                    public const string Index = $"{Host.Session.Index}/{{id}}";
+
+                    public Metadata MetadataP => new($"{Host.Session.Index}/{id}");
+                    public class Metadata(string upperPath)
+                    {
+                        public const string Segment = "metadata";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+                    }
+
+                }
             }
             public static class Boards
             {
@@ -77,6 +103,10 @@
                 public static class Search
                 {
                     public const string Index = $"{Host.Boards.Index}/search";
+                }
+                public static class Suggest
+                {
+                    public const string Index = $"{Host.Boards.Index}/suggest";
                 }
             }
             public static class Board

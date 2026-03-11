@@ -1,15 +1,18 @@
+
 @using Odyssey.Client.Authentication.Services
 @using Odyssey.Client.Core.Services
 @using Odyssey.Domain.Core.Services
+@using Odyssey.GrainInterfaces.Core.Services
 @using Odyssey.UI.Host.Models;
 @using Haondt.Web.UI.Services;
 @using Haondt.Core.Extensions;
 @using Haondt.Web.UI.Components.Components;
 @inject IClientGameRegistry GameRegistry
 @inject IHostSessionService SessionService
+@inject INameGenerator NameGenerator
 
 @code {
-    public const string Id = "new-board-modal-panel";
+    public const string Id = "new-session-modal-panel";
 
     private List<DropdownOption> _dropdownOptions = [];
 
@@ -29,10 +32,21 @@
 @if (_ready) {
     <form id="@Id" hx-post>
         <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel" Align="FrameAlignment.Stretch">
-            <p class="subtitle">Create board</p>
+            <p class="subtitle">Create session</p>
             <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Card" Align="FrameAlignment.Stretch">
-                <SmartField TBase="NewBoardModel" Field="c => c.Name" />
-                <SmartField TBase="NewBoardModel" Field="m => m.Game" Options="@_dropdownOptions" />
+                @{
+                    var generatedName = NameGenerator.Generate(); 
+                }
+                <SmartField Hidden="true" TBase="NewSessionModel" Field="c => c.GeneratedName" Value="generatedName" />
+                <SmartField TBase="NewSessionModel" Field="c => c.Name" Placeholder="generatedName" />
+                <SmartField TBase="NewSessionModel" Field="m => m.Ephemeral" />
+                @{
+                    var suggest = new SuggestionSource
+                    {
+                        Uri = OdysseyRoutes.Host.Boards.Suggest.Index,
+                    };
+                }
+                <SmartField TBase="NewSessionModel" Field="m => m.Board" Suggestions="@suggest" />
             </Frame>
             <Frame Template="FrameTemplate.ButtonContainer">
                 <Button Type="ButtonType.CloseModal" Style="ButtonStyle.Ghost">Cancel</Button>

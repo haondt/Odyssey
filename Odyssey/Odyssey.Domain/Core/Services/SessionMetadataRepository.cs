@@ -10,18 +10,22 @@ using Odyssey.Persistence.Models;
 
 namespace Odyssey.Domain.Core.Services
 {
-    public class SessionMetadataService(
+    public class SessionMetadataRepository(
         IDbContextFactory<ApplicationDbContext> dbContextFactory,
         IClock clock) : ISessionMetadataRepository
     {
-        public async Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(string gameId, string ownerId, string name)
+        public async Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(
+            string gameId, string ownerId, string name,
+            Guid boardId, string boardName)
         {
             var now = clock.Now;
             var meta = new SessionMetadata
             {
                 Name = name,
                 GameId = gameId,
-                CreatedOn = now
+                CreatedOn = now,
+                BoardId = boardId,
+                BoardName = boardName,
             };
             var model = meta.AsDataModel((ownerId, Guid.NewGuid()));
 
@@ -78,6 +82,7 @@ namespace Odyssey.Domain.Core.Services
                 .FirstOrDefaultAsync(q => q.Id == id)
                 ?? throw new KeyNotFoundException($"Session with id {id} does not exist.");
             board.Name = name;
+            board.SearchData = SessionMetadataDataModel.CreateSearchData(name, board.BoardName);
             await dbContext.SaveChangesAsync();
             return SessionMetadata.FromDataModel(board);
         }

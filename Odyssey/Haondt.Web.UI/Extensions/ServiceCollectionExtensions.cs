@@ -54,6 +54,11 @@ namespace Haondt.Web.UI.Extensions
                 Uri = "/static/haondt/Haondt.Web.UI/_hs/moreButton._hs",
                 Type = "text/hyperscript"
             });
+            services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
+            {
+                Uri = "/static/haondt/Haondt.Web.UI/_hs/fieldSuggest._hs",
+                Type = "text/hyperscript"
+            });
 
             return services;
         }

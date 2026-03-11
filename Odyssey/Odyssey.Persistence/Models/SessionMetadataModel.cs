@@ -9,8 +9,10 @@ namespace Odyssey.Persistence.Models
         public required string Id { get; set; }
         public required Guid EntityId { get; set; }
         public required string GameId { get; set; }
-        public BoardMetadataDataModel? BoardMetadata { get; set; }
-        public string? BoardMetadataId { get; set; }
+        public required Guid BoardEntityId { get; set; }
+        public required string BoardName { get; set; }
+        public string? BoardId { get; set; }
+        public BoardMetadataDataModel? Board { get; set; }
 
         public UserDataSurrogate Owner { get; set; } = default!;
         public string OwnerId { get; set; } = default!;
@@ -20,6 +22,7 @@ namespace Odyssey.Persistence.Models
         public required AbsoluteDateTime CreatedOn { get; set; }
         public required AbsoluteDateTime? LastPlayedOn { get; init; }
         public SessionStatus Status { get; set; } = SessionStatus.Created;
+        public static string CreateSearchData(string name, string boardName) => NormalizedString.Create($"{name} {boardName}");
     }
 
     public class SessionMetadataDataModelConfiguration : IEntityTypeConfiguration<SessionMetadataDataModel>
@@ -31,9 +34,9 @@ namespace Odyssey.Persistence.Models
                 .HasForeignKey(x => x.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(x => x.BoardMetadata)
-                .WithMany(r => r.SessionMetadatas)
-                .HasForeignKey(x => x.BoardMetadataId)
+            builder.HasOne(x => x.Board)
+                .WithMany(x => x.SessionMetadatas)
+                .HasForeignKey(x => x.BoardId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }

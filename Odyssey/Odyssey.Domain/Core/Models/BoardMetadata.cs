@@ -16,7 +16,7 @@ namespace Odyssey.Domain.Core.Models
             Name = Name,
             GameId = GameId,
             EntityId = id.EntityId,
-            SearchData = NormalizedString.Create(Name),
+            SearchData = BoardMetadataDataModel.CreateSearchData(Name),
             CreatedOn = CreatedOn,
             ModifiedOn = ModifiedOn
         };

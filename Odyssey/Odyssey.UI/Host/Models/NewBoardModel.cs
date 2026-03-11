@@ -5,6 +5,7 @@ namespace Odyssey.UI.Host.Models
     public class NewBoardModel
     {
         [Required(ErrorMessage = "Board name is required")]
+        [Display(Prompt = "Name")]
         public required string Name { get; set; }
 
         [Required]

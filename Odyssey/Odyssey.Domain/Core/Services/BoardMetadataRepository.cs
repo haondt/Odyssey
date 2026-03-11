@@ -10,7 +10,7 @@ using Odyssey.Persistence.Models;
 
 namespace Odyssey.Domain.Core.Services
 {
-    public class BoardMetadataService(
+    public class BoardMetadataRepository(
         IDbContextFactory<ApplicationDbContext> dbContextFactory,
         IClock clock) : IBoardMetadataRepository
     {
@@ -76,10 +76,16 @@ namespace Odyssey.Domain.Core.Services
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var board = await dbContext.BoardMetadatas
+                .Include(b => b.SessionMetadatas)
                 .FirstOrDefaultAsync(q => q.Id == id)
                 ?? throw new KeyNotFoundException($"Board with id {id} does not exist.");
             board.Name = name;
+            board.SearchData = BoardMetadataDataModel.CreateSearchData(name);
             board.ModifiedOn = clock.Now;
+            foreach (var session in board.SessionMetadatas)
+            {
+                session.SearchData = SessionMetadataDataModel.CreateSearchData(session.Name, name);
+            }
             await dbContext.SaveChangesAsync();
             return BoardMetadata.FromDataModel(board);
         }

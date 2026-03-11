@@ -14,6 +14,11 @@
     }
 }
 
+.field ::deep > .frame > .input > .tooltip {
+    /* negate the control padding */
+    margin-left: calc(-1 * var(--haondt-ui-control-padding-x));
+}
+
 .field-title {
     font-size: var(--haondt-ui-subtitle-font-size);
     font-weight: var(--haondt-ui-subtitle-font-weight);
@@ -35,6 +40,7 @@
     }
 }
 
+
 .field-hidden {
     display: none;
 }
@@ -54,7 +60,7 @@ select.input {
     }
 }
 
-.select-container::after {
+.select-container::after, .input:has(> .field-suggest-input)::after  {
 
     position: absolute;
     border: var(--indicator-width) solid var(--haondt-ui-color-primary);
@@ -65,11 +71,23 @@ select.input {
     border-top: none;
     border-left: none;
     --indicator-hyp-px: sqrt(calc(2 * calc(var(--indicator-length-px) * var(--indicator-length-px))));
-    /*--indicator-tx: calc(calc(-1px * var(--indicator-hyp-px)) - var(--haondt-ui-control-padding-x));*/
-    --indicator-tx: calc(calc(-0.5px * var(--indicator-hyp-px)) - calc(var(--haondt-ui-control-height) / 2));
     --indicator-ty: calc(-50% - calc(var(--indicator-hyp-px) * 0.25px));
+    --p: calc(calc(sin(45deg) * var(--indicator-length)) - calc(0.5 * var(--indicator-length)));
+    --indicator-tx: calc(-1 * var(--p) - var(--haondt-ui-control-padding-x));
     top: 50%;
+    right: 0;
     transform: translateX(var(--indicator-tx)) translateY(var(--indicator-ty)) rotate(45deg);
+}
+
+.input:has(> .field-suggest-input) {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    > .field-suggest-text {
+        height: 100%;
+        align-content: center;
+        cursor: pointer;
+    }
 }
 
 .label-container {
@@ -85,10 +103,13 @@ select.input {
 
     > .input[type=checkbox] {
         opacity: 0;
+        /* make sure it is drawn on top of the icon */
+        &:has(+ .field-icon) {
+            z-index: 1;
+        }
     }
     > .input[type=checkbox] + .field-icon {
         background: var(--haondt-ui-color-chip-background);
-        z-index: -1;
         border-radius: calc(var(--haondt-ui-checkbox-size) / 5);
         border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
         width: var(--haondt-ui-checkbox-size);
@@ -115,6 +136,7 @@ select.input {
         --t: calc(var(--z) * -1 / sqrt(2));
         transform: rotate(45deg) translateX(calc(sqrt(2) * var(--haondt-ui-checkbox-size) / 2)) translate(var(--t), var(--t));
     }
+
 }
 
 .field.field-invalid {

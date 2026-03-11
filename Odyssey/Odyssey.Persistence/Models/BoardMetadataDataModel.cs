@@ -18,6 +18,8 @@ namespace Odyssey.Persistence.Models
         public required AbsoluteDateTime CreatedOn { get; set; }
         public required AbsoluteDateTime ModifiedOn { get; set; }
 
+        public static string CreateSearchData(string name) => NormalizedString.Create(name);
+
         public ICollection<SessionMetadataDataModel> SessionMetadatas { get; set; } = [];
     }
 

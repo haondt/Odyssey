@@ -8,7 +8,8 @@ namespace Odyssey.Domain.Core.Models
     {
         public required string Name { get; set; }
         public required string GameId { get; set; }
-        public Optional<OwnedEntityGuid> BoardId { get; set; }
+        public required Guid BoardId { get; set; }
+        public required string BoardName { get; set; }
         public required AbsoluteDateTime CreatedOn { get; init; }
         public Optional<AbsoluteDateTime> LastPlayedOn { get; init; }
         public SessionStatus Status { get; set; } = SessionStatus.Created;
@@ -19,8 +20,10 @@ namespace Odyssey.Domain.Core.Models
             Name = Name,
             GameId = GameId,
             EntityId = id.EntityId,
-            BoardMetadataId = BoardId.Unwrap(),
-            SearchData = NormalizedString.Create(Name),
+            BoardEntityId = BoardId,
+            BoardName = BoardName,
+            BoardId = new OwnedEntityGuid(id.OwnerId, BoardId),
+            SearchData = SessionMetadataDataModel.CreateSearchData(Name, BoardName),
             CreatedOn = CreatedOn,
             LastPlayedOn = LastPlayedOn.Unwrap()
         };
@@ -29,7 +32,8 @@ namespace Odyssey.Domain.Core.Models
         {
             Name = dataModel.Name,
             GameId = dataModel.GameId,
-            BoardId = dataModel.BoardMetadataId.AsOptional().Map(q => (OwnedEntityGuid)q),
+            BoardId = dataModel.BoardEntityId,
+            BoardName = dataModel.BoardName,
             CreatedOn = dataModel.CreatedOn,
             LastPlayedOn = dataModel.LastPlayedOn.AsOptional(),
         };

@@ -1,3 +1,4 @@
+
 @using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Components.Containers
 @using Haondt.Web.UI.Models
@@ -10,24 +11,31 @@
 @using Odyssey.UI.Core.Models
 @using static Odyssey.UI.Host.Controllers.HostController
 @inject IClientGameRegistry Games
+@inject IBoardMetadataRepository Boards
 @inject IHostSessionService Session
 @code {
-    [Parameter] public bool ForceLoadBoards { get; set; } = false;
-    [Parameter] public List<(Guid Id, BoardMetadata Board)> Boards { get; set; } = [];
+    [Parameter] public bool ForceLoadSessions { get; set; } = false;
+    [Parameter] public List<(Guid Id, SessionMetadata Session)> Sessions { get; set; } = [];
     [Parameter] public Optional<string> CurrentSearch { get; set; }
-    public const string Id = "host-boards-list";
+    public const string Id = "host-sessions-list";
 
     private Dictionary<string, string> _gameNames = [];
+    private Dictionary<Guid, string> _boardNames = [];
     private bool _ready = false;
 
     protected override async Task OnInitializedAsync()
     {
-        foreach(var (_, board) in Boards)
+        foreach(var (_, session) in Sessions)
         {
-            if (_gameNames.ContainsKey(board.GameId))
-                continue;
-            var game = Games.GetGame(board.GameId);
-            _gameNames[board.GameId] = await game.Settings.GetDisplayNameAsync(await Session.GetUserIdAsync());
+            if (!_gameNames.ContainsKey(session.GameId))
+            {
+                var game = Games.GetGame(session.GameId);
+                _gameNames[session.GameId] = await game.Settings.GetDisplayNameAsync(await Session.GetUserIdAsync());
+            }
+            if (!_boardNames.ContainsKey(session.BoardId))
+            {
+                _boardNames[session.BoardId] = session.BoardName;
+            }
         }
         _ready = true;
     }
@@ -35,41 +43,42 @@
 
 @if (_ready) {
     <VerticalList Clickable="true" Id="@Id">
-        @foreach(var (id, board) in Boards)
+        @foreach(var (id, session) in Sessions)
         {
             <VerticalListItem>
-                <a hx-boost="true" href="@OdysseyRoutes.Host.Board.Index/@id">
+                <a hx-boost="true" href="@OdysseyRoutes.Host.Session.Index/@id">
                     <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Col">
                         <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
-                            <p class="subtitle">@board.Name</p>
-                            <p class="italic">@_gameNames[board.GameId]</p>
+                            <p class="subtitle">@session.Name</p>
+                            <p class="italic">@_gameNames[session.GameId]</p>
+                            <p class="italic fg-text-weak">@session.BoardId</p>
                         </Frame>
                         <Frame Template="FrameTemplate.ChipContainer">
-                            <Chip Label='"Last modified"' Text="@StringFormatter.FormatDate(board.ModifiedOn)" />
+                            <Chip Label='"Last played"' Text="@session.LastPlayedOn.Map(StringFormatter.FormatDate).Or("Never")" />
                         </Frame>
                     </Frame>
                 </a>
             </VerticalListItem>
         }
-        @if(Boards.Count > 0 || ForceLoadBoards)
+        @if(Sessions.Count > 0 || ForceLoadSessions)
         {
             var searchData = new HxVals()
             {
                 ["search"] = CurrentSearch.Unwrap(),
-                ["last"] = Boards.Count > 0 ? new TemporalContinuationData<Guid>
+                ["last"] = Sessions.Count > 0 ? new TemporalContinuationData<Guid>
                 {
-                    Id = Boards[^1].Id,
-                    Time = Boards[^1].Board.ModifiedOn
+                    Id = Sessions[^1].Id,
+                    Time = Sessions[^1].Session.LastPlayedOn.Unwrap()
                 } : null
             };
             <InfiniteScrollTrigger
-                HxGet="@OdysseyRoutes.Host.Boards.Search.Index"
+                HxGet="@OdysseyRoutes.Host.Sessions.Search.Index"
                 HxVals="@searchData">
                 <Skeleton>
                     <Frame Flex="FrameDirection.Col">
                         @for(int i = 0; i<2; i ++)
                         {
-                            if (Boards.Count > 0 || i > 0)
+                            if (Sessions.Count > 0 || i > 0)
                             {
                                 <HorizontalBar />
                             }

@@ -53,6 +53,9 @@
     [Parameter]
     public Optional<string> AddClasses { get; set; }
 
+    [Parameter]
+    public Optional<Dictionary<string, object>> AddAttributes { get; set; }
+
     protected HashSet<string> _rootClasses = ["button"];
     protected Dictionary<string, object> _rootAttributes = [];
 
@@ -108,9 +111,10 @@
 
         if (AddClasses.TryGetValue(out var addClasses))
             _rootClasses.Add(addClasses);
+
+        if (AddAttributes.TryGetValue(out var addAttributes))
+            foreach (var (k, v) in addAttributes)
+                _rootAttributes[k] = v;
     }
 }
-<button @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">
-    @Text.Or("")
-    @ChildContent
-</button>
+<button @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">@Text.Or("")@ChildContent</button>

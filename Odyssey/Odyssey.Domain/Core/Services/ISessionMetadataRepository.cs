@@ -9,8 +9,8 @@ namespace Odyssey.Domain.Core.Services
         Task<List<(Guid Id, SessionMetadata Session)>> GetSessionMetadatasAsync(string ownerId, PaginationOptions<(Guid Id, AbsoluteDateTime LastPlayedOn)> pagination = default);
         Task<Result<SessionMetadata>> GetSessionMetadataAsync(OwnedEntityGuid id);
         Task<List<(Guid Id, SessionMetadata Session)>> SearchSessionMetadatasAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, AbsoluteDateTime LastPlayedOn)> pagination = default);
-        Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(string gameId, string ownerId, string name);
         Task<SessionMetadata> UpdateSessionMetadataAsync(OwnedEntityGuid id, string name);
         Task DeleteSessionMetadataAsync(OwnedEntityGuid id);
+        Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(string gameId, string ownerId, string name, Guid boardId, string boardName);
     }
 }

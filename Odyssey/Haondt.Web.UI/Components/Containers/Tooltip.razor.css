@@ -63,3 +63,13 @@
         padding-bottom: var(--haondt-ui-line-spacing);
     }
 }
+
+body:has(> #modal-container.active) .tooltip-content {
+    box-shadow:none;
+    border-color: rgba(0,0,0,0.5);
+}
+
+body:has(> #bottom-sheet-container.active > #bottom-sheet-content.active) .tooltip-content {
+    box-shadow:none;
+    border-color: rgba(0,0,0,0.5);
+}

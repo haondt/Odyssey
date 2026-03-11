@@ -10,7 +10,8 @@ namespace Odyssey.Domain.Core.Extensions
         public static IServiceCollection AddOdysseyDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(typeof(ICachedDataRepository<>), typeof(CachedDataRepository<>));
-            services.AddSingleton<IBoardMetadataRepository, BoardMetadataService>();
+            services.AddSingleton<IBoardMetadataRepository, BoardMetadataRepository>();
+            services.AddSingleton<ISessionMetadataRepository, SessionMetadataRepository>();
             services.AddSingleton<IGrainLeaseService, GrainLeaseService>();
             services.AddTransient<IComponentStringRenderer, ComponentStringRenderer>();
             services.AddTransient<HtmlRenderer>();

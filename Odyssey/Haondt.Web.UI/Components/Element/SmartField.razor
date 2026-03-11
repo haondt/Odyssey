@@ -14,6 +14,9 @@
     public Optional<string> Title { get; set; }
 
     [Parameter]
+    public Optional<SuggestionSource> Suggestions { get; set; }
+
+    [Parameter]
     public Optional<string> Form { get; set; } 
 
     // using ? for the type inference
@@ -95,6 +98,9 @@
         if (!Description.HasValue && displayAttr?.Description is not null)
             Description = displayAttr.Description;
 
+        if (!Placeholder.HasValue && displayAttr?.Prompt is not null)
+            Placeholder = displayAttr.Prompt;
+
         if (!Name.TryGetValue(out var name))
             Name = name = path;
         if (ValidationState.IsValidation)
@@ -119,6 +125,11 @@
         }
         if (!Type.HasValue && Options.HasValue)
             Type = _type = FieldType.Dropdown;
+        if (Suggestions.TryGetValue(out var suggest))
+        {
+            if (!Type.HasValue)
+                Type = _type = FieldType.Dropdown;
+        }
         if (!Type.HasValue && (memberInfo is PropertyInfo p ? p.PropertyType : memberInfo is FieldInfo f ? f.FieldType : null) is Type memberType)
         {
             switch (Nullable.GetUnderlyingType(memberType) ?? memberType)
@@ -131,6 +142,7 @@
                     break;
             };
         }
+
 
         if (HxPreserve.TryGetValue(out var hxPreserve))
             _hxPreserve = hxPreserve;
@@ -170,4 +182,5 @@
     HxPreserve="_hxPreserve"
     Id="Id"
     InputClasses="InputClasses"
-    Value="Value" />
+    Value="Value" 
+    Suggestions="Suggestions" />

@@ -2,8 +2,6 @@
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    [Parameter]
-    public Optional<object> Template { get; set; }
 
     [CascadingParameter(Name = nameof(_verticalListId))]
     private Optional<string> _verticalListId { get; set; }

@@ -1,3 +1,4 @@
+@using Haondt.Web.UI.Components.Containers
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -21,6 +22,9 @@
 
     [Parameter]
     public List<DropdownOption> Options { get; set; } = [];
+
+    [Parameter]
+    public Optional<SuggestionSource> Suggestions { get; set; }
 
     [Parameter]
     public FieldSize Size { get; set; } = FieldSize.Fill;
@@ -54,6 +58,7 @@
     public Optional<string> Id { get; set; }
 
     protected Dictionary<string, object> _inputAttributes  = [];
+    protected Dictionary<string, object> _inputProxyAttributes  = [];
     protected Dictionary<string, object> _labelAttributes  = [];
 
     protected HashSet<string> _inputClasses = ["input"];
@@ -75,7 +80,15 @@
                         _inputAttributes["checked"] = "";
                 }
                 break;
+            case FieldType.Hidden:
+                {
+                    if (Name.TryGetValue(out var name))
+                        _inputAttributes["name"] = name;
 
+                    if (Value.TryGetValue(out var value))
+                        _inputAttributes["value"] = value;
+                }
+                break;
             case FieldType.Text:
             case FieldType.Password:
             case FieldType.Search:
@@ -100,11 +113,25 @@
                 break;
             case FieldType.Dropdown:
                 {
-                    if (Size.CssClass.TryGetValue(out var size))
-                        _inputClasses.Add(size);
+                    if (Suggestions.TryGetValue(out var value))
+                    {
+                        if (Size.CssClass.TryGetValue(out var size))
+                            _inputClasses.Add(size);
 
-                    if (Name.TryGetValue(out var name))
-                        _inputAttributes["name"] = name;
+                        if (value.Selected.TryGetValue(out var selected))
+                            _inputAttributes["value"] = selected.Value.Or(selected.Text);
+
+                        if (Name.TryGetValue(out var name))
+                            _inputAttributes["name"] = name;
+                    }
+                    else
+                    {
+                        if (Size.CssClass.TryGetValue(out var size))
+                            _inputClasses.Add(size);
+
+                        if (Name.TryGetValue(out var name))
+                            _inputAttributes["name"] = name;
+                    }
                 }
                 break;
         }
@@ -117,11 +144,15 @@
         }
 
         if (HxPreserve)
+        {
             _inputAttributes["hx-preserve"] = true;
+            _inputProxyAttributes["hx-preserve"] = true;
+        }
 
         if (Id.TryGetValue(out var id))
         {
             _inputAttributes["id"] = id;
+            _inputProxyAttributes["id"] = id + "--proxy";
             _labelAttributes["for"] = id;
         }
 
@@ -140,10 +171,19 @@
             case FieldType.LiveSearch:
                 _inputAttributes["type"] = "search";
                 break;
+            case FieldType.Hidden:
+                _inputAttributes["type"] = "hidden";
+                break;
+            case FieldType.Dropdown:
+                if (Suggestions.HasValue)
+                {
+                    _inputAttributes["type"] = "hidden";
+                }
+                break;
         }
 
         if (Type == FieldType.LiveSearch)
-            _inputAttributes["_"] = "on input debounced at 200ms send submit to the closest <form />";
+            _inputAttributes["_"] = "on input debounced at 200ms send submit to the closest <form /> end";
 
         if (Form.TryGetValue(out var form))
             _inputAttributes["form"] = form;
@@ -185,7 +225,31 @@
         {
             <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
         } 
-        @if(Type is FieldType.Dropdown)
+        @if(Type is FieldType.Dropdown && Suggestions.TryGetValue(out var suggestions))
+        {
+            <div _="on click from elsewhere send deactivate to the first .field-suggest-search-input in me" class="@string.Join(' ', _inputClasses)">
+                <p @attributes="_inputProxyAttributes" _="on click send activate to the next .field-suggest-search-input" class="field-suggest-text @(suggestions.Selected.HasValue ? "" : "fg-border")">@suggestions.Selected.Map(q => q.Text).Or(Placeholder).Unwrap()</p>
+                <input class="field-suggest-input" @attributes="_inputAttributes" />
+                <Tooltip Hidden="true" Style="TooltipStyle.ContextMenu" Align="TooltipAlignment.Left">
+                    <input class="field-suggest-search-input input mx-line mb-line" type="search" placeholder="Search" _="install FieldSuggest" />
+                    @{
+                        var suggestionsTargetAttributes = new Dictionary<string, object>
+                        {
+                            ["hx-get"] = suggestions.Uri,
+                        };
+                    }
+                    <div 
+                        @attributes="suggestionsTargetAttributes"
+                        class="field-suggest-suggestions-target"
+                        hx-trigger="update"
+                        hx-include="previous .field-suggest-search-input"
+                        hx-swap="innerHTML"
+                        _="install FieldSuggestTarget"
+                    ></div>
+                </Tooltip>
+            </div>
+        }
+        else if(Type is FieldType.Dropdown)
         {
             <div class="select-container">
                 <select @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)">
@@ -195,7 +259,7 @@
                         if (option.Value.TryGetValue(out var optionValue))
                             optionAttributes["value"] = optionValue;
                         if (option.Selected)
-                            optionAttributes["selected"] = "";
+                            optionAttributes["selected"] = true;
 
                         <option @attributes="optionAttributes">@option.Text</option>
                     }
