@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Haondt.Web.UI.Components.Components
 {
-    public class ConfirmationDialogModel
+    public record ConfirmationDialogModel
     {
         [Required]
-        [MaxLength(100)]
+        [MaxLength(500)]
         public required string Message { get; set; }
 
         [MaxLength(100)]

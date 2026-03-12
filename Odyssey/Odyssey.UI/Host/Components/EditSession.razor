@@ -39,15 +39,23 @@
             <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.SessionOverview" />
                 <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Stretch">
-                    <EditSessionMetadataSection Name="Placeholder" />
+                    <EditSessionMetadataSection Name="A Placeholder Session Title" />
                     <Frame AddClasses='"flex-grow-1"' Template="FrameTemplate.ButtonContainer">
                         <Button Color="ButtonColor.Primary">Launch session</Button>
                         @{
-                            var confirm = new ConfirmationDialogModel
+                            var deleteConfirm = new ConfirmationDialogModel
                             {
-                                Message = $"Are you sure you want to delete the session \"{"Placeholder"}\"?",
+                                Message = $"This is permanent and cannot be reversed. Are you sure you want to delete the session \"{"Placeholder"}\"?",
                                 ConfirmText = "Delete",
                                 Title = "Delete session"
+                            };
+
+                            var resetConfirm = new ConfirmationDialogModel
+                            {
+                                Message = $"This will revert the game back to its initial state. Are you sure you want to reset the session \"{"Placeholder"}\"?",
+                                ConfirmText = "Reset",
+                                Title = "Reset session",
+                                Intent = ConfirmationDialogIntent.Destroy
                             };
                         }
                         <MoreButton TooltipStyle="TooltipStyle.ContextMenu">
@@ -55,7 +63,9 @@
                                 HxGet="OdysseyRoutes.Host.Session.IdP(Id).MetadataP.IndexP"
                                 HxSwap='"none"'
                                 Style="ButtonStyle.Borderless">Rename</Button>
-                            <Button HxSwap='"none"' HxDelete='""' HxConfirm="@confirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
+                            <Button HxSwap='"none"' HxPost='""' Style="ButtonStyle.Borderless" Color="ButtonColor.TextWeak">Archive</Button>
+                            <Button HxSwap='"none"' HxPost='""' HxConfirm="@resetConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Reset</Button>
+                            <Button HxSwap='"none"' HxDelete='""' HxConfirm="@deleteConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
                         </MoreButton>
                     </Frame>
                 </Frame>

@@ -23,10 +23,6 @@
   font-weight: 100 900;
 }
 
-.monospace {
-    font-weight: 350;
-}
-
 /* big screen mode */
 
 @media screen and (min-width: 1025px) {
