@@ -73,6 +73,10 @@ html {
     font-weight: var(--haondt-ui-text-font-weight);
 }
 
+textarea.input {
+    padding: var(--haondt-ui-control-padding-x);
+}
+
 .input {
     background-color: var(--haondt-ui-color-background);
     border-style: solid;

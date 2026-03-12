@@ -40,6 +40,20 @@
     }
 }
 
+.field.field-size-full {
+    width: 100%;
+    height: 100%;
+
+    /* using > to skip the one inside the label-container (checkboxes) */
+    > .frame > .input {
+        width: 100%;
+        height: 100%;
+    }
+}
+.field.field-size-full ::deep > .frame {
+    height: 100%;
+}
+
 
 .field-hidden {
     display: none;
@@ -88,6 +102,10 @@ select.input {
         align-content: center;
         cursor: pointer;
     }
+}
+
+textarea.input {
+    resize: none;
 }
 
 .label-container {

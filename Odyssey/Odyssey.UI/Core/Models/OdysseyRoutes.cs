@@ -99,12 +99,27 @@
                         public const string Index = $"{Host.Session.Id.Index}/{Segment}";
                         public string IndexP => $"{upperPath}/{Segment}";
 
+                        public Reset ResetP => new($"{upperPath}/{Segment}");
+
+                        public class Reset(string upperPath)
+                        {
+                            public const string Index = $"{Host.Session.Id.GameState.Index}/reset";
+                            public string IndexP => $"{upperPath}/reset";
+                        }
+
                         public Raw RawP => new($"{upperPath}/{Segment}");
                         public class Raw(string upperPath)
                         {
                             public const string Segment = "raw";
                             public const string Index = $"{Host.Session.Id.GameState.Index}/{Segment}";
                             public string IndexP => $"{upperPath}/{Segment}";
+                            public Reset ResetP => new($"{upperPath}/{Segment}");
+
+                            public class Reset(string upperPath)
+                            {
+                                public const string Index = $"{Host.Session.Id.GameState.Raw.Index}/reset";
+                                public string IndexP => $"{upperPath}/reset";
+                            }
                         }
                     }
 

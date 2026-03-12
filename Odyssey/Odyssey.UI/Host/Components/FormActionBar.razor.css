@@ -12,6 +12,9 @@
     clip-path: inset(calc(-1 * var(--haondt-ui-blend-height)) calc(-1 * var(--haondt-ui-blend-height)) 0 calc(-1 * var(--haondt-ui-blend-height)));
     margin-top: calc(var(--haondt-ui-footer-min-height) + var(--haondt-ui-blend-height));
 }
+.form-action-bar.form-action-bar-footer-marginless {
+    margin-top: var(--haondt-ui-blend-height);
+}
 
 @media screen and (max-width: 768px) {
     .form-action-bar {

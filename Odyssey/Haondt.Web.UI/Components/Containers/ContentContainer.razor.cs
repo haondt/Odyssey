@@ -17,6 +17,7 @@ namespace Haondt.Web.UI.Components.Containers
         Center,
         Hero,
         Top,
+        Fill
     }
     public static class ContentContainerExtensions
     {
@@ -27,6 +28,7 @@ namespace Haondt.Web.UI.Components.Containers
                 ContentContainerLayout.Center => "content-container-layout-center",
                 ContentContainerLayout.Hero => "content-container-layout-hero",
                 ContentContainerLayout.Top => "content-container-layout-top",
+                ContentContainerLayout.Fill => "content-container-layout-fill",
                 _ => new Optional<string>()
             };
         }

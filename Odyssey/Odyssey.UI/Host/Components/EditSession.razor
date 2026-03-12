@@ -14,13 +14,14 @@
     public required Guid Id { get; set; } 
 
     private string _gameName = default!;
-    public NavigationBar CreateNavigationBar() => new()
+    public NavigationBar CreateNavigationBar() => CreateNavigationBar("placeholder");
+    public static NavigationBar CreateNavigationBar(string name) => new()
     {
         Template = new NavigationBarDefault(OdysseyRoles.Host)
         {
             Breadcrumbs = [
                 new("Sessions", OdysseyRoutes.Host.Sessions.Index),
-                new("placeholder")
+                new(name)
             ]
         }
     };
@@ -63,7 +64,6 @@
                 <Frame Template="FrameTemplate.Card">
                     <p class="subtitle">Session</p>
                     @foreach(var (l, r) in new (string, string)[] {
-                        ("ID", Id.ToString()),
                         ("Last played", StringFormatter.FormatDate(AbsoluteDateTime.Now)),
                         ("Created", StringFormatter.FormatDate(AbsoluteDateTime.Now))
                     })

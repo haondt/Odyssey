@@ -1,0 +1,41 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
+@using Odyssey.Domain.Core.Models
+@using Odyssey.Domain.Core.Services
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@implements IHasNavigationBarComponent
+@inject IClientGameRegistry Games
+@inject IHostSessionService Session
+
+@code {
+    public NavigationBar CreateNavigationBar() => EditSession.CreateNavigationBar("placeholder");
+
+    [Parameter, EditorRequired]
+    public required Guid Id { get; set; } 
+
+    private bool _ready = false;
+    protected override async Task OnInitializedAsync()
+    {
+        _ready = true;
+    }
+}
+
+@if (_ready) {
+    <ContentContainer>
+        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel">
+            <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
+                <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.GameState" />
+                <form hx-post hx-swap="none" id="edit-session-game-state-form">
+                    <!--
+                    <ObjectComponent Component="_editSessionGameStateComponent" />
+                    -->
+                    <p>Todo: game-specific state editor</p>
+                </form>
+            </Frame>
+            <FormActionBar DiscardButtonPath='@OdysseyRoutes.Host.Session.IdP(Id).GameStateP.ResetP.IndexP' FormId="edit-session-game-state-form" />
+        </Frame>
+    </ContentContainer>
+}

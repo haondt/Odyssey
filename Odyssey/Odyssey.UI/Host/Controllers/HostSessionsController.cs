@@ -58,5 +58,11 @@ namespace Odyssey.UI.Host.Controllers
                 Id = id
             });
         }
+
+        [HttpGet(OdysseyRoutes.Host.Session.Id.GameState.Index)]
+        public Task<IResult> GetGameState(Guid id) => ComponentFactory.RenderComponentAsync(new EditSessionGameState { Id = id });
+
+        [HttpGet(OdysseyRoutes.Host.Session.Id.GameState.Raw.Index)]
+        public Task<IResult> GetGameStateRaw(Guid id) => ComponentFactory.RenderComponentAsync(new EditSessionGameStateRaw { Id = id });
     }
 }

@@ -23,6 +23,13 @@
     ],
     "@microsoft/signalr": [
       "dist/browser/signalr.min.js"
+    ],
+    "@fontsource-variable/inter": [
+      "files/inter-latin-wght-normal.woff2",
+      "files/inter-latin-wght-italic.woff2"
+    ],
+    "@fontsource-variable/source-code-pro": [
+      "files/source-code-pro-latin-wght-normal.woff2"
     ]
   }
 }

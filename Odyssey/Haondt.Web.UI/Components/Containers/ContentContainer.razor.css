@@ -9,6 +9,7 @@
 .content-container-shell.content-container-layout-hero { position:relative; }
 
 .content-container-body.content-container-layout-hero { position:absolute; top: 12.5%; }
+.content-container-body.content-container-layout-fill { flex-grow: 1; }
 
 .content-container-shell {
     flex-grow: 1;

@@ -11,9 +11,20 @@
     [Parameter]
     public Optional<string> DiscardButtonPath { get; set; }
 
+    [Parameter]
+    public bool OmitFooterMargin { get; set; } = false;
+
+    protected HashSet<string> _rootClasses = ["form-action-bar"];
+
+    protected override void OnInitialized() 
+    {
+        if (OmitFooterMargin)
+            _rootClasses.Add("form-action-bar-footer-marginless");
+    }
+
 }
 
-<div class="form-action-bar">
+<div class="@string.Join(' ', _rootClasses)">
     <HorizontalBar />
     <Frame  Padding="FrameSpacing.Line" Template="FrameTemplate.ButtonContainer">
         @if(DiscardButtonPath.TryGetValue(out var discardPath))

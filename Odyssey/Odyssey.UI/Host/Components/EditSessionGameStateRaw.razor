@@ -1,0 +1,63 @@
+
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
+@using Odyssey.Domain.Core.Models
+@using Odyssey.Domain.Core.Services
+@using Odyssey.UI.Core.Services
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+@inject IClientGameRegistry Games
+@inject IHostSessionService Session
+
+@code {
+    public NavigationBar CreateNavigationBar() => EditSession.CreateNavigationBar("placeholder");
+
+    [Parameter, EditorRequired]
+    public required Guid Id { get; set; } 
+
+    private bool _ready = false;
+    protected override async Task OnInitializedAsync()
+    {
+        _ready = true;
+    }
+}
+
+@if (_ready) {
+    <ContentContainer Layout="ContentContainerLayout.Fill">
+        <Frame AddClasses='"flex-grow-1"' Flex="FrameDirection.Col">
+            <Frame AddClasses='"flex-grow-1"' Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
+                <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.GameStateRaw" />
+                <form class="flex-grow-1" hx-post hx-swap="none" id="edit-session-game-state-raw-form">
+                    @{
+                        var obj = new
+                        {
+                            Round = 2,
+                            Question = "Name something people forget to pack",
+                            Answers = new object[]
+                            {
+                                new { Text = "Phone charger", Points = 35, Revealed = true },
+                                new { Text = "Toothbrush", Points = 25, Revealed = true },
+                                new { Text = "Underwear", Points = 15, Revealed = true }
+                            },
+                            Teams = new
+                            {
+                                Red = new { Score = 120 },
+                                Blue = new { Score = 95 },
+                            },
+                            Strikes = new
+                            {
+                                Red = 1,
+                                Blue = 2
+                            },
+                        };
+                    }
+                    <Field InputClasses='"monospace"' Size="FieldSize.Full" Value="JsonUtils.SerializeObject(obj)" Type="FieldType.TextArea" />
+                </form>
+            </Frame>
+            <FormActionBar OmitFooterMargin="true" DiscardButtonPath='@OdysseyRoutes.Host.Session.IdP(Id).GameStateP.RawP.ResetP.IndexP' FormId="edit-session-game-state-raw-form" />
+        </Frame>
+    </ContentContainer>
+}

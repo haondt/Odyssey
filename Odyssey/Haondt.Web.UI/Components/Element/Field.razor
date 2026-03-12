@@ -1,52 +1,105 @@
 @using Haondt.Web.UI.Components.Containers
 @code {
+    /// <summary>
+    /// Custom field content.
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Field title.
+    /// </summary>
     [Parameter]
     public Optional<string> Title { get; set; }
 
+    /// <summary>
+    /// Hide (display: none) the entire field component.
+    /// </summary>
     [Parameter]
     public bool Hidden { get; set; }
 
+    /// <summary>
+    /// <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus">autofocus</a> the input.
+    /// </summary>
     [Parameter]
     public bool Autofocus { get; set; }
 
+    /// <summary>
+    /// <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/select">select()</a> (highlight) the text in the input.
+    /// </summary>
     [Parameter]
     public bool Select { get; set; }
 
+    /// <summary>
+    /// Id of the form that the input should use.
+    /// </summary>
     [Parameter]
     public Optional<string> Form { get; set; } 
 
+    /// <summary>
+    /// Field description.
+    /// </summary>
     [Parameter]
     public Optional<string> Description { get; set; }
 
+    /// <summary>
+    /// Field type.
+    /// </summary>
     [Parameter]
     public FieldType Type { get; set; } = FieldType.Text;
 
+    /// <summary>
+    /// Set the options for the dropdown. Should be used with <see cref="FieldType.Dropdown" />.
+    /// </summary>
     [Parameter]
     public List<DropdownOption> Options { get; set; } = [];
 
+    /// <summary>
+    /// Set the suggestions for the dropdown. Should be used with <see cref="FieldType.Dropdown" />.
+    /// </summary>
     [Parameter]
     public Optional<SuggestionSource> Suggestions { get; set; }
 
+    /// <summary>
+    /// How the field should consume horizontal space.
+    /// </summary>
     [Parameter]
     public FieldSize Size { get; set; } = FieldSize.Fill;
 
+    /// <summary>
+    /// Name for the input.
+    /// </summary>
     [Parameter]
     public Optional<string> Name { get; set; }
 
+    /// <summary>
+    /// Placeholder for the input.
+    /// </summary>
     [Parameter]
     public Optional<string> Placeholder { get; set; }
 
+    /// <summary>
+    /// Preexisting value for the input.
+    /// </summary>
     [Parameter]
     public Optional<object> Value { get; set; }
 
+    /// <summary>
+    /// <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/autocomplete">Autocomplete</a> value for the input (not to be confused with <see cref="Field.Suggestions"/>).
+    /// </summary>
     [Parameter]
     public Optional<FieldAutocomplete> Autocomplete { get; set; }
 
+
+    /// <summary>
+    /// Error message for the field.
+    /// </summary>
     [Parameter]
     public Optional<string> Error { get; set; }
 
+    /// <summary>
+    /// If false, the field will visibly reflect an invalid state.
+    /// </summary>
     [Parameter]
     public Optional<bool> IsValid { get; set; }
 
@@ -57,6 +110,9 @@
     [Parameter]
     public bool HxPreserve { get; set; } = false;
 
+    /// <summary>
+    /// Id for the input.
+    /// </summary>
     [Parameter]
     public Optional<string> Id { get; set; }
 
@@ -114,6 +170,21 @@
                         _inputAttributes["value"] = value;
                 }
                 break;
+            case FieldType.TextArea:
+            {
+                if (Placeholder.TryGetValue(out var placeholder))
+                    _inputAttributes["placeholder"] = placeholder;
+
+                if (Size.CssClass.TryGetValue(out var size))
+                    _inputClasses.Add(size);
+
+                if (Name.TryGetValue(out var name))
+                    _inputAttributes["name"] = name;
+
+                if (Autocomplete.TryGetValue(out var autocomplete))
+                    _inputAttributes["autocomplete"] = autocomplete.StringValue;
+            }
+            break;
             case FieldType.Dropdown:
                 {
                     if (Suggestions.TryGetValue(out var value))
@@ -143,6 +214,9 @@
         {
             case FieldSize.Fill:
                 _rootClasses.Add("field-size-fill");
+                break;
+            case FieldSize.Full:
+                _rootClasses.Add("field-size-full");
                 break;
         }
 
@@ -235,7 +309,11 @@
         {
             <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
         } 
-        @if(Type is FieldType.Dropdown && Suggestions.TryGetValue(out var suggestions))
+        else if (Type is FieldType.TextArea)
+        {
+            <textarea @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)">@Value.Unwrap()</textarea>
+        }
+        else if(Type is FieldType.Dropdown && Suggestions.TryGetValue(out var suggestions))
         {
             <div _="on click from elsewhere send deactivate to the first .field-suggest-search-input in me" class="@string.Join(' ', _inputClasses)">
                 <p @attributes="_inputProxyAttributes" _="on click send activate to the next .field-suggest-search-input" class="field-suggest-text @(suggestions.Selected.HasValue ? "" : "fg-border")">@suggestions.Selected.Map(q => q.Text).Or(Placeholder).Unwrap()</p>

@@ -4,18 +4,53 @@ namespace Haondt.Web.UI.Components.Element
 {
     public enum FieldType
     {
+        /// <summary>
+        /// Text input.
+        /// </summary>
         Text,
+        /// <summary>
+        /// Checkbox (boolean) input.
+        /// </summary>
         Checkbox,
+        /// <summary>
+        /// Password input.
+        /// </summary>
         Password,
+        /// <summary>
+        /// Search input.
+        /// </summary>
         Search,
+        /// <summary>
+        /// Use a select tag instead of an input. Should be combined with the <see cref="Field.Options"/> or <see cref="Field.Suggestions"/> parameter.
+        /// </summary>
         Dropdown,
+        /// <summary>
+        /// Search input that fires a <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event">submit</a> event whenever its contents change.
+        /// </summary>
         LiveSearch,
+        /// <summary>
+        /// Don't add any input to the field. Can be used with <see cref="Field.ChildContent"/> or just to create an empty field.
+        /// </summary>
         None,
-        Hidden
+        /// <summary>
+        /// Hidden input
+        /// </summary>
+        Hidden,
+        /// <summary>
+        /// Use a textarea instead of an input.
+        /// </summary>
+        TextArea,
     }
     public enum FieldSize
     {
-        Fill
+        /// <summary>
+        /// Fill the horizontal space.
+        /// </summary>
+        Fill,
+        /// <summary>
+        /// Fill the horizontal and vertical space.
+        /// </summary>
+        Full
     }
     public enum FieldAutocomplete
     {

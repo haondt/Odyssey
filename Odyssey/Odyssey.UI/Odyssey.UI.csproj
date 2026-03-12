@@ -10,12 +10,12 @@
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
-	<PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260302180722" />
+	<PackageReference Include="Haondt.Web" Version="0.2.11-alpha-20260311211547" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="10.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="10.0.4" />
   </ItemGroup>
 
   <ItemGroup>

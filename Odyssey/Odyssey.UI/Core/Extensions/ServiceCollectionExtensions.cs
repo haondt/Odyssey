@@ -109,19 +109,29 @@ namespace Odyssey.UI.Core.Extensions
             // Add Inter font
             services.AddScoped<IHeadEntryDescriptor>(_ => new LinkDescriptor
             {
-                Relationship = "preconnect",
-                Uri = "https://fonts.googleapis.com"
+                Relationship = "preload",
+                Uri = "/static/shared/vendored/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
+                Type = "font/woff2",
+                As = "font",
+                CrossOrigin = true
             });
             services.AddScoped<IHeadEntryDescriptor>(_ => new LinkDescriptor
             {
-                Relationship = "preconnect",
-                Uri = "https://fonts.gstatic.com",
-                CrossOrigin = new()
+                Relationship = "preload",
+                Uri = "/static/shared/vendored/@fontsource-variable/inter/files/inter-latin-wght-italic.woff2",
+                Type = "font/woff2",
+                As = "font",
+                CrossOrigin = true
             });
+
+            // Add source code pro font
             services.AddScoped<IHeadEntryDescriptor>(_ => new LinkDescriptor
             {
-                Relationship = "stylesheet",
-                Uri = "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+                Relationship = "preload",
+                Uri = "/static/shared/vendored/@fontsource-variable/source-code-pro/files/source-code-pro-latin-wght-normal.woff2",
+                Type = "font/woff2",
+                As = "font",
+                CrossOrigin = true
             });
 
             // PWA Meta Tags
