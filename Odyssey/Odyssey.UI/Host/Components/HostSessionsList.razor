@@ -9,6 +9,7 @@
 @using System.Text.Json
 @using Odyssey.UI.Authentication.Components
 @using Odyssey.UI.Core.Models
+@using Odyssey.Persistence.Models
 @using static Odyssey.UI.Host.Controllers.HostController
 @inject IClientGameRegistry Games
 @inject IBoardMetadataRepository Boards
@@ -51,10 +52,23 @@
                         <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
                             <p class="subtitle">@session.Name</p>
                             <p class="italic">@_gameNames[session.GameId]</p>
-                            <p class="italic fg-text-weak">@session.BoardId</p>
+                            <p class="italic fg-text-weak">@session.BoardName</p>
                         </Frame>
                         <Frame Template="FrameTemplate.ChipContainer">
+                            @switch(session.Status)
+                            {
+                                case SessionStatus.Created:
+                                    <Chip Label='"Status"' Text="Created" Color="ChipColor.Text"/>
+                                    break;
+                                case SessionStatus.InProgress:
+                                    <Chip Label='"Status"' Text="In progress" Color="ChipColor.Primary"/>
+                                    break;
+                                case SessionStatus.Ended:
+                                    <Chip Label='"Status"' Text="Ended" Color="ChipColor.TextWeak"/>
+                                    break;
+                            }
                             <Chip Label='"Last played"' Text="@session.LastPlayedOn.Map(StringFormatter.FormatDate).Or("Never")" />
+                            <Chip Label='"Created"' Text="@StringFormatter.FormatDate(session.CreatedOn)" />
                         </Frame>
                     </Frame>
                 </a>

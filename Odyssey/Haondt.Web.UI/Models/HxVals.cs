@@ -22,6 +22,7 @@ namespace Haondt.Web.UI.Models
             SerializerSettings.Formatting = Formatting.None;
             SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             SerializerSettings.Converters.Add(new AbsoluteDateTimeJsonConverter());
+            SerializerSettings.Converters.Add(new SimpleGenericOptionalJsonConverter());
         }
 
         public override string ToString() => Serialize(_inner);

@@ -48,19 +48,21 @@ namespace Odyssey.Domain.Core.Services
             return board.AsOptional().Map(SessionMetadata.FromDataModel).AsResult();
         }
 
-        public async Task<List<(Guid Id, SessionMetadata Session)>> GetSessionMetadatasAsync(string ownerId, PaginationOptions<(Guid Id, AbsoluteDateTime LastPlayedOn)> pagination = default)
+        public async Task<List<(Guid Id, SessionMetadata Session)>> GetSessionMetadatasAsync(string ownerId, PaginationOptions<(Guid Id, Optional<AbsoluteDateTime> LastPlayedOn)> pagination = default)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var query = dbContext.SessionMetadatas
                 .Where(q => q.OwnerId == ownerId)
-                .IfWhere(pagination.Last.HasValue, q => q.LastPlayedOn < pagination.Last.Value!.LastPlayedOn || (q.LastPlayedOn == pagination.Last.Value!.LastPlayedOn && q.EntityId > pagination.Last.Value!.Id))
-                .OrderByDescending(q => q.LastPlayedOn)
+                .IfWhere(pagination.Last.HasValue && !pagination.Last.Value.LastPlayedOn.HasValue, q => q.EntityId > pagination.Last.Value.Id)
+                .IfWhere(pagination.Last.HasValue && pagination.Last.Value.LastPlayedOn.HasValue, q => q.LastPlayedOn.HasValue && (q.LastPlayedOn.Value > pagination.Last.Value!.LastPlayedOn.Value! || (q.LastPlayedOn.Value == pagination.Last.Value!.LastPlayedOn.Value! && q.EntityId > pagination.Last.Value!.Id)))
+                .OrderByDescending(q => q.LastPlayedOn == null)
+                .ThenByDescending(q => q.LastPlayedOn)
                 .ThenBy(q => q.EntityId);
 
             var metadata = await query.Take(pagination.PageSize.Or(OdysseyConstants.DefaultPageSize)).ToListAsync();
             return metadata.Select(m => (m.EntityId, SessionMetadata.FromDataModel(m))).ToList();
         }
-        public async Task<List<(Guid Id, SessionMetadata Session)>> SearchSessionMetadatasAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, AbsoluteDateTime LastPlayedOn)> pagination = default)
+        public async Task<List<(Guid Id, SessionMetadata Session)>> SearchSessionMetadatasAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, Optional<AbsoluteDateTime> LastPlayedOn)> pagination = default)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return await GetSessionMetadatasAsync(ownerId, pagination);
@@ -68,8 +70,10 @@ namespace Odyssey.Domain.Core.Services
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var query = dbContext.SessionMetadatas
                 .Where(q => q.OwnerId == ownerId && q.SearchData.Contains(searchTerm))
-                .IfWhere(pagination.Last.HasValue, q => q.LastPlayedOn < pagination.Last.Value!.LastPlayedOn || (q.LastPlayedOn == pagination.Last.Value!.LastPlayedOn && q.EntityId > pagination.Last.Value!.Id))
-                .OrderByDescending(q => q.LastPlayedOn)
+                .IfWhere(pagination.Last.HasValue && !pagination.Last.Value.LastPlayedOn.HasValue, q => q.EntityId > pagination.Last.Value.Id)
+                .IfWhere(pagination.Last.HasValue && pagination.Last.Value.LastPlayedOn.HasValue, q => q.LastPlayedOn.HasValue && (q.LastPlayedOn.Value > pagination.Last.Value!.LastPlayedOn.Value! || (q.LastPlayedOn.Value == pagination.Last.Value!.LastPlayedOn.Value! && q.EntityId > pagination.Last.Value!.Id)))
+                .OrderByDescending(q => q.LastPlayedOn == null)
+                .ThenByDescending(q => q.LastPlayedOn)
                 .ThenBy(q => q.EntityId)
                 .Take(pagination.PageSize.Or(OdysseyConstants.DefaultPageSize));
 

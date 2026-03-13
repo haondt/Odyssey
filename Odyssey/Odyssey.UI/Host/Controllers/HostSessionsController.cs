@@ -21,8 +21,8 @@ namespace Odyssey.UI.Host.Controllers
         {
             var userId = await sessionService.GetUserIdAsync();
             var sessionList = string.IsNullOrWhiteSpace(search)
-                ? await sessions.GetSessionMetadatasAsync(userId, last.Pagination)
-                : await sessions.SearchSessionMetadatasAsync(userId, search, last.Pagination);
+                ? await sessions.GetSessionMetadatasAsync(userId, last.PaginationOptionalTime)
+                : await sessions.SearchSessionMetadatasAsync(userId, search, last.PaginationOptionalTime);
 
             return await ComponentFactory.RenderComponentAsync(new HostSessionsList
             {
