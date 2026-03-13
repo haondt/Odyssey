@@ -1,8 +1,8 @@
 ﻿using Haondt.Core.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Odyssey.Core.Models;
 using Odyssey.Domain.Core.Services;
-using Odyssey.Persistence.Models;
 
 namespace Odyssey.Client.Core.Services
 {

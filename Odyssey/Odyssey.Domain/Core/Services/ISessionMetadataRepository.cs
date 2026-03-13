@@ -1,6 +1,6 @@
 ﻿using Haondt.Core.Models;
+using Odyssey.Core.Models;
 using Odyssey.Domain.Core.Models;
-using Odyssey.Persistence.Models;
 
 namespace Odyssey.Domain.Core.Services
 {
@@ -11,6 +11,6 @@ namespace Odyssey.Domain.Core.Services
         Task<List<(Guid Id, SessionMetadata Session)>> SearchSessionMetadatasAsync(string ownerId, NormalizedString searchTerm, PaginationOptions<(Guid Id, AbsoluteDateTime LastPlayedOn)> pagination = default);
         Task<SessionMetadata> UpdateSessionMetadataAsync(OwnedEntityGuid id, string name);
         Task DeleteSessionMetadataAsync(OwnedEntityGuid id);
-        Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(string gameId, string ownerId, string name, Guid boardId, string boardName);
+        Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(string gameId, string ownerId, string name, Guid boardId, string boardName, bool ephemeral);
     }
 }

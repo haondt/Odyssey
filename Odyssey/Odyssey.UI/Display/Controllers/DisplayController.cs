@@ -58,7 +58,7 @@ namespace Odyssey.UI.Display.Controllers
             {
                 return joinResult.Reason switch
                 {
-                    JoinPartyReason.PartyDoesNotExist => await RenderValidationComponent(new()
+                    JoinPartyReason.PartyDoesNotExist => await RenderValidationComponentAsync(new()
                     {
                         [nameof(DisplayJoinPartyModel.JoinCode)] = "Party not found"
                     }),

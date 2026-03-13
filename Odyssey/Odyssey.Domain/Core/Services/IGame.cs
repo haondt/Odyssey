@@ -1,9 +1,9 @@
-﻿using Odyssey.Domain.Core.Models;
-using Odyssey.Persistence.Models;
+﻿using Odyssey.Core.Models;
+using Odyssey.Domain.Core.Models;
 
 namespace Odyssey.Domain.Core.Services
 {
-    public interface IGame : IGameBoardsService, IGameSettingsService
+    public interface IGame : IGameBoardsService, IGameSettingsService, IGameSessionsService
     {
         string Id { get; }
     }
@@ -19,5 +19,11 @@ namespace Odyssey.Domain.Core.Services
     {
         Task<(Guid Id, BoardMetadata Metadata)> CreateBoardAsync(string ownerId, string name);
         Task DeleteBoardAsync(OwnedEntityGuid id);
+    }
+
+    public interface IGameSessionsService
+    {
+        Task<(Guid Id, SessionMetadata Metadata)> CreateSessionAsync(string ownerId, string name, Guid boardId, string boardName, bool ephemeral);
+        Task DeleteSessionAsync(OwnedEntityGuid id);
     }
 }

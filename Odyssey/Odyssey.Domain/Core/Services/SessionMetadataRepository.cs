@@ -2,6 +2,7 @@
 using Haondt.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Odyssey.Core.Constants;
+using Odyssey.Core.Models;
 using Odyssey.Domain.Core.Extensions;
 using Odyssey.Domain.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
@@ -16,7 +17,7 @@ namespace Odyssey.Domain.Core.Services
     {
         public async Task<(Guid Id, SessionMetadata Session)> CreateSessionMetadataAsync(
             string gameId, string ownerId, string name,
-            Guid boardId, string boardName)
+            Guid boardId, string boardName, bool ephemeral)
         {
             var now = clock.Now;
             var meta = new SessionMetadata
@@ -26,6 +27,7 @@ namespace Odyssey.Domain.Core.Services
                 CreatedOn = now,
                 BoardId = boardId,
                 BoardName = boardName,
+                Ephemeral = ephemeral
             };
             var model = meta.AsDataModel((ownerId, Guid.NewGuid()));
 

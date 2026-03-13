@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Odyssey.Client.Core.Services;
+using Odyssey.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Games.Client.DebugGame.UI.Components;
 using Odyssey.Games.Domain.DebugGame.Models;
 using Odyssey.Games.Domain.DebugGame.Services;
-using Odyssey.Persistence.Models;
+using Odyssey.GrainInterfaces.Sessions.Services;
 
 namespace Odyssey.Games.Client.DebugGame.Core.Services
 {
@@ -16,9 +17,11 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
         ICachedDataRepository<DebugGameGameSettings> gameSettings,
         ICachedDataRepository<DebugGameBoard> boards,
         IBoardMetadataRepository boardMetadataRepository,
+        ISessionMetadataRepository sessionMetadataRepository,
         IStandaloneModelBinder modelBinder,
-        ILogger<DebugGameGame> logger
-        ) : DebugGameGame(gameSettings, boards, boardMetadataRepository, logger), IClientGame
+        ILogger<DebugGameGame> logger,
+        ISessionGrainFactory<DebugGameBoard, DebugGameGameState> sessionGrainFactory
+        ) : DebugGameGame(gameSettings, boards, boardMetadataRepository, sessionMetadataRepository, logger, sessionGrainFactory), IClientGame
     {
         public async Task<IComponent> GetEditBoardComponentAsync(OwnedEntityGuid id)
         {

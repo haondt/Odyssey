@@ -43,12 +43,12 @@
             <p class="title">@StatusCode.ToString()</p>
             @if(Message.TryGetValue(out var message)) 
             {
-                <p class="subtitle">@message</p>
+                <p class="subtitle" style="white-space:pre-wrap;line-break:anywhere;">@message</p>
             }
             @if(Details.TryGetValue(out var details)) 
             {
                 <div class="overflow-x-auto overflow-y-hidden">
-                    <div class="text" style="white-space:pre-wrap;">@details</div>
+                    <div class="text" style="white-space:pre-wrap;line-break:anywhere;">@details</div>
                 </div>
             }
         </Frame>
@@ -56,7 +56,7 @@
         {
             <Frame AddClasses='"bg-background-strong"' Padding="FrameSpacing.Card" Radius="FrameRadius.Card">
                 <div class="overflow-x-auto overflow-y-hidden">
-                    <div class="text monospace" style="white-space:pre;">@internalDetails</div>
+                    <div class="text monospace" style="white-space:pre-wrap;line-break:anywhere;">@internalDetails</div>
                 </div>
             </Frame>
         }

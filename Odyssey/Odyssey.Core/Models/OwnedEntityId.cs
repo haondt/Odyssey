@@ -1,4 +1,4 @@
-﻿namespace Odyssey.Persistence.Models
+﻿namespace Odyssey.Core.Models
 {
     public readonly record struct OwnedEntityId<TEntityId>(string OwnerId, TEntityId EntityId)
     {

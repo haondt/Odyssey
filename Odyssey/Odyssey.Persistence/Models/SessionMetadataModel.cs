@@ -19,6 +19,7 @@ namespace Odyssey.Persistence.Models
 
         public required string Name { get; set; }
         public required string SearchData { get; set; }
+        public required bool Ephemeral { get; set; }
         public required AbsoluteDateTime CreatedOn { get; set; }
         public required AbsoluteDateTime? LastPlayedOn { get; init; }
         public SessionStatus Status { get; set; } = SessionStatus.Created;

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Odyssey.Client.Core.Models;
-using Odyssey.Persistence.Models;
+using Odyssey.Core.Models;
 using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
@@ -136,16 +136,8 @@ namespace Odyssey.UI.Host.Controllers
             var metadataResult = await boards.GetBoardMetadataAsync(ownedId);
             if (metadataResult.TryGetValue(out var metadata))
             {
-                await boards.DeleteBoardMetadataAsync(ownedId);
-                try
-                {
-                    var game = gameRegistry.GetGame(metadata.GameId);
-                    await game.Boards.DeleteBoardAsync(ownedId);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Failed to delete board data after deleting metadata.");
-                }
+                var game = gameRegistry.GetGame(metadata.GameId);
+                await game.Boards.DeleteBoardAsync(ownedId);
             }
             ResponseData
                 .HxPushUrl(OdysseyRoutes.Host.Boards.Index);

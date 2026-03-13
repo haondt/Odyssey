@@ -1,4 +1,5 @@
 ﻿using Haondt.Core.Extensions;
+using Haondt.Web.Core.Extensions;
 using Haondt.Web.UI.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,19 @@ namespace Odyssey.UI.Host.Controllers
         [ValidationState(typeof(NewSessionModalPanel), NewSessionModalPanel.Id)]
         public async Task<IResult> CreateSession([FromForm] NewSessionModel newSession)
         {
-            throw new ToastException("Not implemented yet");
+            var userId = await sessionService.GetUserIdAsync();
+            var boardResult = await boards.GetBoardMetadataAsync((userId, newSession.Board));
+            if (!boardResult.TryGetValue(out var board))
+                return await RenderValidationComponentAsync(new() { [nameof(NewSessionModel.Board)] = "Board not found." });
+            var game = gameRegistry.GetGame(board.GameId);
+            var (sessionId, session) = await game.Sessions.CreateSessionAsync(userId, newSession.Name.Or(newSession.GeneratedName), newSession.Board, board.Name, newSession.Ephemeral);
+
+            ResponseData
+                .HxPushUrl(OdysseyRoutes.Host.Session.IdP(sessionId).IndexP);
+            return await ComponentFactory.RenderComponentAsync(new EditSession
+            {
+                Id = sessionId
+            });
         }
 
         [HttpGet(OdysseyRoutes.Host.Session.Id.Index)]

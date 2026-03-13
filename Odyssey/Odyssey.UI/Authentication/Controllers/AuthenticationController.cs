@@ -37,7 +37,7 @@ namespace Odyssey.UI.Authentication.Controllers
         {
             var result = await userService.TrySignInAsync(signIn.Username, signIn.Password);
             if (!result.IsSuccessful)
-                return await RenderValidationComponent(new() { [nameof(SignInModel)] = result.Reason });
+                return await RenderValidationComponentAsync(new() { [nameof(SignInModel)] = result.Reason });
 
             if (returnUrl != null)
                 ResponseData.HxRedirect(returnUrl);

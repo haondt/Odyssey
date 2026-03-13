@@ -1,4 +1,5 @@
 ﻿using Haondt.Core.Models;
+using Odyssey.Core.Models;
 using Odyssey.Persistence.Models;
 
 namespace Odyssey.Domain.Core.Models

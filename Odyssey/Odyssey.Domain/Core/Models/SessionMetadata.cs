@@ -1,5 +1,6 @@
 ﻿using Haondt.Core.Extensions;
 using Haondt.Core.Models;
+using Odyssey.Core.Models;
 using Odyssey.Persistence.Models;
 
 namespace Odyssey.Domain.Core.Models
@@ -10,6 +11,7 @@ namespace Odyssey.Domain.Core.Models
         public required string GameId { get; set; }
         public required Guid BoardId { get; set; }
         public required string BoardName { get; set; }
+        public required bool Ephemeral { get; set; }
         public required AbsoluteDateTime CreatedOn { get; init; }
         public Optional<AbsoluteDateTime> LastPlayedOn { get; init; }
         public SessionStatus Status { get; set; } = SessionStatus.Created;
@@ -24,6 +26,7 @@ namespace Odyssey.Domain.Core.Models
             BoardName = BoardName,
             BoardId = new OwnedEntityGuid(id.OwnerId, BoardId),
             SearchData = SessionMetadataDataModel.CreateSearchData(Name, BoardName),
+            Ephemeral = Ephemeral,
             CreatedOn = CreatedOn,
             LastPlayedOn = LastPlayedOn.Unwrap()
         };
@@ -34,6 +37,7 @@ namespace Odyssey.Domain.Core.Models
             GameId = dataModel.GameId,
             BoardId = dataModel.BoardEntityId,
             BoardName = dataModel.BoardName,
+            Ephemeral = dataModel.Ephemeral,
             CreatedOn = dataModel.CreatedOn,
             LastPlayedOn = dataModel.LastPlayedOn.AsOptional(),
         };

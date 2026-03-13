@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.GrainInterfaces.Core.Services;
 using Odyssey.GrainInterfaces.Sessions;
+using Odyssey.GrainInterfaces.Sessions.Services;
 using Orleans.Serialization;
 
 namespace Odyssey.GrainInterfaces.Core.Extensions
@@ -37,6 +38,7 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 services.AddSingleton<ICastedGrainFactory<string, IMemberPartyGrain>, CastedGrainFactory<string, IPartyGrain, IMemberPartyGrain>>();
                 services.AddSingleton<IGrainFactory<string, IJoinCodeGrain>, StringKeyGrainFactory<IJoinCodeGrain>>();
                 services.AddSingleton<IGrainFactory<Guid, IDisplayGrain>, GuidKeyGrainFactory<IDisplayGrain>>();
+                services.AddSingleton(typeof(ISessionGrainFactory<,>), typeof(SessionGrainFactory<,>));
                 return services;
             }
         }

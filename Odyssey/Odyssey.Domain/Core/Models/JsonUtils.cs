@@ -1,11 +1,12 @@
 ﻿using Haondt.Json.Converters;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Orleans.Serialization;
 
 namespace Odyssey.Domain.Core.Models
 {
-    public class JsonUtils
+    public class JsonUtils(IOptions<OrleansJsonSerializerOptions> orleansSerializerOptions)
     {
         public static readonly JsonSerializerSettings SerializerSettings;
         static JsonUtils()
@@ -30,6 +31,8 @@ namespace Odyssey.Domain.Core.Models
         {
             return JsonConvert.SerializeObject(obj, SerializerSettings);
         }
+
+        public T CloneObject<T>(T obj) => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj, orleansSerializerOptions.Value.JsonSerializerSettings))!;
 
         public static T DeserializeObject<T>(string s)
         {

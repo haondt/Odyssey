@@ -28,7 +28,7 @@ namespace Odyssey.UI.Core.Controllers
         }
 
 
-        protected async Task<IResult> RenderValidationComponent(Dictionary<string, string> errors)
+        protected async Task<IResult> RenderValidationComponentAsync(Dictionary<string, string> errors)
         {
             ModelStateValidationFilter.SetValidationState(HttpContext, errors);
 
