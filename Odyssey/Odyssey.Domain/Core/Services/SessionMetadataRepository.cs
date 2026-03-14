@@ -27,6 +27,7 @@ namespace Odyssey.Domain.Core.Services
                 CreatedOn = now,
                 BoardId = boardId,
                 BoardName = boardName,
+                Archived = false,
                 Ephemeral = ephemeral
             };
             var model = meta.AsDataModel((ownerId, Guid.NewGuid()));
@@ -52,7 +53,7 @@ namespace Odyssey.Domain.Core.Services
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var query = dbContext.SessionMetadatas
-                .Where(q => q.OwnerId == ownerId)
+                .Where(q => q.OwnerId == ownerId && !q.Archived)
                 .IfWhere(pagination.Last.HasValue && !pagination.Last.Value.LastPlayedOn.HasValue, q => q.EntityId > pagination.Last.Value.Id)
                 .IfWhere(pagination.Last.HasValue && pagination.Last.Value.LastPlayedOn.HasValue, q => q.LastPlayedOn.HasValue && (q.LastPlayedOn.Value > pagination.Last.Value!.LastPlayedOn.Value! || (q.LastPlayedOn.Value == pagination.Last.Value!.LastPlayedOn.Value! && q.EntityId > pagination.Last.Value!.Id)))
                 .OrderByDescending(q => q.LastPlayedOn == null)
@@ -69,7 +70,7 @@ namespace Odyssey.Domain.Core.Services
 
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var query = dbContext.SessionMetadatas
-                .Where(q => q.OwnerId == ownerId && q.SearchData.Contains(searchTerm))
+                .Where(q => q.OwnerId == ownerId && !q.Archived && q.SearchData.Contains(searchTerm))
                 .IfWhere(pagination.Last.HasValue && !pagination.Last.Value.LastPlayedOn.HasValue, q => q.EntityId > pagination.Last.Value.Id)
                 .IfWhere(pagination.Last.HasValue && pagination.Last.Value.LastPlayedOn.HasValue, q => q.LastPlayedOn.HasValue && (q.LastPlayedOn.Value > pagination.Last.Value!.LastPlayedOn.Value! || (q.LastPlayedOn.Value == pagination.Last.Value!.LastPlayedOn.Value! && q.EntityId > pagination.Last.Value!.Id)))
                 .OrderByDescending(q => q.LastPlayedOn == null)
@@ -81,14 +82,19 @@ namespace Odyssey.Domain.Core.Services
             return metadata.Select(m => (m.EntityId, SessionMetadata.FromDataModel(m))).ToList();
         }
 
-        public async Task<SessionMetadata> UpdateSessionMetadataAsync(OwnedEntityGuid id, string name)
+        public async Task<SessionMetadata> UpdateSessionMetadataAsync(OwnedEntityGuid id, Optional<string> name = default, Optional<bool> archived = default)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var board = await dbContext.SessionMetadatas
                 .FirstOrDefaultAsync(q => q.Id == id)
                 ?? throw new KeyNotFoundException($"Session with id {id} does not exist.");
-            board.Name = name;
-            board.SearchData = SessionMetadataDataModel.CreateSearchData(name, board.BoardName);
+            if (name.HasValue)
+            {
+                board.Name = name.Value;
+                board.SearchData = SessionMetadataDataModel.CreateSearchData(name.Value, board.BoardName);
+            }
+            if (archived.HasValue)
+                board.Archived = archived.Value;
             await dbContext.SaveChangesAsync();
             return SessionMetadata.FromDataModel(board);
         }

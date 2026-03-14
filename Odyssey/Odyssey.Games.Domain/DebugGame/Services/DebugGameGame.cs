@@ -69,5 +69,11 @@ namespace Odyssey.Games.Domain.DebugGame.Services
                 logger.LogError(ex, "Failed to delete session {SessionId} data after deleting metadata.", id);
             }
         }
+
+        public async Task ResetSessionAsync(OwnedEntityGuid id)
+        {
+            var session = sessionGrainFactory.GetGrain(id);
+            await session.ClearGameStateAsync();
+        }
     }
 }

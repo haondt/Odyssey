@@ -44,5 +44,7 @@ namespace Odyssey.Grains.Sessions
             await _sessionStateGrain.ClearDataAsync();
             await _gameStateGrain.ClearDataAsync();
         }
+
+        public Task ClearGameStateAsync() => _gameStateGrain.ClearDataAsync();
     }
 }

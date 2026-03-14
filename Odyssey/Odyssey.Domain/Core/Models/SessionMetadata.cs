@@ -10,6 +10,7 @@ namespace Odyssey.Domain.Core.Models
         public required string Name { get; set; }
         public required string GameId { get; set; }
         public required Guid BoardId { get; set; }
+        public required bool Archived { get; set; }
         public required string BoardName { get; set; }
         public required bool Ephemeral { get; set; }
         public required AbsoluteDateTime CreatedOn { get; init; }
@@ -27,6 +28,7 @@ namespace Odyssey.Domain.Core.Models
             BoardId = new OwnedEntityGuid(id.OwnerId, BoardId),
             SearchData = SessionMetadataDataModel.CreateSearchData(Name, BoardName),
             Ephemeral = Ephemeral,
+            Archived = Archived,
             CreatedOn = CreatedOn,
             LastPlayedOn = LastPlayedOn.Unwrap()
         };
@@ -38,6 +40,7 @@ namespace Odyssey.Domain.Core.Models
             BoardId = dataModel.BoardEntityId,
             BoardName = dataModel.BoardName,
             Ephemeral = dataModel.Ephemeral,
+            Archived = dataModel.Archived,
             CreatedOn = dataModel.CreatedOn,
             LastPlayedOn = dataModel.LastPlayedOn.AsOptional(),
         };

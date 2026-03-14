@@ -10,6 +10,7 @@ namespace Odyssey.GrainInterfaces.Sessions
         where TBoard : IDataStorageData<TBoard>
         where TGameState : IDataStorageData<TGameState>
     {
+        Task ClearGameStateAsync();
         Task ClearStateAsync();
         Task SetState(int version, Optional<TBoard> board = default, Optional<List<SessionPlayer>> players = default);
     }

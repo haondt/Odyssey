@@ -3,85 +3,96 @@
 @using Odyssey.UI.Core.Models
 @inject NavigationManager Nav
 @inject IHostSessionService SessionService
+@inject IServiceProvider ServiceProvider
 @code {
     [Parameter, EditorRequired]
-    public required Union<NavigationBarEmpty, NavigationBarDefault, NavigationBarRoles, NavigationBarMinimal> Template { get; set; }
+    public required Union<NavigationBarEmpty, NavigationBarDefault, NavigationBarRoles, NavigationBarMinimal, NavigationBarAsyncFactory> Template { get; set; }
 
     private Result<string> _username;
+    private Optional<IComponent> _asyncFactoryResult;
+
+    private bool _ready;
 
     protected override async Task OnInitializedAsync()
     {
         _username = (await SessionService.GetUserNameAsync());
+        if (Template.Is<NavigationBarAsyncFactory>(out var factory)) 
+            _asyncFactoryResult = new(await factory.Factory(ServiceProvider));
+        _ready = true;
     }
 }
-
-@switch(Template.Unwrap())
-{
-    case NavigationBarEmpty:
-        <text></text>
-        break;
-    case NavigationBarRoles rolesBar:
-        @if(SessionService.IsAuthenticated && _username.TryGetValue(out var username))
-        {
-            <Frame
-                Padding="FrameSpacing.Card"
-                Flex="FrameDirection.Row" Justify="FrameJustification.End">
-                <Frame 
-                    Border="FrameBorder.Card"
-                    Flex="FrameDirection.Row"
-                    Template="FrameTemplate.Card">
-                    <p class="text">@username</p>
-                    <Button 
-                        Style="ButtonStyle.Skeleton" 
-                        Color="ButtonColor.Primary" 
-                        HxPost="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.SignOut).ToString()">Sign out</Button>
+@if (_ready) {
+    @switch(Template.Unwrap())
+    {
+        case NavigationBarAsyncFactory factory:
+            <ObjectComponent Component="_asyncFactoryResult.Value!" />
+            break;
+        case NavigationBarEmpty:
+            <text></text>
+            break;
+        case NavigationBarRoles rolesBar:
+            @if(SessionService.IsAuthenticated && _username.TryGetValue(out var username))
+            {
+                <Frame
+                    Padding="FrameSpacing.Card"
+                    Flex="FrameDirection.Row" Justify="FrameJustification.End">
+                    <Frame 
+                        Border="FrameBorder.Card"
+                        Flex="FrameDirection.Row"
+                        Template="FrameTemplate.Card">
+                        <p class="text">@username</p>
+                        <Button 
+                            Style="ButtonStyle.Skeleton" 
+                            Color="ButtonColor.Primary" 
+                            HxPost="@Nav.ToAbsoluteUri(OdysseyRoutes.Auth.SignOut).ToString()">Sign out</Button>
+                    </Frame>
                 </Frame>
-            </Frame>
-        }
-        break;
-    case NavigationBarDefault defaultBar:
-        <div>
-            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-gte-m pb-0"' Align="FrameAlignment.Center">
-                <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
-                    <p class="brand-text">Odyssey</p>
+            }
+            break;
+        case NavigationBarDefault defaultBar:
+            <div>
+                <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-gte-m pb-0"' Align="FrameAlignment.Center">
+                    <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
+                        <p class="brand-text">Odyssey</p>
+                    </Frame>
+                    <HorizontalSpacer />
+                    <Frame Align="FrameAlignment.Center">
+                        <a hx-boost="true" href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
+                    </Frame>
                 </Frame>
-                <HorizontalSpacer />
-                <Frame Align="FrameAlignment.Center">
-                    <a hx-boost href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
-                </Frame>
-            </Frame>
-            <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"default-bar-lower"' Align="FrameAlignment.Center">
-                <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-lte-s"'>
-                    <p class="brand-text">Odyssey</p>
-                    <VerticalBar />
-                </Frame>
-                <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"overflow-hidden"'>
-                    <a class="breadcrumb-text" hx-boost="true" href="@defaultBar.RoleRoute">@defaultBar.RoleText</a>
-                    @foreach(var breadcrumb in defaultBar.Breadcrumbs)
-                    {
-                        var crushableClass = breadcrumb.Crushable ? "breadcrumb-text-crushable" : "";
-                        <span class="breadcrumb-divider"></span>
-                        if(breadcrumb.Href.TryGetValue(out var href))
+                <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"default-bar-lower"' Align="FrameAlignment.Center">
+                    <Frame Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"hidden-lte-s"'>
+                        <p class="brand-text">Odyssey</p>
+                        <VerticalBar />
+                    </Frame>
+                    <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"overflow-hidden"'>
+                        <a class="breadcrumb-text" hx-boost="true" href="@defaultBar.RoleRoute">@defaultBar.RoleText</a>
+                        @foreach(var breadcrumb in defaultBar.Breadcrumbs)
                         {
-                            <a class="breadcrumb-text @crushableClass" hx-boost="true" href="@href">@breadcrumb.Text</a>
+                            var crushableClass = breadcrumb.Crushable ? "breadcrumb-text-crushable" : "";
+                            <span class="breadcrumb-divider"></span>
+                            if(breadcrumb.Href.TryGetValue(out var href))
+                            {
+                                <a class="breadcrumb-text @crushableClass" hx-boost="true" href="@href">@breadcrumb.Text</a>
+                            }
+                            else
+                            {
+                                <p class="breadcrumb-text @crushableClass">@breadcrumb.Text</p>
+                            }
                         }
-                        else
-                        {
-                            <p class="breadcrumb-text @crushableClass">@breadcrumb.Text</p>
-                        }
-                    }
+                    </Frame>
+                    <HorizontalSpacer />
+                    <Frame AddClasses='"hidden-lte-s"' Align="FrameAlignment.Center">
+                        <a hx-boost="true" href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
+                    </Frame>
                 </Frame>
-                <HorizontalSpacer />
-                <Frame AddClasses='"hidden-lte-s"' Align="FrameAlignment.Center">
-                    <a hx-boost href="@OdysseyRoutes.Roles.Index" class="breadcrumb-text">Change role</a>
-                </Frame>
+            </div>
+            break;
+        case NavigationBarMinimal:
+            <Frame Padding="FrameSpacing.Card">
+                <p class="brand-text">Odyssey</p>
+                <VerticalBar />
             </Frame>
-        </div>
-        break;
-    case NavigationBarMinimal:
-        <Frame Padding="FrameSpacing.Card">
-            <p class="brand-text">Odyssey</p>
-            <VerticalBar />
-        </Frame>
-        break;
+            break;
+    }
 }

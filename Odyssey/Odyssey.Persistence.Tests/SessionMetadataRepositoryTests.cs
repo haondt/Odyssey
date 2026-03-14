@@ -93,7 +93,7 @@ namespace Odyssey.Persistence.Tests
             var now = ctx.LockClock();
             var sessionName = "My Session";
             var (boardId, board) = await ctx.CreateBoardAsync();
-            var (id, writeSession) = await ctx.Sut.CreateSessionMetadataAsync(board.GameId, board.OwnerId, sessionName, boardId, board.Name);
+            var (id, writeSession) = await ctx.Sut.CreateSessionMetadataAsync(board.GameId, board.OwnerId, sessionName, boardId, board.Name, false);
 
             writeSession.Name.Should().BeEquivalentTo(sessionName);
             writeSession.GameId.Should().BeEquivalentTo(board.GameId);
@@ -119,7 +119,7 @@ namespace Odyssey.Persistence.Tests
             var now = ctx.LockClock();
             var sessionName = "My Session";
             var (boardId, board) = await ctx.CreateBoardAsync();
-            var (id, _) = await ctx.Sut.CreateSessionMetadataAsync(board.GameId, board.OwnerId, sessionName, boardId, board.Name);
+            var (id, _) = await ctx.Sut.CreateSessionMetadataAsync(board.GameId, board.OwnerId, sessionName, boardId, board.Name, false);
             var result = await ctx.DeleteBoardAsync((board.OwnerId, boardId));
             result.Should().Be(1);
 

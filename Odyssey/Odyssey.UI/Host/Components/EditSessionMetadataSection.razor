@@ -1,3 +1,4 @@
+@using Odyssey.Domain.Core.Models
 
 @code {
     public const string Id = "edit-session-metadata-section";
@@ -5,7 +6,7 @@
     public bool HxSwapOob {get;set;} = false;
 
     [Parameter]
-    public required string Name { get; set; }
+    public required SessionMetadata Session { get; set; }
     private Dictionary<string, object> _rootAttributes = [];
     protected override void OnInitialized()
     {
@@ -18,5 +19,9 @@
 
 
 <div @attributes="_rootAttributes" id="@Id" class="flex flex-grow-1 flex-row flex-wrap-wrap align-items-flex-end gap-line">
-    <p class="title">@Name</p><p class="title fg-text-weak">(archived)</p>
+    <p class="title">@Session.Name</p>
+    @if(Session.Archived) 
+    {
+        <p class="title fg-text-weak">(archived)</p>
+    }
 </div>

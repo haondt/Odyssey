@@ -25,5 +25,6 @@ namespace Odyssey.Domain.Core.Services
     {
         Task<(Guid Id, SessionMetadata Metadata)> CreateSessionAsync(string ownerId, string name, Guid boardId, string boardName, bool ephemeral);
         Task DeleteSessionAsync(OwnedEntityGuid id);
+        Task ResetSessionAsync(OwnedEntityGuid id);
     }
 }

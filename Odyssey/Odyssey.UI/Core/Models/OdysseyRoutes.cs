@@ -91,6 +91,21 @@
                         public const string Index = $"{Host.Session.Id.Index}/{Segment}";
                         public string IndexP => $"{upperPath}/{Segment}";
                     }
+                    public Archive ArchiveP => new($"{Host.Session.Index}/{id}");
+                    public class Archive(string upperPath)
+                    {
+                        public const string Segment = "archive";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+                    }
+
+                    public Unarchive UnarchiveP => new($"{Host.Session.Index}/{id}");
+                    public class Unarchive(string upperPath)
+                    {
+                        public const string Segment = "unarchive";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+                    }
 
                     public GameState GameStateP => new($"{Host.Session.Index}/{id}");
                     public class GameState(string upperPath)
@@ -156,6 +171,7 @@
                 public class Id(Guid id)
                 {
                     public const string Index = $"{Host.Board.Index}/{{id}}";
+                    public string IndexP = $"{Host.Board.Index}/{id}";
                     public Reset ResetP => new($"{Host.Board.Index}/{id}");
 
                     public class Reset(string upperPath)

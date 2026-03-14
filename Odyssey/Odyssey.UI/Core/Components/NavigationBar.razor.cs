@@ -1,4 +1,5 @@
 ﻿using Haondt.Core.Models;
+using Microsoft.AspNetCore.Components;
 using Odyssey.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 
@@ -33,4 +34,6 @@ namespace Odyssey.UI.Core.Components
         Optional<string> Href = default,
         bool Crushable = false);
     public record NavigationBarMinimal();
+
+    public record NavigationBarAsyncFactory(Func<IServiceProvider, Task<IComponent>> Factory);
 }

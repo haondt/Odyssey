@@ -1,20 +1,30 @@
 @using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Models
 @using Haondt.Web.UI.Components.Containers
+@using Microsoft.Extensions.DependencyInjection
 @using Odyssey.Client.Authentication.Services
 @using Odyssey.Client.Core.Services
 @using Odyssey.Domain.Core.Models
 @using Odyssey.Domain.Core.Services
+@using Odyssey.Persistence.Models
+@using Odyssey.UI.Core.Exceptions
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
+@inject ISessionMetadataRepository Sessions
+@inject IHostSessionService HostSession
+@inject IClientGameRegistry Games
 
 @code {
     [Parameter, EditorRequired]
     public required Guid Id { get; set; } 
 
+    [Parameter, EditorRequired]
+    public required SessionMetadata Session { get; set; } 
+
     private string _gameName = default!;
-    public NavigationBar CreateNavigationBar() => CreateNavigationBar("placeholder");
+
+    public NavigationBar CreateNavigationBar() => CreateNavigationBar(Session.Name);
     public static NavigationBar CreateNavigationBar(string name) => new()
     {
         Template = new NavigationBarDefault(OdysseyRoles.Host)
@@ -29,6 +39,9 @@
     private bool _ready = false;
     protected override async Task OnInitializedAsync()
     {
+        var userId = await HostSession.GetUserIdAsync();
+        var displayNames = await Games.GetDisplayNamesAsync(userId);
+        _gameName = displayNames[Session.GameId];
         _ready = true;
     }
 }
@@ -39,20 +52,20 @@
             <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.SessionOverview" />
                 <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Stretch">
-                    <EditSessionMetadataSection Name="A Placeholder Session Title" />
+                    <EditSessionMetadataSection Session="@Session" />
                     <Frame AddClasses='"flex-grow-1"' Template="FrameTemplate.ButtonContainer">
                         <Button Color="ButtonColor.Primary">Launch session</Button>
                         @{
                             var deleteConfirm = new ConfirmationDialogModel
                             {
-                                Message = $"This is permanent and cannot be reversed. Are you sure you want to delete the session \"{"Placeholder"}\"?",
+                                Message = $"This is permanent and cannot be reversed. Are you sure you want to delete the session \"{Session.Name}\"?",
                                 ConfirmText = "Delete",
                                 Title = "Delete session"
                             };
 
                             var resetConfirm = new ConfirmationDialogModel
                             {
-                                Message = $"This will revert the game back to its initial state. Are you sure you want to reset the session \"{"Placeholder"}\"?",
+                                Message = $"This will revert the game back to its initial state. Are you sure you want to reset the session \"{Session.Name}\"?",
                                 ConfirmText = "Reset",
                                 Title = "Reset session",
                                 Intent = ConfirmationDialogIntent.Destroy
@@ -63,8 +76,15 @@
                                 HxGet="OdysseyRoutes.Host.Session.IdP(Id).MetadataP.IndexP"
                                 HxSwap='"none"'
                                 Style="ButtonStyle.Borderless">Rename</Button>
-                            <Button HxSwap='"none"' HxPost='""' Style="ButtonStyle.Borderless" Color="ButtonColor.TextWeak">Archive</Button>
-                            <Button HxSwap='"none"' HxPost='""' HxConfirm="@resetConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Reset</Button>
+                            @if (Session.Archived) 
+                            {
+                                <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).UnarchiveP.IndexP" Style="ButtonStyle.Borderless" Color="ButtonColor.TextWeak">Unarchive</Button>
+                            }
+                            else 
+                            {
+                                <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).ArchiveP.IndexP" Style="ButtonStyle.Borderless" Color="ButtonColor.TextWeak">Archive</Button>
+                            }
+                            <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).GameStateP.ResetP.IndexP" HxConfirm="@resetConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Reset</Button>
                             <Button HxSwap='"none"' HxDelete='""' HxConfirm="@deleteConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>
                         </MoreButton>
                     </Frame>
@@ -74,8 +94,8 @@
                 <Frame Template="FrameTemplate.Card">
                     <p class="subtitle">Session</p>
                     @foreach(var (l, r) in new (string, string)[] {
-                        ("Last played", StringFormatter.FormatDate(AbsoluteDateTime.Now)),
-                        ("Created", StringFormatter.FormatDate(AbsoluteDateTime.Now))
+                        ("Last played", Session.LastPlayedOn.Map(StringFormatter.FormatDate).Or("Never")),
+                        ("Created", StringFormatter.FormatDate(Session.CreatedOn))
                     })
                     {
                         <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
@@ -86,13 +106,14 @@
                 <Frame Template="FrameTemplate.Card">
                     <p class="subtitle">Game state</p>
                     <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
-                        <p>Game</p><a>Domestic Dispute</a>
+                        <p>Game</p><p>@_gameName</p>
                     </Frame>
                     <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
-                        <p>Board</p><a>90s Pop Culture</a>
+                        <p>Board</p><a hx-boost="true" href="@OdysseyRoutes.Host.Board.IdP(Session.BoardId).IndexP">@Session.BoardName</a>
                     </Frame>
                     <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
-                        <p>Status</p><p>Completed</p>
+                        <p>Status</p>
+                        <p>@(Session.Status switch { SessionStatus.Created => "Created", SessionStatus.InProgress => "In progress", SessionStatus.Ended => "Ended", _ => Session.Status.ToString() })</p>
                     </Frame>
                 </Frame>
                 <Frame Template="FrameTemplate.Card">

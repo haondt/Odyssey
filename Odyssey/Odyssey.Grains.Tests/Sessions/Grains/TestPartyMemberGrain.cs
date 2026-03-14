@@ -22,7 +22,7 @@ namespace Odyssey.Grains.Tests.Sessions.Grains
             throw new NotImplementedException();
         }
 
-        public Task LeavePartyAsync(string joinCode)
+        public Task<DetailedResult<LeavePartyReason>> LeavePartyAsync(string joinCode)
         {
             throw new NotImplementedException();
         }

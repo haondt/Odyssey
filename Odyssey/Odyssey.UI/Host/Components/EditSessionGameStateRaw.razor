@@ -10,10 +10,12 @@
 @attribute [LayoutOptions(FillPage = true)]
 @implements IHasNavigationBarComponent
 @inject IClientGameRegistry Games
-@inject IHostSessionService Session
 
 @code {
-    public NavigationBar CreateNavigationBar() => EditSession.CreateNavigationBar("placeholder");
+    [Parameter, EditorRequired]
+    public required SessionMetadata Session { get; set; } 
+
+    public NavigationBar CreateNavigationBar() => EditSession.CreateNavigationBar(Session.Name);
 
     [Parameter, EditorRequired]
     public required Guid Id { get; set; } 
