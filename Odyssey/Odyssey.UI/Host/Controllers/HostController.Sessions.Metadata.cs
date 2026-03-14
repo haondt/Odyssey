@@ -59,12 +59,21 @@ namespace Odyssey.UI.Host.Controllers
             });
         }
 
-        private async Task<SessionMetadata> GetSessionMetadata(Guid id)
+        private async Task<SessionMetadata> GetSessionMetadataOrErrorPage(Guid id)
         {
             var userId = await sessionService.GetUserIdAsync();
             var sessionResult = await sessions.GetSessionMetadataAsync((userId, id));
             if (!sessionResult.TryGetValue(out var session))
                 throw new NotFoundErrorPageException();
+            return session;
+        }
+
+        private async Task<SessionMetadata> GetSessionMetadataOrErrorToast(Guid id)
+        {
+            var userId = await sessionService.GetUserIdAsync();
+            var sessionResult = await sessions.GetSessionMetadataAsync((userId, id));
+            if (!sessionResult.TryGetValue(out var session))
+                throw new NotFoundToastException($"Could not retrieve session {id}.");
             return session;
         }
 

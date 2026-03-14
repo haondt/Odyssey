@@ -14,6 +14,8 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task ClearStateAsync();
         Task<TGameState> GetGameStateAsync();
         Task<ReadOnlySessionState> GetStateAsync();
+        Task SetGameStateAsync(TGameState state);
         Task SetState(int version, Optional<TBoard> board = default, Optional<List<SessionPlayer>> players = default);
+        Task WriteGameStateAsync(TGameState state);
     }
 }

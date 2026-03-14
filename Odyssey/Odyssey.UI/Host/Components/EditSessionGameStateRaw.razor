@@ -10,53 +10,39 @@
 @attribute [LayoutOptions(FillPage = true)]
 @implements IHasNavigationBarComponent
 @inject IClientGameRegistry Games
+@inject IHostSessionService HostSession
 
 @code {
     [Parameter, EditorRequired]
     public required SessionMetadata Session { get; set; } 
 
+    [Parameter]
+    public bool HxSwapOob { get; set; }
+
     public NavigationBar CreateNavigationBar() => EditSession.CreateNavigationBar(Session.Name);
 
     [Parameter, EditorRequired]
-    public required Guid Id { get; set; } 
+    public required Guid Id { get; set; }
+
+    private string _serializedGameState = default!; 
 
     private bool _ready = false;
     protected override async Task OnInitializedAsync()
     {
+        var userId = await HostSession.GetUserIdAsync();
+        var game = Games.GetGame(Session.GameId);
+        _serializedGameState = await game.Sessions.GetSerializedGameStateAsync((userId, Id));
         _ready = true;
     }
 }
 
 @if (_ready) {
-    <ContentContainer Layout="ContentContainerLayout.Fill">
+    <ContentContainer Id='"edit-session-game-state-raw"' HxSwapOob="HxSwapOob" Layout="ContentContainerLayout.Fill">
         <Frame AddClasses='"flex-grow-1"' Flex="FrameDirection.Col">
             <Frame AddClasses='"flex-grow-1"' Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.GameStateRaw" />
                 <form class="flex-grow-1" hx-post hx-swap="none" id="edit-session-game-state-raw-form">
-                    @{
-                        var obj = new
-                        {
-                            Round = 2,
-                            Question = "Name something people forget to pack",
-                            Answers = new object[]
-                            {
-                                new { Text = "Phone charger", Points = 35, Revealed = true },
-                                new { Text = "Toothbrush", Points = 25, Revealed = true },
-                                new { Text = "Underwear", Points = 15, Revealed = true }
-                            },
-                            Teams = new
-                            {
-                                Red = new { Score = 120 },
-                                Blue = new { Score = 95 },
-                            },
-                            Strikes = new
-                            {
-                                Red = 1,
-                                Blue = 2
-                            },
-                        };
-                    }
-                    <Field InputClasses='"monospace"' Size="FieldSize.Full" Value="JsonUtils.SerializeObject(obj)" Type="FieldType.TextArea" />
+                    <Field Name='"state"' InputClasses='"monospace"' Size="FieldSize.Full" Value="_serializedGameState" Type="FieldType.TextArea" />
                 </form>
             </Frame>
             <FormActionBar OmitFooterMargin="true" DiscardButtonPath='@OdysseyRoutes.Host.Session.IdP(Id).GameStateP.RawP.ResetP.IndexP' FormId="edit-session-game-state-raw-form" />
