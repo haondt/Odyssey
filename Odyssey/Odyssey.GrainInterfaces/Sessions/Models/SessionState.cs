@@ -22,6 +22,8 @@ namespace Odyssey.GrainInterfaces.Sessions.Models
     public class SessionPlayer
     {
         [Id(0)]
+        public required string Name { get; set; }
+        [Id(1)]
         public HashSet<Guid> Devices { get; set; } = [];
     }
 }

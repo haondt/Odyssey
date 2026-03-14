@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.GrainInterfaces.Core.Services;
 using Odyssey.GrainInterfaces.Sessions;
+using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.GrainInterfaces.Sessions.Services;
 using Orleans.Serialization;
 
@@ -20,6 +21,10 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                     options.SupportedNamespacePrefixes.Add("Newtonsoft.Json.JsonSerializationException");
                     options.SupportedNamespacePrefixes.Add("Odyssey.GrainInterfaces.Sessions.Exceptions");
                 });
+
+                // sessions
+                services.Configure<SessionSettings>(configuration.GetSection(nameof(SessionSettings)));
+
                 return services;
             }
 

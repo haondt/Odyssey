@@ -1,0 +1,9 @@
+@using Odyssey.Games.Domain.DebugGame.Models
+@code {
+    [Parameter, EditorRequired]
+    public required DebugGameGameState GameState { get; set; }
+}
+
+<Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+    <p>Round</p><p>@GameState.Round</p>
+</Frame>

@@ -65,5 +65,24 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
                 HxSwap = true
             };
         }
+        public async Task<(IComponent PlayersSummary, IComponent GameSummary)> GetSessionSummaryComponentAsync(OwnedEntityGuid id)
+        {
+            var session = sessionGrainFactory.GetGrain(id);
+            var gameState = await session.GetGameStateAsync();
+            var sessionState = await session.GetStateAsync();
+            return
+            (
+                new DebugGamePlayersSummary
+                {
+                    GameState = gameState,
+                    SessionState = sessionState
+                },
+                new DebugGameGameSummary
+                {
+                    GameState = gameState
+                }
+            );
+        }
+
     }
 }

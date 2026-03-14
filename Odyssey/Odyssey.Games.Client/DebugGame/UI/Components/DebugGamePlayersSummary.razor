@@ -1,0 +1,16 @@
+@using Odyssey.Games.Domain.DebugGame.Models
+@using Odyssey.GrainInterfaces.Sessions.Models
+@code {
+    [Parameter, EditorRequired]
+    public required DebugGameGameState GameState { get; set; }
+
+    [Parameter, EditorRequired]
+    public required ReadOnlySessionState SessionState { get; set; }
+}
+
+@for(int i = 0; i < SessionState.Players.Count; i++)
+{
+    <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
+        <p>@SessionState.Players[i].Name</p><p>@GameState.Scores[i] Points</p>
+    </Frame>
+}

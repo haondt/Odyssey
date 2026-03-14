@@ -1,4 +1,6 @@
-﻿using Odyssey.Games.Domain.DebugGame.Models;
+﻿using Microsoft.Extensions.Options;
+using Odyssey.Games.Domain.DebugGame.Models;
+using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
 using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.GrainInterfaces.Sessions.Services;
@@ -10,8 +12,10 @@ namespace Odyssey.Games.Server.DebugGame
     {
         public DebugGameSessionGrain(
             IDataStorageGrainFactory<SessionState<DebugGameBoard>> sessionStateGrainFactory,
-            IDataStorageGrainFactory<DebugGameGameState> gameStateGrainFactory,
-            ISessionGrainFactory<DebugGameBoard, DebugGameGameState> grainFactory) : base(sessionStateGrainFactory, gameStateGrainFactory, grainFactory)
+            [PersistentState(nameof(DebugGameGameState), GrainConstants.GrainStorage)]
+            IPersistentState<DebugGameGameState> gameState,
+            ISessionGrainFactory<DebugGameBoard, DebugGameGameState> grainFactory,
+            IOptions<SessionSettings> options) : base(sessionStateGrainFactory, gameState, grainFactory, options)
         {
         }
 

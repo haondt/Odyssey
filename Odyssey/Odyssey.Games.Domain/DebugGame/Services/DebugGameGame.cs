@@ -19,6 +19,7 @@ namespace Odyssey.Games.Domain.DebugGame.Services
         protected IBoardMetadataRepository boardMetadataRepository = boardMetadataRepository;
         protected ICachedDataRepository<DebugGameGameSettings> gameSettings = gameSettings;
         protected ILogger<DebugGameGame> logger = logger;
+        protected ISessionGrainFactory<DebugGameBoard, DebugGameGameState> sessionGrainFactory = sessionGrainFactory;
         public string Id => DebugGameConstants.GameId;
 
         public async Task<string> GetDisplayNameAsync(string ownerId)
@@ -75,5 +76,6 @@ namespace Odyssey.Games.Domain.DebugGame.Services
             var session = sessionGrainFactory.GetGrain(id);
             await session.ClearGameStateAsync();
         }
+
     }
 }

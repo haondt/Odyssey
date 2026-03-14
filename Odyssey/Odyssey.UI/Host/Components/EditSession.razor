@@ -23,6 +23,7 @@
     public required SessionMetadata Session { get; set; } 
 
     private string _gameName = default!;
+    private (IComponent PlayersSummary, IComponent GameSummary) _sessionSummary = default!;
 
     public NavigationBar CreateNavigationBar() => CreateNavigationBar(Session.Name);
     public static NavigationBar CreateNavigationBar(string name) => new()
@@ -42,6 +43,8 @@
         var userId = await HostSession.GetUserIdAsync();
         var displayNames = await Games.GetDisplayNamesAsync(userId);
         _gameName = displayNames[Session.GameId];
+        var game = Games.GetGame(Session.GameId);
+        _sessionSummary = await game.UI.GetSessionSummaryComponentAsync((userId, Id));
         _ready = true;
     }
 }
@@ -118,28 +121,11 @@
                 </Frame>
                 <Frame Template="FrameTemplate.Card">
                     <p class="subtitle">Players</p>
-                    @foreach(var (l, r) in new (string, string)[] {
-                        ("Mara", "15 points"),
-                        ("Jonah", "30 points"),
-                        ("Tessa", "0 points"),
-                        ("Rowan", "90 points"),
-                    })
-                    {
-                        <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
-                            <p>@l</p><p>@r</p>
-                        </Frame>
-                    }
+                    <ObjectComponent Component="@_sessionSummary.PlayersSummary" />
                 </Frame>
                 <Frame Template="FrameTemplate.Card">
                     <p class="subtitle">Game Summary</p>
-                    @foreach(var (l, r) in new (string, string)[] {
-                        ("Round", "3"),
-                    })
-                    {
-                        <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
-                            <p>@l</p><p>@r</p>
-                        </Frame>
-                    }
+                    <ObjectComponent Component="@_sessionSummary.GameSummary" />
                 </Frame>
             </Frame>
         </Frame>
