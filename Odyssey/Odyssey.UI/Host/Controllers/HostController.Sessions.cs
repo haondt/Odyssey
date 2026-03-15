@@ -106,6 +106,10 @@ namespace Odyssey.UI.Host.Controllers
             return await ComponentFactory.RenderComponentAsync(layout);
         }
 
+        [HttpGet(OdysseyRoutes.Host.Session.Id.GameState.Reset.Index)]
+        [ResetRenderContext]
+        public async Task<IResult> ResetGameState(Guid id) =>
+            await ComponentFactory.RenderComponentAsync(new EditSessionGameState { Id = id, Session = await GetSessionMetadataOrErrorPage(id) });
 
         [HttpGet(OdysseyRoutes.Host.Session.Id.GameState.Raw.Index)]
         public async Task<IResult> GetGameStateRaw(Guid id) =>
