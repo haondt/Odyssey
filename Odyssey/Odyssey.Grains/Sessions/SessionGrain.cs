@@ -110,11 +110,6 @@ namespace Odyssey.Grains.Sessions
 
         public Task<TGameState> GetGameStateAsync() => Task.FromResult(_gameState.State);
 
-        /// <summary>
-        /// Explicitly write and flush the game state.
-        /// </summary>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public async Task WriteGameStateAsync(TGameState state)
         {
             _gameState.State = state;
@@ -122,11 +117,6 @@ namespace Odyssey.Grains.Sessions
             await FlushDirtyStateAsync();
         }
 
-        /// <summary>
-        /// Set the game state and allow it to be persisted later .
-        /// </summary>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public Task SetGameStateAsync(TGameState state)
         {
             _gameState.State = state;

@@ -1,0 +1,18 @@
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+
+@attribute [RenderPage]
+
+<ContentContainer>
+    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
+        <h1 class="title">MoreButton Demo</h1>
+        <p>This is a demo of the MoreButton component with a tooltip.</p>
+
+        <MoreButton TooltipStyle="TooltipStyle.ContextMenu" TooltipAlignment="TooltipAlignment.Left">
+            <Button Style="ButtonStyle.Borderless">Tooltip content</Button>
+            <Button Style="ButtonStyle.Borderless">Visible on</Button>
+            <Button Style="ButtonStyle.Borderless">Button press</Button>
+        </MoreButton>
+    </Frame>
+</ContentContainer>

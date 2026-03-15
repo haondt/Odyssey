@@ -123,7 +123,6 @@ builder.Services.AddMvc(options =>
 {
     options.ModelBinderProviders.Insert(0, new OptionalModelBinderProvider());
     options.ModelBinderProviders.Insert(0, new AbsoluteDateTimeModelBinderProvider());
-
 });
 builder.Services.AddServerSideBlazor();
 builder.Services.AddCors(options =>

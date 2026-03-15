@@ -1,0 +1,9 @@
+@using Haondt.Web.Core.Extensions
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Services
+@using Haondt.Web.UI.Utils
+@inject IValidationStateReader ValidationState
+@foreach (var error in ValidationState.ValidationErrors) 
+{
+    <template hx-swap-oob="afterbegin:body" class="hidden" _='on load send fieldInvalidate(errorMessage: @JsonUtils.SerializeObject(error.Value)) to <[name="@error.Key"]/> then remove me'></template>
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
@@ -20,7 +21,7 @@ namespace Odyssey.UI.Host.Controllers
         public Task<IResult> GetCreateSession() => ComponentFactory.RenderComponentAsync<Components.NewSessionModal>();
 
         [HttpPost(OdysseyRoutes.Host.Sessions.Index)]
-        [ValidationState(typeof(NewSessionModalPanel), NewSessionModalPanel.Id)]
+        [ValidationState(typeof(FieldInvalidator))]
         public async Task<IResult> CreateSession([FromForm] NewSessionModel newSession)
         {
             var userId = await sessionService.GetUserIdAsync();
@@ -79,6 +80,32 @@ namespace Odyssey.UI.Host.Controllers
         [HttpGet(OdysseyRoutes.Host.Session.Id.GameState.Index)]
         public async Task<IResult> GetGameState(Guid id) =>
             await ComponentFactory.RenderComponentAsync(new EditSessionGameState { Id = id, Session = await GetSessionMetadataOrErrorPage(id) });
+
+        [HttpPost(OdysseyRoutes.Host.Session.Id.GameState.Index)]
+        [StandaloneModelValidation(ShowToast = true)]
+        public async Task<IResult> UpdateGameState(Guid id)
+        {
+            var userId = await sessionService.GetUserIdAsync();
+            var session = await GetSessionMetadataOrErrorToast(id);
+            var game = gameRegistry.GetGame(session.GameId);
+            var result = await game.UI.HandleGameStateUpdateAsync((userId, id), HttpContext);
+
+            var layout = new AppendComponentLayout
+            {
+                Components = [
+                    new Toast
+                    {
+                        Severity = ToastSeverity.Success,
+                        Text = "Board updated"
+                    }
+                ]
+            };
+            if (result.TryGetValue(out var update))
+                layout.Components.Add(update);
+
+            return await ComponentFactory.RenderComponentAsync(layout);
+        }
+
 
         [HttpGet(OdysseyRoutes.Host.Session.Id.GameState.Raw.Index)]
         public async Task<IResult> GetGameStateRaw(Guid id) =>

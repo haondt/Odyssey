@@ -5,7 +5,10 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public Optional<TooltipStyle> TooltipStyle {get; set;}
+    public Optional<TooltipStyle> TooltipStyle { get; set; }
+
+    [Parameter]
+    public Optional<TooltipAlignment> TooltipAlignment { get; set; }
 
     [Parameter]
     public Optional<string> AddClasses { get; set; }
@@ -26,5 +29,5 @@
             <LucideIcon Size="18" Name="chevron-down"/>
         </Frame>
     </Button>
-    <Tooltip Style="TooltipStyle" Align="TooltipAlignment.Right">@ChildContent</Tooltip>
+    <Tooltip Style="TooltipStyle" Align="TooltipAlignment.Or(Containers.TooltipAlignment.Right)">@ChildContent</Tooltip>
 </div>

@@ -7,6 +7,7 @@ using Haondt.Web.Services;
 using Haondt.Web.UI.Components.Containers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Components;
 using Odyssey.UI.Core.Extensions;
 
@@ -37,12 +38,13 @@ namespace Odyssey.UI.Core.Services
                 {
                     component = await _layoutFactory.GetLayoutAsync(component);
                     componentType = component.GetType();
+                    var swapStrategy = attr is OdysseyRenderPageAttribute odysseyAttr && odysseyAttr.Morph == false ? "outerHTML" : "morph:outerHTML";
                     response
                         .HxTriggerAfterSwap("closeModal")
                         .HxTriggerAfterSwap("close", target: $"#{BottomSheetContainer.Id}")
                         .HxRetarget($"#{Odyssey.UI.Core.Components.Layout.Id}")
                         .HxReselect("unset")
-                        .HxReswap("morph:outerHTML");
+                        .HxReswap(swapStrategy);
                 }
                 else
                 {

@@ -1,4 +1,3 @@
-
 @using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Components.Containers
 @using Odyssey.Client.Authentication.Services
@@ -6,7 +5,7 @@
 @using Odyssey.Domain.Core.Models
 @using Odyssey.Domain.Core.Services
 @using Odyssey.UI.Core.Services
-@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@attribute [RenderPage(Role = OdysseyRoles.Host, Morph = false)]
 @attribute [LayoutOptions(FillPage = true)]
 @implements IHasNavigationBarComponent
 @inject IClientGameRegistry Games

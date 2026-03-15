@@ -7,6 +7,7 @@
 @using Odyssey.UI.Core.Services
 @attribute [RenderPage(Role = OdysseyRoles.Host)]
 @implements IHasNavigationBarComponent
+@inject IHostSessionService HostSession
 @inject IClientGameRegistry Games
 
 @code {
@@ -18,9 +19,15 @@
     [Parameter, EditorRequired]
     public required Guid Id { get; set; } 
 
+
+    private IComponent _inner = default!;
+
     private bool _ready = false;
     protected override async Task OnInitializedAsync()
     {
+        var userId = await HostSession.GetUserIdAsync();
+        var game = Games.GetGame(Session.GameId);
+        _inner = await game.UI.GetEditGameStateComponentAsync((userId, Id));
         _ready = true;
     }
 }
@@ -31,10 +38,7 @@
             <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Col">
                 <HostEditSessionSecondaryNavigationBar Id="@Id" ActiveTab="HostEditSessionSecondaryNavigationBarTab.GameState" />
                 <form hx-post hx-swap="none" id="edit-session-game-state-form">
-                    <!--
-                    <ObjectComponent Component="_editSessionGameStateComponent" />
-                    -->
-                    <p>Todo: game-specific state editor</p>
+                    <ObjectComponent Component="_inner" />
                 </form>
             </Frame>
             <FormActionBar DiscardButtonPath='@OdysseyRoutes.Host.Session.IdP(Id).GameStateP.ResetP.IndexP' FormId="edit-session-game-state-form" />

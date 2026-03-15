@@ -1,0 +1,14 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Element
+
+@attribute [RenderPage]
+
+<ModalContainer Active="false" />
+<ContentContainer>
+    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
+        <h1 class="title">ConfirmationDialog Demo</h1>
+        <p>Click the button to open the confirmation dialog.</p>
+        <Button HxSwap='"none"' HxGet='"/demo/confirmation-dialog/show"' >Show Confirmation Dialog</Button>
+    </Frame>
+</ContentContainer>

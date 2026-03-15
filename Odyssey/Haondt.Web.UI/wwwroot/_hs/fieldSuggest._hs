@@ -9,7 +9,6 @@ behavior FieldSuggest
 		set :sg to the next <.field-suggest-suggestions-target />
 	end
 	on selected(text, value)
-		log the event
 		set :vt's innerHTML to text
 		remove .fg-border from :vt
 		if value is not empty

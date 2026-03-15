@@ -19,6 +19,7 @@ namespace Haondt.Web.UI.Extensions
             services.AddScoped<IRenderContextAccessor>(sp => sp.GetRequiredService<RenderContext>());
             services.AddScoped<IRenderContextMutator>(sp => sp.GetRequiredService<RenderContext>());
             services.Configure<LucideIconOptions>(_ => { });
+            services.AddMemoryCache();
             services.AddSingleton<ILucideIconService, LucideIconService>();
             return services;
         }
@@ -52,6 +53,11 @@ namespace Haondt.Web.UI.Extensions
             services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
             {
                 Uri = "/static/haondt/Haondt.Web.UI/_hs/moreButton._hs",
+                Type = "text/hyperscript"
+            });
+            services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
+            {
+                Uri = "/static/haondt/Haondt.Web.UI/_hs/field._hs",
                 Type = "text/hyperscript"
             });
             services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor

@@ -1,0 +1,48 @@
+@using Haondt.Web.Components
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Components
+
+@attribute [RenderPage]
+@inject IValidationStateReader ValidationState
+
+@code {
+    public SmartFieldData Data { get; set; } = new()
+    {
+        Car = new()
+        {
+            Wheels = new()
+        {
+            new() { Radius = 4, WearLevel = "Low", Tire = new() { Seasonality = "Winter" } },
+            new() { Radius = 4, WearLevel = "Medium", Tire = new() { Seasonality = "Summer" } },
+            new() { Radius = 4, WearLevel = "Low" },
+            new() { Radius = 4, WearLevel = "Low" },
+        },
+            Vin = Guid.NewGuid().ToString(),
+            RadioPresets = [102.3, 91.7, 105.9]
+        },
+        String = "My string"
+    };
+}
+
+<ContentContainer AddClasses='"overflow-y-auto"' Id='"smart-field-demo"' HxSwapOob="ValidationState.IsValidation">
+    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
+        <h1 class="title">SmartField Demo</h1>
+        <p>Demo of SmartField component with text input and inline suggestions.</p>
+
+        <form hx-post hx-target="#result" hx-swap="innerHTML" class="flex flex-col gap-card">
+            <SmartField Base="Data" Field="c => c.String" />
+            <SmartField Base="Data" Field="c => c.OptionalString" />
+            <HorizontalBar />
+            <SmartField Base="Data" Field="c => c.Car.Vin" />
+            <SmartFieldList Base="Data" Field="c => c.Car.RadioPresets" />
+            <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.Radius" />
+            <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.WearLevel" />
+            <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.Tire.Seasonality" />
+            <Button Type="ButtonType.Submit">Submit</Button>
+        </form>
+    </Frame>
+    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col">
+        <p>Posted Result:</p>
+        <div id="result"></div>
+    </Frame>
+</ContentContainer>

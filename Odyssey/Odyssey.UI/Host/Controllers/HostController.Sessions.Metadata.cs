@@ -1,6 +1,7 @@
 ﻿using Haondt.Core.Extensions;
 using Haondt.Web.Core.Extensions;
 using Haondt.Web.UI.Attributes;
+using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.Domain.Core.Models;
@@ -78,7 +79,7 @@ namespace Odyssey.UI.Host.Controllers
         }
 
         [HttpPut(OdysseyRoutes.Host.Session.Id.Metadata.Index)]
-        [ValidationState(typeof(EditSessionMetadataPanel))]
+        [ValidationState(typeof(FieldInvalidator))]
         public async Task<IResult> UpdateSessionMetadata(Guid id, [FromForm] EditSessionMetadataPanelModel update)
         {
             var userId = await sessionService.GetUserIdAsync();

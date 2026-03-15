@@ -1,0 +1,103 @@
+@using System.Collections.Concurrent
+@using System.Linq.Expressions
+@using System.Reflection
+@using Haondt.Web.UI.Models
+@using Haondt.Web.UI.Services
+@using System.ComponentModel.DataAnnotations
+@typeparam TBase where TBase : notnull
+@typeparam TItem where TItem : notnull
+
+@code {
+    private readonly record struct ItemHolder(TItem Value);
+
+    private static readonly ConcurrentDictionary<string, Func<TBase, IList<TItem>>> _compiledCache = new();
+    private static Expression<Func<ItemHolder, object>> ItemFieldExpr => x => x.Value!;
+
+    [Parameter, EditorRequired]
+    public required TBase? Base { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Expression<Func<TBase, IList<TItem>>> Field { get; set; }
+
+    [Parameter]
+    public Expression<Func<TItem, object>>? ItemField { get; set; }
+
+    [Parameter]
+    public HashSet<string> PreventDefaults { get; set; } = [];
+
+    [Parameter]
+    public Optional<string> Form { get; set; }
+
+    [Parameter]
+    public Optional<string> Title { get; set; }
+
+    [Parameter]
+    public Optional<string> Description { get; set; }
+
+    [Parameter]
+    public Optional<FieldType> Type { get; set; }
+
+    [Parameter]
+    public Optional<FieldAutocomplete> Autocomplete { get; set; }
+
+    [Parameter]
+    public Optional<string> Id { get; set; }
+
+    private string _path = "";
+    private IList<TItem> _list = default!;
+
+    protected override void OnInitialized()
+    {
+        var (memberInfo, path) = ExpressionUtils.GetMemberInfo(Field);
+        _path = path;
+        var compiled = _compiledCache.GetOrAdd(path, _ => Field.Compile());
+        _list = Base is not null ? compiled(Base) ?? Array.Empty<TItem>() : Array.Empty<TItem>();
+
+        if (ItemField is { } itemField) 
+             (memberInfo, _) = ExpressionUtils.GetMemberInfo(itemField);
+        var dataTypeAttr = memberInfo.GetCustomAttribute<DataTypeAttribute>();
+        var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
+
+        if (!Title.HasValue && displayAttr?.Name is not null && !PreventDefaults.Contains(nameof(Title)))
+            Title = displayAttr.Name;
+
+        if (!Description.HasValue && displayAttr?.Description is not null && !PreventDefaults.Contains(nameof(Description)))
+            Description = displayAttr.Description;
+    }
+}
+<Field Type="FieldType.None" 
+    Title="Title" Description="Description">
+    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+        @if(ItemField is { } itemField)
+        {
+            @for (var i = 0; i < _list.Count; i++)
+            {
+                var namePrefix = $"{_path}[{i}].";
+                <SmartField TBase="TItem"
+                    Base="_list[i]"
+                    Field="itemField"
+                    NamePrefix="namePrefix"
+                    Form="Form"
+                    Type="Type"
+                    PreventDefaults="[nameof(SmartField<>.Title), nameof(SmartField<>.Description)]"
+                    Autocomplete="Autocomplete" />
+            }
+        }
+        else
+        {
+            @for (var i = 0; i < _list.Count; i++)
+            {
+                var name = $"{_path}[{i}]";
+                var holder = new ItemHolder(_list[i]);
+                <SmartField TBase="ItemHolder"
+                    Base="holder"
+                    Field="ItemFieldExpr"
+                    Name="name"
+                    Form="Form"
+                    Type="Type"
+                    PreventDefaults="[nameof(SmartField<>.Title), nameof(SmartField<>.Description)]"
+                    Autocomplete="Autocomplete" />
+            }
+        }
+    </Frame>
+</Field>

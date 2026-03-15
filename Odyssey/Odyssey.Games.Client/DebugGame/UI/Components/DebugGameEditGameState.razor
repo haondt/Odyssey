@@ -1,0 +1,28 @@
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Services
+@using Microsoft.AspNetCore.Components.Web
+@using Odyssey.Games.Client.Core.UI.BoardConfiguration
+@using Odyssey.Games.Domain.DebugGame.Models
+@inject IValidationStateReader ValidationState
+@code {
+    [Parameter, EditorRequired]
+    public required DebugGameGameState GameState { get; set; }
+
+    [Parameter]
+    public bool HxSwap { get; set; }
+
+    private Dictionary<string, object> _rootAttributes = [];
+    protected override void OnInitialized()
+    {
+        if (HxSwap || ValidationState.IsValidation) 
+            _rootAttributes["hx-swap-oob"] = "morph:#debug-game-edit-game-state";
+    }
+
+}
+<Frame AddAttributes="_rootAttributes" Id='"debug-game-edit-game-state"' Flex="FrameDirection.Col" Gap="FrameSpacing.Panel">
+    <Section Field="() => GameState.Scores">
+        <SmartFieldList PreventDefaults="[nameof(SmartFieldList<,>.Title)]"  Base="GameState" Field="static s => s.Scores" />
+    </Section>
+    <SmartField Base="GameState" Field="static s => s.Round" />
+</Frame>

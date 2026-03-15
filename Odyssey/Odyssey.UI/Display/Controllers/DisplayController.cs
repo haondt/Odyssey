@@ -1,6 +1,7 @@
 ﻿using Haondt.Web.Core.Extensions;
 using Haondt.Web.Services;
 using Haondt.Web.UI.Attributes;
+using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ namespace Odyssey.UI.Display.Controllers
         }
 
         [HttpPost(OdysseyRoutes.Display.Party.Join.Index)]
-        [ValidationState(typeof(DisplayJoinPartyPanel), DisplayJoinPartyPanel.Id)]
+        [ValidationState(typeof(FieldInvalidator))]
         public async Task<IResult> JoinParty([FromForm] DisplayJoinPartyModel joinData)
         {
             if (!string.IsNullOrEmpty(joinData.JoinCode))

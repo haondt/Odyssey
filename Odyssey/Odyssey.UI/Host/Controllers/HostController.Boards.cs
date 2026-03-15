@@ -25,7 +25,7 @@ namespace Odyssey.UI.Host.Controllers
         public Task<IResult> GetBoards() => ComponentFactory.RenderComponentAsync<Components.HostBoards>();
 
         [HttpPost(OdysseyRoutes.Host.Boards.Index)]
-        [ValidationState(typeof(NewBoardModalPanel), NewBoardModalPanel.Id)]
+        [ValidationState(typeof(FieldInvalidator))]
         public async Task<IResult> CreateNewBoard([FromForm] NewBoardModel newBoard)
         {
             var game = gameRegistry.GetGame(newBoard.Game);
@@ -160,7 +160,7 @@ namespace Odyssey.UI.Host.Controllers
         }
 
         [HttpPut(OdysseyRoutes.Host.Board.Id.Metadata.Index)]
-        [ValidationState(typeof(EditBoardMetadataPanel))]
+        [ValidationState(typeof(FieldInvalidator))]
         public async Task<IResult> UpdateBoardMetadata(Guid id, [FromForm] EditBoardMetadataPanelModel update)
         {
             var ownedId = new OwnedEntityGuid(await sessionService.GetUserIdAsync(), id);

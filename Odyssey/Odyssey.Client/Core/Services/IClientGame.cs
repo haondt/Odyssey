@@ -17,5 +17,8 @@ namespace Odyssey.Client.Core.Services
         Task<Optional<IComponent>> HandleBoardStateUpdateAsync(OwnedEntityGuid id, HttpContext context);
 
         Task<(IComponent PlayersSummary, IComponent GameSummary)> GetSessionSummaryComponentAsync(OwnedEntityGuid id);
+        Task<IComponent> GetEditGameStateComponentAsync(OwnedEntityGuid id);
+        Task<Optional<IComponent>> HandleGameStateUpdateAsync(OwnedEntityGuid id, HttpContext context);
+        Task<IComponent> GetResetEditGameStateComponentAsync(OwnedEntityGuid id);
     }
 }

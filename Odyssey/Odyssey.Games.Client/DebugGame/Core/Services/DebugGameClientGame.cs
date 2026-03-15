@@ -1,5 +1,6 @@
 ﻿using Haondt.Core.Models;
 using Haondt.Web.Core.Extensions;
+using Haondt.Web.UI.Components.Element;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -47,7 +48,7 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
         public async Task<Optional<IComponent>> HandleBoardStateUpdateAsync(OwnedEntityGuid id, HttpContext context)
         {
             var version = context.Request.Form.GetValue<int>("version");
-            var model = await modelBinder.BindAndValidateFormAsync<DebugGameBoard, DebugGameEditBoard>(context);
+            var model = await modelBinder.BindAndValidateFormAsync<DebugGameBoard, FieldInvalidator>(context);
             version = await boards.SetDataAsync(id, model, version);
             try
             {
@@ -84,5 +85,29 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
             );
         }
 
+        public async Task<IComponent> GetEditGameStateComponentAsync(OwnedEntityGuid id)
+        {
+            var session = sessionGrainFactory.GetGrain(id);
+            var gameState = await session.GetGameStateAsync();
+            return new DebugGameEditGameState
+            {
+                GameState = gameState
+            };
+        }
+
+        public async Task<Optional<IComponent>> HandleGameStateUpdateAsync(OwnedEntityGuid id, HttpContext context)
+        {
+            //var model = await modelBinder.BindAndValidateFormAsync<DebugGameGameState, DebugGameEditGameState>(context);
+            var model = await modelBinder.BindAndValidateFormAsync<DebugGameGameState, FieldInvalidator>(context);
+            var session = sessionGrainFactory.GetGrain(id);
+            await session.WriteGameStateAsync(model);
+
+            return new();
+        }
+
+        public Task<IComponent> GetResetEditGameStateComponentAsync(OwnedEntityGuid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

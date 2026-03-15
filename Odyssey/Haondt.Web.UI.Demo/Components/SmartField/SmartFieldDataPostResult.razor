@@ -1,0 +1,9 @@
+﻿@using Haondt.Web.UI.Demo.Utils
+
+@code {
+    [Parameter]
+    public required SmartFieldData Data { get; set; }
+}
+
+<div style="white-space:pre;">@JsonUtils.SerializeObject(Data)</div>
+

@@ -11,6 +11,8 @@
 
 @code {
     [Parameter]
+    public HashSet<string> PreventDefaults { get; set; } = [];
+    [Parameter]
     public Optional<string> Title { get; set; }
 
     [Parameter]
@@ -54,6 +56,9 @@
     [Parameter]
     public Optional<string> Name { get; set; }
 
+    [Parameter]
+    public Optional<string> NamePrefix { get; set; }
+
     [Parameter, EditorRequired]
     public required Expression<Func<TBase, object>> Field { get; set; }
     private static readonly ConcurrentDictionary<string, Func<TBase, object>> _compiledCache = new();
@@ -88,6 +93,8 @@
     [Parameter]
     public Optional<string> InputClasses { get; set; }
 
+    public static string GetIdFromFieldName(string name) => StringFormatter.PascalToKebabCase(name.Replace('.','-').Replace('[', '-').Replace("]", ""));
+
 
     protected override void OnInitialized() 
     {
@@ -95,17 +102,22 @@
         var dataTypeAttr = memberInfo.GetCustomAttribute<DataTypeAttribute>();
         var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
 
-        if (!Title.HasValue && displayAttr?.Name is not null)
+        if (!Title.HasValue && displayAttr?.Name is not null && !PreventDefaults.Contains(nameof(Title)))
             Title = displayAttr.Name;
 
-        if (!Description.HasValue && displayAttr?.Description is not null)
+        if (!Description.HasValue && displayAttr?.Description is not null && !PreventDefaults.Contains(nameof(Description)))
             Description = displayAttr.Description;
 
         if (!Placeholder.HasValue && displayAttr?.Prompt is not null)
             Placeholder = displayAttr.Prompt;
 
         if (!Name.TryGetValue(out var name))
-            Name = name = path;
+        {
+            if (NamePrefix.TryGetValue(out var namePrefix))
+                Name = name = namePrefix + path;
+            else
+                Name = name = path;
+        }
         if (ValidationState.IsValidation)
         {
             if(!Error.HasValue)
@@ -113,7 +125,7 @@
         }
         if (!IsValid.HasValue)
             IsValid = !Error.HasValue;
-        Id = Id.Or(StringFormatter.PascalToKebabCase(name.Replace('.','-')));
+        Id = Id.Or(GetIdFromFieldName(name));
 
         if (Type.HasValue)
             _type = Type.Value;

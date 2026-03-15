@@ -286,7 +286,7 @@
     }
 }
 
-<div class="@string.Join(' ', _rootClasses)">
+<div class="@string.Join(' ', _rootClasses)" _="install Field(formElt: @Form.Map(q => $"#{q}").Or("the closest <form />"))">
     <Frame 
         Gap="FrameSpacing.Line"
         Flex="FrameDirection.Col"
@@ -362,6 +362,10 @@
         @if(Error.TryGetValue(out var error)) 
         {
             <p class="validation-error">@error</p>
+        }
+        else
+        {
+            <p class="validation-error hidden"></p>
         }
     </Frame>
 </div>
