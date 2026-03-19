@@ -1,0 +1,7 @@
+install:
+    dcdn install
+
+build:
+    dotnet build
+
+
