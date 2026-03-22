@@ -1,21 +1,21 @@
 behavior Field(formElt)
-	init
-		set :v to the first .validation-error in me
-	end
+    init
+        set :v to the first .validation-error in me
+    end
 
-	on fieldInvalidate(errorMessage)
-		halt the event
-		if :v is not empty
-			set :v's innerHTML to errorMessage
-			remove .hidden from :v
-		end
-		add .field-invalid to me
-	end
-	on htmx:beforeRequest from formElt
-		if :v is not empty
-			set :v's innerHTML to ''
-			add .hidden to :v
-		end
-		remove .field-invalid from me
-	end
+    on fieldInvalidate(errorMessage)
+        halt the event
+        if :v is not empty
+            set :v's innerHTML to errorMessage
+            remove .hidden from :v
+        end
+        add .field-invalid to me
+    end
+    on htmx:beforeRequest from formElt
+        if :v is not empty
+            set :v's innerHTML to ''
+            add .hidden to :v
+        end
+        remove .field-invalid from me
+    end
 end

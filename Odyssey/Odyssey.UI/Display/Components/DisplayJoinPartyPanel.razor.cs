@@ -9,7 +9,7 @@ namespace Odyssey.UI.Display.Components
         public required string JoinCode { get; set; }
 
         [Required]
-        [Display(Name = "Display name")]
+        [Display(Name = "Display name", Prompt = "Living room TV")]
         public required string DisplayName { get; set; }
     }
 }

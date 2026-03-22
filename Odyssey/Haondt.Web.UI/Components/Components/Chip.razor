@@ -13,7 +13,7 @@
     public string Text { get; set; } = "";
 
     [Parameter]
-    public Optional<int> Skeleton  { get; set; }
+    public Optional<int> Skeleton { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -31,21 +31,23 @@
     }
 }
 
-<span class="chip chip-style-@StringFormatter.PascalToKebabCase(Style.Or(ChipStyle.Default).ToString()) chip-color-@StringFormatter.PascalToKebabCase(Color.ToString()) chip-text-style-@StringFormatter.PascalToKebabCase(TextStyle.ToString())">
-    @if (Label.TryGetValue(out var label)) 
+<span
+    class="chip chip-style-@StringFormatter.PascalToKebabCase(Style.Or(ChipStyle.Default).ToString()) chip-color-@StringFormatter.PascalToKebabCase(Color.ToString()) chip-text-style-@StringFormatter.PascalToKebabCase(TextStyle.ToString())">
+    @if (Label.TryGetValue(out var label))
     {
         <span class="chip-label">@label</span>
     }
     <span class="chip-text">
 
-    @if(Skeleton.TryGetValue(out var width))
-    {
-        <span style="width:@(width)px;height:1em;"></span>
-    }
-    else 
-    {
-       @Text@ChildContent
-    }
+        @if (Skeleton.TryGetValue(out var width))
+        {
+            <span style="width:@(width)px;height:1em;"></span>
+        }
+        else
+        {
+            @Text
+            @ChildContent
+        }
     </span>
     @if (Deletable)
     {

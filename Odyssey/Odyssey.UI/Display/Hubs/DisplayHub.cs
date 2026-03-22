@@ -50,7 +50,7 @@ namespace Odyssey.UI.Display.Hubs
             }
 
             if (logger.IsEnabled(LogLevel.Debug))
-                logger.LogDebug("Established connection bridge for {DisplayId}", displayId);
+                logger.LogDebug("Established connection bridge for Display {DisplayId}", displayId);
             await base.OnConnectedAsync();
         }
 
@@ -60,7 +60,7 @@ namespace Odyssey.UI.Display.Hubs
             {
                 await bridge.OnDisconnectedAsync();
                 if (logger.IsEnabled(LogLevel.Debug))
-                    logger.LogDebug("Disconnected connection bridge for {DisplayId}", bridge.DisplayId);
+                    logger.LogDebug("Disconnected connection bridge for Display {DisplayId}", bridge.DisplayId);
             }
 
             await base.OnDisconnectedAsync(exception);

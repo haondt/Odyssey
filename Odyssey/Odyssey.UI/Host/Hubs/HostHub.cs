@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Services;
 using Odyssey.UI.Host.Services;
@@ -11,9 +12,11 @@ namespace Odyssey.UI.Host.Hubs
 {
 
     [Authorize]
-    public abstract class HostHub<TInbound, TOutbound>(ISignalRConnectionRegistry<IHostSignalRConnectionBridge<TInbound>> registry) : Hub<IHostHubReceiver<TOutbound>>, IHostHubSender<TInbound>
+    public abstract class HostHub<TInbound, TOutbound>(ISignalRConnectionRegistry<IHostSignalRConnectionBridge<TInbound>> registry, ILogger<HostHub<TInbound, TOutbound>> logger) : Hub<IHostHubReceiver<TOutbound>>, IHostHubSender<TInbound>
     {
         public abstract IHostSignalRConnectionBridge<TInbound> CreateBridge(IServiceProvider serviceProvider, string userId);
+
+        protected ILogger<HostHub<TInbound, TOutbound>> logger = logger;
 
         private async Task<Result<(string, HttpContext)>> GetAuthenticatedUserIdAsync()
         {
@@ -52,6 +55,9 @@ namespace Odyssey.UI.Host.Hubs
                 throw;
             }
 
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Established connection bridge for Host {HostId}", userId);
+
             await base.OnConnectedAsync();
         }
 
@@ -59,6 +65,8 @@ namespace Odyssey.UI.Host.Hubs
         {
             if (registry.Unregister(Context.ConnectionId).TryGetValue(out var bridge))
                 await bridge.OnDisconnectedAsync();
+                if (logger.IsEnabled(LogLevel.Debug))
+                    logger.LogDebug("Disconnected connection bridge for Host {HostId}", bridge.DisplayId);
 
             await base.OnDisconnectedAsync(exception);
         }

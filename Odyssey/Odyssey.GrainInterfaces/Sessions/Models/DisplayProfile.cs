@@ -7,6 +7,6 @@
         public Guid Id { get; set; } = Guid.Empty;
 
         [Id(1)]
-        public override string Name { get; set; } = "Display";
+        public override string Name { get; set; } = "";
     }
 }

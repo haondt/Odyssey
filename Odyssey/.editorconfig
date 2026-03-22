@@ -1,4 +1,6 @@
-﻿[*.cs]
+﻿[*.{cs,razor}]
 
 # BL0005: Component parameter should not be set outside of its component.
 dotnet_diagnostic.BL0005.severity = none
+dotnet_diagnostic.ORLEANS0010.severity = none
+

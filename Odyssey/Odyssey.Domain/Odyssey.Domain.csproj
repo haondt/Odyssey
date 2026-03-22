@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
     <ItemGroup>
-    <PackageReference Include="Haondt.Json" Version="0.2.11-alpha-20260311211547" />
+    <PackageReference Include="Haondt.Json" Version="0.2.11-alpha-20260321142806" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.4" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="10.0.1" />
   </ItemGroup>

@@ -1,7 +1,17 @@
+
 install:
     dcdn install
 
 build:
     dotnet build
 
+[arg('target', pattern='client|silo')]
+[arg('reload', short='r', long="hot-reload", value='')]
+watch target reload='--no-hot-reload':
+    DOTNET_WATCH_SUPPRESS_EMOJIS=1 dotnet watch --non-interactive --project {{ if target == "client" { "./Odyssey/Odyssey.csproj" } else { "./Odyssey.Silo/Odyssey.Silo.csproj" } }} {{ reload }}
 
+db-init:
+    psql "postgres://postgres:postgres@192.168.1.213:5432/postgres" -c "CREATE DATABASE odyssey;"
+
+db:
+    lazysql "postgres://postgres:postgres@192.168.1.213:5432/odyssey?sslmode=disable"
