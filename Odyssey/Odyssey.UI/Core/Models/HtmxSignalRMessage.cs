@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Odyssey.UI.Host.Models
+namespace Odyssey.UI.Core.Models
 {
     public class HtmxSignalRMessage
     {

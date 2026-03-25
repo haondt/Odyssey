@@ -2,35 +2,37 @@
 using Microsoft.AspNetCore.SignalR;
 using Odyssey.Domain.Core.Events;
 using Odyssey.Domain.Core.Services;
-using Odyssey.Domain.Display.Events;
-using Odyssey.Domain.Display.Services;
+using Odyssey.Domain.Device.Events;
+using Odyssey.Domain.Device.Services;
 using Odyssey.Domain.Sessions.Events;
 using Odyssey.GrainInterfaces.Core.Models;
-using Odyssey.UI.Core.Middlewares;
-using Odyssey.UI.Core.Models;
-using Odyssey.UI.Display.Services;
+using Odyssey.UI.Device.Models;
+using Odyssey.UI.Device.Services;
+using Odyssey.UI.Host.Models;
 using Orleans.Streams;
 
-namespace Odyssey.UI.Display.Hubs
+namespace Odyssey.UI.Device.Hubs
 {
 
-    public class DisplaySignalRConnectionBridge<THub>(
+    public class DeviceSignalRConnectionBridge<TInbound, TOutbound, THub>(
         string connectionId,
+        DeviceClientType clientType,
         Guid displayId,
-        IHubContext<THub, IDisplayHubReceiver<string>> context,
+        IHubContext<THub, IDeviceHubReceiver<TOutbound>> context,
         IEventTransformerRegistry transformerRegistry,
-        IClusterClient clusterClient) : IDisplaySignalRConnectionBridge<HtmxSignalRMessage> where THub : DisplayHub
+        IClusterClient clusterClient) : IDeviceSignalRConnectionBridge<TInbound> where THub : DeviceHub<TInbound, TOutbound>
+
     {
-        private readonly IDisplayEventTransformer<HtmxSignalRMessage, string> _transformer = transformerRegistry.GetTransformer<IDisplayEventTransformer<HtmxSignalRMessage, string>>();
+        private readonly IDeviceEventTransformer<TInbound, TOutbound> _transformer = transformerRegistry.GetTransformer<IDeviceEventTransformer<TInbound, TOutbound>>(clientType);
         private Optional<StreamSubscriptionHandle<SignalROutboundEvent>> _handle;
 
-        public Guid DisplayId => displayId;
+        public Guid DeviceId => displayId;
 
         public async Task OnConnectedAsync()
         {
             var stream = clusterClient
                 .GetStreamProvider(GrainConstants.SignalRStreams)
-                .GetStream<SignalROutboundEvent>(StreamId.Create(GrainConstants.DisplayEventsStreamNamespace, displayId));
+                .GetStream<SignalROutboundEvent>(StreamId.Create(GrainConstants.DeviceEventsStreamNamespace, displayId));
 
             _handle = await stream.SubscribeAsync(async (evt, _) =>
             {
@@ -42,10 +44,10 @@ namespace Odyssey.UI.Display.Hubs
                             await context.Clients.Client(connectionId).ReceivePartyEvent(payload);
                             break;
                         }
-                    case DisplayPartyOutboundEvent partyEvent:
+                    case DevicePartyOutboundEvent partyEvent:
                         {
-                            var payload = await _transformer.TransformDisplayPartyEventAsync(partyEvent, displayId);
-                            // i am making the perhaps unwise decision to use ReceivePartyEvent for both PartyOutboundEvents and DisplayPartyOutboundEvents
+                            var payload = await _transformer.TransformDevicePartyEventAsync(partyEvent, displayId);
+                            // i am making the perhaps unwise decision to use ReceivePartyEvent for both PartyOutboundEvents and DevicePartyOutboundEvents
                             await context.Clients.Client(connectionId).ReceivePartyEvent(payload);
                             break;
                         }

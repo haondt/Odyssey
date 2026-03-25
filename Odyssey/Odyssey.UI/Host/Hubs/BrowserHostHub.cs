@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Odyssey.Client.Core.Services;
+using Odyssey.UI.Core.Middlewares;
+using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Models;
 using Odyssey.UI.Host.Services;
 

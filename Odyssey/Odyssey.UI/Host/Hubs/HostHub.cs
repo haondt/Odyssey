@@ -64,9 +64,11 @@ namespace Odyssey.UI.Host.Hubs
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             if (registry.Unregister(Context.ConnectionId).TryGetValue(out var bridge))
+            {
                 await bridge.OnDisconnectedAsync();
                 if (logger.IsEnabled(LogLevel.Debug))
-                    logger.LogDebug("Disconnected connection bridge for Host {HostId}", bridge.DisplayId);
+                    logger.LogDebug("Disconnected connection bridge for Host {HostId}", bridge.UserId);
+            }
 
             await base.OnDisconnectedAsync(exception);
         }

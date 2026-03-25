@@ -4,39 +4,41 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Odyssey.Client.Core.Services;
-using Odyssey.Client.Display.Services;
-using Odyssey.UI.Core.Middlewares;
-using Odyssey.UI.Core.Models;
-using Odyssey.UI.Display.Filters;
-using Odyssey.UI.Display.Services;
+using Odyssey.Client.Device.Services;
+using Odyssey.UI.Device.Filters;
+using Odyssey.UI.Device.Services;
+using Odyssey.UI.Host.Models;
 
-namespace Odyssey.UI.Display.Hubs
+namespace Odyssey.UI.Device.Hubs
 {
-    [DisplaySession]
-    public class DisplayHub(
-        ISignalRConnectionRegistry<IDisplaySignalRConnectionBridge<HtmxSignalRMessage>> registry,
-        ILogger<DisplayHub> logger) : Hub<IDisplayHubReceiver<string>>, IDisplayHubSender<HtmxSignalRMessage>
+
+    [DeviceSession]
+    public abstract class DeviceHub<TInbound, TOutbound>(
+        ISignalRConnectionRegistry<IDeviceSignalRConnectionBridge<TInbound>> registry,
+        ILogger<DeviceHub<TInbound, TOutbound>> logger) : Hub<IDeviceHubReceiver<TOutbound>>, IDeviceHubSender<TInbound>
     {
-        private Result<(Guid, HttpContext)> GetDisplayId()
+        public abstract IDeviceSignalRConnectionBridge<TInbound> CreateBridge(IServiceProvider serviceProvider, Guid deviceId);
+
+        private Result<(Guid, HttpContext)> GetDeviceId()
         {
             if (Context.GetHttpContext() is not { } context)
                 return new();
 
-            var sessionService = context.RequestServices.GetRequiredService<IDisplaySessionService>();
+            var sessionService = context.RequestServices.GetRequiredService<IDeviceSessionService>();
             if (!sessionService.IsAuthenticated)
                 return new();
 
-            return new((sessionService.DisplayId, context));
+            return new((sessionService.DeviceId, context));
         }
 
         public override async Task OnConnectedAsync()
         {
-            if (GetDisplayId() is not { IsSuccessful: true, Value: var (displayId, context) })
+            if (GetDeviceId() is not { IsSuccessful: true, Value: var (deviceId, context) })
             {
                 Context.Abort();
                 return;
             }
-            var bridge = ActivatorUtilities.CreateInstance<DisplaySignalRConnectionBridge<DisplayHub>>(context.RequestServices, Context.ConnectionId, displayId);
+            var bridge = CreateBridge(context.RequestServices, deviceId);
 
             registry.Register(Context.ConnectionId, bridge);
             try
@@ -50,7 +52,7 @@ namespace Odyssey.UI.Display.Hubs
             }
 
             if (logger.IsEnabled(LogLevel.Debug))
-                logger.LogDebug("Established connection bridge for Display {DisplayId}", displayId);
+                logger.LogDebug("Established connection bridge for Device {DeviceId}", deviceId);
             await base.OnConnectedAsync();
         }
 
@@ -60,7 +62,7 @@ namespace Odyssey.UI.Display.Hubs
             {
                 await bridge.OnDisconnectedAsync();
                 if (logger.IsEnabled(LogLevel.Debug))
-                    logger.LogDebug("Disconnected connection bridge for Display {DisplayId}", bridge.DisplayId);
+                    logger.LogDebug("Disconnected connection bridge for Device {DeviceId}", bridge.DeviceId);
             }
 
             await base.OnDisconnectedAsync(exception);

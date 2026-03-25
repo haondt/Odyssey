@@ -1,19 +1,19 @@
-@using Odyssey.Client.Display.Services
+@using Odyssey.Client.Device.Services
 @using Odyssey.GrainInterfaces.Sessions.Models
-@using Odyssey.UI.Display.Hubs
-@inject IDisplaySessionService DisplaySession
-@inject IClientDisplayService Display
+@using Odyssey.UI.Device.Hubs
+@inject IDeviceSessionService DeviceSession
+@inject IClientDeviceService Device
 @code {
     [Parameter]
     public bool SignalRSubscribe { get; set; } = true;
-    public const string Id = "display-bottom-sheet-content";
+    public const string Id = "device-bottom-sheet-content";
     private bool _ready;
     private Optional<MemberPartyDetails> _party;
-    private DisplayProfile _profile = default!;
+    private DeviceProfile _profile = default!;
     protected override async Task OnInitializedAsync()
     {
-        _party = await Display.GetPartyAsync();
-        _profile = await Display.GetDisplayProfileAsync();
+        _party = await Device.GetPartyAsync();
+        _profile = await Device.GetDeviceProfileAsync();
         _ready = true;
         base.OnInitialized();
     }
@@ -24,25 +24,27 @@
     @if (SignalRSubscribe)
     {
         <template hx-target="#@Id" class="hidden" hx-swap="morph" signalr-connection="@Websocket.Id"
-                  signalr-subscribe="@nameof(IDisplayHubReceiver<>.ReceivePartyEvent)"></template>
+                  signalr-subscribe="@nameof(IDeviceHubReceiver<>.ReceivePartyEvent)"></template>
     }
     <Frame Id="@Id" Flex="FrameDirection.Col" Gap="FrameSpacing.Panel" Align="FrameAlignment.Stretch">
         <Frame Flex="FrameDirection.RowWrap" Gap="FrameSpacing.Line">
             <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line" AddClasses='"flex-grow-1"'>
                 <p id="display-bottom-sheet-title" class="title">@_profile.Name</p>
-                <Chip Text="@DisplaySession.DisplayId.ToString()" />
+                <p class="italic">Web App</p>
+                <Chip Text="@DeviceSession.DeviceId.ToString()" />
             </Frame>
             <Frame Template="FrameTemplate.ButtonContainer" Align="FrameAlignment.Start">
                 @if (_party.HasValue)
                 {
-                    <Button HxPost="@OdysseyRoutes.Display.Party.Leave.Index" HxSwap='"none"'
+                    <Button HxPost="@OdysseyRoutes.Device.Party.Leave.Index" HxSwap='"none"'
                             HxVals='new HxVals(){ ["joinCode"] = _party.Value.JoinCode }' Style="ButtonStyle.Ghost"
                             Color="ButtonColor.Danger">Leave party</Button>
                 }
                 else
                 {
-                    <a hx-boost="true" href="@OdysseyRoutes.Roles.Index" Style="ButtonStyle.Ghost"
-                       Color="ButtonColor.Primary">Change role</a>
+                    <a hx-boost="true" href="@OdysseyRoutes.Roles.Index" Style="ButtonStyle.Ghost" Color="ButtonColor.Primary">
+                        Change role
+                    </a>
                 }
             </Frame>
         </Frame>

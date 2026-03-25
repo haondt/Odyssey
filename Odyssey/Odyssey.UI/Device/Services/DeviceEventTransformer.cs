@@ -5,20 +5,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Odyssey.Client.Authentication.Services;
 using Odyssey.Core.Exceptions;
 using Odyssey.Domain.Core.Services;
-using Odyssey.Domain.Display.Events;
-using Odyssey.Domain.Display.Services;
+using Odyssey.Domain.Device.Events;
+using Odyssey.Domain.Device.Services;
 using Odyssey.Domain.Sessions.Events;
 using Odyssey.UI.Core.Middlewares;
 using Odyssey.UI.Core.Models;
-using Odyssey.UI.Display.Components;
+using Odyssey.UI.Device.Components;
 
-namespace Odyssey.UI.Display.Services
+namespace Odyssey.UI.Device.Services
 {
-    public class DisplayEventTransformer(ISignalRScopeFactory scopeFactory) : IDisplayEventTransformer<HtmxSignalRMessage, string>
+    public class DeviceEventTransformer(ISignalRScopeFactory scopeFactory) : IDeviceEventTransformer<HtmxSignalRMessage, string>
     {
-        public async Task<string> TransformPartyEventAsync(PartyOutboundEvent outbound, Guid displayId)
+        public async Task<string> TransformPartyEventAsync(PartyOutboundEvent outbound, Guid deviceId)
         {
-            using var scope = scopeFactory.CreateDisplayScope(displayId);
+            using var scope = scopeFactory.CreateDeviceScope(deviceId);
             var renderer = scope.ServiceProvider.GetRequiredService<IComponentStringRenderer>();
 
             return outbound switch
@@ -27,7 +27,7 @@ namespace Odyssey.UI.Display.Services
                 {
                     Components = new()
                     {
-                        new DisplayBottomSheetContent
+                        new DeviceBottomSheetContent
                         {
                             SignalRSubscribe = false
                         },
@@ -35,7 +35,7 @@ namespace Odyssey.UI.Display.Services
                         {
                             Title = "Party disbanded",
                             Message = "Click ok to return to the join party screen",
-                            OkHxGet = OdysseyRoutes.Display.Party.Index,
+                            OkHxGet = OdysseyRoutes.Device.Party.Index,
                             OkCloseModal = false
                         },
                         Trigger.Create("close", $"#{BottomSheetContainer.Id}")
@@ -47,23 +47,23 @@ namespace Odyssey.UI.Display.Services
             };
         }
 
-        private static Task<string> RegeneratePartyPanelAsync(IComponentStringRenderer renderer) => renderer.RenderComponentAsync(new DisplayBottomSheetContent
+        private static Task<string> RegeneratePartyPanelAsync(IComponentStringRenderer renderer) => renderer.RenderComponentAsync(new DeviceBottomSheetContent
         {
             SignalRSubscribe = false
         });
 
-        public async Task<string> TransformDisplayPartyEventAsync(DisplayPartyOutboundEvent outbound, Guid displayId)
+        public async Task<string> TransformDevicePartyEventAsync(DevicePartyOutboundEvent outbound, Guid deviceId)
         {
-            using var scope = scopeFactory.CreateDisplayScope(displayId);
+            using var scope = scopeFactory.CreateDeviceScope(deviceId);
             var renderer = scope.ServiceProvider.GetRequiredService<IComponentStringRenderer>();
 
             return outbound switch
             {
-                DisplaySelfLeftPartyOutboundEvent selfLeftEvent => await renderer.RenderComponentAsync(new AppendComponentLayout
+                DeviceSelfLeftPartyOutboundEvent selfLeftEvent => await renderer.RenderComponentAsync(new AppendComponentLayout
                 {
                     Components = new()
                     {
-                        new DisplayBottomSheetContent
+                        new DeviceBottomSheetContent
                         {
                             SignalRSubscribe = false
                         },

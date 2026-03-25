@@ -7,7 +7,7 @@
 @inject IClientDisplayService Display
 
 @code {
-    public const string Id = "device-join-party-panel";
+    public const string Id = "display-join-party-panel";
 
     private bool _ready;
     private DisplayProfile _profile = default!;
@@ -19,7 +19,7 @@
     }
 }
 
-@if(_ready)
+@if (_ready)
 {
     <form id="@Id" hx-post="@OdysseyRoutes.Display.Party.Join.Index">
         <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">

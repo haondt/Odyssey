@@ -6,6 +6,5 @@ namespace Odyssey.UI.Display.Services
     public interface IDisplaySignalRConnectionBridge<TInbound> : ISignalRConnectionBridge, IDisplayHubSender<TInbound>
     {
         Guid DisplayId { get; }
-
     }
 }

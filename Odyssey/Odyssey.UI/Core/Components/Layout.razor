@@ -10,6 +10,7 @@
 @using Odyssey.UI.Core.Extensions
 @using Odyssey.UI.Core.Models
 @using Odyssey.UI.Core.Services
+@using Odyssey.UI.Device.Filters
 @using Odyssey.UI.Display.Filters
 @inject UIRequestContext UIRequestContext
 @code {
@@ -21,6 +22,7 @@
 
     private string _targetRole = OdysseyRoles.None;
     private string _displayId = "";
+    private string _deviceId = "";
 
     [CascadingParameter]
     public IRequestData Request { get; set; } = default!;
@@ -41,12 +43,14 @@
         _targetRole = renderPageAttribute.Map(q => q.Role).Or(OdysseyRoles.None);
         if (DisplaySessionAttribute.TryGetDisplayId(Request, out var displayId))
             _displayId = displayId.ToString();
+        if (DeviceSessionAttribute.TryGetDeviceId(Request, out var deviceId))
+            _deviceId = deviceId.ToString();
     }
 }
 
 <div id="@Id" class="@_bodyContentClasses">
     <template _="on load
-        send UpdateWebsocket(role: '@_targetRole', displayId: '@_displayId') to #@Websocket.Id
+        send UpdateWebsocket(role: '@_targetRole', displayId: '@_displayId', deviceId: '@_deviceId') to #@Websocket.Id
         send @(LayoutOptionsAttribute.Map(q => q.UseBottomSheet).Or(false) ? "activate" : "deactivate") to #@BottomSheetContainer.Id
         then remove me end"></template>
     @if (Request.IsHxRequest()) 

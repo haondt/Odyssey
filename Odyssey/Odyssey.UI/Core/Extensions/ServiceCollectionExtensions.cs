@@ -3,11 +3,15 @@ using Haondt.Web.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Odyssey.Domain.Device.Services;
 using Odyssey.Domain.Display.Services;
 using Odyssey.Domain.Host.Services;
 using Odyssey.UI.Core.Middlewares;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Core.Services;
+using Odyssey.UI.Device.Filters;
+using Odyssey.UI.Device.Models;
+using Odyssey.UI.Device.Services;
 using Odyssey.UI.Display.Filters;
 using Odyssey.UI.Display.Services;
 using Odyssey.UI.Host.Models;
@@ -31,15 +35,19 @@ namespace Odyssey.UI.Core.Extensions
             services.Configure<UISettings>(configuration.GetSection(nameof(UISettings)));
             services.AddSingleton<ITargetedExceptionActionResultFactory, CatchAllErrorPageExceptionActionResultFactory>();
             services.AddScoped<UIRequestContext>();
-
-            // display
-            services.AddSingleton<DisplaySessionHubFilter>();
             services.AddSignalR(hubOptions =>
             {
                 hubOptions.AddFilter<DisplaySessionHubFilter>();
+                hubOptions.AddFilter<DeviceSessionHubFilter>();
             }).AddNewtonsoftJsonProtocol();
+
+            // display
+            services.AddSingleton<DisplaySessionHubFilter>();
             services.AddSingleton<IDisplayEventTransformer<HtmxSignalRMessage, string>, DisplayEventTransformer>();
 
+            // device
+            services.AddSingleton<DeviceSessionHubFilter>();
+            services.AddKeyedSingleton<IDeviceEventTransformer<HtmxSignalRMessage, string>, DeviceEventTransformer>(DeviceClientType.Browser);
 
             //services.AddSingleton<IExceptionActionResultFactory, ToastExceptionActionResultFactory>();
             //services.AddSingleton<ILucideIconService, LucideIconService>();
@@ -106,29 +114,11 @@ namespace Odyssey.UI.Core.Extensions
                 }",
             });
 
-            // Add Inter font
+            // Preload Inter
             services.AddScoped<IHeadEntryDescriptor>(_ => new LinkDescriptor
             {
                 Relationship = "preload",
                 Uri = "/static/shared/vendored/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
-                Type = "font/woff2",
-                As = "font",
-                CrossOrigin = true
-            });
-            services.AddScoped<IHeadEntryDescriptor>(_ => new LinkDescriptor
-            {
-                Relationship = "preload",
-                Uri = "/static/shared/vendored/@fontsource-variable/inter/files/inter-latin-wght-italic.woff2",
-                Type = "font/woff2",
-                As = "font",
-                CrossOrigin = true
-            });
-
-            // Add source code pro font
-            services.AddScoped<IHeadEntryDescriptor>(_ => new LinkDescriptor
-            {
-                Relationship = "preload",
-                Uri = "/static/shared/vendored/@fontsource-variable/source-code-pro/files/source-code-pro-latin-wght-normal.woff2",
                 Type = "font/woff2",
                 As = "font",
                 CrossOrigin = true

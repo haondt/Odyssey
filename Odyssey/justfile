@@ -1,9 +1,13 @@
+client := "./Odyssey/Odyssey.csproj"
+silo := "./Odyssey.Silo/Odyssey.Silo.csproj"
 
 install:
     dcdn install
 
-build:
-    dotnet build
+[arg('target', pattern='client|silo')]
+build target:
+    dotnet build {{ if target == "client" { client }  else  { silo } }}
+
 
 [arg('target', pattern='client|silo')]
 [arg('reload', short='r', long="hot-reload", value='')]
@@ -15,3 +19,6 @@ db-init:
 
 db:
     lazysql "postgres://postgres:postgres@192.168.1.213:5432/odyssey?sslmode=disable"
+
+pm:
+    podman system service --time=0

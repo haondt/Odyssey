@@ -1,0 +1,31 @@
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Services
+@using Odyssey.Client.Device.Services
+@using Odyssey.GrainInterfaces.Sessions.Models
+
+@inject IDeviceSessionService DeviceSession
+@inject IClientDeviceService Device
+
+@code {
+    public const string Id = "device-join-party-panel";
+
+    private bool _ready;
+    private DeviceProfile _profile = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        _profile = await Device.GetDeviceProfileAsync();
+        _ready = true;
+        base.OnInitialized();
+    }
+}
+
+@if (_ready)
+{
+    <form id="@Id" hx-post="@OdysseyRoutes.Device.Party.Join.Index">
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Template="FrameTemplate.Card">
+            <SmartField TBase="DeviceJoinPartyModel" Field="m => m.JoinCode" />
+            <SmartField TBase="DeviceJoinPartyModel" Field="m => m.DeviceName" Value="_profile.Name" />
+            <Button Type="ButtonType.Submit" Color="ButtonColor.Primary">Join</Button>
+        </Frame>
+    </form>
+}

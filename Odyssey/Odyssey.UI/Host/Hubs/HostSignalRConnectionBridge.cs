@@ -23,6 +23,8 @@ namespace Odyssey.UI.Host.Hubs
         private readonly IHostEventTransformer<TInbound, TOutbound> _transformer = transformerRegistry.GetTransformer<IHostEventTransformer<TInbound, TOutbound>>(clientType);
         private Optional<StreamSubscriptionHandle<SignalROutboundEvent>> _handle;
 
+        public string UserId => userId;
+
         // TODO: on connected we should fire an event to make something bounce back to update a stale page on the client side
         public async Task OnConnectedAsync()
         {

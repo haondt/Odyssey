@@ -31,6 +31,14 @@
                     public const string Index = $"{Hubs.Display.Index}/browser";
                 }
             }
+            public static class Device
+            {
+                public const string Index = $"{Hubs.Index}/device";
+                public static class Browser
+                {
+                    public const string Index = $"{Hubs.Device.Index}/browser";
+                }
+            }
         }
         public static class Roles
         {
@@ -207,6 +215,19 @@
         public static class Device
         {
             public const string Index = $"/{OdysseyRoles.Device}";
+            public static class Party
+            {
+                public const string Index = $"{Device.Index}/party";
+                public static class Join
+                {
+                    public const string Index = $"{Party.Index}/join";
+                }
+
+                public static class Leave
+                {
+                    public const string Index = $"{Party.Index}/leave";
+                }
+            }
         }
         public static class Display
         {

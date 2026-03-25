@@ -43,6 +43,7 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 services.AddSingleton<ICastedGrainFactory<string, IMemberPartyGrain>, CastedGrainFactory<string, IPartyGrain, IMemberPartyGrain>>();
                 services.AddSingleton<IGrainFactory<string, IJoinCodeGrain>, StringKeyGrainFactory<IJoinCodeGrain>>();
                 services.AddSingleton<IGrainFactory<Guid, IDisplayGrain>, GuidKeyGrainFactory<IDisplayGrain>>();
+                services.AddSingleton<IGrainFactory<Guid, IDeviceGrain>, GuidKeyGrainFactory<IDeviceGrain>>();
                 services.AddSingleton(typeof(ISessionGrainFactory<,>), typeof(SessionGrainFactory<,>));
                 return services;
             }

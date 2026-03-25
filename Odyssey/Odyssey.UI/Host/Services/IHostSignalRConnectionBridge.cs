@@ -5,6 +5,6 @@ namespace Odyssey.UI.Host.Services
 {
     public interface IHostSignalRConnectionBridge<TInbound> : ISignalRConnectionBridge, IHostHubSender<TInbound>
     {
-
+        string UserId { get; }
     }
 }
