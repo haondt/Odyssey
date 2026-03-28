@@ -21,6 +21,7 @@ namespace Odyssey.Grains.Sessions
         private readonly IGrainFactory<string, IJoinCodeGrain> _joinCodeGrainFactory;
         private readonly ILogger<DisplayGrain> _logger;
         private readonly IAsyncStream<SignalROutboundEvent> _displayEventStream;
+        private readonly PartyMemberId _partyMemberId;
 
         public DisplayGrain(
             [PersistentState(nameof(DisplayGrainState), GrainConstants.GrainStorage)] IPersistentState<DisplayGrainState> state,
@@ -35,6 +36,7 @@ namespace Odyssey.Grains.Sessions
             _logger = logger;
             _displayEventStream = this.GetStreamProvider(GrainConstants.SignalRStreams)
                 .GetStream<SignalROutboundEvent>(GrainConstants.DisplayEventsStreamNamespace, _id);
+            _partyMemberId = new PartyMemberId(_id, PartyMemberType.Display);
         }
 
         public Task<PartyMemberProfile> GetMemberProfileAsync() => Task.FromResult<PartyMemberProfile>(_state.State.Profile);
@@ -53,7 +55,7 @@ namespace Odyssey.Grains.Sessions
                 if (await joinCodeGrain.GetMemberPartyAsync() is not { HasValue: true, Value: var party })
                     return new(JoinPartyReason.PartyDoesNotExist);
 
-                if (await party.JoinAsync(this.AsReference<IDisplayGrain>(), joinCode) != true)
+                if (await party.JoinAsync(_partyMemberId, this.AsReference<IDisplayGrain>(), joinCode) != true)
                     return new(JoinPartyReason.PartyDoesNotExist);
 
                 _state.State.Party = new(party);
@@ -72,7 +74,7 @@ namespace Odyssey.Grains.Sessions
             if (!_state.State.Party.TryGetValue(out var currentParty))
                 return new(LeavePartyReason.PartyDoesNotExist);
 
-            if (await currentParty.LeaveAsync(this.AsReference<IDisplayGrain>(), joinCode) == false)
+            if (await currentParty.LeaveAsync(_partyMemberId, joinCode) == false)
                 return new(LeavePartyReason.PartyDoesNotExist);
 
             _state.State.Party = new();
@@ -124,7 +126,7 @@ namespace Odyssey.Grains.Sessions
                 return new();
             try
             {
-                return await party.GetPartyDetailsAsync(this.AsReference<IDisplayGrain>(), _state.State.Profile);
+                return await party.GetPartyDetailsAsync(_partyMemberId, _state.State.Profile);
             }
             catch (NotPartyMemberException ex)
             {
@@ -159,6 +161,16 @@ namespace Odyssey.Grains.Sessions
                     _logger.LogDebug("Received party member left event");
             }
             return _displayEventStream.OnNextAsync(new PartyMemberLeftOutboundEvent());
+        }
+
+        public Task NotifyPartyMemberModifiedAsync()
+        {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DeviceId = _id }))
+                    _logger.LogDebug("Received party member modified event");
+            }
+            return _displayEventStream.OnNextAsync(new PartyMemberModifiedOutboundEvent());
         }
     }
 }

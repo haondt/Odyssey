@@ -38,6 +38,7 @@ namespace Odyssey.UI.Host.Services
                 // TODO: make these more efficient, e.g. just remove the left member, just add the new member at the end, etc
                 PartyMemberLeftOutboundEvent memberLeftEvent => await RegenerateHostPartyPanelAsync(renderer),
                 PartyMemberJoinedOutboundEvent memberJoinedEvent => await RegenerateHostPartyPanelAsync(renderer),
+                PartyMemberModifiedOutboundEvent memberModifiedEvent => await RegenerateHostPartyPanelAsync(renderer),
                 _ => throw ExceptionFactory.CasesExhaustedException(outbound.GetType().Name, "event type")
             };
         }

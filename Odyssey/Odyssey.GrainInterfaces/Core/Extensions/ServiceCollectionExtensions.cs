@@ -18,7 +18,7 @@ namespace Odyssey.GrainInterfaces.Core.Extensions
                 services.AddOdysseyGrainFactories();
                 services.Configure<ExceptionSerializationOptions>(options =>
                 {
-                    options.SupportedNamespacePrefixes.Add("Newtonsoft.Json.JsonSerializationException");
+                    options.SupportedNamespacePrefixes.Add("Newtonsoft.Json");
                     options.SupportedNamespacePrefixes.Add("Odyssey.GrainInterfaces.Sessions.Exceptions");
                 });
 

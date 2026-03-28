@@ -33,19 +33,19 @@ namespace Odyssey.Grains.Sessions
                 using (_logger.BeginScope(new { HostId = _id }))
                     _logger.LogDebug("Received party {JoinCode} disbanded event", joinCode);
             }
-            await _party.SetHostDataAsync(new());
             await _hostEventStream.OnNextAsync(new PartyDisbandedOutboundEvent { PartyId = joinCode });
         }
 
-        public Task NotifyPartyMemberJoinedAsync()
+
+        public async Task NotifyPartyMemberJoinedAsync()
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
                 using (_logger.BeginScope(new { DisplayId = _id }))
                     _logger.LogDebug("Received party member joined event");
             }
-            // TODO: create new entry in host party data
-            return _hostEventStream.OnNextAsync(new PartyMemberJoinedOutboundEvent());
+
+            await _hostEventStream.OnNextAsync(new PartyMemberJoinedOutboundEvent());
         }
 
         public Task NotifyPartyMemberLeftAsync()
@@ -55,8 +55,17 @@ namespace Odyssey.Grains.Sessions
                 using (_logger.BeginScope(new { DisplayId = _id }))
                     _logger.LogDebug("Received party member left event");
             }
-            // TODO: remove entry from host party data
             return _hostEventStream.OnNextAsync(new PartyMemberLeftOutboundEvent());
+        }
+
+        public Task NotifyPartyMemberModifiedAsync()
+        {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DeviceId = _id }))
+                    _logger.LogDebug("Received party member modified event");
+            }
+            return _hostEventStream.OnNextAsync(new PartyMemberModifiedOutboundEvent());
         }
     }
 }

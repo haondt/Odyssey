@@ -33,7 +33,7 @@ namespace Odyssey.Client.Device.Services
             if (!joinResult.IsSuccessful)
                 return new(joinResult.Reason);
 
-            var partyDetails = await joinResult.Value.GetPartyDetailsAsync(grain, await grain.GetMemberProfileAsync());
+            var partyDetails = await joinResult.Value.GetPartyDetailsAsync(new(sessionService.DeviceId, PartyMemberType.Device), await grain.GetMemberProfileAsync());
             return new(partyDetails);
         }
 

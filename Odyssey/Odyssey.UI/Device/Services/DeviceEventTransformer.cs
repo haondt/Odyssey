@@ -43,6 +43,7 @@ namespace Odyssey.UI.Device.Services
                 }),
                 PartyMemberLeftOutboundEvent memberLeftEvent => await RegeneratePartyPanelAsync(renderer),
                 PartyMemberJoinedOutboundEvent memberJoinedEvent => await RegeneratePartyPanelAsync(renderer),
+                PartyMemberModifiedOutboundEvent memberLeftEvent => await RegeneratePartyPanelAsync(renderer),
                 _ => throw ExceptionFactory.CasesExhaustedException(outbound.GetType().Name, "event type")
             };
         }

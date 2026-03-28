@@ -52,7 +52,6 @@ namespace Odyssey.UI.Display.Controllers
             {
                 Name = joinData.DisplayName,
                 Type = OdysseyClientTypes.Browser,
-                Id = displaySessionService.DisplayId
             });
             var joinResult = await display.JoinPartyAsync(joinData.JoinCode);
             if (!joinResult.IsSuccessful)

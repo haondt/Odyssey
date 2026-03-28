@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Haondt.Core.Models;
 
 namespace Odyssey.GrainInterfaces.Sessions.Models
 {
     [GenerateSerializer]
-    public record HostDisplayData
+    public record HostDeviceData
     {
         [Id(0)]
-        public bool PlaySounds { get; set; }
-        [Id(1)]
-        public bool ReflectSoundBoard { get; set; }
+        public Optional<PartyMemberId> PlayerAssignmentDelegatedTo { get; set; }
     }
 }

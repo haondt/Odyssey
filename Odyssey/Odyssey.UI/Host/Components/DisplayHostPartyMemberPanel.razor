@@ -1,34 +1,37 @@
 @using Haondt.Web.UI.Components.Components
+@using Odyssey.GrainInterfaces.Sessions.Models
 @code {
     [Parameter, EditorRequired]
-    public required Guid DisplayId {get; set;}  
+    public required PartyMemberId Id { get; set; }
 
     [Parameter, EditorRequired]
-    public required bool PlaySounds { get; set; }
+    public required DisplayProfile Profile { get; set; }
 
     [Parameter, EditorRequired]
-    public bool ReflectSoundboard { get; set; }
+    public required HostDisplayData Data { get; set; }
 
-    [Parameter, EditorRequired]
-    public string Name { get; set; }
+    private DisplayHostPartyMemberPanelModel _model = default!;
 
-    [Parameter, EditorRequired]
-    public string Type { get; set; }
+    protected override void OnInitialized()
+    {
+        _model = DisplayHostPartyMemberPanelModel.Create(Id.Id, Data);
+    }
+
 }
 
 <Frame Template="FrameTemplate.Card">
-    <Frame>
-        <p class="subtitle">@Name</p>
+    <Frame Flex="FrameDirection.RowWrap" Gap="FrameSpacing.Line">
+        <p class="subtitle">@Profile.Name</p>
         <p class="italic">Display</p>
-        <p class="italic fg-text-weak">@Type</p>
+        <p class="italic fg-text-weak">@Profile.Type</p>
         <HorizontalSpacer/>
-        <Chip>@DisplayId</Chip>
+        <Chip>@Id.Id</Chip>
     </Frame>
-    <Frame>
-        <form>
-            <!-- TODO buttonses and onclick it sends the signalr event -->
-        </form>
-    </Frame>
+    <form class="flex flex-col gap-line" hx-trigger="input delay:200ms" hx-put="@OdysseyRoutes.Host.Party.DisplayMembers.Index">
+        <SmartField Base="_model" Field="m => m.Id" Type="FieldType.Hidden" />
+        <SmartField Base="_model" Field="m => m.PlaySounds" />
+        <SmartField Base="_model" Field="m => m.ReflectSoundboard" />
+    </form>
     <Frame Template="FrameTemplate.ButtonContainer">
         <Button Style="ButtonStyle.Ghost" Color="ButtonColor.Danger">Remove</Button>
     </Frame>

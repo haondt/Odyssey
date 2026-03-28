@@ -64,7 +64,7 @@
                                 <p class="italic">Web App</p>
                             </Frame>
                         </VerticalListItem>
-                        @foreach (var member in party.Members)
+                        @foreach (var (_, member) in party.Members)
                         {
                             <VerticalListItem>
                                 <Frame Flex="FrameDirection.Row" Gap="FrameSpacing.Card">

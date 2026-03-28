@@ -1,5 +1,7 @@
 client := "./Odyssey/Odyssey.csproj"
 silo := "./Odyssey.Silo/Odyssey.Silo.csproj"
+db_sys_cs := "postgres://postgres:postgres@192.168.1.213:5432/postgres"
+db_cs := "postgres://postgres:postgres@192.168.1.213:5432/odyssey"
 
 install:
     dcdn install
@@ -15,10 +17,17 @@ watch target reload='--no-hot-reload':
     DOTNET_WATCH_SUPPRESS_EMOJIS=1 dotnet watch --non-interactive --project {{ if target == "client" { "./Odyssey/Odyssey.csproj" } else { "./Odyssey.Silo/Odyssey.Silo.csproj" } }} {{ reload }}
 
 db-init:
-    psql "postgres://postgres:postgres@192.168.1.213:5432/postgres" -c "CREATE DATABASE odyssey;"
+    psql "{{db_sys_cs}}" -c "CREATE DATABASE odyssey;"
+
+db-drop:
+    psql "{{db_sys_cs}}" -c "DROP DATABASE odyssey;"
+
+db-reset:
+    psql "{{db_sys_cs}}" -c "DROP DATABASE IF EXISTS odyssey;"
+    psql "{{db_sys_cs}}" -c "CREATE DATABASE odyssey;"
 
 db:
-    lazysql "postgres://postgres:postgres@192.168.1.213:5432/odyssey?sslmode=disable"
+    lazysql "{{db_cs}}?sslmode=disable"
 
 pm:
     podman system service --time=0

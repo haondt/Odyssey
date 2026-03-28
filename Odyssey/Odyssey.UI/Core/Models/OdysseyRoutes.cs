@@ -70,6 +70,16 @@
                 {
                     public const string Index = $"{Party.Index}/reset";
                 }
+
+                public static class DisplayMembers
+                {
+                    public const string Index = $"{Party.Index}/display-members";
+                }
+
+                public static class DeviceMembers
+                {
+                    public const string Index = $"{Party.Index}/device-members";
+                }
             }
             public static class Sessions
             {

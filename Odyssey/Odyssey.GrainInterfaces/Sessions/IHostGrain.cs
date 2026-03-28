@@ -12,5 +12,7 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task NotifyPartyMemberJoinedAsync();
         [OneWay]
         Task NotifyPartyMemberLeftAsync();
+        [OneWay]
+        Task NotifyPartyMemberModifiedAsync();
     }
 }

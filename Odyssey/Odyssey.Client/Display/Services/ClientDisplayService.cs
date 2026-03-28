@@ -33,7 +33,7 @@ namespace Odyssey.Client.Display.Services
             if (!joinResult.IsSuccessful)
                 return new(joinResult.Reason);
 
-            var partyDetails = await joinResult.Value.GetPartyDetailsAsync(grain, await grain.GetMemberProfileAsync());
+            var partyDetails = await joinResult.Value.GetPartyDetailsAsync(new(sessionService.DisplayId, PartyMemberType.Display), await grain.GetMemberProfileAsync());
             return new(partyDetails);
         }
 

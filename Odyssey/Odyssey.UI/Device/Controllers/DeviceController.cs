@@ -52,7 +52,6 @@ namespace Odyssey.UI.Device.Controllers
             {
                 Name = joinData.DeviceName,
                 Type = OdysseyClientTypes.Browser,
-                Id = deviceSessionService.DeviceId
             });
             var joinResult = await device.JoinPartyAsync(joinData.JoinCode);
             if (!joinResult.IsSuccessful)

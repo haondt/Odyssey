@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Odyssey.Domain.Core.Services;
 using Orleans.Serialization;
 
 namespace Odyssey.Domain.Core.Models
@@ -18,6 +19,7 @@ namespace Odyssey.Domain.Core.Models
             SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             SerializerSettings.Converters.Add(new AbsoluteDateTimeJsonConverter());
             SerializerSettings.Converters.Add(new SimpleGenericOptionalJsonConverter());
+            SerializerSettings.Converters.Add(new PartyMemberIdJsonConverter());
             SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
             {
                 NamingStrategy = new CamelCaseNamingStrategy
@@ -49,6 +51,7 @@ namespace Odyssey.Domain.Core.Models
             options.JsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             options.JsonSerializerSettings.Converters.Add(new AbsoluteDateTimeJsonConverter());
             options.JsonSerializerSettings.Converters.Add(new GenericOptionalJsonConverter());
+            options.JsonSerializerSettings.Converters.Add(new PartyMemberIdJsonConverter());
             options.JsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
             {
                 NamingStrategy = new CamelCaseNamingStrategy

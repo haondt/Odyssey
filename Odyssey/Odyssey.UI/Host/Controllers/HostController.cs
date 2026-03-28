@@ -6,8 +6,11 @@ using Odyssey.Client.Authentication.Services;
 using Odyssey.Client.Core.Services;
 using Odyssey.Client.Host.Services;
 using Odyssey.Domain.Core.Services;
+using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.UI.Core.Controllers;
+using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
+using Odyssey.UI.Host.Components;
 
 namespace Odyssey.UI.Host.Controllers
 {
@@ -32,6 +35,17 @@ namespace Odyssey.UI.Host.Controllers
         {
             var party = await hostService.GetPartyAsync();
             await party.ResetPartyAsync();
+            return TypedResults.NoContent();
+        }
+
+        [HttpPut(OdysseyRoutes.Host.Party.DisplayMembers.Index)]
+        public async Task<IResult> UpdateDisplayPartyMember([FromForm] DisplayHostPartyMemberPanelModel model)
+        {
+            var memberId = new PartyMemberId(model.Id, PartyMemberType.Display);
+            var party = await hostService.GetPartyAsync();
+            var data = await party.GetDisplayDataAsync(memberId);
+            await party.UpdateDisplayDataAsync(memberId, model.Apply(data));
+
             return TypedResults.NoContent();
         }
     }

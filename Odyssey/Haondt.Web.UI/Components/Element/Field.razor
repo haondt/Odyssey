@@ -287,11 +287,11 @@
 }
 
 <div class="@string.Join(' ', _rootClasses)" _="install Field(formElt: @Form.Map(q => $"#{q}").Or("the closest <form />"))">
-    <Frame 
+    <Frame
         Gap="FrameSpacing.Line"
         Flex="FrameDirection.Col"
         Align="FrameAlignment.Start">
-        @if(Type == FieldType.Checkbox || Title.HasValue) 
+        @if(Type == FieldType.Checkbox || Title.HasValue)
         {
             <div class="label-container">
                 @if(Type == FieldType.Checkbox)
@@ -309,10 +309,10 @@
         {
             <p>@description</p>
         }
-        @if(Type is FieldType.Text or FieldType.Password or FieldType.Search or FieldType.LiveSearch)
+        @if(Type is FieldType.Text or FieldType.Password or FieldType.Search or FieldType.LiveSearch or FieldType.Hidden)
         {
             <input @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
-        } 
+        }
         else if (Type is FieldType.TextArea)
         {
             <textarea @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)">@Value.Unwrap()</textarea>
@@ -357,7 +357,7 @@
                     }
                 </select>
             </div>
-        } 
+        }
         @ChildContent
         @if(Error.TryGetValue(out var error)) 
         {

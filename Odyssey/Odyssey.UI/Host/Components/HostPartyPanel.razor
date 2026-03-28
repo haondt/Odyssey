@@ -33,23 +33,20 @@
         <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
             <Field Type="FieldType.None" Title='"Members"' Description="@description" />
             <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
-                @foreach(var member in _party.Members)
+                @foreach(var (memberId, member) in _party.Members)
                 {
                     switch (member)
                     {
                         case DisplayProfile displayProfile:
-                            var displayData = _party.Data.DisplayData.GetValue(displayProfile.Id);
-                            <DisplayHostPartyMemberPanel 
-                                    DisplayId="displayProfile.Id" 
-                                    PlaySounds="displayData.Map(q => q.PlaySounds).Or(false)"
-                                    ReflectSoundboard="displayData.Map(q => q.ReflectSoundBoard).Or(false)"
-                                    Name="@displayProfile.Name" 
-                                    Type="@displayProfile.Type" />
+                            var displayData = _party.Data.DisplayData.GetValue(memberId);
+                            <DisplayHostPartyMemberPanel
+                                Id="memberId"
+                                Profile="displayProfile"
+                                Data="displayData.Or(new HostDisplayData())" />
                             break;
                         default:
                             <p>TODO</p>
                             break;
-                        
                     }
                 }
                 <Frame

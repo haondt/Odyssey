@@ -1,4 +1,5 @@
 ﻿using Haondt.Core.Models;
+using Haondt.Orleans.Persistence;
 using Microsoft.Extensions.Logging;
 using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
@@ -9,9 +10,9 @@ using Odyssey.Grains.Sessions.Models;
 
 namespace Odyssey.Grains.Sessions
 {
-    public class PartyGrain : Grain, IPartyGrain
+    public partial class PartyGrain : Grain, IPartyGrain
     {
-        private readonly IPersistentState<PartyGrainState> _state;
+        private readonly IRewindablePersistentState<PartyGrainState> _state;
         private readonly string _id;
         private readonly ICrockfordService _crockford;
         private readonly IGrainFactory<string, IJoinCodeGrain> _joinCodeGrainFactory;
@@ -20,14 +21,14 @@ namespace Odyssey.Grains.Sessions
         private const int _joinCodeSize = 5;
 
         public PartyGrain(
-            [PersistentState(nameof(PartyGrainState), GrainConstants.GrainStorage)] IPersistentState<PartyGrainState> state,
+            IRewindablePersistentStateFactory persistentStateFactory,
             ICrockfordService crockford,
             IGrainFactory<string, IPartyGrain> grainFactory,
             IGrainFactory<string, IJoinCodeGrain> joinCodeGrainFactory,
             IGrainFactory<string, IHostGrain> hostGrainFactory,
             ILogger<PartyGrain> logger)
         {
-            _state = state;
+            _state = persistentStateFactory.Create<PartyGrainState>(GrainContext, nameof(PartyGrainState), GrainConstants.GrainStorage);
             _id = grainFactory.GetIdentity(this);
             _crockford = crockford;
             _joinCodeGrainFactory = joinCodeGrainFactory;
@@ -35,7 +36,6 @@ namespace Odyssey.Grains.Sessions
             _logger = logger;
         }
 
-        public Task<string> GetJoinCodeAsync() => Task.FromResult(_state.State.JoinCode);
 
         private async Task ClaimRandomJoinCodeAsync(CancellationToken cancellationToken = default)
         {
@@ -58,12 +58,13 @@ namespace Odyssey.Grains.Sessions
 
             try
             {
-                _state.State.JoinCode = joinCode;
-                await _state.WriteStateAsync(cancellationToken);
+                await _state.TryAndWriteStateAsync(() =>
+                {
+                    _state.State.JoinCode = joinCode;
+                });
             }
             catch (Exception ex)
             {
-                _state.State.JoinCode = oldJoinCode;
                 if (!currentOwner.HasValue)
                 {
                     try
@@ -108,62 +109,53 @@ namespace Odyssey.Grains.Sessions
             await base.OnActivateAsync(cancellationToken);
         }
 
-        public async Task ResetPartyAsync()
+
+        public async Task<bool> LeaveAsync(PartyMemberId memberId, Optional<string> joinCode = default)
         {
-            var oldMembers = _state.State.Members.ToList();
-            var oldJoinCode = _state.State.JoinCode;
-            _state.State.Members.Clear();
-            try
-            {
-                await ClaimRandomJoinCodeAsync();
-            }
-            catch
-            {
-                _state.State.Members = oldMembers;
-                throw;
-            }
-
-            _ = _hostGrain.NotifyPartyDisbandedAsync(oldJoinCode);
-
-            foreach (var member in oldMembers)
-                _ = member.NotifyPartyDisbandedAsync(oldJoinCode);
-        }
-
-        public async Task<bool> LeaveAsync(IPartyMemberGrain member, Optional<string> joinCode = default)
-        {
-            if (!_state.State.Members.Contains(member))
+            var memberIdx = _state.State.Members.FindIndex(q => q.Id == memberId);
+            if (memberIdx == -1)
                 return true;
 
             if (joinCode.HasValue && _state.State.JoinCode != joinCode.Value)
                 return false;
 
-            _state.State.Members.Remove(member);
-            try
+            await _state.TryAndWriteStateAsync(() =>
             {
-                await _state.WriteStateAsync();
-            }
-            catch
-            {
-                _state.State.Members.Add(member);
-                throw;
-            }
+                _state.State.Members.RemoveAt(memberIdx);
+                switch (memberId.Type)
+                {
+                    case PartyMemberType.Device:
+                        _state.State.HostData.DeviceData.Remove(memberId);
+                        break;
+                    case PartyMemberType.Display:
+                        _state.State.HostData.DisplayData.Remove(memberId);
+                        break;
+                }
+            });
 
             _ = _hostGrain.NotifyPartyMemberLeftAsync();
-            foreach (var partyMember in _state.State.Members)
+            foreach (var (_, partyMember) in _state.State.Members)
                 _ = partyMember.NotifyPartyMemberLeftAsync();
 
             return true;
         }
 
-        private Task TryReleaseJoinCode(string joinCode)
+        private void NotifyPartyMembersThatPartyMemberWasModified()
+        {
+            _ = _hostGrain.NotifyPartyMemberModifiedAsync();
+            foreach (var (_, partyMember) in _state.State.Members)
+                _ = partyMember.NotifyPartyMemberModifiedAsync();
+        }
+
+        private Task<Result> TryReleaseJoinCode(string joinCode)
         {
             var joinCodeGrain = _joinCodeGrainFactory.GetGrain(joinCode);
             return joinCodeGrain.Release(_id);
         }
 
-        public async Task<bool> JoinAsync(IPartyMemberGrain member, string joinCode)
+        public async Task<bool> JoinAsync(PartyMemberId memberId, IPartyMemberGrain member, string joinCode)
         {
-            if (_state.State.Members.Contains(member))
+            if (_state.State.Members.Any(q => q.Id == memberId))
                 return true;
 
             if (_state.State.JoinCode != joinCode)
@@ -172,27 +164,30 @@ namespace Odyssey.Grains.Sessions
                 return false;
             }
 
-            _state.State.Members.Add(member);
-            try
+            await _state.TryAndWriteStateAsync(() =>
             {
-                await _state.WriteStateAsync();
-            }
-            catch
-            {
-                _state.State.Members.Remove(member);
-                throw;
-            }
+                _state.State.Members.Add((memberId, member));
+                switch (memberId.Type)
+                {
+                    case PartyMemberType.Device:
+                        _state.State.HostData.DeviceData[memberId] = new();
+                        break;
+                    case PartyMemberType.Display:
+                        _state.State.HostData.DisplayData[memberId] = new();
+                        break;
+                }
+            });
 
             _ = _hostGrain.NotifyPartyMemberJoinedAsync();
-            foreach (var partyMember in _state.State.Members)
+            foreach (var (_, partyMember) in _state.State.Members)
                 _ = partyMember.NotifyPartyMemberJoinedAsync();
 
             return true;
         }
 
-        public async Task<MemberPartyDetails> GetPartyDetailsAsync(IPartyMemberGrain requester, PartyMemberProfile requesterProfile)
+        public async Task<MemberPartyDetails> GetPartyDetailsAsync(PartyMemberId requesterId, PartyMemberProfile requesterProfile)
         {
-            if (!_state.State.Members.Contains(requester))
+            if (!_state.State.Members.Any(q => q.Id == requesterId))
                 throw new NotPartyMemberException();
 
             var details = new MemberPartyDetails
@@ -201,17 +196,16 @@ namespace Odyssey.Grains.Sessions
                 Members = []
             };
 
-            var requesterGrainId = requester.GetGrainId();
-            foreach (var member in _state.State.Members)
+            foreach (var (memberId, member) in _state.State.Members)
             {
                 // avoid deadlock
                 PartyMemberProfile profile;
-                if (member.GetGrainId() == requesterGrainId)
+                if (memberId == requesterId)
                     profile = requesterProfile;
                 else
                     profile = await member.GetMemberProfileAsync();
 
-                details.Members.Add(profile);
+                details.Members.Add((memberId, profile));
             }
 
             return details;
@@ -221,35 +215,6 @@ namespace Odyssey.Grains.Sessions
         {
             DeactivateOnIdle();
             return Task.CompletedTask;
-        }
-
-        public async Task<HostPartyDetails> GetPartyDetailsAsync()
-        {
-            var details = new HostPartyDetails
-            {
-                JoinCode = _state.State.JoinCode,
-                Members = [],
-                Data = _state.State.HostData
-            };
-
-            foreach (var member in _state.State.Members)
-            {
-                var profile = await member.GetMemberProfileAsync();
-                details.Members.Add(profile);
-            }
-
-            return details;
-        }
-
-        public async Task SetHostDataAsync(HostPartyData data)
-        {
-            _state.State.HostData = data;
-            await _state.WriteStateAsync();
-        }
-
-        public Task<HostPartyData> GetHostDataAsync()
-        {
-            return Task.FromResult(_state.State.HostData);
         }
     }
 }
