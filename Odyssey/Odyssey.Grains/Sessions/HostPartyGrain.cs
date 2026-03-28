@@ -96,5 +96,32 @@ namespace Odyssey.Grains.Sessions
 
             NotifyPartyMembersThatPartyMemberWasModified();
         }
+
+        public async Task RemoveMemberAsync(PartyMemberId memberId)
+        {
+            var memberIdx = _state.State.Members.FindIndex(q => q.Id == memberId);
+            if (memberIdx == -1)
+                return;
+            var (_, member) = _state.State.Members[memberIdx];
+
+            await _state.TryAndWriteStateAsync(() =>
+            {
+                _state.State.Members.RemoveAt(memberIdx);
+                switch (memberId.Type)
+                {
+                    case PartyMemberType.Device:
+                        _state.State.HostData.DeviceData.Remove(memberId);
+                        break;
+                    case PartyMemberType.Display:
+                        _state.State.HostData.DisplayData.Remove(memberId);
+                        break;
+                }
+            });
+
+            _ = _hostGrain.NotifyPartyMemberLeftAsync();
+            foreach (var (_, partyMember) in _state.State.Members)
+                _ = partyMember.NotifyPartyMemberLeftAsync();
+            _ = member.NotifyRemovedFromPartyAsync(_state.State.JoinCode);
+        }
     }
 }

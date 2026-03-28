@@ -6,7 +6,10 @@ namespace Odyssey.GrainInterfaces.Sessions.Models
     [GenerateSerializer]
     [Immutable]
     [TypeConverter(typeof(PartyMemberIdTypeConverter))]
-    public readonly record struct PartyMemberId(Guid Id, PartyMemberType Type);
+    public readonly record struct PartyMemberId(Guid Id, PartyMemberType Type)
+    {
+        public override string ToString() => PartyMemberIdTypeConverter.ConvertToString(this);
+    }
     public enum PartyMemberType
     {
         Display,
@@ -14,6 +17,8 @@ namespace Odyssey.GrainInterfaces.Sessions.Models
     }
     public class PartyMemberIdTypeConverter : TypeConverter
     {
+        public static string ConvertToString(PartyMemberId memberId) => $"{memberId.Id}+{memberId.Type}";
+
         public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
             => sourceType == typeof(string);
 
@@ -32,7 +37,7 @@ namespace Odyssey.GrainInterfaces.Sessions.Models
         public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
         {
             var id = (PartyMemberId)value!;
-            return $"{id.Id}+{id.Type}";
+            return ConvertToString(id);
         }
     }
 }

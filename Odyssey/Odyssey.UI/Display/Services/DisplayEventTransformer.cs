@@ -41,6 +41,24 @@ namespace Odyssey.UI.Display.Services
                         Trigger.Create("close", $"#{BottomSheetContainer.Id}")
                     }
                 }),
+                RemovedFromPartyOutboundEvent removedEvent => await renderer.RenderComponentAsync(new AppendComponentLayout
+                {
+                    Components = new()
+                    {
+                        new DisplayBottomSheetContent
+                        {
+                            SignalRSubscribe = false
+                        },
+                        new NotificationDialog
+                        {
+                            Title = "You have been removed from the party",
+                            Message = "Click ok to return to the join party screen",
+                            OkHxGet = OdysseyRoutes.Display.Party.Index,
+                            OkCloseModal = false
+                        },
+                        Trigger.Create("close", $"#{BottomSheetContainer.Id}")
+                    }
+                }),
                 PartyMemberLeftOutboundEvent memberLeftEvent => await RegeneratePartyPanelAsync(renderer),
                 PartyMemberJoinedOutboundEvent memberJoinedEvent => await RegeneratePartyPanelAsync(renderer),
                 PartyMemberModifiedOutboundEvent memberLeftEvent => await RegeneratePartyPanelAsync(renderer),

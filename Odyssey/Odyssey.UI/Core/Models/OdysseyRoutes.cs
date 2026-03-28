@@ -1,4 +1,6 @@
-﻿namespace Odyssey.UI.Core.Models
+﻿using Odyssey.GrainInterfaces.Sessions.Models;
+
+namespace Odyssey.UI.Core.Models
 {
     public static class OdysseyRoutes
     {
@@ -71,15 +73,34 @@
                     public const string Index = $"{Party.Index}/reset";
                 }
 
-                public static class DisplayMembers
+
+                public class Members
                 {
-                    public const string Index = $"{Party.Index}/display-members";
+                    public const string Index = $"{Party.Index}/members";
+                    public static Id IdP(PartyMemberId memberId) => new(memberId);
+                    public class Id(PartyMemberId id)
+                    {
+                        public const string Index = $"{Party.Members.Index}/{{id}}";
+                        public string IndexP = $"{Party.Members.Index}/{id}";
+
+                        public Display DisplayP => new(IndexP);
+                        public class Display(string upperPath)
+                        {
+                            public const string Segment = "display";
+                            public const string Index = $"{Party.Members.Id.Index}/{Segment}";
+                            public string IndexP => $"{upperPath}/{Segment}";
+                        }
+
+                        public Device DeviceP => new(IndexP);
+                        public class Device(string upperPath)
+                        {
+                            public const string Segment = "device";
+                            public const string Index = $"{Party.Members.Id.Index}/{Segment}";
+                            public string IndexP => $"{upperPath}/{Segment}";
+                        }
+                    }
                 }
 
-                public static class DeviceMembers
-                {
-                    public const string Index = $"{Party.Index}/device-members";
-                }
             }
             public static class Sessions
             {

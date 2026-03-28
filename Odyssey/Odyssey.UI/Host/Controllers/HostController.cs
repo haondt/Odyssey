@@ -38,14 +38,21 @@ namespace Odyssey.UI.Host.Controllers
             return TypedResults.NoContent();
         }
 
-        [HttpPut(OdysseyRoutes.Host.Party.DisplayMembers.Index)]
-        public async Task<IResult> UpdateDisplayPartyMember([FromForm] DisplayHostPartyMemberPanelModel model)
+        [HttpDelete(OdysseyRoutes.Host.Party.Members.Id.Index)]
+        public async Task<IResult> RemovePartyMember(PartyMemberId id)
         {
-            var memberId = new PartyMemberId(model.Id, PartyMemberType.Display);
             var party = await hostService.GetPartyAsync();
-            var data = await party.GetDisplayDataAsync(memberId);
-            await party.UpdateDisplayDataAsync(memberId, model.Apply(data));
+            await party.RemoveMemberAsync(id);
+            return TypedResults.NoContent();
+        }
 
+
+        [HttpPut(OdysseyRoutes.Host.Party.Members.Id.Display.Index)]
+        public async Task<IResult> UpdateDisplayPartyMember(PartyMemberId id, [FromForm] DisplayHostPartyMemberPanelModel model)
+        {
+            var party = await hostService.GetPartyAsync();
+            var data = await party.GetDisplayDataAsync(id);
+            await party.UpdateDisplayDataAsync(id, model.Apply(data));
             return TypedResults.NoContent();
         }
     }

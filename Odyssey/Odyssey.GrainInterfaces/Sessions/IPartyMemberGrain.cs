@@ -15,6 +15,9 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task NotifyPartyMemberLeftAsync();
         [OneWay]
         Task NotifyPartyMemberModifiedAsync();
+        [OneWay]
+        Task NotifyRemovedFromPartyAsync(string joinCode);
+
         Task<DetailedResult<IMemberPartyGrain, JoinPartyReason>> JoinPartyAsync(string joinCode);
         Task<DetailedResult<LeavePartyReason>> LeavePartyAsync(string joinCode);
         Task<PartyMemberProfile> GetMemberProfileAsync();

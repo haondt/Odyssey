@@ -20,6 +20,7 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task UpdateDeviceDataAsync(PartyMemberId memberId, HostDeviceData data, bool upsert = false);
         Task<HostDisplayData> GetDisplayDataAsync(PartyMemberId memberId);
         Task<HostDeviceData> GetDeviceDataAsync(PartyMemberId memberId);
+        Task RemoveMemberAsync(PartyMemberId memberId);
     }
 
     public interface IMemberPartyGrain : ICommonPartyGrain

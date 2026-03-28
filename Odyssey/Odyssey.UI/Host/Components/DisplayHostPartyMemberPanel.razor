@@ -27,12 +27,11 @@
         <HorizontalSpacer/>
         <Chip>@Id.Id</Chip>
     </Frame>
-    <form class="flex flex-col gap-line" hx-trigger="input delay:200ms" hx-put="@OdysseyRoutes.Host.Party.DisplayMembers.Index">
-        <SmartField Base="_model" Field="m => m.Id" Type="FieldType.Hidden" />
+    <form class="flex flex-col gap-line" hx-trigger="input delay:200ms" hx-put="@OdysseyRoutes.Host.Party.Members.IdP(Id).DisplayP.IndexP">
         <SmartField Base="_model" Field="m => m.PlaySounds" />
         <SmartField Base="_model" Field="m => m.ReflectSoundboard" />
     </form>
     <Frame Template="FrameTemplate.ButtonContainer">
-        <Button Style="ButtonStyle.Ghost" Color="ButtonColor.Danger">Remove</Button>
+        <Button HxDelete="@OdysseyRoutes.Host.Party.Members.IdP(Id).IndexP" Style="ButtonStyle.Ghost" Color="ButtonColor.Danger">Remove</Button>
     </Frame>
 </Frame>

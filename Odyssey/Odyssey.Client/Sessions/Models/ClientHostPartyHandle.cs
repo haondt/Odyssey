@@ -16,5 +16,6 @@ namespace Odyssey.Client.Sessions.Models
         public Task UpdateDeviceDataAsync(PartyMemberId memberId, HostDeviceData data, bool upsert = false) => _party.UpdateDeviceDataAsync(memberId, data, upsert);
         public Task<HostDeviceData> GetDeviceDataAsync(PartyMemberId memberId) => _party.GetDeviceDataAsync(memberId);
         public Task ResetPartyAsync() => _party.ResetPartyAsync();
+        public Task RemoveMemberAsync(PartyMemberId memberId) => _party.RemoveMemberAsync(memberId);
     }
 }

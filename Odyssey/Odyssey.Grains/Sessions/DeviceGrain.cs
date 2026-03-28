@@ -172,5 +172,23 @@ namespace Odyssey.Grains.Sessions
             }
             return _deviceEventStream.OnNextAsync(new PartyMemberModifiedOutboundEvent());
         }
+
+        public async Task NotifyRemovedFromPartyAsync(string joinCode)
+        {
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                using (_logger.BeginScope(new { DisplayId = _id }))
+                    _logger.LogDebug("Received removed from party {JoinCode} event", joinCode);
+            }
+            _state.State.Party = new();
+            try
+            {
+                await _state.WriteStateAsync();
+            }
+            finally
+            {
+                await _deviceEventStream.OnNextAsync(new RemovedFromPartyOutboundEvent { PartyId = joinCode });
+            }
+        }
     }
 }
