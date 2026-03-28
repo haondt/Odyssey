@@ -33,19 +33,28 @@
         <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
             <Field Type="FieldType.None" Title='"Members"' Description="@description" />
             <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+                @{
+                    var devicePartyMembers = _party.Members
+                        .Where(m => m.Id.Type == PartyMemberType.Device);
+                }
                 @foreach(var (memberId, member) in _party.Members)
                 {
                     switch (member)
                     {
                         case DisplayProfile displayProfile:
-                            var displayData = _party.Data.DisplayData.GetValue(memberId);
+                            var displayData = _party.Data.DisplayData.GetValue(memberId).Or(new HostDisplayData());
                             <DisplayHostPartyMemberPanel
                                 Id="memberId"
                                 Profile="displayProfile"
-                                Data="displayData.Or(new HostDisplayData())" />
+                                Data="displayData" />
                             break;
-                        default:
-                            <p>TODO</p>
+                        case DeviceProfile deviceProfile:
+                            var deviceData = _party.Data.DeviceData.GetValue(memberId).Or(new HostDeviceData());
+                            <DeviceHostPartyMemberPanel
+                                Id="memberId"
+                                Profile="deviceProfile"
+                                DevicePartyMembers="devicePartyMembers"
+                                Data="deviceData" />
                             break;
                     }
                 }

@@ -1,3 +1,4 @@
+using Haondt.Core.Extensions;
 using Haondt.Core.Models;
 using Odyssey.GrainInterfaces.Sessions.Models;
 
@@ -111,6 +112,9 @@ namespace Odyssey.Grains.Sessions
                 {
                     case PartyMemberType.Device:
                         _state.State.HostData.DeviceData.Remove(memberId);
+                        foreach (var (k, v) in _state.State.HostData.DeviceData)
+                            if (v.PlayerAssignmentDelegatedTo.Map(q => q == memberId).Or(false))
+                                v.PlayerAssignmentDelegatedTo = new();
                         break;
                     case PartyMemberType.Display:
                         _state.State.HostData.DisplayData.Remove(memberId);

@@ -56,7 +56,7 @@ namespace Odyssey.UI.Device.Services
                         {
                             Title = "You have been removed from the party",
                             Message = "Click ok to return to the join party screen",
-                            OkHxGet = OdysseyRoutes.Display.Party.Index,
+                            OkHxGet = OdysseyRoutes.Device.Party.Index,
                             OkCloseModal = false
                         },
                         Trigger.Create("close", $"#{BottomSheetContainer.Id}")

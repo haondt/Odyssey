@@ -1,0 +1,55 @@
+@using Haondt.Web.UI.Components.Components
+@using Odyssey.GrainInterfaces.Sessions.Models
+@code {
+    [Parameter, EditorRequired]
+    public required PartyMemberId Id { get; set; }
+
+    [Parameter, EditorRequired]
+    public required DeviceProfile Profile { get; set; }
+
+    [Parameter, EditorRequired]
+    public required IEnumerable<(PartyMemberId Id, PartyMemberProfile Profile)> DevicePartyMembers { get; set; }
+
+    [Parameter, EditorRequired]
+    public required HostDeviceData Data { get; set; }
+
+    private DeviceHostPartyMemberPanelModel _model = default!;
+    private List<DropdownOption> _playerAssignmentDelegationOptions = [];
+
+    protected override void OnInitialized()
+    {
+        _model = DeviceHostPartyMemberPanelModel.Create(Id.Id, Data);
+        _playerAssignmentDelegationOptions = DevicePartyMembers
+            .Where(m => m.Id != Id)
+            .Select(m => new DropdownOption
+            {
+                Text = $"{m.Profile.Name} ({m.Profile.Type})",
+                Value = m.Id.ToString(),
+                Selected = Data.PlayerAssignmentDelegatedTo.HasValue && Data.PlayerAssignmentDelegatedTo.Value == m.Id
+            })
+            .Prepend(new DropdownOption
+            {
+                Text = "(Do not delegate player assignment)",
+                Value = "",
+                Selected = !Data.PlayerAssignmentDelegatedTo.HasValue
+            })
+            .ToList();
+    }
+
+}
+
+<Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+    <Frame Flex="FrameDirection.RowWrap" Gap="FrameSpacing.Line">
+        <p class="subtitle">@Profile.Name</p>
+        <p class="italic">Device</p>
+        <p class="italic fg-text-weak">@Profile.Type</p>
+        <HorizontalSpacer/>
+        <Chip>@Id.Id</Chip>
+    </Frame>
+    <form class="flex flex-col gap-line" hx-trigger="input delay:200ms" hx-put="@OdysseyRoutes.Host.Party.Members.IdP(Id).DeviceP.IndexP">
+        <SmartField Title='"Delegate player assignment to"' Base="_model" Field="m => m.PlayerAssignmentDelegatedTo" Options="_playerAssignmentDelegationOptions" />
+    </form>
+    <Frame Template="FrameTemplate.ButtonContainer">
+        <Button HxDelete="@OdysseyRoutes.Host.Party.Members.IdP(Id).IndexP" Style="ButtonStyle.Ghost" Color="ButtonColor.Danger">Remove</Button>
+    </Frame>
+</Frame>

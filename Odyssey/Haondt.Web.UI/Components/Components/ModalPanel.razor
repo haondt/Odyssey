@@ -11,6 +11,9 @@
     [Parameter]
     public Optional<ModalTemplate> Template { get; set; }
 
+    [Parameter]
+    public Optional<bool> Dialog { get; set; }
+
     public const string ModalBackgroundId = "modal-background";
 
     private ModalContainerLayout _containerLayout = ModalContainerLayout.Hero;
@@ -25,6 +28,8 @@
                 case ModalTemplate.Dialog:
                     _contentClasses.Add("modal-panel-dialog");
                     _containerLayout = ModalContainerLayout.Center;
+                    if (!Dialog.HasValue)
+                        Dialog = true;
                     break;
                 case ModalTemplate.Form:
                     _contentClasses.Add("modal-panel-form");
@@ -41,12 +46,23 @@
 }
 
 <ModalContainer Layout="_containerLayout" HxSwapOob="true">
-    <div id="@ModalBackgroundId"
-        _="
-            on click remove .active from #@ModalContainer.Id then set #@ModalContainer.Id's innerHTML to '' end
-            on keydown[key is 'Escape'] from elsewhere send click to me end
-    "></div>
-    <div id="modal-content" _="on closeModal send click to #@ModalBackgroundId" class="@string.Join(' ', _contentClasses)">
+    @if (Dialog.Or(false))
+    {
+        <div id="@ModalBackgroundId"
+            _="
+                on closeModal remove .active from #@ModalContainer.Id then set #@ModalContainer.Id's innerHTML to '' end
+        "></div>
+    }
+    else
+    {
+        <div id="@ModalBackgroundId"
+            _="
+                on closeModal remove .active from #@ModalContainer.Id then set #@ModalContainer.Id's innerHTML to '' end
+                on keydown[key is 'Escape'] from elsewhere send closeModal to me end
+                on click send closeModal to me end
+        "></div>
+    }
+    <div id="modal-content" _="on closeModal send closeModal to #@ModalBackgroundId" class="@string.Join(' ', _contentClasses)">
         @ChildContent
     </div>
 </ModalContainer>
