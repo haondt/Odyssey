@@ -1,0 +1,50 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Host.Services
+@using Odyssey.GrainInterfaces.Sessions
+@using Odyssey.UI.Core.Services
+@using Odyssey.UI.Host.Hubs
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@implements IHasNavigationBarComponent
+
+@inject IClientHostService HostService
+
+@code {
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarDefault(OdysseyRoles.Host)
+    };
+    private Optional<(string GameId, Guid SessionId, SessionStatus Status)> _currentSession = default!;
+
+    private bool _ready;
+    protected override async Task OnInitializedAsync()
+    {
+        var party = await HostService.GetPartyAsync();
+        _currentSession = await party.GetCurrentSessionAsync();
+        _ready = true;
+    }
+}
+
+@if (_ready)
+{
+    <ContentContainer>
+        <div hx-swap="none" class="hidden" signalr-connection="@Websocket.Id" signalr-subscribe="@nameof(IHostHubReceiver<>.ReceivePartyEvent)"></div>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch" Gap="FrameSpacing.Card">
+            <Frame AddClasses='"sticky blend-shadow bg-background mb-blend z-1"' Gap="FrameSpacing.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+                <HostSecondaryNavigationBar Sticky="false" ActiveTab="HostSecondaryNavigationBarTab.Party" />
+                <Frame Template="FrameTemplate.ButtonContainer">
+                    <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Party.Reset.Index" Color="ButtonColor.Danger" Style="ButtonStyle.Ghost">Disband party</Button>
+                    @if (_currentSession.TryGetValue(out var currentSession))
+                    {
+                        <Button
+                            Hyperscript='"on htmx:afterRequest[detail.xhr.status==200] remove the next <a/> then remove me end"'
+                            HxSwap='"none"' HxDelete="@OdysseyRoutes.Host.Party.Session.Index" Color="ButtonColor.Danger" Style="ButtonStyle.Ghost">End current session</Button>
+                        <a hx-boost="true" href="@OdysseyRoutes.Host.Party.Session.Index">Open current session</a>
+                    }
+                </Frame>
+                <HorizontalBar />
+            </Frame>
+            <HostPartyPanel />
+        </Frame>
+    </ContentContainer>
+}

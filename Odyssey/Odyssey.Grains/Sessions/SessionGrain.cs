@@ -73,6 +73,7 @@ namespace Odyssey.Grains.Sessions
             };
         }
 
+
         public async Task SetState(int version, Optional<TBoard> board = default, Optional<List<SessionPlayer>> players = default)
         {
             if (!board.HasValue && !players.HasValue)
@@ -131,5 +132,6 @@ namespace Odyssey.Grains.Sessions
         public Task FlushAsync() => FlushDirtyStateAsync();
 
         public void Dispose() => _flushTimer?.Dispose();
+
     }
 }

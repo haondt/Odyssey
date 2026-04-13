@@ -8,13 +8,14 @@ using Odyssey.Domain.Core.Models;
 using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
+using Odyssey.UI.Host.Components.Sessions;
 
 namespace Odyssey.UI.Host.Controllers
 {
     public partial class HostController
     {
         [HttpGet(OdysseyRoutes.Host.Sessions.Index)]
-        public Task<IResult> GetSessions() => ComponentFactory.RenderComponentAsync<Components.HostSessions>();
+        public Task<IResult> GetSessions() => ComponentFactory.RenderComponentAsync<HostSessions>();
 
         [HttpGet(OdysseyRoutes.Host.Sessions.Search.Index)]
         public async Task<IResult> SearchSessions(
@@ -69,7 +70,7 @@ namespace Odyssey.UI.Host.Controllers
             return session;
         }
 
-        private async Task<SessionMetadata> GetSessionMetadataOrErrorToast(Guid id)
+        private async Task<SessionMetadata> GetSessionMetadataOrErrorToastAsync(Guid id)
         {
             var userId = await sessionService.GetUserIdAsync();
             var sessionResult = await sessions.GetSessionMetadataAsync((userId, id));

@@ -97,7 +97,6 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
 
         public async Task<Optional<IComponent>> HandleGameStateUpdateAsync(OwnedEntityGuid id, HttpContext context)
         {
-            //var model = await modelBinder.BindAndValidateFormAsync<DebugGameGameState, DebugGameEditGameState>(context);
             var model = await modelBinder.BindAndValidateFormAsync<DebugGameGameState, FieldInvalidator>(context);
             var session = sessionGrainFactory.GetGrain(id);
             await session.WriteGameStateAsync(model);

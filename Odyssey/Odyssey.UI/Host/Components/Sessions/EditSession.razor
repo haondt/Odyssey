@@ -17,10 +17,10 @@
 
 @code {
     [Parameter, EditorRequired]
-    public required Guid Id { get; set; } 
+    public required Guid Id { get; set; }
 
     [Parameter, EditorRequired]
-    public required SessionMetadata Session { get; set; } 
+    public required SessionMetadata Session { get; set; }
 
     private string _gameName = default!;
     private (IComponent PlayersSummary, IComponent GameSummary) _sessionSummary = default!;
@@ -57,7 +57,7 @@
                 <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Align="FrameAlignment.Stretch">
                     <EditSessionMetadataSection Session="@Session" />
                     <Frame AddClasses='"flex-grow-1"' Template="FrameTemplate.ButtonContainer">
-                        <Button Color="ButtonColor.Primary">Launch session</Button>
+                        <Button Color="ButtonColor.Primary" HxPost="@OdysseyRoutes.Host.Session.IdP(Id).LaunchP.IndexP">Launch session</Button>
                         @{
                             var deleteConfirm = new ConfirmationDialogModel
                             {
@@ -116,7 +116,7 @@
                     </Frame>
                     <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
                         <p>Status</p>
-                        <p>@(Session.Status switch { SessionStatus.Created => "Created", SessionStatus.InProgress => "In progress", SessionStatus.Ended => "Ended", _ => Session.Status.ToString() })</p>
+                        <p>@(Session.Phase switch { SessionPhase.Created => "Created", SessionPhase.InProgress => "In progress", SessionPhase.Ended => "Ended", _ => Session.Phase.ToString() })</p>
                     </Frame>
                 </Frame>
                 <Frame Template="FrameTemplate.Card">

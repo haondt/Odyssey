@@ -220,5 +220,30 @@ namespace Odyssey.Grains.Sessions
             DeactivateOnIdle();
             return Task.CompletedTask;
         }
+
+        public async Task ClearCurrentSessionAsync()
+        {
+            await _state.TryAndWriteStateAsync(() =>
+            {
+                _state.State.CurrentSession = default;
+            });
+        }
+
+        public Task<Optional<(string GameId, Guid SessionId, SessionStatus Status)>> GetCurrentSessionAsync()
+        {
+            return Task.FromResult(_state.State.CurrentSession);
+        }
+
+        public async Task SetCurrentSessionAsync(string gameId, Guid sessionId, SessionStatus status)
+        {
+            await _state.TryAndWriteStateAsync(() =>
+            {
+                _state.State.CurrentSession = (gameId, sessionId, status);
+            });
+
+            // _ = _hostGrain.NotifySessionStatusChangedAsync(gameId, sessionId, status);
+            // foreach (var (_, partyMember) in _state.State.Members)
+            //     _ = partyMember.NotifySessionStatusChangedAsync(gameId, sessionId, status);
+        }
     }
 }

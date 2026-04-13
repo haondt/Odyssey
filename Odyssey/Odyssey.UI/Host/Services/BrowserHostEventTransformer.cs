@@ -4,9 +4,8 @@ using Odyssey.Core.Exceptions;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Domain.Host.Services;
 using Odyssey.Domain.Sessions.Events;
-using Odyssey.UI.Core.Middlewares;
 using Odyssey.UI.Core.Models;
-using Odyssey.UI.Host.Components;
+using Odyssey.UI.Host.Components.Party;
 
 namespace Odyssey.UI.Host.Services
 {

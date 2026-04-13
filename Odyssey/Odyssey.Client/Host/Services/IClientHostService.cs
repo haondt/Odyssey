@@ -1,9 +1,9 @@
-﻿using Odyssey.Client.Sessions.Models;
+﻿using Odyssey.GrainInterfaces.Sessions;
 
 namespace Odyssey.Client.Host.Services
 {
     public interface IClientHostService
     {
-        Task<ClientHostPartyHandle> GetPartyAsync();
+        Task<IHostPartyGrain> GetPartyAsync();
     }
 }

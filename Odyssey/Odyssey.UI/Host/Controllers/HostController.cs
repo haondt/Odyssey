@@ -8,9 +8,9 @@ using Odyssey.Client.Host.Services;
 using Odyssey.Domain.Core.Services;
 using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.UI.Core.Controllers;
-using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
+using Odyssey.UI.Host.Components.Party;
 
 namespace Odyssey.UI.Host.Controllers
 {
@@ -28,7 +28,7 @@ namespace Odyssey.UI.Host.Controllers
         public IResult Get() => TypedResults.Redirect(OdysseyRoutes.Host.Party.Index);
 
         [HttpGet(OdysseyRoutes.Host.Party.Index)]
-        public Task<IResult> GetParty() => ComponentFactory.RenderComponentAsync<Components.HostParty>();
+        public Task<IResult> GetParty() => ComponentFactory.RenderComponentAsync<HostParty>();
 
         [HttpPost(OdysseyRoutes.Host.Party.Reset.Index)]
         public async Task<IResult> ResetParty()

@@ -82,21 +82,25 @@ namespace Odyssey.Domain.Core.Services
             return metadata.Select(m => (m.EntityId, SessionMetadata.FromDataModel(m))).ToList();
         }
 
-        public async Task<SessionMetadata> UpdateSessionMetadataAsync(OwnedEntityGuid id, Optional<string> name = default, Optional<bool> archived = default)
+        public async Task<SessionMetadata> UpdateSessionMetadataAsync(OwnedEntityGuid id, Optional<string> name = default, Optional<bool> archived = default, Optional<SessionPhase> phase = default, Optional<SessionPhase> minimumPhase = default)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            var board = await dbContext.SessionMetadatas
+            var session = await dbContext.SessionMetadatas
                 .FirstOrDefaultAsync(q => q.Id == id)
                 ?? throw new KeyNotFoundException($"Session with id {id} does not exist.");
             if (name.HasValue)
             {
-                board.Name = name.Value;
-                board.SearchData = SessionMetadataDataModel.CreateSearchData(name.Value, board.BoardName);
+                session.Name = name.Value;
+                session.SearchData = SessionMetadataDataModel.CreateSearchData(name.Value, session.BoardName);
             }
             if (archived.HasValue)
-                board.Archived = archived.Value;
+                session.Archived = archived.Value;
+            if (phase.HasValue)
+                session.Status = phase.Value;
+            else if (minimumPhase.HasValue && minimumPhase.Value > session.Status)
+                session.Status = minimumPhase.Value;
             await dbContext.SaveChangesAsync();
-            return SessionMetadata.FromDataModel(board);
+            return SessionMetadata.FromDataModel(session);
         }
 
         public async Task DeleteSessionMetadataAsync(OwnedEntityGuid id)

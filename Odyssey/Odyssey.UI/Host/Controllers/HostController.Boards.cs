@@ -14,6 +14,7 @@ using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
+using Odyssey.UI.Host.Components.Boards;
 using Odyssey.UI.Host.Models;
 using Orleans.Storage;
 
@@ -22,7 +23,7 @@ namespace Odyssey.UI.Host.Controllers
     public partial class HostController
     {
         [HttpGet(OdysseyRoutes.Host.Boards.Index)]
-        public Task<IResult> GetBoards() => ComponentFactory.RenderComponentAsync<Components.HostBoards>();
+        public Task<IResult> GetBoards() => ComponentFactory.RenderComponentAsync<HostBoards>();
 
         [HttpPost(OdysseyRoutes.Host.Boards.Index)]
         [ValidationState(typeof(FieldInvalidator))]
@@ -72,7 +73,7 @@ namespace Odyssey.UI.Host.Controllers
         }
 
         [HttpGet(OdysseyRoutes.Host.Boards.New.Index)]
-        public Task<IResult> GetNewBoard() => ComponentFactory.RenderComponentAsync<Components.NewBoardModal>();
+        public Task<IResult> GetNewBoard() => ComponentFactory.RenderComponentAsync<NewBoardModal>();
 
         [HttpGet($"{OdysseyRoutes.Host.Board.Index}/{{id}}")]
         public async Task<IResult> GetEditBoard(Guid id)
@@ -141,7 +142,7 @@ namespace Odyssey.UI.Host.Controllers
             }
             ResponseData
                 .HxPushUrl(OdysseyRoutes.Host.Boards.Index);
-            return await ComponentFactory.RenderComponentAsync<Components.HostBoards>();
+            return await ComponentFactory.RenderComponentAsync<HostBoards>();
         }
 
         [HttpGet(OdysseyRoutes.Host.Board.Id.Reset.Index)]

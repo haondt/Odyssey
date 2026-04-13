@@ -11,6 +11,7 @@ namespace Odyssey.GrainInterfaces.Sessions.Models
         [Id(1)]
         public required List<SessionPlayer> Players { get; set; }
 
+
         public static SessionState<TBoard> Factory() => new()
         {
             Board = TBoard.Factory(),
@@ -26,4 +27,5 @@ namespace Odyssey.GrainInterfaces.Sessions.Models
         [Id(1)]
         public HashSet<Guid> Devices { get; set; } = [];
     }
+
 }

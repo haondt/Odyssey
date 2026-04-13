@@ -1,6 +1,6 @@
 ﻿namespace Odyssey.Persistence.Models
 {
-    public enum SessionStatus
+    public enum SessionPhase
     {
         Created,
         InProgress,

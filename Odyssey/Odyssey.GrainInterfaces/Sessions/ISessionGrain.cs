@@ -6,7 +6,11 @@ using Odyssey.GrainInterfaces.Sessions.Models;
 
 namespace Odyssey.GrainInterfaces.Sessions
 {
-    public interface ISessionGrain<TBoard, TGameState> : IGrain<OwnedEntityGuid>, IGrainWithGuidCompoundKey
+    public interface ISessionGrain : IGrain<OwnedEntityGuid>, IGrainWithGuidCompoundKey
+    {
+    }
+
+    public interface ISessionGrain<TBoard, TGameState> : ISessionGrain
         where TBoard : IDataStorageData<TBoard>
         where TGameState : IDataStorageData<TGameState>
     {
@@ -15,7 +19,7 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task<TGameState> GetGameStateAsync();
         Task<ReadOnlySessionState> GetStateAsync();
         /// <summary>
-        /// Set the game state and allow it to be persisted later .
+        /// Set the game state and allow it to be persisted later.
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>

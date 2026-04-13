@@ -23,7 +23,7 @@ namespace Odyssey.Persistence.Models
         public required bool Archived { get; set; }
         public required AbsoluteDateTime CreatedOn { get; set; }
         public required AbsoluteDateTime? LastPlayedOn { get; init; }
-        public SessionStatus Status { get; set; } = SessionStatus.Created;
+        public SessionPhase Status { get; set; } = SessionPhase.Created;
         public static string CreateSearchData(string name, string boardName) => NormalizedString.Create($"{name} {boardName}");
     }
 

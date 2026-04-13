@@ -55,15 +55,15 @@
                             <p class="italic fg-text-weak">@session.BoardName</p>
                         </Frame>
                         <Frame Template="FrameTemplate.ChipContainer">
-                            @switch(session.Status)
+                            @switch(session.Phase)
                             {
-                                case SessionStatus.Created:
+                                case SessionPhase.Created:
                                     <Chip Label='"Status"' Text="Created" Color="ChipColor.Text"/>
                                     break;
-                                case SessionStatus.InProgress:
+                                case SessionPhase.InProgress:
                                     <Chip Label='"Status"' Text="In progress" Color="ChipColor.Primary"/>
                                     break;
-                                case SessionStatus.Ended:
+                                case SessionPhase.Ended:
                                     <Chip Label='"Status"' Text="Ended" Color="ChipColor.TextWeak"/>
                                     break;
                             }

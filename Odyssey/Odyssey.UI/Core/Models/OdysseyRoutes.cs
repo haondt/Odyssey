@@ -101,6 +101,10 @@ namespace Odyssey.UI.Core.Models
                     }
                 }
 
+                public static class Session
+                {
+                    public const string Index = $"{Party.Index}/session";
+                }
             }
             public static class Sessions
             {
@@ -183,7 +187,22 @@ namespace Odyssey.UI.Core.Models
                         public const string Segment = "settings";
                         public const string Index = $"{Host.Session.Id.Index}/{Segment}";
                         public string IndexP => $"{upperPath}/{Segment}";
+                    }
 
+                    public Launch LaunchP => new($"{Host.Session.Index}/{id}");
+                    public class Launch(string upperPath)
+                    {
+                        public const string Segment = "launch";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
+                    }
+
+                    public Lobby LobbyP => new($"{Host.Session.Index}/{id}");
+                    public class Lobby(string upperPath)
+                    {
+                        public const string Segment = "lobby";
+                        public const string Index = $"{Host.Session.Id.Index}/{Segment}";
+                        public string IndexP => $"{upperPath}/{Segment}";
                     }
                 }
             }

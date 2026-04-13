@@ -7,10 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Odyssey.Persistence.Models;
 using Odyssey.UI.Core.Attributes;
 using Odyssey.UI.Core.Exceptions;
 using Odyssey.UI.Core.Models;
 using Odyssey.UI.Host.Components;
+using Odyssey.UI.Host.Components.Lobby;
+using Odyssey.UI.Host.Components.Party;
+using Odyssey.UI.Host.Components.Sessions;
 
 namespace Odyssey.UI.Host.Controllers
 {
@@ -18,7 +22,7 @@ namespace Odyssey.UI.Host.Controllers
     {
 
         [HttpGet(OdysseyRoutes.Host.Sessions.New.Index)]
-        public Task<IResult> GetCreateSession() => ComponentFactory.RenderComponentAsync<Components.NewSessionModal>();
+        public Task<IResult> GetCreateSession() => ComponentFactory.RenderComponentAsync<NewSessionModal>();
 
         [HttpPost(OdysseyRoutes.Host.Sessions.Index)]
         [ValidationState(typeof(FieldInvalidator))]
@@ -53,14 +57,14 @@ namespace Odyssey.UI.Host.Controllers
 
             ResponseData
                 .HxPushUrl(OdysseyRoutes.Host.Sessions.Index);
-            return await ComponentFactory.RenderComponentAsync<Components.HostSessions>();
+            return await ComponentFactory.RenderComponentAsync<HostSessions>();
         }
 
         [HttpPost(OdysseyRoutes.Host.Session.Id.GameState.Reset.Index)]
         public async Task<IResult> ResetSession(Guid id)
         {
             var userId = await sessionService.GetUserIdAsync();
-            var session = await GetSessionMetadataOrErrorToast(id);
+            var session = await GetSessionMetadataOrErrorToastAsync(id);
             var game = gameRegistry.GetGame(session.GameId);
             await game.Sessions.ResetSessionAsync((userId, id));
 
@@ -86,7 +90,7 @@ namespace Odyssey.UI.Host.Controllers
         public async Task<IResult> UpdateGameState(Guid id)
         {
             var userId = await sessionService.GetUserIdAsync();
-            var session = await GetSessionMetadataOrErrorToast(id);
+            var session = await GetSessionMetadataOrErrorToastAsync(id);
             var game = gameRegistry.GetGame(session.GameId);
             var result = await game.UI.HandleGameStateUpdateAsync((userId, id), HttpContext);
 
@@ -125,7 +129,7 @@ namespace Odyssey.UI.Host.Controllers
         public async Task<IResult> UpdateGameStateRaw(Guid id, [FromForm] string state)
         {
             var userId = await sessionService.GetUserIdAsync();
-            var session = await GetSessionMetadataOrErrorToast(id);
+            var session = await GetSessionMetadataOrErrorToastAsync(id);
             var game = gameRegistry.GetGame(session.GameId);
             try
             {
@@ -160,6 +164,19 @@ namespace Odyssey.UI.Host.Controllers
                     }
                 }
             });
+        }
+
+        [HttpPost(OdysseyRoutes.Host.Session.Id.Launch.Index)]
+        public async Task<IResult> LaunchSession(Guid id)
+        {
+            var userId = await sessionService.GetUserIdAsync();
+            var sessionMetadata = await sessions.UpdateSessionMetadataAsync((userId, id), minimumPhase: SessionPhase.InProgress);
+
+            var party = await hostService.GetPartyAsync();
+            await party.SetCurrentSessionAsync(sessionMetadata.GameId, id, GrainInterfaces.Sessions.SessionStatus.Lobby);
+
+            ResponseData.HxPushUrl(OdysseyRoutes.Host.Party.Session.Index);
+            return await ComponentFactory.RenderComponentAsync<HostSession>();
         }
     }
 }

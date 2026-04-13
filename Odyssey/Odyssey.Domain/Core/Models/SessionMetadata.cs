@@ -15,7 +15,7 @@ namespace Odyssey.Domain.Core.Models
         public required bool Ephemeral { get; set; }
         public required AbsoluteDateTime CreatedOn { get; init; }
         public Optional<AbsoluteDateTime> LastPlayedOn { get; init; }
-        public SessionStatus Status { get; set; } = SessionStatus.Created;
+        public SessionPhase Phase { get; set; } = SessionPhase.Created;
 
         public SessionMetadataDataModel AsDataModel(OwnedEntityGuid id) => new()
         {

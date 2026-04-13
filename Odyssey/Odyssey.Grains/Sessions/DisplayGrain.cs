@@ -27,8 +27,7 @@ namespace Odyssey.Grains.Sessions
             [PersistentState(nameof(DisplayGrainState), GrainConstants.GrainStorage)] IPersistentState<DisplayGrainState> state,
             IGrainFactory<string, IJoinCodeGrain> joinCodeGrainFactory,
             IGrainFactory<Guid, IDisplayGrain> grainFactory,
-            ILogger<DisplayGrain> logger
-            )
+            ILogger<DisplayGrain> logger)
         {
             _id = grainFactory.GetIdentity(this);
             _state = state;

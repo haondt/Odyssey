@@ -100,7 +100,7 @@ namespace Odyssey.Persistence.Tests
             writeSession.BoardId.Should().Be(boardId);
             writeSession.BoardName.Should().BeEquivalentTo(board.Name);
             writeSession.CreatedOn.Should().Be(now);
-            writeSession.Status.Should().Be(Models.SessionStatus.Created);
+            writeSession.Phase.Should().Be(Models.SessionPhase.Created);
 
             var readSessionResult = await ctx.Sut.GetSessionMetadataAsync((board.OwnerId, id));
             var readSession = readSessionResult.Value!;
@@ -109,7 +109,7 @@ namespace Odyssey.Persistence.Tests
             readSession.BoardId.Should().Be(boardId);
             readSession.BoardName.Should().BeEquivalentTo(board.Name);
             readSession.CreatedOn.Should().Be(now);
-            readSession.Status.Should().Be(Models.SessionStatus.Created);
+            readSession.Phase.Should().Be(Models.SessionPhase.Created);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace Odyssey.Persistence.Tests
             readSession.BoardId.Should().Be(boardId);
             readSession.BoardName.Should().BeEquivalentTo(board.Name);
             readSession.CreatedOn.Should().Be(now);
-            readSession.Status.Should().Be(Models.SessionStatus.Created);
+            readSession.Phase.Should().Be(Models.SessionPhase.Created);
         }
     }
 }

@@ -21,6 +21,10 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task<HostDisplayData> GetDisplayDataAsync(PartyMemberId memberId);
         Task<HostDeviceData> GetDeviceDataAsync(PartyMemberId memberId);
         Task RemoveMemberAsync(PartyMemberId memberId);
+
+        Task SetCurrentSessionAsync(string gameId, Guid sessionId, SessionStatus status);
+        Task ClearCurrentSessionAsync();
+        Task<Optional<(string GameId, Guid SessionId, SessionStatus Status)>> GetCurrentSessionAsync();
     }
 
     public interface IMemberPartyGrain : ICommonPartyGrain
@@ -32,6 +36,13 @@ namespace Odyssey.GrainInterfaces.Sessions
 
     public interface ICommonPartyGrain : IGrain
     {
-
     }
+
+    public enum SessionStatus
+    {
+        Inactive,
+        Lobby,
+        Active
+    }
+
 }

@@ -1,0 +1,45 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Host.Services
+@using Odyssey.GrainInterfaces.Sessions
+@using Odyssey.GrainInterfaces.Sessions.Models
+@using Odyssey.UI.Core.Services
+@using Odyssey.UI.Host.Components.Lobby
+@using Odyssey.UI.Host.Hubs
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@attribute [LayoutOptions(FillPage = true)]
+@implements IHasNavigationBarComponent
+
+@inject IClientHostService HostService
+@code {
+    public NavigationBar CreateNavigationBar() => new() { Template = new NavigationBarEmpty() };
+
+    private bool _ready;
+    private HostPartyDetails _party = default!;
+    private Optional<(string GameId, Guid SessionId, SessionStatus Status)> _currentSession = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var party = await HostService.GetPartyAsync();
+        _party = await party.GetPartyDetailsAsync();
+        _currentSession = await party.GetCurrentSessionAsync();
+        _ready = true;
+    }
+}
+
+@if (_ready) {
+    <ContentContainer>
+        <!--
+        <div hx-swap="none" class="hidden" signalr-connection="@Websocket.Id" signalr-subscribe="@nameof(IHostHubReceiver<>.ReceiveSessionEvent)"></div>
+                <SecondaryNavigationBar LeftItems='[new("Party")]' RightItems="[]" Spacing="SecondaryNavigationBarSpacing.SpaceApart" />
+        -->
+        @if (_currentSession.TryGetValue(out var currentSession))
+        {
+            if (currentSession.Status == SessionStatus.Lobby)
+            {
+                <HostLobby />
+            }
+        }
+
+    </ContentContainer>
+}
