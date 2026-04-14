@@ -1,0 +1,74 @@
+
+.tabbed-layout-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--haondt-ui-card-spacing);
+}
+
+.tabbed-layout-nav-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-shadow: inset 0 calc(var(--haondt-ui-border-width) * -1) 0 0 var(--haondt-ui-color-border);
+
+    > ul {
+        display: flex;
+        flex-direction: row;
+
+        > li {
+            height: var(--haondt-ui-control-height);
+            display: flex;
+            align-items: center;
+            border-bottom: var(--haondt-ui-border-width) solid transparent;
+
+            > a, > p {
+                padding-left: var(--haondt-ui-control-padding-x);
+                padding-right: var(--haondt-ui-control-padding-x);
+                font-size: var(--haondt-ui-text-font-size);
+                font-weight: var(--haondt-ui-text-font-weight);
+                color: var(--haondt-ui-color-text);
+                white-space: nowrap;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+
+        }
+
+        > li.active {
+            border-bottom: var(--haondt-ui-border-width) solid var(--haondt-ui-color-accent);
+
+            > a {
+                color: var(--haondt-ui-color-accent);
+            }
+        }
+
+        > li:not(.active) {
+            transition: border-bottom var(--haondt-ui-hover-transition-duration-leave) var(--haondt-ui-hover-transition-timing);
+            &:hover {
+                border-bottom: var(--haondt-ui-border-width) solid var(--haondt-ui-color-text);
+                transition-duration: var(--haondt-ui-hover-transition-duration-enter);
+            }
+        }
+    }
+}
+
+@media (--haondt-ui-media-query-gte-m) {
+    .tabbed-layout {
+        flex-wrap: wrap;
+        > ul {
+            flex-wrap: wrap;
+        }
+    }
+}
+
+@media (pointer: coarse) {
+    .tabbed-layout {
+        scrollbar-width: none;
+    }
+}
+

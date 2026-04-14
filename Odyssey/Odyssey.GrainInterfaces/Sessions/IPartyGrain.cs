@@ -23,7 +23,7 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task RemoveMemberAsync(PartyMemberId memberId);
 
         Task SetCurrentSessionAsync(string gameId, Guid sessionId, SessionStatus status);
-        Task ClearCurrentSessionAsync();
+        Task ClearCurrentSessionAsync(Optional<Guid> sessionId = default);
         Task<Optional<(string GameId, Guid SessionId, SessionStatus Status)>> GetCurrentSessionAsync();
     }
 

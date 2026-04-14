@@ -221,8 +221,14 @@ namespace Odyssey.Grains.Sessions
             return Task.CompletedTask;
         }
 
-        public async Task ClearCurrentSessionAsync()
+        public async Task ClearCurrentSessionAsync(Optional<Guid> sessionId = default)
         {
+            if (!_state.State.CurrentSession.HasValue)
+                return;
+
+            if (sessionId.HasValue && sessionId.Value != _state.State.CurrentSession.Value.SessionId)
+                throw new InvalidOperationException($"Given session ID {sessionId} does not expect the known session ID {_state.State.CurrentSession.Value.SessionId}");
+
             await _state.TryAndWriteStateAsync(() =>
             {
                 _state.State.CurrentSession = default;

@@ -45,26 +45,19 @@ namespace Haondt.Web.UI.Extensions
         /// <returns></returns>
         public static IServiceCollection AddHaondtUIHyperscriptScripts(this IServiceCollection services)
         {
-            services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
+            foreach (var script in new List<string>
             {
-                Uri = "/static/haondt/Haondt.Web.UI/_hs/toast._hs",
-                Type = "text/hyperscript"
-            });
-            services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
-            {
-                Uri = "/static/haondt/Haondt.Web.UI/_hs/moreButton._hs",
-                Type = "text/hyperscript"
-            });
-            services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
-            {
-                Uri = "/static/haondt/Haondt.Web.UI/_hs/field._hs",
-                Type = "text/hyperscript"
-            });
-            services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
-            {
-                Uri = "/static/haondt/Haondt.Web.UI/_hs/fieldSuggest._hs",
-                Type = "text/hyperscript"
-            });
+                "toast",
+                "moreButton",
+                "field",
+                "fieldSuggest",
+                "tabs"
+            })
+                services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
+                {
+                    Uri = $"/static/haondt/Haondt.Web.UI/_hs/{script}._hs",
+                    Type = "text/hyperscript"
+                });
 
             return services;
         }

@@ -1,0 +1,19 @@
+behavior Tabs
+    on setActive
+        halt the event
+        if :active is not null
+            remove .active from :active
+            add .hidden to :activeBody
+        end
+
+        set :active to the event's srcElement
+        set :activeBody to #{:active's @data-body-id}
+        add .active to :active
+        remove .hidden from :activeBody
+    end
+end
+
+behavior Tab(active)
+    on load if active send setActive end end
+    on click send setActive end
+end

@@ -104,6 +104,10 @@ namespace Odyssey.UI.Core.Models
                 public static class Session
                 {
                     public const string Index = $"{Party.Index}/session";
+                    public static class Activate
+                    {
+                        public const string Index = $"{Party.Session.Index}/activate";
+                    }
                 }
             }
             public static class Sessions

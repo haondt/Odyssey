@@ -175,8 +175,11 @@ namespace Odyssey.UI.Host.Controllers
             var party = await hostService.GetPartyAsync();
             await party.SetCurrentSessionAsync(sessionMetadata.GameId, id, GrainInterfaces.Sessions.SessionStatus.Lobby);
 
+            if (await GetHostSessionAsync() is not { IsSuccessful: true, Value: var session })
+                throw new ToastException("Unable to launch session");
+
             ResponseData.HxPushUrl(OdysseyRoutes.Host.Party.Session.Index);
-            return await ComponentFactory.RenderComponentAsync<HostSession>();
+            return await ComponentFactory.RenderComponentAsync(session);
         }
     }
 }

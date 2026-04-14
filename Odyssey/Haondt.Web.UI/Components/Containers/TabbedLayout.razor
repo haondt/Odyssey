@@ -1,0 +1,78 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Models
+@using Haondt.Web.UI.Utils
+@code {
+    [Parameter]
+    public List<TabbedLayoutItem> LeftItems { get; set; } = [];
+    [Parameter]
+    public List<TabbedLayoutItem> RightItems { get; set; } = [];
+    [Parameter]
+    public TabbedLayoutSpacing Spacing { get; set; } = TabbedLayoutSpacing.SpaceApart;
+
+    [Parameter]
+    public Optional<string> AddClasses { get; set; }
+
+    private HashSet<string> _navigationBarClasses = ["tabbed-layout-nav-bar"];
+    private HashSet<string> _containerClasses = ["tabbed-layout-container"];
+    private string[] _tabIds = default!;
+
+    protected override void OnInitialized()
+    {
+        _navigationBarClasses.Add(Spacing switch
+        {
+            TabbedLayoutSpacing.SpaceApart => "tabbed-layout-spacing-space-apart",
+            TabbedLayoutSpacing.Stretch => "tabbed-layout-spacing-space-stretch",
+            _ => ""
+        });
+
+        if (AddClasses.TryGetValue(out var addClasses))
+            _containerClasses.Add(addClasses);
+
+        _tabIds = LeftItems.Concat(RightItems).Select(_ => RandomUtils.GetHtmlId()).ToArray();
+    }
+
+    private static RenderFragment RenderItem(TabbedLayoutItem item, string tabId)  =>
+        @<li _='install Tab(active: @(item.Active ? "true" : "false"))' data-body-id=@($"tab-{tabId}-body")>
+            <a>@item.Title</a>
+        </li>;
+}
+
+<div class="@string.Join(' ', _containerClasses)">
+    <div class="@string.Join(' ', _navigationBarClasses)">
+        @if (Spacing == TabbedLayoutSpacing.SpaceApart)
+        {
+            <ul _="install Tabs">
+                @for(int i = 0; i < LeftItems.Count; i++)
+                    @RenderItem(LeftItems[i], _tabIds[i])
+            </ul>
+            <HorizontalSpacer />
+            <ul _="install Tabs">
+                @for(int i = 0; i < RightItems.Count; i++)
+                    @RenderItem(RightItems[i], _tabIds[i + LeftItems.Count])
+            </ul>
+        }
+        else if (Spacing == TabbedLayoutSpacing.Stretch)
+        {
+            <ul _="install Tabs">
+                @for(int i = 0; i < LeftItems.Count; i++)
+                    @RenderItem(LeftItems[i], _tabIds[i])
+                @for(int i = 0; i < RightItems.Count; i++)
+                    @RenderItem(RightItems[i], _tabIds[i + LeftItems.Count])
+            </ul>
+        }
+    </div>
+    <div class="tabbed-layout-body">
+        @for(int i = 0; i < LeftItems.Count; i++)
+        {
+            <div class='tabbed-layout-tab-body @(LeftItems[i].Active ? "" : "hidden")' id=@($"tab-{_tabIds[i]}-body")>
+                <ObjectComponent Component="LeftItems[i].Body" />
+            </div>
+        }
+        @for(int i = 0; i < RightItems.Count; i++)
+        {
+            <div class='tabbed-layout-tab-body @(LeftItems[i].Active ? "" : "hidden")' id=@($"tab-{_tabIds[i + LeftItems.Count]}-body")>
+                <ObjectComponent Component="RightItems[i].Body" />
+            </div>
+        }
+    </div>
+</div>

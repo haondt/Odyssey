@@ -11,6 +11,9 @@
     [Parameter]
     public bool Sticky { get; set; } = false;
 
+    [Parameter]
+    public Optional<string> AddClasses { get; set; }
+
     private HashSet<string> _rootClasses = ["sec-nav-bar"];
     private HashSet<string> _containerClasses = ["sec-nav-bar-container"];
 
@@ -25,6 +28,9 @@
 
         if (Sticky)
             _containerClasses.Add("sec-nav-bar-sticky");
+
+        if (AddClasses.TryGetValue(out var addClasses))
+            _containerClasses.Add(addClasses);
     }
 }
 
@@ -58,7 +64,7 @@
 
 <div class="@string.Join(' ', _containerClasses)">
     <div class="@string.Join(' ', _rootClasses)">
-        @if (Spacing == SecondaryNavigationBarSpacing.SpaceApart) 
+        @if (Spacing == SecondaryNavigationBarSpacing.SpaceApart)
         {
             <ul>
                 @foreach(var item in LeftItems) 
@@ -70,7 +76,7 @@
                     @RenderItem(item)
             </ul>
         }
-        else if (Spacing == SecondaryNavigationBarSpacing.Stretch) 
+        else if (Spacing == SecondaryNavigationBarSpacing.Stretch)
         {
             <ul>
                 @foreach(var item in LeftItems)

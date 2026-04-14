@@ -1,9 +1,82 @@
 @using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
 @using Odyssey.Client.Host.Services
+@using Odyssey.Domain.Core.Models
 @using Odyssey.UI.Core.Services
 @using Odyssey.UI.Host.Components.Party
 @using Odyssey.UI.Host.Hubs
-<Frame Template="FrameTemplate.Card">
-    <HostPartyPanel />
-</Frame>
+
+@inject IClientHostService HostService
+@inject IClientGameRegistry GameRegistry
+@inject IHostSessionService HostSession
+
+@code {
+    [Parameter, EditorRequired]
+    public required string GameId { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Guid SessionId { get; set; }
+
+    [Parameter, EditorRequired]
+    public required SessionMetadata Metadata { get; set; }
+
+    private string _gameName = default!;
+    private bool _ready;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var game = GameRegistry.GetGame(GameId);
+        var userId = await HostSession.GetUserIdAsync();
+        _gameName = await game.Settings.GetDisplayNameAsync(userId);
+        _ready = true;
+    }
+
+
+}
+
+@if (_ready)
+{
+    <ContentContainer Layout="ContentContainerLayout.Hero">
+        <Frame AddClasses='"mb-panel"' Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+            <p class="title text-align-center">Lobby</p>
+            <p class="text-align-center">Manage player assignments before starting the game</p>
+        </Frame>
+        <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col">
+            <Frame Flex="FrameDirection.RowWrap" Justify="FrameJustification.SpaceBetween" Gap="FrameSpacing.Line">
+                <Frame Flex="FrameDirection.Col">
+                    <p class="title">@Metadata.Name</p>
+                    <Frame Flex="FrameDirection.Row" Gap="FrameSpacing.Line">
+                        <p class="italic">@_gameName</p>
+                        <p class="italic fg-text-weak">@Metadata.BoardName</p>
+                    </Frame>
+                </Frame>
+                <Frame Template="FrameTemplate.ButtonContainer" Align="FrameAlignment.Start">
+                    <Button HxSwap='"none"' HxDelete="@OdysseyRoutes.Host.Party.Session.Index" Color="ButtonColor.Danger">End session</Button>
+                    <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Party.Session.Activate.Index" Color="ButtonColor.Primary">Start game</Button>
+                </Frame>
+            </Frame>
+            <div hx-swap="none" class="hidden" signalr-connection="@Websocket.Id"
+                 signalr-subscribe="@nameof(IHostHubReceiver<>.ReceivePartyEvent)"></div>
+            @{
+
+                var tabs = new List<TabbedLayoutItem>
+                {
+                    new()
+                    {
+                        Title = "Players",
+                        Body = new HostPlayersPanel(),
+                        Active = true,
+                    },
+                    new()
+                    {
+                        Title = "Party",
+                        Body = new HostPartyPanel(),
+                    },
+                };
+            }
+            <TabbedLayout LeftItems="@tabs" />
+        </Frame>
+    </ContentContainer>
+}

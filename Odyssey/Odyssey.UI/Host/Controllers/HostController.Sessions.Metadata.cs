@@ -1,4 +1,5 @@
 ﻿using Haondt.Core.Extensions;
+using Haondt.Core.Models;
 using Haondt.Web.Core.Extensions;
 using Haondt.Web.UI.Attributes;
 using Haondt.Web.UI.Components.Element;
@@ -61,21 +62,21 @@ namespace Odyssey.UI.Host.Controllers
             });
         }
 
-        private async Task<SessionMetadata> GetSessionMetadataOrErrorPage(Guid id)
+        private async Task<SessionMetadata> GetSessionMetadataOrErrorPage(Guid id, Optional<string> message = default)
         {
             var userId = await sessionService.GetUserIdAsync();
             var sessionResult = await sessions.GetSessionMetadataAsync((userId, id));
             if (!sessionResult.TryGetValue(out var session))
-                throw new NotFoundErrorPageException();
+                throw new NotFoundErrorPageException(message.Unwrap());
             return session;
         }
 
-        private async Task<SessionMetadata> GetSessionMetadataOrErrorToastAsync(Guid id)
+        private async Task<SessionMetadata> GetSessionMetadataOrErrorToastAsync(Guid id, Optional<string> message = default)
         {
             var userId = await sessionService.GetUserIdAsync();
             var sessionResult = await sessions.GetSessionMetadataAsync((userId, id));
             if (!sessionResult.TryGetValue(out var session))
-                throw new NotFoundToastException($"Could not retrieve session {id}.");
+                throw new NotFoundToastException(message.Or($"Could not retrieve session {id}."));
             return session;
         }
 
