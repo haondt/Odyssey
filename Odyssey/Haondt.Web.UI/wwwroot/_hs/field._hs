@@ -18,4 +18,6 @@ behavior Field(formElt)
         end
         remove .field-invalid from me
     end
+
+    on haondt:field:sendChanged halt the event then send haondt:field:changed  end
 end

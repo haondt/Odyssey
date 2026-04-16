@@ -1,0 +1,13 @@
+behavior Chip(emitEvents)
+    on load debounced at 10ms if emitEvents send haondt:chip:load(chip: me) end
+end
+
+behavior ChipDeleteButton(emitEvents)
+    on load
+        set :chip to the closest <span.chip />
+    end
+    on click
+        if emitEvents send haondt:chip:deleting(chip: :chip) end
+        remove :chip
+    end
+end

@@ -1,4 +1,6 @@
+@using Haondt.Web.UI.Components.Components
 @using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Models
 @code {
     /// <summary>
     /// Custom field content.
@@ -53,6 +55,18 @@
     /// </summary>
     [Parameter]
     public List<DropdownOption> Options { get; set; } = [];
+
+    /// <summary>
+    /// Allow multiple values to be selected. Should be used with <see cref="FieldType.Dropdown" />.
+    /// </summary>
+    [Parameter]
+    public bool MultiSelect { get; set; }
+
+    /// <summary>
+    /// Text for select button when using <see cref="MultiSelect" />.
+    /// </summary>
+    [Parameter]
+    public Optional<string> MultiSelectButtonText { get; set; }
 
     /// <summary>
     /// Set the suggestions for the dropdown. Should be used with <see cref="FieldType.Dropdown" />.
@@ -111,6 +125,12 @@
     public bool HxPreserve { get; set; } = false;
 
     /// <summary>
+    /// Hyperscript text to be placed on the outermost (root) element.
+    /// </summary>
+    [Parameter]
+    public Optional<string> Hyperscript { get; set; }
+
+    /// <summary>
     /// Id for the input.
     /// </summary>
     [Parameter]
@@ -119,6 +139,7 @@
     protected Dictionary<string, object> _inputAttributes  = [];
     protected Dictionary<string, object> _inputProxyAttributes  = [];
     protected Dictionary<string, object> _labelAttributes  = [];
+    protected Dictionary<string, object> _rootAttributes  = [];
 
     protected HashSet<string> _inputClasses = ["input"];
     protected HashSet<string> _rootClasses = ["field"];
@@ -232,6 +253,11 @@
             _inputProxyAttributes["id"] = id + "--proxy";
             _labelAttributes["for"] = id;
         }
+        // needed for the button
+        else if (Type == FieldType.Dropdown && MultiSelect)
+        {
+            _inputAttributes["id"] = Guid.NewGuid().ToString("N");
+        }
 
         switch (Type)
         {
@@ -283,10 +309,14 @@
                 hs = "";
             _inputAttributes["_"] = hs + " on load me.select() end";
         }
+
+        _rootAttributes["_"] = $"install Field(formElt: {Form.Map(q => $"#{q}").Or("the closest <form />")})";
+        if (Hyperscript.TryGetValue(out var hyperscript))
+            _rootAttributes["_"] = $"{_rootAttributes["_"]} {hyperscript}";
     }
 }
 
-<div class="@string.Join(' ', _rootClasses)" _="install Field(formElt: @Form.Map(q => $"#{q}").Or("the closest <form />"))">
+<div @attributes="@_rootAttributes" class="@string.Join(' ', _rootClasses)">
     <Frame
         Gap="FrameSpacing.Line"
         Flex="FrameDirection.Col"
@@ -330,7 +360,7 @@
                             ["hx-get"] = suggestions.Uri,
                         };
                     }
-                    <div 
+                    <div
                         @attributes="suggestionsTargetAttributes"
                         class="field-suggest-suggestions-target"
                         hx-trigger="update"
@@ -344,19 +374,82 @@
         else if(Type is FieldType.Dropdown)
         {
             <div class="select-container">
-                <select @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)">
-                    @foreach(var option in Options)
-                    {
-                        var optionAttributes = new Dictionary<string, object>();
-                        if (option.Value.TryGetValue(out var optionValue))
-                            optionAttributes["value"] = optionValue;
-                        if (option.Selected)
-                            optionAttributes["selected"] = true;
+                <div class="select-wrapper">
+                    <select @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)">
+                        @foreach(var option in Options)
+                        {
+                            var optionAttributes = new Dictionary<string, object>();
+                            if (option.Value.TryGetValue(out var optionValue))
+                                optionAttributes["value"] = optionValue;
+                            if (option.Selected)
+                                optionAttributes["selected"] = true;
 
-                        <option @attributes="optionAttributes">@option.Text</option>
-                    }
-                </select>
+                            <option @attributes="optionAttributes">@option.Text</option>
+                        }
+                    </select>
+                </div>
+                @if (MultiSelect)
+                {
+                    var hs = $@"
+                        on htmx:configRequest
+                            set sel to #{_inputAttributes["id"]}
+                            set sel to sel's selectedOptions[0]
+                            set the event's detail.parameters['{nameof(ChipModel.Text)}'] to sel's text
+                            if sel's value is not empty
+                                set the event's detail.parameters['{nameof(ChipModel.InputValue)}'] to sel's value
+                            else
+                                set the event's detail.parameters['{nameof(ChipModel.InputValue)}'] to sel's text
+                            end
+                        end
+                    ";
+
+                    var hxVals = new HxVals 
+                    {
+                        [nameof(ChipModel.Deletable)] = true,
+                        [nameof(ChipModel.EmitEvents)] = true,
+                    };
+                    if (_inputAttributes.TryGetValue("name", out var name))
+                        hxVals[nameof(ChipModel.InputName)] = name;
+                    <Button
+                        HxGet='"/haondt-ui/fragments/chip"'
+                        Hyperscript="@hs"
+                        HxTarget='"next .select-chips"'
+                        HxSwap='"beforeend"'
+                        HxVals="hxVals"
+                        Color="ButtonColor.Primary" Text='@MultiSelectButtonText.Or("Select")' />
+                }
             </div>
+            @if (MultiSelect)
+            {
+                var chipContainerHs = "";
+                if (_inputAttributes.TryGetValue("name", out var name))
+                {
+                    chipContainerHs = @$"
+                        on haondt:chip:deleting(chip)
+                            send renameChips(deleting: chip) to me
+                        end
+                        on haondt:chip:load(chip)
+                            send renameChips() to me
+                        end
+                        on renameChips(deleting)
+                            set counter to 0
+                            repeat for chip in <.chip /> in me
+                                if it is deleting
+                                    continue
+                                end
+
+                                set inp to the first <input /> in it
+                                set inp's name to `{name}[${{counter}}]`
+                                set counter to counter + 1
+                            end
+
+                            send haondt:field:sendChanged
+                        end
+                    ";
+
+                }
+                <Frame AddAttributes='new Dictionary<string, object>(){["_"] = chipContainerHs }' AddClasses='"select-chips"' Template="FrameTemplate.ChipContainer" />
+            }
         }
         @ChildContent
         @if(Error.TryGetValue(out var error)) 

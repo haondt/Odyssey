@@ -31,6 +31,10 @@ a {
     color: var(--haondt-ui-color-accent);
 }
 
+strong {
+    font-weight: 500;
+}
+
 html {
     background-color: var(--haondt-ui-color-background);
 }

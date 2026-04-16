@@ -51,7 +51,8 @@ namespace Haondt.Web.UI.Extensions
                 "moreButton",
                 "field",
                 "fieldSuggest",
-                "tabs"
+                "tabs",
+                "chip"
             })
                 services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
                 {

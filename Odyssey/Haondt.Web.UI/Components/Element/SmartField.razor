@@ -51,6 +51,13 @@
     public Optional<List<DropdownOption>> Options { get; set; }
 
     [Parameter]
+    public Optional<bool> MultiSelect { get; set; }
+    private bool _multiSelect;
+
+    [Parameter]
+    public Optional<string> MultiSelectButtonText { get; set; }
+
+    [Parameter]
     public FieldSize Size { get; set; } = FieldSize.Fill;
 
     [Parameter]
@@ -80,6 +87,12 @@
     [Parameter]
     public Optional<bool> HxPreserve { get; set; }
     private bool _hxPreserve = false;
+
+    /// <summary>
+    /// Hyperscript text to be placed on the outermost (root) element.
+    /// </summary>
+    [Parameter]
+    public Optional<string> Hyperscript { get; set; }
 
     [Parameter]
     public Optional<string> Id { get; set; }
@@ -172,11 +185,16 @@
             };
         }
 
-        if(!Value.HasValue && Base is not null) {
+        if(!Value.HasValue && Base is not null)
+        {
             var compiled = _compiledCache.GetOrAdd(path, _ => Field.Compile());
             Value = compiled(Base);
         }
 
+        if (MultiSelect.HasValue)
+            _multiSelect = MultiSelect.Value;
+        else if (MultiSelectButtonText.HasValue)
+            _multiSelect = true;
     }
 }
 
@@ -189,6 +207,8 @@
     Hidden="Hidden"
     Type="_type"
     Options="@Options.Or([])"
+    MultiSelect="_multiSelect"
+    MultiSelectButtonText="MultiSelectButtonText"
     Size="Size"
     Select="Select"
     Name="Name"
@@ -196,6 +216,7 @@
     Autocomplete="Autocomplete"
     Error="Error"
     HxPreserve="_hxPreserve"
+    Hyperscript="Hyperscript"
     Id="Id"
     InputClasses="InputClasses"
     Value="Value"

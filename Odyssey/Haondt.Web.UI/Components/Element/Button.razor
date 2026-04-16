@@ -9,6 +9,9 @@
     public Optional<string> HxPost { get; set; }
 
     [Parameter]
+    public Optional<string> HxInclude { get; set; }
+
+    [Parameter]
     public Optional<HxVals> HxVals { get; set; }
 
     [Parameter]
@@ -74,6 +77,8 @@
             _rootAttributes["hx-get"] = hxGet;
         if (HxDelete.TryGetValue(out var hxDelete))
             _rootAttributes["hx-delete"] = hxDelete;
+        if (HxInclude.TryGetValue(out var hxInclude))
+            _rootAttributes["hx-include"] = hxInclude;
         if (HxVals.TryGetValue(out var hxVals))
             _rootAttributes["hx-vals"] = hxVals;
         if (HxTarget.TryGetValue(out var hxTarget))

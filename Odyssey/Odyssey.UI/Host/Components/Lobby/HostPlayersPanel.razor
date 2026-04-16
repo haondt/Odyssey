@@ -1,1 +1,58 @@
-<p>This is the UI for assigning players</p>
+@using Odyssey.Client.Host.Services
+@using Odyssey.GrainInterfaces.Sessions.Models
+@using Odyssey.UI.Host.Hubs
+@inject IClientHostService HostService
+
+@code {
+
+    [Parameter]
+    public bool HxSwapOob { get; set; }
+
+    private List<DropdownOption> _assignableDevices = [];
+
+    protected Dictionary<string, object> _rootAttributes  = [];
+    private bool _ready;
+    protected override async Task OnInitializedAsync()
+    {
+        if (HxSwapOob)
+            _rootAttributes["hx-swap-oob"] = "morph";
+
+        _assignableDevices = new List<DropdownOption> {
+            new DropdownOption { Text = "Kate's iPad", Value = Guid.NewGuid().ToString() },
+            new DropdownOption { Text = "Kate's Beacon", Value = Guid.NewGuid().ToString() }
+        };
+
+        _ready = true;
+    }
+}
+@if(_ready)
+{
+    <div @attributes="_rootAttributes" id="host-players-panel" class="flex flex-col gap-card" >
+        <p>This game requires exactly <strong>two</strong> players. Each player represents one competing team.</p>
+        <Field Type="FieldType.None" Title='"Players"'>
+            <Frame AddClasses='"width-full"' Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
+                @for(int i = 0; i < 2; i++)
+                {
+                    var model = new HostLobbyPlayerData { Name = "Kate" };
+                    var j = i;
+                    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col">
+                        <SmartField
+                            Hyperscript='"on input log the event"'
+                            Placeholder='$"Player {j}"'
+                            Base="model" Field="m => m.Name" />
+                        <SmartField
+                            Hyperscript='"on haondt:field:changed log the event"'
+                            NamePrefix='$"z[{j}]"'
+                            MultiSelectButtonText='"Assign"'
+                            Base="model" Field="m => m.DeviceIds" Options="_assignableDevices" />
+                        <Frame Flex="FrameDirection.Row">
+                            <SmartField
+                                NamePrefix='$"z[{j}]"'
+                                Hyperscript='"on input log the event"' Base="model" Field="m => m.Ready" />
+                        </Frame>
+                    </Frame>
+                }
+            </Frame>
+        </Field>
+    </div>
+}

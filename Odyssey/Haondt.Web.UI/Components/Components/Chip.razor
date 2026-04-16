@@ -24,6 +24,12 @@
     [Parameter]
     public ChipColor Color { get; set; } = ChipColor.Text;
 
+    [Parameter]
+    public ChipInputData? Input { get; set;}
+
+    [Parameter]
+    public bool EmitEvents { get; set;}
+
     protected override void OnInitialized()
     {
         if (!Style.HasValue && Skeleton.HasValue)
@@ -32,12 +38,17 @@
 }
 
 <span
+    _=@($"install Chip(emitEvents:{EmitEvents.ToString().ToLower()})")
     class="chip chip-style-@StringFormatter.PascalToKebabCase(Style.Or(ChipStyle.Default).ToString()) chip-color-@StringFormatter.PascalToKebabCase(Color.ToString()) chip-text-style-@StringFormatter.PascalToKebabCase(TextStyle.ToString())">
     @if (Label.TryGetValue(out var label))
     {
         <span class="chip-label">@label</span>
     }
     <span class="chip-text">
+        @if(Input is { } input)
+        {
+            <input type="hidden" name="@input.Name" value="@input.Value" />
+        }
 
         @if (Skeleton.TryGetValue(out var width))
         {
@@ -51,7 +62,7 @@
     </span>
     @if (Deletable)
     {
-        <span _="on click remove the closest <span.chip />" class="chip-button">
+        <span _=@($"install ChipDeleteButton(emitEvents:{EmitEvents.ToString().ToLower()})") class="chip-button">
             <LucideIcon Size="12" Name="x" />
         </span>
     }

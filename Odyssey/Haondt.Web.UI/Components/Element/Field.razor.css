@@ -67,14 +67,31 @@ select.input {
 }
 .select-container {
     width: 100%;
-    position: relative;
+    display: flex;
+    flex-direction: row;
 
-    > select {
-        width: 100%;
+    .select-wrapper {
+        flex-grow: 1;
+        position: relative;
+        > select {
+            width: 100%;
+        }
+
+        &:has(+ .button) > select {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
     }
 }
 
-.select-container::after, .input:has(> .field-suggest-input)::after  {
+.select-container > .select-wrapper ::deep + .button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+
+.select-wrapper::after, .input:has(> .field-suggest-input)::after  {
 
     position: absolute;
     border: var(--indicator-width) solid var(--haondt-ui-color-primary);
@@ -92,6 +109,7 @@ select.input {
     right: 0;
     transform: translateX(var(--indicator-tx)) translateY(var(--indicator-ty)) rotate(45deg);
 }
+
 
 .input:has(> .field-suggest-input) {
     display: flex;
