@@ -31,7 +31,8 @@ namespace Odyssey.Grains.Tests.Sessions
                 services
                     .AddOdysseyGrainInterfacesServices(siloBuilder.Configuration)
                     .AddOdysseyPersistenceServerServices(siloBuilder.Configuration)
-                    .AddOdysseyDomainServices(siloBuilder.Configuration);
+                    .AddOdysseyDomainServices(siloBuilder.Configuration)
+                    .AddOdysseyGrainServices(siloBuilder.Configuration);
                 //.AddOdysseySiloServices(context.Configuration)
             });
         }

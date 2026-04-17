@@ -41,5 +41,15 @@ namespace Odyssey.Grains.Tests.Sessions.Grains
         {
             throw new NotImplementedException();
         }
+
+        public Task NotifyPartyMemberModifiedAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task NotifyRemovedFromPartyAsync(string joinCode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

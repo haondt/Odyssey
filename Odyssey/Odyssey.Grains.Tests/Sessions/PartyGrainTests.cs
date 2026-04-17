@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;
 using Odyssey.GrainInterfaces.Sessions;
+using Odyssey.GrainInterfaces.Sessions.Models;
 using Odyssey.Grains.Sessions.Models;
 using Odyssey.Grains.Tests.Sessions.Grains;
 using Orleans.Storage;
@@ -47,8 +48,9 @@ namespace Odyssey.Grains.Tests.Sessions
             ownership.Should().BeTrue();
 
             // try to join using the old join code
-            var memberGrain = fixture.Cluster.Client.GetGrain<ITestPartyMemberGrain>(Guid.NewGuid());
-            var joinResult = await memberPartyGrain.Value!.JoinAsync(memberGrain, joinCode);
+            var memberId = Guid.NewGuid();
+            var memberGrain = fixture.Cluster.Client.GetGrain<ITestPartyMemberGrain>(memberId);
+            var joinResult = await memberPartyGrain.Value!.JoinAsync(new(memberId, PartyMemberType.Display), memberGrain, joinCode);
             joinResult.Should().BeFalse();
 
             // old joinCodeGrain should be cleaned up
@@ -59,7 +61,7 @@ namespace Odyssey.Grains.Tests.Sessions
             ownership.Should().BeFalse();
 
             // verify we can join with the new join code
-            joinResult = await memberPartyGrain.Value!.JoinAsync(memberGrain, newJoinCode);
+            joinResult = await memberPartyGrain.Value!.JoinAsync(new(memberId, PartyMemberType.Display), memberGrain, newJoinCode);
             joinResult.Should().BeTrue();
         }
     }

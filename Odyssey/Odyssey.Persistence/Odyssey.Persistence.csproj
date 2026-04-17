@@ -9,14 +9,14 @@
     <ItemGroup>
         <PackageReference Include="Haondt.Core" Version="0.2.11-alpha-20260321142806" />
         <PackageReference Include="Haondt.Persistence.EntityFrameworkCore" Version="0.2.11-alpha-20260321142806" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.4" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.4" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.4" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.6" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.6" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
     </ItemGroup>
 
     <ItemGroup>

@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Haondt.Web.Core" Version="0.2.11-alpha-20260321142806" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="10.1.0" />
   </ItemGroup>
 
   <ItemGroup>
