@@ -46,9 +46,27 @@
                             MultiSelectButtonText='"Assign"'
                             Base="model" Field="m => m.DeviceIds" Options="_assignableDevices" />
                         <Frame Flex="FrameDirection.Row">
+                            @{
+                                var readyHs = @"
+                                    on haondt:field:changed or load
+                                        set inp to the first <.input /> in the event's srcElement
+                                        set lbl to the first <.field-title /> in the event's srcElement
+                                        if lbl is empty
+                                            exit
+                                        end
+                                        if inp matches <[checked]/>
+                                            add .fg-success to lbl
+                                            remove .fg-danger from lbl
+                                        else
+                                            add .fg-danger to lbl
+                                            remove .fg-success from lbl
+                                        end
+                                    end
+                                ";
+                            }
                             <SmartField
                                 NamePrefix='$"z[{j}]"'
-                                Hyperscript='"on input log the event"' Base="model" Field="m => m.Ready" />
+                                Hyperscript="readyHs" Base="model" Field="m => m.Ready" />
                         </Frame>
                     </Frame>
                 }

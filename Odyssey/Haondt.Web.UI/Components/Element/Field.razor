@@ -157,7 +157,7 @@
                     if (Name.TryGetValue(out var name))
                         _inputAttributes["name"] = name;
                     if (Value.TryGetValue(out var value) && value is bool boolValue && boolValue)
-                        _inputAttributes["checked"] = "";
+                        _inputAttributes["checked"] = "true";
                 }
                 break;
             case FieldType.Hidden:
@@ -326,7 +326,7 @@
             <div class="label-container">
                 @if(Type == FieldType.Checkbox)
                 {
-                    <input _="on change toggle @@checked on me" @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
+                    <input _="on change toggle @@checked='true' on me then send haondt:field:sendChanged end" @attributes="_inputAttributes" class="@string.Join(' ', _inputClasses)" />
                     <i class="field-icon"></i>
                 }
                 @if(Title.TryGetValue(out var title))
