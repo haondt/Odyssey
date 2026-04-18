@@ -23,6 +23,8 @@ namespace Odyssey.Games.Domain.Core.Services
         protected ILogger<BaseGame<TBoard, TGameState>> logger = logger;
 
         public abstract string Id { get; }
+        public abstract IGameParameters Parameters { get; }
+
         public abstract Task<GameSettings> GetSettingsAsync(string hostUserId);
 
         public async Task<string> GetDisplayNameAsync(string ownerId)

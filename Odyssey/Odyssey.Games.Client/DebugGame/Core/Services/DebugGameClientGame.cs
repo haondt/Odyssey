@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Odyssey.Client.Core.Services;
 using Odyssey.Core.Models;
+using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Games.Client.DebugGame.UI.Components;
 using Odyssey.Games.Domain.DebugGame.Models;
@@ -24,6 +25,8 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
         ISessionGrainFactory<DebugGameBoard, DebugGameGameState> sessionGrainFactory
         ) : DebugGameGame(gameSettings, boards, boardMetadataRepository, sessionMetadataRepository, logger, sessionGrainFactory), IClientGame
     {
+        public override IGameParameters Parameters { get; } = new DebugGameGameParameters();
+
         public async Task<IComponent> GetEditBoardComponentAsync(OwnedEntityGuid id)
         {
             var (board, version) = await boards.GetDataAsync(id);
@@ -107,6 +110,14 @@ namespace Odyssey.Games.Client.DebugGame.Core.Services
         public Task<IComponent> GetResetEditGameStateComponentAsync(OwnedEntityGuid id)
         {
             throw new NotImplementedException();
+        }
+
+        public class DebugGameGameParameters : IGameParameters
+        {
+            public int MaxPlayers => 2;
+            public int MinPlayers => 2;
+
+            public Func<IComponent> LobbyDescriptionComponentFactory { get; } = () => new DebugGameLobbyDescription();
         }
     }
 }

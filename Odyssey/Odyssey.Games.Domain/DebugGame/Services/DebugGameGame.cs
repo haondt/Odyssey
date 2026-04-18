@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Odyssey.Domain.Core.Models;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Games.Domain.Core.Services;
@@ -7,7 +8,7 @@ using Odyssey.GrainInterfaces.Sessions.Services;
 
 namespace Odyssey.Games.Domain.DebugGame.Services
 {
-    public class DebugGameGame(
+    public abstract class DebugGameGame(
         ICachedDataRepository<DebugGameGameSettings> gameSettings,
         ICachedDataRepository<DebugGameBoard> boards,
         IBoardMetadataRepository boardMetadataRepository,
@@ -17,6 +18,8 @@ namespace Odyssey.Games.Domain.DebugGame.Services
     {
         protected ICachedDataRepository<DebugGameGameSettings> gameSettings = gameSettings;
         public override string Id => DebugGameConstants.GameId;
+
         public override async Task<GameSettings> GetSettingsAsync(string ownerId) => (await gameSettings.GetDataAsync(ownerId)).Data;
     }
+
 }

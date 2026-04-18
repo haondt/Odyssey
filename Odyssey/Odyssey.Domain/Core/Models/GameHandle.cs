@@ -7,5 +7,6 @@ namespace Odyssey.Domain.Core.Models
         public IGameSettingsService Settings => game;
         public IGameBoardsService Boards => game;
         public IGameSessionsService Sessions => game;
+        public IGameParameters Parameters => game.Parameters;
     }
 }

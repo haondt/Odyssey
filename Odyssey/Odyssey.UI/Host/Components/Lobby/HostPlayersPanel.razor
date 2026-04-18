@@ -1,14 +1,20 @@
+@using Odyssey.Client.Core.Models
+@using Odyssey.Client.Core.Services
 @using Odyssey.Client.Host.Services
 @using Odyssey.GrainInterfaces.Sessions.Models
 @using Odyssey.UI.Host.Hubs
 @inject IClientHostService HostService
+@inject IClientGameRegistry Games
 
 @code {
+    [Parameter, EditorRequired]
+    public required string GameId { get; set; }
 
     [Parameter]
     public bool HxSwapOob { get; set; }
 
     private List<DropdownOption> _assignableDevices = [];
+    private ClientGameHandle _game = default!;
 
     protected Dictionary<string, object> _rootAttributes  = [];
     private bool _ready;
@@ -22,20 +28,23 @@
             new DropdownOption { Text = "Kate's Beacon", Value = Guid.NewGuid().ToString() }
         };
 
+        _game = Games.GetGame(GameId);
+
+
         _ready = true;
     }
 }
 @if(_ready)
 {
     <div @attributes="_rootAttributes" id="host-players-panel" class="flex flex-col gap-card" >
-        <p>This game requires exactly <strong>two</strong> players. Each player represents one competing team.</p>
+        <ObjectComponent Component="@_game.Parameters.LobbyDescriptionComponentFactory()" />
         <Field Type="FieldType.None" Title='"Players"'>
             <Frame AddClasses='"width-full"' Flex="FrameDirection.Col" Gap="FrameSpacing.Line">
                 @for(int i = 0; i < 2; i++)
                 {
                     var model = new HostLobbyPlayerData { Name = "Kate" };
                     var j = i;
-                    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col">
+                    <Frame AddClasses='"lobby-player"' Template="FrameTemplate.Card" Flex="FrameDirection.Col">
                         <SmartField
                             Hyperscript='"on input log the event"'
                             Placeholder='$"Player {j}"'
@@ -45,7 +54,7 @@
                             NamePrefix='$"z[{j}]"'
                             MultiSelectButtonText='"Assign"'
                             Base="model" Field="m => m.DeviceIds" Options="_assignableDevices" />
-                        <Frame Flex="FrameDirection.Row">
+                        <Frame Flex="FrameDirection.Row" Justify="FrameJustification.SpaceBetween">
                             @{
                                 var readyHs = @"
                                     on haondt:field:changed or load
@@ -64,12 +73,18 @@
                                     end
                                 ";
                             }
-                            <SmartField
-                                NamePrefix='$"z[{j}]"'
-                                Hyperscript="readyHs" Base="model" Field="m => m.Ready" />
+                                <SmartField
+                                    NamePrefix='$"z[{j}]"'
+                                    Hyperscript="readyHs" Base="model" Field="m => m.Ready" />
+                                <Button
+                                    Style="ButtonStyle.Ghost"
+                                    Color="ButtonColor.Danger"
+                                    Hyperscript='"on click remove the closest .lobby-player"'
+                                    Text='"Remove"' />
                         </Frame>
                     </Frame>
                 }
+                <div><Button Style="ButtonStyle.Ghost" Color="ButtonColor.Primary">Add player</Button></div>
             </Frame>
         </Field>
     </div>

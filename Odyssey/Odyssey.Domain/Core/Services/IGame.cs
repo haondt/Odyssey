@@ -6,6 +6,7 @@ namespace Odyssey.Domain.Core.Services
     public interface IGame : IGameBoardsService, IGameSettingsService, IGameSessionsService
     {
         string Id { get; }
+        IGameParameters Parameters { get; }
     }
 
     public interface IGameSettingsService
