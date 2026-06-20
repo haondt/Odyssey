@@ -3,13 +3,13 @@
 @attribute [RenderPage]
 
 <ContentContainer>
-    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
+    <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
         <h1 class="title">Tooltip Demo</h1>
         <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Start">
             <p style="cursor:default;" _="on mouseenter remove .hidden from the next .tooltip end on mouseleave add .hidden to the next .tooltip end">Hover me</p>
             <Tooltip Hidden="true">
                 <Frame Padding="FrameSpacing.Line">
-                    <p style="min-width:200px;">This is the tooltip content</p>
+                    <p style="text-wrap: nowrap;">This is the tooltip content</p>
                 </Frame>
             </Tooltip>
         </Frame>

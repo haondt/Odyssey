@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Haondt.Web.UI.Demo.Components.ConfirmationDialog
 {
-    [Route("/demo/confirmation-dialog/")]
+    [Route("/demo/confirmation-dialog")]
     public class ConfirmationDialogDemoController : UIController
     {
-        [HttpGet("")]
+        [HttpGet]
         public Task<IResult> Get() => ComponentFactory.RenderComponentAsync<ConfirmationDialogDemo>();
 
         [HttpGet("show")]

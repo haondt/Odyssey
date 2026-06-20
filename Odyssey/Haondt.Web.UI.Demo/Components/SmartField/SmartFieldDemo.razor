@@ -25,24 +25,26 @@
 }
 
 <ContentContainer AddClasses='"overflow-y-auto"' Id='"smart-field-demo"' HxSwapOob="ValidationState.IsValidation">
-    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
-        <h1 class="title">SmartField Demo</h1>
-        <p>Demo of SmartField component with text input and inline suggestions.</p>
+    <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel">
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
+            <h1 class="title">SmartField Demo</h1>
+            <p>Demo of SmartField component with text input and inline suggestions.</p>
 
-        <form hx-post hx-target="#result" hx-swap="innerHTML" class="flex flex-col gap-card">
-            <SmartField Base="Data" Field="c => c.String" />
-            <SmartField Base="Data" Field="c => c.OptionalString" />
-            <HorizontalBar />
-            <SmartField Base="Data" Field="c => c.Car.Vin" />
-            <SmartFieldList Base="Data" Field="c => c.Car.RadioPresets" />
-            <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.Radius" />
-            <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.WearLevel" />
-            <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.Tire.Seasonality" />
-            <Button Type="ButtonType.Submit">Submit</Button>
-        </form>
-    </Frame>
-    <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col">
-        <p>Posted Result:</p>
-        <div id="result"></div>
+            <form hx-post hx-target="#result" hx-swap="innerHTML" class="flex flex-col gap-card">
+                <SmartField Base="Data" Field="c => c.String" />
+                <SmartField Base="Data" Field="c => c.OptionalString" />
+                <HorizontalBar />
+                <SmartField Base="Data" Field="c => c.Car.Vin" />
+                <SmartFieldList Base="Data" Field="c => c.Car.RadioPresets" />
+                <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.Radius" />
+                <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.WearLevel" />
+                <SmartFieldList Base="Data" Field="c => c.Car.Wheels" ItemField="w => w.Tire.Seasonality" />
+                <Button Type="ButtonType.Submit">Submit</Button>
+            </form>
+        </Frame>
+        <Frame Template="FrameTemplate.Card" Flex="FrameDirection.Col">
+            <p>Posted Result:</p>
+            <div id="result"></div>
+        </Frame>
     </Frame>
 </ContentContainer>

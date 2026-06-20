@@ -1,0 +1,31 @@
+@using Haondt.Web.Components
+@using Haondt.Web.Core.Extensions
+@using Haondt.Web.Core.Http
+@using Haondt.Web.UI.Attributes
+@using Haondt.Web.UI.Components.Containers
+@using Haondt.Web.UI.Components.Element
+@using Haondt.Web.UI.Components.Htmx
+@using Haondt.Web.UI.Components.Relays
+@using Microsoft.Extensions.DependencyInjection
+@code {
+    [Parameter, EditorRequired]
+    public required IComponent Content { get; set; }
+
+    [CascadingParameter]
+    public IRequestData Request { get; set; } = default!;
+
+    [CascadingParameter]
+    public IResponseData Response { get; set; } = default!;
+
+}
+<NavigationContainer>
+    <Frame Spacing="FrameSpacing.Card" Flex="FrameDirection.Row" AddClasses='"default-bar-lower"' Align="FrameAlignment.Center">
+        <p class="uppercase">Haondt.Web.UI Demo</p>
+        <Frame Gap="FrameSpacing.Card" Flex="FrameDirection.Row">
+            <a href="/">Home</a>
+        </Frame>
+    </Frame>
+</NavigationContainer>
+<HorizontalBar/>
+<div class="mb-2xl"></div>
+<ObjectComponent Component="Content"/>

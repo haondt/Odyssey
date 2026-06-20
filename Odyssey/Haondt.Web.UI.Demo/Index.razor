@@ -6,10 +6,14 @@
 
 @attribute [RenderPage]
 
-<Frame Flex="FrameDirection.Col" >
-<a hx-boost="true" href="/demo/modal-container">modal container</a>
-<a hx-boost="true" href="/demo/tooltip">tooltip</a>
-<a hx-boost="true" href="/demo/confirmation-dialog">confirmation dialog</a>
-<a hx-boost="true" href="/demo/more-button">more button</a> 
-<a hx-boost="true" href="/demo/smart-field">smart field</a> 
-</Frame>
+<ContentContainer id='"index-container"'>
+    <Frame
+        AddAttributes='new Dictionary<string, Object>(){["hx-swap"] = "outerHTML", ["hx-boost"] = "true", ["hx-inherit"] = "hx-swap hx-boost hx-target", ["hx-target"] = "#index-container"}'
+        Flex="FrameDirection.Col" Border="FrameBorder.Card" Padding="FrameSpacing.Card">
+        <a href="/demo/modal-container">modal container</a>
+        <a href="/demo/tooltip">tooltip</a>
+        <a href="/demo/confirmation-dialog">confirmation dialog</a>
+        <a href="/demo/more-button">more button</a> 
+        <a href="/demo/smart-field">smart field</a> 
+    </Frame>
+</ContentContainer>

@@ -2,6 +2,7 @@ using Haondt.Web.Core.Middleware;
 using Haondt.Web.Core.ModelBinders;
 using Haondt.Web.Extensions;
 using Haondt.Web.Services;
+using Haondt.Web.UI.Demo;
 using Haondt.Web.UI.Extensions;
 using Haondt.Web.UI.Middleware;
 
@@ -47,7 +48,8 @@ builder.Services
             ""historyRestoreAsHxRequest"": true,
             ""disableInheritance"": true
         }",
-    });
+    })
+    .AddSingleton<ILayoutComponentFactory, DemoLayoutComponentFactory>();
 
 builder.Services.AddServerSideBlazor();
 
