@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Haondt.Orleans.Testing.Fixtures;
+using Microsoft.Extensions.Configuration;
 using Odyssey.Domain.Core.Extensions;
 using Odyssey.GrainInterfaces.Core.Extensions;
 using Odyssey.GrainInterfaces.Core.Models;
@@ -17,10 +18,6 @@ namespace Odyssey.Grains.Tests.Sessions
     {
         public void Configure(ISiloBuilder siloBuilder)
         {
-            //var testConfigFile = Path.Combine(Environment.CurrentDirectory, "appsettings.Test.json");
-            //if (File.Exists(testConfigFile))
-            //    siloBuilder.Configuration.AddJsonFile(testConfigFile, optional: true, reloadOnChange: true);
-
             siloBuilder
                 .AddMemoryGrainStorage(GrainConstants.GrainStorage)
                 .AddMemoryGrainStorage(GrainConstants.SignalRStreams)

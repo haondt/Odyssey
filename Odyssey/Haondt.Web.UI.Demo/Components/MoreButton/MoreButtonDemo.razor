@@ -7,12 +7,31 @@
 <ContentContainer>
     <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Start" Gap="FrameSpacing.Card">
         <h1 class="title">MoreButton Demo</h1>
-        <p>This is a demo of the MoreButton component with a tooltip.</p>
-
-        <MoreButton TooltipStyle="TooltipStyle.ContextMenu" TooltipAlignment="TooltipAlignment.Left">
-            <Button Style="ButtonStyle.Borderless">Tooltip content</Button>
-            <Button Style="ButtonStyle.Borderless">Visible on</Button>
-            <Button Style="ButtonStyle.Borderless">Button press</Button>
-        </MoreButton>
+        <p>Click the buttons to open the context menus</p>
+        <Frame Flex="FrameDirection.Row">
+            <MoreButton TooltipAlignment="TooltipAlignment.Left">
+                <div class="p-card" style="width:200px">
+                    <p>This is the content of the menu</p>
+                </div>
+            </MoreButton>
+            <VerticalBar/>
+            <MoreButton Text="ContextMenu Style" TooltipStyle="TooltipStyle.ContextMenu" TooltipAlignment="TooltipAlignment.Left">
+                <Button Style="ButtonStyle.Borderless">Tooltip content</Button>
+                <Button Style="ButtonStyle.Borderless">Visible on</Button>
+                <Button Style="ButtonStyle.Borderless">Button press</Button>
+            </MoreButton>
+            <VerticalBar/>
+            <MoreButton Text="Right Align" TooltipStyle="TooltipStyle.ContextMenu" TooltipAlignment="TooltipAlignment.Right">
+                <Button Style="ButtonStyle.Borderless">Tooltip content</Button>
+                <Button Style="ButtonStyle.Borderless">Visible on</Button>
+                <Button Style="ButtonStyle.Borderless">Button press</Button>
+            </MoreButton>
+            <VerticalBar/>
+            <MoreButton Text="Above Position" TooltipStyle="TooltipStyle.ContextMenu" TooltipPosition="TooltipPosition.Above">
+                <Button Style="ButtonStyle.Borderless">Tooltip content</Button>
+                <Button Style="ButtonStyle.Borderless">Visible on</Button>
+                <Button Style="ButtonStyle.Borderless">Button press</Button>
+            </MoreButton>
+        </Frame>
     </Frame>
 </ContentContainer>

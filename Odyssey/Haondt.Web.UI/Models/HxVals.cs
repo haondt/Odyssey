@@ -27,15 +27,21 @@ namespace Haondt.Web.UI.Models
 
         public override string ToString() => Serialize(_inner);
 
-        public static string Serialize(object obj)
+        public static Dictionary<string, object> FlattenObject(object obj)
         {
             var jo = JObject.FromObject(obj, JsonSerializer.Create(SerializerSettings));
-            var flat = new Dictionary<string, object?>();
+            var flat = new Dictionary<string, object>();
             FlattenJToken("", jo, flat);
+            return flat;
+        }
+
+        public static string Serialize(object obj)
+        {
+            var flat = FlattenObject(obj);
             return JsonConvert.SerializeObject(flat, SerializerSettings);
         }
 
-        private static void FlattenJToken(string prefix, JToken token, Dictionary<string, object?> flat)
+        private static void FlattenJToken(string prefix, JToken token, Dictionary<string, object> flat)
         {
             switch (token)
             {

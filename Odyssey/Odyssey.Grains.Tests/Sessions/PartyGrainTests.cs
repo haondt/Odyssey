@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Haondt.Orleans.Testing.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using Odyssey.GrainInterfaces.Core.Models;
 using Odyssey.GrainInterfaces.Core.Services;

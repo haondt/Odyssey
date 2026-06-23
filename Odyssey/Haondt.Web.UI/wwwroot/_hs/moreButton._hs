@@ -1,6 +1,6 @@
 behavior MoreButton
 	set :tt to the first .tooltip in me
-	set :button to the first .button in me
+	set :button to the first .more-button-button in me
 	set :active to false
 	on click from :button
 		set :active to not :active

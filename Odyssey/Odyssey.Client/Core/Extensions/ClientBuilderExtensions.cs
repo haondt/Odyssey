@@ -16,7 +16,10 @@ namespace Odyssey.Client.Core.Extensions
             {
                 var clusterSettings = configuration.GetRequiredSection<ClusterSettings>();
                 if (clusterSettings.UseLocalhostClustering)
-                    client.UseLocalhostClustering();
+                    client.UseLocalhostClustering(
+                        serviceId: clusterSettings.ServiceId,
+                        clusterId: clusterSettings.ClusterId,
+                        gatewayPort: clusterSettings.LocalhostGatewayPort);
                 else
                 {
                     var persistenceSettings = configuration.GetSection<PersistenceSettings>();
@@ -24,7 +27,10 @@ namespace Odyssey.Client.Core.Extensions
                     {
 
                         case DatabaseDriver.Memory:
-                            client.UseLocalhostClustering();
+                            client.UseLocalhostClustering(
+                                serviceId: clusterSettings.ServiceId,
+                                clusterId: clusterSettings.ClusterId,
+                                gatewayPort: clusterSettings.LocalhostGatewayPort);
                             break;
                         case DatabaseDriver.Postgres:
                             client.UseAdoNetClustering(options =>

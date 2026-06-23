@@ -5,10 +5,16 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
+    public string Text { get; set; } = "More";
+
+    [Parameter]
     public Optional<TooltipStyle> TooltipStyle { get; set; }
 
     [Parameter]
     public Optional<TooltipAlignment> TooltipAlignment { get; set; }
+
+    [Parameter]
+    public Optional<TooltipPosition> TooltipPosition { get; set; }
 
     [Parameter]
     public Optional<string> AddClasses { get; set; }
@@ -22,12 +28,24 @@
     }
 }
 
+@code{
+    private RenderFragment RenderTooltip()  =>
+        @<Tooltip Style="TooltipStyle" Align="TooltipAlignment.Or(Containers.TooltipAlignment.Right)" Position="TooltipPosition.Or(Containers.TooltipPosition.Below)" >@ChildContent</Tooltip>;
+}
+
 <div _="install MoreButton" class="@string.Join(' ', _rootClasses)">
-    <Button Style="ButtonStyle.Ghost">
+    @if (TooltipPosition.Map(t => t == Containers.TooltipPosition.Above || t == Containers.TooltipPosition.LeftOf).Or(false))
+    {
+        @RenderTooltip();
+    }
+    <Button AddClasses='"more-button-button"' Style="ButtonStyle.Ghost">
         <Frame Flex="FrameDirection.Row" Gap="FrameSpacing.Line" Align="FrameAlignment.Center">
-            <p>More</p>
+            <p>@Text</p>
             <LucideIcon Size="18" Name="chevron-down"/>
         </Frame>
     </Button>
-    <Tooltip Style="TooltipStyle" Align="TooltipAlignment.Or(Containers.TooltipAlignment.Right)">@ChildContent</Tooltip>
+    @if (!TooltipPosition.Map(t => t == Containers.TooltipPosition.Above || t == Containers.TooltipPosition.LeftOf).Or(false))
+    {
+        @RenderTooltip();
+    }
 </div>

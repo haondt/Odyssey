@@ -18,7 +18,11 @@ namespace Odyssey.Silo.Core.Extensions
             {
                 var clusterSettings = configuration.GetRequiredSection<ClusterSettings>();
                 if (clusterSettings.UseLocalhostClustering)
-                    builder.UseLocalhostClustering();
+                    builder.UseLocalhostClustering(
+                        serviceId: clusterSettings.ServiceId,
+                        clusterId: clusterSettings.ClusterId,
+                        gatewayPort: clusterSettings.LocalhostGatewayPort,
+                        siloPort: clusterSettings.LocalhostSiloPort);
                 else
                 {
                     var persistenceSettings = configuration.GetSection<PersistenceSettings>();
@@ -26,7 +30,11 @@ namespace Odyssey.Silo.Core.Extensions
                     {
 
                         case DatabaseDriver.Memory:
-                            builder.UseLocalhostClustering();
+                            builder.UseLocalhostClustering(
+                                serviceId: clusterSettings.ServiceId,
+                                clusterId: clusterSettings.ClusterId,
+                                gatewayPort: clusterSettings.LocalhostGatewayPort,
+                                siloPort: clusterSettings.LocalhostSiloPort);
                             break;
                         case DatabaseDriver.Postgres:
                             builder.UseAdoNetClustering(options =>

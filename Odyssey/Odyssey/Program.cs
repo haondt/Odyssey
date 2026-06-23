@@ -1,4 +1,5 @@
 using Haondt.Core.Extensions;
+using Haondt.Core.Models;
 using Haondt.Web.Core.Middleware;
 using Haondt.Web.Core.ModelBinders;
 using Haondt.Web.Extensions;
@@ -26,16 +27,9 @@ using Odyssey.UI.Core.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-    var testConfigFile = Path.Combine(Environment.CurrentDirectory, "appsettings.Test.json");
-    if (File.Exists(testConfigFile))
-        builder.Configuration.AddJsonFile(testConfigFile, optional: true, reloadOnChange: true);
-}
+InvokeTestingSeam(builder);
 
 builder.Configuration.AddEnvironmentVariables();
-
-
 
 builder.Services
     .AddHaondtUIHyperscriptScripts()
@@ -104,13 +98,13 @@ builder.Services.Configure<IdentityOptions>(o =>
 
 // orleans
 
-builder.Services.AddOrleansClient(client =>
-{
-    client
-        .ConfigureCluster(builder.Configuration)
-        .AddMemoryStreams(GrainConstants.SignalRStreams);
-});
-
+if (AddOrleansClient)
+    builder.Services.AddOrleansClient(client =>
+    {
+        client
+            .ConfigureCluster(builder.Configuration)
+            .AddMemoryStreams(GrainConstants.SignalRStreams);
+    });
 
 // add other web services
 
@@ -163,3 +157,32 @@ app.MapHealthChecks("hc");
 
 
 await app.RunAsync();
+
+public partial class Program
+{
+    private static readonly AsyncLocal<Action<WebApplicationBuilder>?> _configureForTesting = new();
+    public static Action<WebApplicationBuilder>? ConfigureForTesting
+    {
+        get => _configureForTesting.Value;
+        set => _configureForTesting.Value = value;
+    }
+
+    private static readonly AsyncLocal<Optional<bool>> _addOrleansClient = new();
+    public static bool AddOrleansClient
+    {
+        get => _addOrleansClient.Value.Or(true);
+        set => _addOrleansClient.Value = value;
+    }
+
+    private static void InvokeTestingSeam(WebApplicationBuilder builder)
+    {
+        ConfigureForTesting?.Invoke(builder);
+
+        if (builder.Environment.IsDevelopment())
+        {
+            var testConfigFile = Path.Combine(Environment.CurrentDirectory, "appsettings.Test.json");
+            if (File.Exists(testConfigFile))
+                builder.Configuration.AddJsonFile(testConfigFile, optional: true, reloadOnChange: true);
+        }
+    }
+}

@@ -31,6 +31,15 @@ a {
     color: var(--haondt-ui-color-accent);
 }
 
+code {
+    font-family: var(--haondt-ui-monospace-fonts);
+    font-weight: var(--haondt-ui-chip-font-weight);
+    font-size: 85%;
+    padding: var(--haondt-ui-chip-padding-y) var(--haondt-ui-chip-padding-x);
+    border-radius: var(--haondt-ui-border-radius);
+    background-color: var(--haondt-ui-color-background-strong);
+}
+
 strong {
     font-weight: 500;
 }
