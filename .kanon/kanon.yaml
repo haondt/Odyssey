@@ -1,0 +1,48 @@
+meta:
+  kanon_version: 0.0.0
+  kanon_sha: c5bbcde0f7fbdfe669a822ddd434dab67d790833
+  integrations:
+  - opencode
+  profile: base/base
+kanons:
+- haondt::ai/analysis/find-problems
+- haondt::ai/analysis/surface-risks
+- haondt::ai/coding/prefer-reuse
+- haondt::ai/communication/prefer-brevity
+- haondt::build/just
+- haondt::code/hygiene
+- haondt::code/templates
+- haondt::config/base
+- haondt::frontend/dcdn
+- haondt::frontend/htmx
+- haondt::frontend/hyperscript
+- haondt::frontend/lucide
+- haondt::git/commit-base
+- haondt::git/commit-short
+- haondt::persistence/postgres
+- docs/structure
+- systems/base
+- tools/kanon/kanons
+- tools/kanon/ref
+- tools/kanon/session
+- tools/kanon/source
+- tools/kanon/todo
+- workflow/base
+- workflow/kanon-amend
+- workflow/kanon-audit
+- workflow/kanon-build
+- workflow/kanon-detour
+- workflow/kanon-fix
+- workflow/kanon-onboard
+- workflow/kanon-plan
+- workflow/kanon-reconcile
+- workflow/kanon-retro
+- workflow/kanon-review
+- workflow/kanon-sketch
+- workflow/kanon-stance
+- workflow/kanon-think
+- workflow/kanon-todo
+- workflow/kanon-why
+stances: []
+sources:
+  haondt: local::~/projects/kanons

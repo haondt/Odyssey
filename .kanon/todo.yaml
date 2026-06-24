@@ -1,0 +1,34 @@
+sections:
+  grains:
+    name: Grains & Orleans
+    items:
+    - |-
+      Test disbanded-party rejoin after Orleans ADO.NET supports DeleteStateOnClear. DisplayGrain.JoinPartyAsync and DeviceGrain.JoinPartyAsync currently risk nullref if party grain state lingers after disbanding.
+  ui:
+    name: UI & Frontend
+    items:
+    - |-
+      BrowserHostEventTransformer: PartyDisbandedOutboundEvent rendering needs to switch to a bottom-sheet version instead of the full HostPartyPanel.
+    - |-
+      BrowserHostEventTransformer: Optimize PartyMemberLeft/Joined/Modified event handling to patch the DOM (remove/add single member) instead of regenerating the entire HostPartyPanel.
+    - |-
+      HostSignalRConnectionBridge.OnConnectedAsync should emit a bounce-back event to force the client to refresh a stale page.
+  domain:
+    name: Domain & Events
+    items:
+    - |-
+      Remove PartyMemberLeftInboundEvent and PartyDisbandedInboundEvent once member-leave / disband flows are confirmed to use HTTP POST exclusively (currently illustrative / unused).
+  infrastructure:
+    name: Infrastructure & Auth
+    items:
+    - |-
+      AuthenticationController.Register: Implement registration with invite-code generation before enabling open registration.
+  shared:
+    name: Shared Libraries (Haondt.Web.UI)
+    items:
+    - |-
+      Field.razor.css: Replace hardcoded --indicator-length-px fallback (assumes 1rem = 16px) with unit-safe calc once Firefox supports division by units (bug 1264520).
+    - |-
+      StringFormatter.FormatDate: Replace hardcoded yyyy-MM-dd format with proper localization.
+    - |-
+      SmartFieldData: Support Optional<T> for OptionalString field instead of nullable string.

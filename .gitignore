@@ -409,3 +409,6 @@ Odyssey/favorites.json
 node_modules
 Odyssey/Odyssey.UI/wwwroot/vendored
 
+# AI tooling
+.opencode
+opencode.json
