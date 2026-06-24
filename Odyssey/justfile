@@ -37,5 +37,18 @@ db-reset:
 db:
     lazysql "{{db_cs}}?sslmode=disable"
 
+[arg("build", short="b", long="build", value='')]
+test build='--no-build':
+    dotnet test {{build}} --filter "FullyQualifiedName!~Odyssey.EndToEndTests"
+
+[arg("build", short="b", long="build", value='')]
+e2e build='--no-build':
+    podman run -it --rm --init --ipc=host --network=host -v $(pwd):/workspace -w /workspace mcr.microsoft.com/playwright/dotnet:v1.61.0-noble dotnet test {{build}} ./Odyssey.EndToEndTests/Odyssey.EndToEndTests.csproj
+e2e-install:
+    dotnet build ./Odyssey.EndToEndTests/Odyssey.EndToEndTests.csproj
+    pwsh ./Odyssey.EndToEndTests/bin/Debug/net10.0/playwright.ps1 install
+e2e-uninstall:
+    pwsh ./Odyssey.EndToEndTests/bin/Debug/net10.0/playwright.ps1 uninstall
+
 pm:
     podman system service --time=0

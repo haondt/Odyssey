@@ -24,7 +24,13 @@ A self-hosted, real-time gameshow platform
 
 ## Running tests
 
-- For persistence tests (`Odyssey.Persistence.Tests`), you must have the podman daemon running. You can start it temporarily with `just pm`.
+```sh
+just test                    # Unit and integration tests (excludes e2e)
+just e2e                     # End-to-end tests (Playwright in podman)
+```
+
+- For persistence tests (`Odyssey.Persistence.Tests`) and e2e tests (`Odyssey.EndToEndTests`), you must have the podman daemon running. You can start it temporarily with `just pm`.
+- E2E tests run inside a Playwright container via podman with `--network=host`, so the web app must be running during the test run.
 
 ## Running the app
 
@@ -68,5 +74,3 @@ just watch demo -r
 ```
 
 And view it at http://localhost:5062.
-
-\[WIP\]

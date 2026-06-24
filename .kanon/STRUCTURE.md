@@ -54,7 +54,8 @@ A self-hosted, real-time gameshow platform built on .NET Orleans, Blazor SSR, an
     ├── Odyssey.Tests.Core/          # Shared test fixtures/models
     ├── Odyssey.Grains.Tests/        # Grain unit tests (Orleans.TestingHost)
     ├── Odyssey.Persistence.Tests/   # EF / Postgres tests (Testcontainers)
-    └── Odyssey.IntegrationTests/    # Full-stack integration tests
+    ├── Odyssey.IntegrationTests/    # Full-stack integration tests
+    └── Odyssey.EndToEndTests/       # Playwright browser tests (runs in podman)
 ```
 
 ## Key packages and how they relate
@@ -80,7 +81,7 @@ A self-hosted, real-time gameshow platform built on .NET Orleans, Blazor SSR, an
 - **Frontend**: HTMX 2, Hyperscript, SignalR, Idiomorph, Lucide icons
 - **Styling**: PostCSS (custom-media, mixins) + `*.pcss` → `*.css` pre-build
 - **Persistence**: EF Core 10 + Npgsql 10 (PostgreSQL)
-- **Testing**: xUnit, FluentAssertions, Coverlet, Testcontainers.PostgreSql, Orleans.TestingHost
+- **Testing**: xUnit, FluentAssertions, Coverlet, Testcontainers.PostgreSql, Orleans.TestingHost, Playwright
 - **Build / run**: `just` (justfile), `bun` (package manager), `dcdn` (vendor deps)
 - **Containers**: Dockerfile (production web image), podman (dev DB)
 
