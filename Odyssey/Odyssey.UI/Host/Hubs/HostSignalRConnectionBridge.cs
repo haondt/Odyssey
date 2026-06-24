@@ -1,5 +1,6 @@
 ﻿using Haondt.Core.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Odyssey.Domain.Core.Events;
 using Odyssey.Domain.Core.Services;
 using Odyssey.Domain.Host.Services;
@@ -18,7 +19,8 @@ namespace Odyssey.UI.Host.Hubs
         string userId,
         IHubContext<THub, IHostHubReceiver<TOutbound>> context,
         IEventTransformerRegistry transformerRegistry,
-        IClusterClient clusterClient) : IHostSignalRConnectionBridge<TInbound> where THub : HostHub<TInbound, TOutbound>
+        IClusterClient clusterClient,
+        ILogger<HostSignalRConnectionBridge<TInbound, TOutbound, THub>> logger) : IHostSignalRConnectionBridge<TInbound> where THub : HostHub<TInbound, TOutbound>
     {
         private readonly IHostEventTransformer<TInbound, TOutbound> _transformer = transformerRegistry.GetTransformer<IHostEventTransformer<TInbound, TOutbound>>(clientType);
         private Optional<StreamSubscriptionHandle<SignalROutboundEvent>> _handle;
@@ -37,11 +39,15 @@ namespace Odyssey.UI.Host.Hubs
                 switch (evt)
                 {
                     case PartyOutboundEvent partyEvent:
+                        if (logger.IsEnabled(LogLevel.Debug))
+                            logger.LogDebug("Received outbound party event {EventType} for Host {HostId}", partyEvent.GetType().Name, userId);
                         var payload = await _transformer.TransformPartyEventAsync(partyEvent, userId);
                         await context.Clients.Client(connectionId).ReceivePartyEvent(payload);
                         break;
                 }
             });
+
+            logger.LogDebug("Connected to Orleans stream for Host {HostId}", userId);
         }
 
         public async Task OnDisconnectedAsync()
