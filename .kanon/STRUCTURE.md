@@ -111,3 +111,6 @@ A self-hosted, real-time gameshow platform built on .NET Orleans, Blazor SSR, an
 - **EF migrations are Postgres-only** — Migrations live in `Odyssey.Persistence/Migrations/Postgres` and the justfile hardcodes `PostgresApplicationDbContext`.
 - **Orleans SQL scripts are vendored** — `Odyssey.Persistence` copies raw `PostgreSQL-*.sql` scripts to output for Orleans clustering / persistence setup.
 - **No CI config** — No `.github/workflows` or `.gitlab-ci.yml` found; builds appear to be local or manual at this time.
+- **Auth is Identity + cookies** — `Odyssey.Client` seeds a default admin (`admin` / `P@ssword1234`) via `AuthenticationDataSeeder`; sign-in page lives at `/auth/sign-in` and is built from Razor components (`SignInPanel.razor`), not `.cshtml`.
+- **Host area routing** — `/host/` is protected and redirects unauthenticated users to `/auth/sign-in?ReturnUrl=%2Fhost%2F`; authenticated hosts are redirected from `/host/` to `/host/party`.
+- **Test project locations** — All test projects sit under `Odyssey/` (e.g. `Odyssey/Odyssey.EndToEndTests`), not at repo root. `Odyssey.EndToEndTests` uses Playwright (`PageTest`); `Odyssey.IntegrationTests` uses `WebApplicationFactory` for HTTP-level tests.
