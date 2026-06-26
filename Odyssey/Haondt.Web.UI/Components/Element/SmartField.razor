@@ -70,7 +70,6 @@
     public required Expression<Func<TBase, object>> Field { get; set; }
     private static readonly ConcurrentDictionary<string, Func<TBase, object>> _compiledCache = new();
 
-
     [Parameter]
     public Optional<string> Placeholder { get; set; }
 
@@ -109,11 +108,17 @@
     public static string GetIdFromFieldName(string name) => StringFormatter.PascalToKebabCase(name.Replace('.','-').Replace('[', '-').Replace("]", ""));
 
 
-    protected override void OnInitialized() 
+    protected override void OnInitialized()
     {
         var (memberInfo, path) = ExpressionUtils.GetMemberInfo(Field);
         var dataTypeAttr = memberInfo.GetCustomAttribute<DataTypeAttribute>();
         var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
+
+        if(!Value.HasValue && Base is not null)
+        {
+            var compiled = _compiledCache.GetOrAdd(path, _ => Field.Compile());
+            Value = compiled(Base);
+        }
 
         if (!Title.HasValue && displayAttr?.Name is not null && !PreventDefaults.Contains(nameof(Title)))
             Title = displayAttr.Name;
@@ -168,6 +173,20 @@
                 case var t when t == typeof(bool):
                     Type = _type = FieldType.Checkbox;
                     break;
+                case var t when t.IsEnum:
+                    Type = _type = FieldType.Dropdown;
+                    if (!Options.HasValue && !Suggestions.HasValue)
+                    {
+                        var enumValues = new List<DropdownOption>();
+                        foreach(var v in Enum.GetValues(t)) {
+                            enumValues.Add(new(){
+                                Text = v.ToString()!,
+                                Selected = Value.Map(q => v.Equals(q)).Or(false)
+                            });
+                        }
+                        Options = enumValues;
+                    }
+                    break;
             };
         }
 
@@ -183,12 +202,6 @@
                 FieldType.Password => false,
                 _ => true
             };
-        }
-
-        if(!Value.HasValue && Base is not null)
-        {
-            var compiled = _compiledCache.GetOrAdd(path, _ => Field.Compile());
-            Value = compiled(Base);
         }
 
         if (MultiSelect.HasValue)

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Odyssey.Client.Authentication.Models;
 using Odyssey.Client.Core.Extensions;
 using Odyssey.Client.Core.Models;
+using Odyssey.Client.Core.Services;
 using Odyssey.Core.Constants;
 using Odyssey.Domain.Core.Extensions;
 using Odyssey.Games.Client.Core.Extensions;
@@ -50,6 +51,8 @@ builder.Services
     .AddOdysseyClientServices(builder.Configuration)
     .AddOdysseyGames()
     .AddOdysseyGamesClientServices(builder.Configuration);
+
+builder.Services.AddTransient<IDeveloperDataSeeder, DeveloperDataSeeder>();
 
 
 // Add services to the container.

@@ -1,0 +1,31 @@
+behavior ButtonShowLoading(debounce)
+    on htmx:beforeRequest
+        set :requestDone to false
+        wait debounce ms
+        if :requestDone is false
+            add .button-loading to me
+        end
+    end
+    on htmx:afterRequest
+        set :requestDone to true
+        remove .button-loading from me
+    end
+end
+
+behavior ButtonShowLoadingTargeted(debounce, tg)
+    on htmx:beforeRequest from tg
+        if the event's target is tg
+            set :requestDone to false
+            wait debounce ms
+            if :requestDone is false
+                add .button-loading to me
+            end
+        end
+    end
+    on htmx:afterRequest from tg
+        if the event's target is tg
+            set :requestDone to true
+            remove .button-loading from me
+        end
+    end
+end

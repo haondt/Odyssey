@@ -6,14 +6,26 @@
     cursor: pointer;
 }
 
+
 .section ::deep {
     display: flex;
     flex-direction: column;
     gap: var(--haondt-ui-card-spacing);
-    > .section-header > svg {
-        transition: transform 0.1s ease-out;
+    > .section-header {
+        &.section-color-secret {
+            --haondt-ui-color-subtitle: var(--haondt-ui-color-secret);
+        }
+        > p {
+            font-size: var(--haondt-ui-subtitle-font-size);
+            font-weight: var(--haondt-ui-subtitle-font-weight);
+            color: var(--haondt-ui-color-subtitle);
+        }
+        > svg {
+            transition: transform 0.1s ease-out;
+            color: var(--haondt-ui-color-subtitle);
+        }
     }
-    > .section-header.section-open ::deep > svg {
+    > .section-header.section-open > svg {
         transform: rotate(90deg);
     }
     > .section-content {
@@ -21,9 +33,9 @@
         flex-direction: column;
         gap: var(--haondt-ui-card-spacing);
     }
-
 }
 
 .section:has(> .section-header:not(.section-open)) > .section-content {
     display: none;
 }
+

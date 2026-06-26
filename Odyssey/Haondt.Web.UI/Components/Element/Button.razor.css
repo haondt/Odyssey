@@ -1,5 +1,8 @@
 .button {
     white-space: nowrap;
+    color: var(--button-fg);
+    background: var(--button-bg);
+    position: relative;
 }
 
 .button:hover, .button.hovered {
@@ -21,10 +24,13 @@
 .button-color-success {
     --button-color: var(--haondt-ui-color-success);
 }
+.button-color-secret {
+    --button-color: var(--haondt-ui-color-secret);
+}
 
 .button-style-fill {
-    color: var(--haondt-ui-color-background);
-    background-color: var(--button-color);
+    --button-fg: var(--haondt-ui-color-background);
+    --button-bg: var(--button-color);
     font-weight: 400;
 }
 
@@ -33,11 +39,11 @@
 }
 
 .button-style-fill:hover, .button-style-fill.hovered {
-    background-color: hsl(from var(--button-color) h s calc(l + var(--haondt-ui-button-hover-delta)));
+    --button-bg: hsl(from var(--button-color) h s calc(l + var(--haondt-ui-button-hover-delta)));
 }
 
 .button-style-ghost {
-    color: var(--button-color);
+    --button-fg: var(--button-color);
 }
 
 .button-style-ghost:not(.button-color-text),
@@ -49,29 +55,29 @@
 }
 
 .button-style-skeleton {
-    color: var(--button-color);
+    --button-fg: var(--button-color);
     --haondt-ui-control-padding-x: 0;
     --haondt-ui-control-height: initial;
 }
 
 .button-style-outline {
-    color: var(--button-color);
+    --button-fg: var(--button-color);
     border: var(--haondt-ui-border-width) solid var(--button-color);
-    background-color: var(--haondt-ui-color-background);
+    --button-bg: var(--haondt-ui-color-background);
 }
 .button-style-border {
-    color: var(--button-color);
+    --button-fg: var(--button-color);
     border: var(--haondt-ui-border-width) solid var(--haondt-ui-color-border);
-    background-color: var(--haondt-ui-color-background);
+    --button-bg: var(--haondt-ui-color-background);
 }
 .button-style-borderless {
-    color: var(--button-color);
-    background-color: var(--haondt-ui-color-background);
+    --button-fg: var(--button-color);
+    --button-bg: var(--haondt-ui-color-background);
 }
 
 :is(.button-style-outline, .button-style-border, .button-style-borderless):hover,
 :is(.button-style-outline, .button-style-border, .button-style-borderless).hovered {
-    background-color: var(--haondt-ui-color-background-strong);
+    --button-bg: var(--haondt-ui-color-background-strong);
 }
 
 .tooltip.tooltip-style-context-menu > .tooltip-content  .button {
@@ -94,6 +100,28 @@
         background-color: var(--haondt-ui-color-background-strong);
     }
 */
-
 }
 
+.button-loading {
+    pointer-events: none;
+    color: transparent;
+}
+
+.button-loading::after {
+    animation: spin .8s linear infinite;
+    --button-loader-border-width: calc(2 * var(--haondt-ui-border-width));
+    --button-loader-size: calc(var(--haondt-ui-text-font-size) - var(--button-loader-border-width));
+    border-bottom: var(--button-loader-border-width) solid;
+    border-left: var(--button-loader-border-width) solid;
+    border-right: var(--button-loader-border-width) solid;
+    border-top: var(--button-loader-border-width) solid transparent;
+    border-radius: var(--button-loader-size);
+    content: "";
+    display: block;
+    height: var(--button-loader-size);
+    width: var(--button-loader-size);
+    color: var(--button-fg);
+    position: absolute;
+    left: calc(50% - calc(var(--button-loader-size) / 2));
+    top: calc(50% - calc(var(--button-loader-size) / 2));
+}

@@ -23,6 +23,7 @@ namespace Odyssey.Client.Core.Extensions
             AdminSettings.Validate(services.AddOptions<AdminSettings>()).ValidateOnStart();
             services.AddSingleton<IStandaloneModelBinder, StandaloneModelBinder>();
             services.AddSingleton(typeof(ISignalRConnectionRegistry<>), typeof(SignalRConnectionRegsitry<>));
+            services.AddTransient<IDeveloperDataSeeder, NoOpDeveloperDataSeeder>();
 
             // orleans
             services.AddHostedService<ClientStartupService>();

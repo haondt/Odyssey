@@ -13,6 +13,7 @@ sections:
       BrowserHostEventTransformer: Optimize PartyMemberLeft/Joined/Modified event handling to patch the DOM (remove/add single member) instead of regenerating the entire HostPartyPanel.
     - |-
       HostSignalRConnectionBridge.OnConnectedAsync should emit a bounce-back event to force the client to refresh a stale page.
+    - Make notification cards fixed-width on desktop and full-width on mobile.
   domain:
     name: Domain & Events
     items:
@@ -23,6 +24,8 @@ sections:
     items:
     - |-
       AuthenticationController.Register: Implement registration with invite-code generation before enabling open registration.
+    - |-
+      Migrate all test projects from xUnit v2 to xUnit v3 (update package references, adapt any breaking API changes, verify all tests pass).
   shared:
     name: Shared Libraries (Haondt.Web.UI)
     items:

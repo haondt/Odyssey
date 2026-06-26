@@ -1,0 +1,70 @@
+@using Haondt.Web.UI.Components.Components
+@using Haondt.Web.UI.Components.Containers
+@using Odyssey.Client.Authentication.Services
+@using Odyssey.Client.Core.Services
+@using Odyssey.Client.Host.Services
+@using Odyssey.Domain.Core.Models
+@using Odyssey.UI.Core.Services
+@using Odyssey.UI.Host.Components.Party
+@using Odyssey.UI.Host.Hubs
+@using HostSettingsData = Odyssey.GrainInterfaces.Sessions.Models.HostSettings;
+
+@attribute [RenderPage(Role = OdysseyRoles.Host)]
+@implements IHasNavigationBarComponent
+
+@inject IClientHostService HostService
+
+@code {
+    public NavigationBar CreateNavigationBar() => new()
+    {
+        Template = new NavigationBarDefault(OdysseyRoles.Host)
+    };
+
+    [Parameter, EditorRequired]
+    public required HostSettingsData Data { get; set; }
+
+    private HostSettingsModel _model = default!;
+
+    protected override void OnInitialized()
+    {
+        _model = HostSettingsModel.Create(Data);
+    }
+    private bool _ready;
+    protected override async Task OnInitializedAsync()
+    {
+        _ready = true;
+    }
+}
+
+@if (_ready)
+{
+    <ContentContainer>
+        <Frame Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+            <Frame AddClasses='"sticky blend-shadow bg-background mb-blend z-1"' Gap="FrameSpacing.Card" Flex="FrameDirection.Col" Align="FrameAlignment.Stretch">
+                <HostSecondaryNavigationBar Sticky="false" ActiveTab="HostSecondaryNavigationBarTab.Settings" />
+                <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel">
+                    <form data-loading-states hx-post hx-swap="none" id="host-settings-save-form">
+                        <Frame Flex="FrameDirection.Col" Gap="FrameSpacing.Panel">
+                            <Section Name='"General"'>
+                                <SmartField Base="@_model" Field="static m => m.Colorscheme" />
+                            </Section>
+                            <Section Name='"Advanced"' Collapsed="true">
+                                <SmartField Base="@_model" Field="static m => m.DeveloperMode" />
+                            </Section>
+                            @if (_model.DeveloperMode)
+                            {
+                                <Section Color="SectionColor.Secret" Name='"Developer Settings"' Collapsed="true">
+                                    <Field Type="FieldType.None" Title='"Seed database"' Description='"Seed database with data for development."'>
+                                        <Button ShowLoading="true" HxPost="@OdysseyRoutes.Host.Settings.Developer.SeedDb.Index" HxSwap='"none"' Color="ButtonColor.Secret">Seed</Button>
+                                    </Field>
+                                </Section>
+                            }
+                        </Frame>
+                    </form>
+                    @* Outside of form to seperate loading state *@
+                    <FormActionBar FormId="host-settings-save-form" />
+                </Frame>
+            </Frame>
+        </Frame>
+    </ContentContainer>
+}

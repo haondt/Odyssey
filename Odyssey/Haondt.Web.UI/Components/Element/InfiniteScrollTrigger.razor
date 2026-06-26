@@ -1,4 +1,5 @@
 @using Haondt.Web.UI.Models
+@using Haondt.Web.UI.Utils
 @code {
     [Parameter, EditorRequired]
     public required string HxGet { get; set; }
@@ -32,7 +33,7 @@
 <li @attributes="_rootAttributes" class="@string.Join(' ', _rootClasses)">
     @if (Skeleton != null) {
         if (LoadingStates) {
-            <div class="infinite-scroll-loading-state" data-loading-delay="500" data-loading>@Skeleton</div>
+            <div class="infinite-scroll-loading-state" data-loading-delay="@UIConstants.DataLoadingDelay" data-loading>@Skeleton</div>
         }
         else {
             @Skeleton

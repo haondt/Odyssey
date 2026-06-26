@@ -1,4 +1,5 @@
 ﻿using Odyssey.GrainInterfaces.Core;
+using Odyssey.GrainInterfaces.Sessions.Models;
 using Orleans.Concurrency;
 
 namespace Odyssey.GrainInterfaces.Sessions
@@ -14,5 +15,8 @@ namespace Odyssey.GrainInterfaces.Sessions
         Task NotifyPartyMemberLeftAsync();
         [OneWay]
         Task NotifyPartyMemberModifiedAsync();
+
+        Task SetHostSettingsAsync(HostSettings settings);
+        Task<HostSettings> GetHostSettingsAsync();
     }
 }

@@ -29,11 +29,17 @@
     <Frame  Padding="FrameSpacing.Line" Template="FrameTemplate.ButtonContainer">
         @if(DiscardButtonPath.TryGetValue(out var discardPath))
         {
-            <Button HxGet="discardPath" HxSwap='"none"' Color="ButtonColor.Danger" Style="ButtonStyle.Ghost">Discard changes</Button>
+            <Button
+                ShowLoading="true"
+                HxGet="discardPath" HxParams='"none"' HxSwap='"none"' Color="ButtonColor.Danger" Style="ButtonStyle.Ghost">Discard changes</Button>
         }
         @if(SaveButton)
         {
-            <Button Hyperscript='$"on click send submit to {_formSelector} end"'  Color="ButtonColor.Success">Save changes</Button>
+            <Button
+                ShowLoading='$"{_formSelector}"'
+                Type="ButtonType.Submit"
+                Form='$"{FormId}"'
+                Color="ButtonColor.Success">Save changes</Button>
         }
     </Frame>
 </div>

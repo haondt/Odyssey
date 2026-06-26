@@ -35,7 +35,8 @@ namespace Haondt.Web.UI.Components.Element
         TextWeak,
         Primary,
         Danger,
-        Success
+        Success,
+        Secret
     }
 
     public enum ButtonType
@@ -71,6 +72,7 @@ namespace Haondt.Web.UI.Components.Element
                 ButtonColor.Primary => "button-color-primary",
                 ButtonColor.Danger => "button-color-danger",
                 ButtonColor.Success => "button-color-success",
+                ButtonColor.Secret => "button-color-secret",
                 _ => new Optional<string>()
             };
         }

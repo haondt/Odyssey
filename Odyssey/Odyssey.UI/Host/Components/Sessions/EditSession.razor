@@ -81,11 +81,11 @@
                                 Style="ButtonStyle.Borderless">Rename</Button>
                             @if (Session.Archived) 
                             {
-                                <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).UnarchiveP.IndexP" Style="ButtonStyle.Borderless" Color="ButtonColor.TextWeak">Unarchive</Button>
+                                <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).UnarchiveP.IndexP" Style="ButtonStyle.Borderless">Unarchive</Button>
                             }
-                            else 
+                            else
                             {
-                                <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).ArchiveP.IndexP" Style="ButtonStyle.Borderless" Color="ButtonColor.TextWeak">Archive</Button>
+                                <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).ArchiveP.IndexP" Style="ButtonStyle.Borderless">Archive</Button>
                             }
                             <Button HxSwap='"none"' HxPost="@OdysseyRoutes.Host.Session.IdP(Id).GameStateP.ResetP.IndexP" HxConfirm="@resetConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Reset</Button>
                             <Button HxSwap='"none"' HxDelete='""' HxConfirm="@deleteConfirm" Style="ButtonStyle.Borderless" Color="ButtonColor.Danger">Delete</Button>

@@ -14,7 +14,13 @@
     public bool Collapsible { get; set; } = true;
 
     [Parameter]
+    public bool Collapsed { get; set; } = false;
+
+    [Parameter]
     public Optional<string> Name { get; set; }
+
+    [Parameter]
+    public Optional<SectionColor> Color { get; set; }
 
     /// <summary>
     /// Will be used in conjunction with hx-preserve to preserve open state
@@ -26,13 +32,13 @@
     public Expression<Func<object>>? Field { get; set; }
 
     private HashSet<string> _rootClasses = ["section"];
-    private HashSet<string> _headerClasses = ["section-header", "section-open"];
+    private HashSet<string> _headerClasses = ["section-header"];
     private Dictionary<string, object> _headerAttributes = [];
 
 
-    protected override void OnInitialized() 
+    protected override void OnInitialized()
     {
-        if (Field is { } field) 
+        if (Field is { } field)
         {
             var (memberInfo, path) = ExpressionUtils.GetMemberInfo(field);
             var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
@@ -43,32 +49,37 @@
             }
 
             if (!HeaderId.HasValue)
-                HeaderId = $"section-header--{StringFormatter.PascalToKebabCase(path.Replace('.', '-'))}";
+                HeaderId = $"section-header--{StringFormatter.PascalCaseToSlug(path)}";
         }
         if (!HeaderId.HasValue && Name.HasValue)
-            HeaderId = $"section-header--{StringFormatter.PascalToKebabCase(Name.Value.Replace('.', '-'))}";
+            HeaderId = $"section-header--{StringFormatter.PascalCaseToSlug(Name.Value)}";
 
         if (Collapsible)
             _rootClasses.Add("section-collapsible");
+        if (!Collapsible || !Collapsed)
+            _headerClasses.Add("section-open");
 
         if (HeaderId.HasValue)
         {
             _headerAttributes["id"] = HeaderId.Value;
             _headerAttributes["hx-preserve"] = "";
         }
+
+        if (Color.TryGetValue(out var color) && color.CssClass.TryGetValue(out var colorClass))
+            _headerClasses.Add(colorClass);
     }
 
 }
 
 
 <div class="@string.Join(' ', _rootClasses)">
-    @if (Collapsible) 
+    @if (Collapsible)
     {
         <div @attributes="@_headerAttributes" class="@string.Join(' ', _headerClasses)"  _="on click toggle .section-open on me end">
             <LucideIcon Size="20" Name="chevron-right" />
             @if (Name.TryGetValue(out var name))
             {
-                <p class="subtitle">@name</p>
+                <p>@name</p>
             }
         </div>
     }
@@ -77,7 +88,7 @@
         <div @attributes="@_headerAttributes" class="@string.Join(' ', _headerClasses)">
             @if (Name.TryGetValue(out var name))
             {
-                <p class="subtitle">@name</p>
+                <p>@name</p>
             }
         </div>
     }

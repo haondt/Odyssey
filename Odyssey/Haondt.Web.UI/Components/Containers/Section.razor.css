@@ -1,0 +1,49 @@
+.section-header {
+    display: flex;
+    flex-direction: row;
+    gap: var(--haondt-ui-line-spacing);
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.section ::deep {
+    display: flex;
+    flex-direction: column;
+    gap: var(--haondt-ui-card-spacing);
+}
+
+
+.section ::deep > .section-header.section-color-secret {
+            --haondt-ui-color-subtitle: var(--haondt-ui-color-secret);
+        }
+
+
+.section ::deep > .section-header  > p {
+            font-size: var(--haondt-ui-subtitle-font-size);
+            font-weight: var(--haondt-ui-subtitle-font-weight);
+            color: var(--haondt-ui-color-subtitle);
+        }
+
+
+.section ::deep > .section-header  > svg {
+            transition: transform 0.1s ease-out;
+            color: var(--haondt-ui-color-subtitle);
+        }
+
+
+.section ::deep  > .section-header.section-open > svg {
+        transform: rotate(90deg);
+    }
+
+
+.section ::deep  > .section-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--haondt-ui-card-spacing);
+    }
+
+.section:has(> .section-header:not(.section-open)) > .section-content {
+    display: none;
+}
+

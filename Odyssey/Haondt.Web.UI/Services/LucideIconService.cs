@@ -1,7 +1,7 @@
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using System.Xml.Linq;
 
 namespace Haondt.Web.UI.Services;
 
@@ -37,7 +37,7 @@ public class LucideIconService : ILucideIconService
     {
         var template = GetSvgTemplate(name);
         if (template == null)
-            return $"<!-- Icon {name} not found -->";
+            return $"<!-- LucideIcon {name} not found -->";
 
         return RenderSvgFromTemplate(template, size ?? _options.DefaultSize, cssClass, style);
     }

@@ -1,11 +1,11 @@
 .dialog-container {
     display: flex;
     flex-direction: column;
+}
 
-    > *:not(:first-child):not(.dialog-container-buttons) {
+.dialog-container  > *:not(:first-child):not(.dialog-container-buttons) {
         margin-top: var(--haondt-ui-line-spacing);
     }
-}
 
 .dialog-container > .dialog-container-buttons {
     margin-top: var(--haondt-ui-panel-spacing);

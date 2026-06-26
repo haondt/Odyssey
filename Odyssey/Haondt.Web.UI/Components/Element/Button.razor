@@ -1,12 +1,18 @@
 @using Haondt.Web.UI.Components.Components;
 @using Haondt.Web.UI.Models
+@using Haondt.Web.UI.Utils
 @code {
     [Parameter]
     public Optional<string> Text { get; set; }
 
+    [Parameter]
+    public Union<bool, string>? ShowLoading { get; set; }
 
     [Parameter]
     public Optional<string> HxPost { get; set; }
+
+    [Parameter]
+    public Optional<string> HxParams { get; set; }
 
     [Parameter]
     public Optional<string> HxInclude { get; set; }
@@ -64,9 +70,6 @@
 
     protected override void OnInitialized()
     {
-        // disable during request flight
-        _rootAttributes["data-loading-disable"] = true;
-
         if (Style.CssClass.TryGetValue(out var style))
             _rootClasses.Add(style);
         if (Color.CssClass.TryGetValue(out var color))
@@ -89,6 +92,8 @@
             _rootAttributes["hx-swap"] = hxSwap;
         if (HxPrompt.TryGetValue(out var hxPrompt))
             _rootAttributes["hx-prompt"] = hxPrompt;
+        if (HxParams.TryGetValue(out var hxParams))
+            _rootAttributes["hx-params"] = hxParams;
         if (HxConfirm is { } hxConfirm)
         {
             if (hxConfirm.Is<string>(out var hxConfirmString))
@@ -106,6 +111,16 @@
         {
             var snippet = $"on click send closeModal to #{ModalPanel.ModalBackgroundId} end";
             Hyperscript = $"{snippet} {Hyperscript.Or("")}";
+        }
+        if (ShowLoading is {  } showLoading)
+        {
+            if (showLoading.Is<bool>(out var showLoadingBool))
+            {
+                if (showLoadingBool)
+                    Hyperscript = $"install ButtonShowLoading(debounce: {UIConstants.DataLoadingDelay}) {Hyperscript.Or("")}";
+            }
+            else
+                Hyperscript = $"install ButtonShowLoadingTargeted(debounce: {UIConstants.DataLoadingDelay}, tg: {showLoading.Cast<string>()}) {Hyperscript.Or("")}";
         }
         if (Hyperscript.TryGetValue(out var hyperscript))
             _rootAttributes["_"] = hyperscript;

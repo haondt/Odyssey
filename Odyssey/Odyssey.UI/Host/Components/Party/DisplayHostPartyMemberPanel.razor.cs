@@ -3,7 +3,7 @@ using Haondt.Web.Core.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
 using Odyssey.GrainInterfaces.Sessions.Models;
 
-namespace Odyssey.UI.Host.Components
+namespace Odyssey.UI.Host.Components.Party
 {
     public class DisplayHostPartyMemberPanelModel
     {

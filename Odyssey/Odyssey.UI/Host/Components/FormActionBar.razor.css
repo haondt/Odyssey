@@ -17,11 +17,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .form-action-bar {
-        > .frame {
-            > .button {
+            .form-action-bar > .frame  > .button {
                 flex-grow: 1;
             }
-        }
-    }
 }

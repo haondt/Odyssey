@@ -259,6 +259,15 @@ namespace Odyssey.UI.Core.Models
             public static class Settings
             {
                 public const string Index = $"{Host.Index}/settings";
+
+                public static class Developer
+                {
+                    public const string Index = $"{Host.Settings.Index}/developer";
+                    public static class SeedDb
+                    {
+                        public const string Index = $"{Host.Settings.Developer.Index}/seed-db";
+                    }
+                }
             }
         }
 
