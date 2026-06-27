@@ -35,6 +35,7 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services
     .AddHaondtUIHyperscriptScripts()
+    .AddOdysseyUIHyperscriptScripts() // TODO: probably these lists of uris should be inside HaondtWebOptions
     .AddHaondtWebServices(builder.Configuration, options =>
     {
         options.HtmxScriptUri = "/static/shared/vendored/htmx.org/dist/htmx.min.js";

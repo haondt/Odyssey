@@ -145,5 +145,25 @@ namespace Odyssey.UI.Core.Extensions
 
             return services;
         }
+
+        /// <summary>
+        /// This must go before loading in hyperscript!
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddOdysseyUIHyperscriptScripts(this IServiceCollection services)
+        {
+            foreach (var script in new List<string>
+            {
+                "gestures",
+            })
+                services.AddScoped<IHeadEntryDescriptor>(_ => new ScriptDescriptor
+                {
+                    Uri = $"/static/shared/_hs/{script}._hs",
+                    Type = "text/hyperscript"
+                });
+
+            return services;
+        }
     }
 }

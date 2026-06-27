@@ -6,7 +6,19 @@
     public Optional<IComponent> Content { get; set; }
 }
 
-<div id="@Id">
+
+@{
+    var hs = @"
+    install Swipeable()
+    on odyssey:gesture:swipeDown
+        halt the event
+        if #bottom-sheet-content matches .active
+            remove .active from #bottom-sheet-content
+        end
+    end
+    ";
+}
+<div id="@Id" _="@hs">
     @ChildContent
     @if (Content.HasValue)
     {

@@ -1,0 +1,27 @@
+behavior Swipeable(strict)
+    on pointerdown
+        if strict and the event's target is not me
+            exit
+        end
+        set :startY to the event's clientY
+    end
+    on pointerup
+        send handle(clientX: event.clientX, clientY: event.clientY)
+    end
+    on pointerup from elsewhere
+        send handle(clientX: event.clientX, clientY: event.clientY)
+    end
+    on handle(clientX, clientY)
+        halt the event
+        if some :startY
+            set deltaY to clientY - :startY
+            if deltaY < -100
+                trigger odyssey:gesture:swipeUp
+            end
+            if deltaY > 100
+                trigger odyssey:gesture:swipeDown
+            end
+            set :startY to null
+        end
+    end
+end

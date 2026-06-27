@@ -11,6 +11,18 @@
 
 @{
     var classes = Active ? "active" : "";
+    var tabHs = @"
+    install Swipeable()
+    on click
+        toggle .active on #bottom-sheet-content
+    end
+    on odyssey:gesture:swipeUp
+        halt the event
+        if #bottom-sheet-content does not match .active
+            add .active to #bottom-sheet-content
+        end
+    end
+    ";
 }
 
 <div id="@Id" class="@classes" _="
@@ -19,7 +31,7 @@
     ">
     <div class="bottom-sheet-background"></div>
     <div id="bottom-sheet-content">
-        <button class="bottom-sheet-tab" _="on click toggle .active on #bottom-sheet-content">
+        <button class="bottom-sheet-tab" _="@tabHs">
             <svg class="svg-tab" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 30" width="200" height="30">
               <path d="
                 M 0 30
