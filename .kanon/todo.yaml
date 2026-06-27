@@ -26,6 +26,8 @@ sections:
       AuthenticationController.Register: Implement registration with invite-code generation before enabling open registration.
     - |-
       Migrate all test projects from xUnit v2 to xUnit v3 (update package references, adapt any breaking API changes, verify all tests pass).
+    - |-
+      Switch SignalR hubs to MessagePack protocol and enable LZ4 compression. See https://learn.microsoft.com/en-ca/aspnet/core/signalr/messagepackhubprotocol?view=aspnetcore-10.0
   shared:
     name: Shared Libraries (Haondt.Web.UI)
     items:

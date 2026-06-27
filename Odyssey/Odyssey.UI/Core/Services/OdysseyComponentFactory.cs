@@ -54,16 +54,19 @@ namespace Odyssey.UI.Core.Services
                 }
             }
 
-            var rootComponent = new RootComponent
+            var rootComponent = new NoisyComponent
             {
-                Component = component,
-                Request = request,
-                Response = response,
-                Type = componentType
+                Content = new RootComponent
+                {
+                    Component = component,
+                    Request = request,
+                    Response = response,
+                    Type = componentType
+                }
             };
 
 
-            return new RazorComponentResult<RootComponent>(rootComponent.ToDictionary());
+            return new RazorComponentResult<NoisyComponent>(rootComponent.ToDictionary());
         }
     }
 

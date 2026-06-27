@@ -8,6 +8,7 @@ using Haondt.Web.UI.Extensions;
 using Haondt.Web.UI.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Odyssey.Client.Authentication.Models;
 using Odyssey.Client.Core.Extensions;
@@ -133,6 +134,11 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+builder.Services.AddResponseCompression(options =>
+{
+    // Ensure you use NoisyComponent to prevent BREACH/CRIME attacks
+    options.EnableForHttps = true;
+});
 
 builder.Services.AddHealthChecks();
 
@@ -140,18 +146,19 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app
-    .UseHaondtWeb()
-    .UseOdysseyUI();
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors(OdysseyConstants.CorsPolicyName);
 app.UseAntiforgery();
+app.UseResponseCompression();
 
 app.UseMiddleware<RenderContextMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<UnmappedRouteHandlerMiddleware>();
+
+app
+    .UseHaondtWeb()
+    .UseOdysseyUI();
 
 app.MapControllers();
 app.AddHaondtWebUIEndpoints();

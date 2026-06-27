@@ -1,0 +1,14 @@
+@using System.Security.Cryptography
+@code {
+    [Parameter, EditorRequired]
+    public required IComponent  Content {get; set;}
+
+    private string _noise = default!;
+    protected override void OnInitialized()
+    {
+        _noise = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
+    }
+
+}
+<ObjectComponent Component="@Content" />
+@((MarkupString)$"<!-- noise__{_noise} -->")

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Reflection;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Odyssey.Domain.Core.Services
 {
@@ -14,7 +15,9 @@ namespace Odyssey.Domain.Core.Services
                 var dictionary = component.ToDictionary();
                 var parameterView = ParameterView.FromDictionary(dictionary);
                 var output = await htmlRenderer.RenderComponentAsync(componentType, parameterView);
-                return output.ToHtmlString();
+                // preemptively adding this for when we figure out how to compress the responses
+                var noise = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
+                return output.ToHtmlString() + $"<!-- noise__{noise} -->";
             });
         }
 
